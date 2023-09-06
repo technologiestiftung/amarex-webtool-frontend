@@ -37,5 +37,5 @@ export default function mapStyle() {
         },
       },
     ],
-  } as StyleSpecification;
+  } as any;
 }
