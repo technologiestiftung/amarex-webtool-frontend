@@ -4,7 +4,6 @@ import { FC, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import Map, { Source, Layer } from "react-map-gl/maplibre";
 import { layerStyles } from "./layerStyles";
-import { boroughs } from "public/data/berlin_bezirke";
 
 const geojson = {
   type: "FeatureCollection",
@@ -21,6 +20,7 @@ interface Props {
 }
 export const MapComponent: FC<Props> = ({ data }) => {
   const mapRef = useRef<mapboxgl.Map>();
+  const boroughsFromGEO = JSON.parse(data.value).berlinBoroughs.features;
   return (
     <Map
       initialViewState={{
@@ -28,16 +28,29 @@ export const MapComponent: FC<Props> = ({ data }) => {
         latitude: 52.52,
         zoom: 12,
       }}
+      maxBounds={[13.1, 52.3, 13.7, 52.7]}
+      // @ts-ignore
       mapStyle={mapStyle()}
       // @ts-ignore
       ref={mapRef}
-      // @ts-ignore
       mapLib={maplibregl}
-      style={{ width: "100%", height: "50vh" }}
+      style={{ width: "100%", height: "100vh" }}
     >
-      <Source id="boroughs" type="geojson" data={boroughs}>
+      <Source id="boroughs" type="geojson" data={boroughsFromGEO[1]}>
         {/* @ts-ignore */}
-        <Layer {...layerStyles["boroughs"]} />
+        <Layer {...layerStyles["boroughsFill"]} />
+        {/* @ts-ignore */}
+        <Layer {...layerStyles["boroughsLine"]} />
+      </Source>
+      <Source id="my-data" type="geojson" data={geojson}>
+        {/* @ts-ignore */}
+        <Layer {...layerStyles["marker"]} />
+      </Source>
+      <Source id="boroughs-2" type="geojson" data={boroughsFromGEO[0]}>
+        {/* @ts-ignore */}
+        <Layer {...layerStyles["boroughsFill2"]} />
+        {/* @ts-ignore */}
+        <Layer {...layerStyles["boroughsLine2"]} />
       </Source>
       <Source id="my-data" type="geojson" data={geojson}>
         {/* @ts-ignore */}
