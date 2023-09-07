@@ -1,7 +1,7 @@
 export default function mapStyle() {
   return {
     version: 8,
-    name: "weihnachtsmarktkarte",
+    name: "amarex-webtool",
     metadata: {},
     sources: {
       osmBaseMap: {
@@ -12,8 +12,6 @@ export default function mapStyle() {
           "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
       },
     },
-    // "glyphs": "./data/{fontstack}/{range}.pbf",
-    bounds: [13.076477, 52.340374, 13.760376, 52.664723],
     layers: [
       {
         id: "background",

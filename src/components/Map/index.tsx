@@ -6,8 +6,10 @@ import Map, { Source, Layer, MapLayerMouseEvent } from "react-map-gl/maplibre";
 import { layerStyles } from "./layerStyles";
 
 interface Props {
-  data: any;
+  mapData: any;
+  activeDistrictSet: (label: string) => void;
 }
+
 const districtIDs = [
   "district_1",
   "district_2",
@@ -15,9 +17,11 @@ const districtIDs = [
   "district_4",
   "district_5",
 ];
-export const MapComponent: FC<Props> = ({ data }) => {
+
+export const MapComponent: FC<Props> = ({ mapData, activeDistrictSet }) => {
   const mapRef = useRef<mapboxgl.Map>();
   const onMapCLick = (event: MapLayerMouseEvent) => {
+    event.preventDefault();
     if (!mapRef || !mapRef.current) {
       return;
     }
@@ -26,8 +30,9 @@ export const MapComponent: FC<Props> = ({ data }) => {
       layers: districtIDs,
     })[0]?.properties?.name;
     console.log(districtName);
+    activeDistrictSet(districtName);
   };
-  const districtsFromGEO = JSON.parse(data.value).berlinDistricts.features;
+  const districtsFromGEO = JSON.parse(mapData.value).berlinDistricts.features;
   return (
     <Map
       initialViewState={{
@@ -42,7 +47,7 @@ export const MapComponent: FC<Props> = ({ data }) => {
       // @ts-ignore
       ref={mapRef}
       mapLib={maplibregl}
-      style={{ width: "100%", height: "100vh" }}
+      style={{ width: "100%", height: "90vh" }}
     >
       {districtIDs.map((id, index) => (
         <Source key={id} id={id} type="geojson" data={districtsFromGEO[index]}>

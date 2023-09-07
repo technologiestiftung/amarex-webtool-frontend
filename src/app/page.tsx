@@ -1,12 +1,12 @@
+import HomePage from "@/components/HomePage";
 import styles from "./page.module.css";
-import { MapComponent } from "@/components/Map";
 import { getMapData } from "@lib/loadMap";
 
 export default function Home() {
-  const data = getMapData();
+  const mapData = getMapData();
   return (
     <main className={styles.main}>
-      <MapComponent data={data} />
+      <HomePage mapData={mapData} />
     </main>
   );
 }
