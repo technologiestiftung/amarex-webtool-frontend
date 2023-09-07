@@ -2,60 +2,56 @@
 import mapStyle from "./mapStyle";
 import { FC, useRef } from "react";
 import maplibregl from "maplibre-gl";
-import Map, { Source, Layer } from "react-map-gl/maplibre";
+import Map, { Source, Layer, MapLayerMouseEvent } from "react-map-gl/maplibre";
 import { layerStyles } from "./layerStyles";
 
-const geojson = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      geometry: { type: "Point", coordinates: [13.41, 52.52] },
-    },
-  ],
-};
-
 interface Props {
-  data?: any;
+  data: any;
 }
+const districtIDs = [
+  "district_1",
+  "district_2",
+  "district_3",
+  "district_4",
+  "district_5",
+];
 export const MapComponent: FC<Props> = ({ data }) => {
   const mapRef = useRef<mapboxgl.Map>();
-  const boroughsFromGEO = JSON.parse(data.value).berlinBoroughs.features;
+  const onMapCLick = (event: MapLayerMouseEvent) => {
+    if (!mapRef || !mapRef.current) {
+      return;
+    }
+    /* @ts-ignore */
+    const districtName = mapRef.current.queryRenderedFeatures(event.point, {
+      layers: districtIDs,
+    })[0]?.properties?.name;
+    console.log(districtName);
+  };
+  const districtsFromGEO = JSON.parse(data.value).berlinDistricts.features;
   return (
     <Map
       initialViewState={{
         longitude: 13.41,
         latitude: 52.52,
-        zoom: 12,
+        zoom: 8,
       }}
-      maxBounds={[13.1, 52.3, 13.7, 52.7]}
+      maxBounds={[13.0, 52.3, 13.7, 52.7]}
       // @ts-ignore
       mapStyle={mapStyle()}
+      onClick={onMapCLick}
       // @ts-ignore
       ref={mapRef}
       mapLib={maplibregl}
       style={{ width: "100%", height: "100vh" }}
     >
-      <Source id="boroughs" type="geojson" data={boroughsFromGEO[1]}>
-        {/* @ts-ignore */}
-        <Layer {...layerStyles["boroughsFill"]} />
-        {/* @ts-ignore */}
-        <Layer {...layerStyles["boroughsLine"]} />
-      </Source>
-      <Source id="my-data" type="geojson" data={geojson}>
-        {/* @ts-ignore */}
-        <Layer {...layerStyles["marker"]} />
-      </Source>
-      <Source id="boroughs-2" type="geojson" data={boroughsFromGEO[0]}>
-        {/* @ts-ignore */}
-        <Layer {...layerStyles["boroughsFill2"]} />
-        {/* @ts-ignore */}
-        <Layer {...layerStyles["boroughsLine2"]} />
-      </Source>
-      <Source id="my-data" type="geojson" data={geojson}>
-        {/* @ts-ignore */}
-        <Layer {...layerStyles["marker"]} />
-      </Source>
+      {districtIDs.map((id, index) => (
+        <Source key={id} id={id} type="geojson" data={districtsFromGEO[index]}>
+          {/* @ts-ignore */}
+          <Layer {...{ ...layerStyles["districts"], id }} />
+          {/* @ts-ignore */}
+          <Layer {...{ ...layerStyles["districtsLine"], id: `${id}Line` }} />
+        </Source>
+      ))}
     </Map>
   );
 };
