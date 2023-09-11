@@ -1,4 +1,6 @@
-export default function mapStyle() {
+import { StyleSpecification } from "maplibre-gl";
+
+export default function getMapStyle(): StyleSpecification {
   return {
     version: 8,
     name: "amarex-webtool",

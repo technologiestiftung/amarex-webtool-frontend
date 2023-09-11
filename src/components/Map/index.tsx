@@ -1,38 +1,43 @@
 "use client";
-import mapStyle from "./mapStyle";
-import { FC, useRef } from "react";
+import getMapStyle from "./mapStyle";
+import { FC, useRef, useMemo } from "react";
 import maplibregl from "maplibre-gl";
-import Map, { Source, Layer, MapLayerMouseEvent } from "react-map-gl/maplibre";
-import { layerStyles } from "./layerStyles";
+import Map, {
+  Source,
+  Layer,
+  MapLayerMouseEvent,
+  MapRef,
+} from "react-map-gl/maplibre";
+import {
+  getDistrictLayerLineStyle,
+  getDistrictLayerFillStyle,
+} from "./layerStyles";
 
 interface Props {
   mapData: any;
   activeDistrictSet: (label: string) => void;
 }
 
-const districtIDs = [
-  "district_1",
-  "district_2",
-  "district_3",
-  "district_4",
-  "district_5",
-];
+const districtIDs = [...Array(12)].map((_, key) => `district_${key + 1}`);
 
 export const MapComponent: FC<Props> = ({ mapData, activeDistrictSet }) => {
-  const mapRef = useRef<mapboxgl.Map>();
+  const mapRef = useRef<MapRef>(null);
+  const memoizedMapStyle = useMemo(() => getMapStyle(), []);
+
   const onMapCLick = (event: MapLayerMouseEvent) => {
     event.preventDefault();
-    if (!mapRef || !mapRef.current) {
+    if (!mapRef.current) {
       return;
     }
     /* @ts-ignore */
     const districtName = mapRef.current.queryRenderedFeatures(event.point, {
       layers: districtIDs,
     })[0]?.properties?.name;
-    console.log(districtName);
     activeDistrictSet(districtName);
   };
+
   const districtsFromGEO = JSON.parse(mapData.value).berlinDistricts.features;
+
   return (
     <Map
       initialViewState={{
@@ -41,20 +46,16 @@ export const MapComponent: FC<Props> = ({ mapData, activeDistrictSet }) => {
         zoom: 8,
       }}
       maxBounds={[13.0, 52.3, 13.7, 52.7]}
-      // @ts-ignore
-      mapStyle={mapStyle()}
+      mapStyle={memoizedMapStyle}
       onClick={onMapCLick}
-      // @ts-ignore
       ref={mapRef}
       mapLib={maplibregl}
       style={{ width: "100%", height: "90vh" }}
     >
       {districtIDs.map((id, index) => (
         <Source key={id} id={id} type="geojson" data={districtsFromGEO[index]}>
-          {/* @ts-ignore */}
-          <Layer {...{ ...layerStyles["districts"], id }} />
-          {/* @ts-ignore */}
-          <Layer {...{ ...layerStyles["districtsLine"], id: `${id}Line` }} />
+          <Layer {...getDistrictLayerFillStyle(id)} />
+          <Layer {...getDistrictLayerLineStyle(`${id}Line`)} />
         </Source>
       ))}
     </Map>
