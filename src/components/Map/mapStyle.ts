@@ -1,9 +1,9 @@
 import { StyleSpecification } from "maplibre-gl";
 
-export default function mapStyle() {
+export default function getMapStyle(): StyleSpecification {
   return {
-    name: "amarex-webtool",
     version: 8,
+    name: "amarex-webtool",
     metadata: {},
     sources: {
       osmBaseMap: {
@@ -12,10 +12,8 @@ export default function mapStyle() {
         tileSize: 256,
         attribution:
           "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
-        // bounds: [13.076477, 52.340374, 13.760376, 52.664723],
       },
     },
-    // "glyphs": "./data/{fontstack}/{range}.pbf",
     layers: [
       {
         id: "background",
@@ -37,5 +35,5 @@ export default function mapStyle() {
         },
       },
     ],
-  } as StyleSpecification;
+  };
 }
