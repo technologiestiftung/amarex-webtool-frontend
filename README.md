@@ -1,50 +1,88 @@
-# Masterportal
+# Project Title
 
-The Masterportal is a tool-kit to create geo web applications based on [OpenLayers](https://openlayers.org), [Vue.js](https://vuejs.org/) and [Backbone.js](https://backbonejs.org). The Masterportal is Open Source Software published under the [MIT License](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/License.txt).
+Amarex Webtool Frontend
+
+## Description
+
+We are developing a web-based tool that maps the effects of rainwater management on climate impacts in urban areas in a simplified form. This is intended to support the early consideration of climate adaptation in urban strategies and planning. As a potentially important criterion for climate adaptation, the long-term deviation of the urban water balance from the natural state is examined.
+
+This is the [project-page](https://www.amarex-projekt.de)
+
+## Getting Started
+
+The tool is fundamentally based on the [Masterportal 3.x](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev_vue/). A tool-kit to create geo web applications based on [OpenLayers](https://openlayers.org), [Vue.js](https://vuejs.org/) and [Backbone.js](https://backbonejs.org). The Masterportal is Open Source Software published under the [MIT License](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/License.txt).
 
 The Masterportal is a project by [Geowerkstatt Hamburg](https://www.hamburg.de/geowerkstatt/).
 
-## Roadmap
-Our further Roadmap is to work hard on [3.0.0](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev_vue/) and to release wip-Versions and hopefully to be able to have a first stable Version in the mid of 2024. We will support and fix bugs for V2.x until end of 2024.
-### Masterportal 3.x
-* 04.10.2023: Release MP 3.0 beta 1
-* 18.12.2023: Release MP 3.0 beta 2
-* During the second quarter of 2024: Release MP 3.0 stable
-* During the third quarter of 2024: Release MP 3.0 LTS
+For further instructions on how to work with [Vue.js](https://vuejs.org/) check out there documentation.
 
-### Support for MP 2.x and MP 3.x
-* Pull requests for function enhancements in core modules in version 2 are going to be reviewed from product maintenance until 30.06.2024. (The deadline is indicative for now and should be understood as a guideline)
-* Our recommendation is to start new developments on Masterportal 3.x basis as soon as possible.
-* Bugs are going to be fixed for V2.x until 31.12.2024.
+### Installation
 
-## User section
+   git clone <repository_url>
 
-* [Download](https://bitbucket.org/geowerkstatt-hamburg/masterportal/downloads/)
-* [Quick start for users](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/doc/setup.md)
-* [Remote interface](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/doc/remoteInterface.md)
-* [User documentation](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/doc/doc.md)
-* [User documentation online](https://www.masterportal.org/dokumentation.html)
-* [Community board (User forum and issue tracker)](https://trello.com/c/qajdXkMa/110-willkommen)
+``` bash
+# clone the repository
+git clone https://github.com/technologiestiftung/amarex-webtool-frontend
 
-## Developer section
-### Community
-* [Community board (Developer forum and issue tracker)](https://trello.com/c/qajdXkMa/110-willkommen)
-### Contributing
-* Contributors to the Masterportal are expected to act respectfully toward others in accordance with the [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) for open source projects.
-* Follow our [Developer documentation](doc/devdoc.md)
-* First steps in the code: [Tutorial 01: Creating a new module (Scale switcher)](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/doc/vueTutorial.md)
+# move into repository
+cd amarex-webtool-frontend
 
-#### Pull requests
-* Your pull request must have:
-    * An understandable detailed description
-    * If necessary a test portal or test configurations
-    * A changelog entry
-    * A PrePushHook with no errors
-    * Hints if your contribution contains adopted external code
-    * Unit tests for new functions or updated tests for bugfixes
+# install dependencies
+npm install
 
-#### Contributor License Agreement
-* Your contribution will be under [MIT License](https://bitbucket.org/geowerkstatt-hamburg/masterportal/raw/5e7faf83734509a15438805790d3b434428b35fc/License.txt)
+# serve with hot reload at localhost:9000/portal/amarex
+
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+
+# run unit tests
+npm run unit
+
+# run all tests
+npm test
+```
 
 
-[![Sauce Test Status](https://app.eu-central-1.saucelabs.com/buildstatus/geodatenanwendungen_gv.hamburg.de)](https://app.eu-central-1.saucelabs.com/builds/dfd7abc54af1493091fbeef1b6b48ca6)
+## Contributing
+
+Before you create a pull request, please write an issue so we can discuss your changes.
+
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+
+
+## Content Licensing
+
+Text and content available as [CC BY](https://creativecommons.org/licenses/by/3.0/de/).
+
+
+## Credits
+
+<table>
+    <tr>
+        <td>
+            Made by
+            <br />
+            <br />
+            <a href="https://www.technologiestiftung-berlin.de/">
+                <img width="150" src="https://logos.citylab-berlin.org/logo-tsb-outline.svg" />
+            </a>
+        </td>
+        <td>
+            Supported by
+            <br />
+            <br />
+            <a src="https://www.berlin.de/sen/kultur/en/">
+                <img width="120" src="https://logos.citylab-berlin.org/logo-berlin-senkueu-en.svg" />
+            </a>
+        </td>
+    </tr>
+</table>

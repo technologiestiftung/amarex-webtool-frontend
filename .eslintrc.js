@@ -24,6 +24,14 @@ module.exports = {
         "no-console": "off",
         "no-unused-vars": "off",
         "no-undef": "off",
+        "backbone/no-collection-models": "off",
+        "vue/no-deprecated-destroyed-lifecycle": "off",
+        "vue/no-v-for-template-key-on-child": "off",
+        "vue/no-deprecated-events-api": "off",
+        "vue/no-deprecated-slot-attribute": "off",
+        "vue/no-deprecated-slot-scope-attribute": "off",
+        "vue/no-deprecated-v-on-native-modifier": "off",
+        "no-control-regex": "off",
     },
 };
 
