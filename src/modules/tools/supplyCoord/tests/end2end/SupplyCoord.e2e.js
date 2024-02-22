@@ -5,7 +5,6 @@ const webdriver = require("selenium-webdriver"),
     {isMobile, isMaster} = require("../../../../../../test/end2end/settings"),
     namedProjectionsBasic = require("../../../../../../portal/basic/config").namedProjections,
     namedProjectionsMaster = require("../../../../../../portal/master/config").namedProjections,
-    namedProjectionsCustom = require("../../../../../../portal/masterCustom/config").namedProjections,
     namedProjectionsDefault = require("../../../../../../portal/masterDefault/config").namedProjections,
     {isMarkerPointVisible, getMarkerPointCoord} = require("../../../../../../test/end2end/library/scripts"),
     {By, until, Key} = webdriver;
@@ -183,8 +182,7 @@ async function CoordTests ({builder, url, resolution, config, capability}) {
                 const namedProjections = {
                         basic: namedProjectionsBasic,
                         master: namedProjectionsMaster,
-                        default: namedProjectionsDefault,
-                        custom: namedProjectionsCustom
+                        default: namedProjectionsDefault
                     }[config],
                     titles = namedProjections.map(a => a[1].split("+title=").pop().split(" +")[0]);
 

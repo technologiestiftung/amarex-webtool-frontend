@@ -1,10 +1,6 @@
 import BuildSpec from "./../../../utils/buildSpec";
 import {Style as OlStyle} from "ol/style.js";
-import WMTSTileGrid from "ol/tilegrid/WMTS";
-import TileGrid from "ol/tilegrid/TileGrid";
-import {TileWMS, ImageWMS, WMTS} from "ol/source.js";
-import StaticImageSource from "ol/source/ImageStatic.js";
-import {Tile, Vector} from "ol/layer.js";
+import {Vector} from "ol/layer.js";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import Feature from "ol/Feature.js";
@@ -80,132 +76,6 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
         sinon.restore();
     });
 
-    describe("parseAddressToString", function () {
-        it("should return empty string if all keys in address object are empty", function () {
-            const addressEmpty = {
-                street: "",
-                housenr: "",
-                postalCode: "",
-                city: ""
-            };
-
-            expect(buildSpec.parseAddressToString(addressEmpty)).to.equal("n.N.");
-        });
-        it("should return empty address object is empty", function () {
-            expect(buildSpec.parseAddressToString({})).to.equal("n.N.");
-        });
-        it("should return empty address object is undefined", function () {
-            expect(buildSpec.parseAddressToString(undefined)).to.equal("n.N.");
-        });
-        it("should return parsed complete address", function () {
-            const address = {street: "Hufnerstraße", housenr: "7", postalCode: "22305", city: "Hamburg"};
-
-            expect(buildSpec.parseAddressToString(address)).to.equal("Hufnerstraße 7\n 22305 Hamburg");
-        });
-        it("should return parsed address - no housenr", function () {
-            const address = {street: "Hufnerstraße", housenr: "", postalCode: "22305", city: "Hamburg"};
-
-            expect(buildSpec.parseAddressToString(address)).to.equal("Hufnerstraße\n 22305 Hamburg");
-        });
-        it("should return parsed address - no street", function () {
-            const address = {street: "", housenr: "7", postalCode: "22305", city: "Hamburg"};
-
-            expect(buildSpec.parseAddressToString(address)).to.equal("7\n 22305 Hamburg");
-        });
-        it("should return parsed address - no housenr, street", function () {
-            const address = {street: "", housenr: "", postalCode: "22305", city: "Hamburg"};
-
-            expect(buildSpec.parseAddressToString(address)).to.equal("22305 Hamburg");
-        });
-        it("should return parsed address - no housenr, street, postalCode", function () {
-            const address = {street: "", housenr: "", postalCode: "", city: "Hamburg"};
-
-            expect(buildSpec.parseAddressToString(address)).to.equal("Hamburg");
-        });
-    });
-    describe("isOwnMetaRequest", function () {
-        it("should return true if uniqueId is in uniqueIdList", function () {
-            expect(buildSpec.isOwnMetaRequest(["1234", "5678"], "1234")).to.be.true;
-        });
-        it("should return false if uniqueId is NOT in uniqueIdList", function () {
-            expect(buildSpec.isOwnMetaRequest(["1234", "5678"], "91011")).to.be.false;
-        });
-        it("should return false if uniqueId is undefined", function () {
-            expect(buildSpec.isOwnMetaRequest(["1234", "5678"], undefined)).to.be.false;
-        });
-        it("should return false if uniqueIdList is undefined", function () {
-            expect(buildSpec.isOwnMetaRequest(undefined, "91011")).to.be.false;
-        });
-        it("should return false if uniqueIdList and uniqueId is undefined", function () {
-            expect(buildSpec.isOwnMetaRequest(undefined, undefined)).to.be.false;
-        });
-    });
-    describe("removeUniqueIdFromList", function () {
-        it("should remove uniqueId from uniqueIdList if uniqueId in uniqueIdList", function () {
-            buildSpec.removeUniqueIdFromList(["1234", "5678"], "1234");
-            expect(buildSpec.defaults.uniqueIdList).to.deep.equal(["5678"]);
-        });
-        it("should leave uniqueIdList if uniqueId not in uniqueIdList", function () {
-            buildSpec.removeUniqueIdFromList(["1234", "5678"], "123456789");
-            expect(buildSpec.defaults.uniqueIdList).to.deep.equal(["1234", "5678"]);
-        });
-        it("should leave uniqueIdList if uniqueId is undefined", function () {
-            buildSpec.removeUniqueIdFromList(["1234", "5678"], undefined);
-            expect(buildSpec.defaults.uniqueIdList).to.deep.equal(["1234", "5678"]);
-        });
-        it("should leave uniqueIdList if uniqueIdList is undefined", function () {
-            buildSpec.removeUniqueIdFromList(undefined, "5678");
-            expect(buildSpec.defaults.uniqueIdList).to.be.an("array").that.is.empty;
-        });
-        it("should leave uniqueIdList if uniqueIdList and uniqueId is undefined", function () {
-            buildSpec.removeUniqueIdFromList(undefined, undefined);
-            expect(buildSpec.defaults.uniqueIdList).to.be.an("array").that.is.empty;
-        });
-    });
-    describe("updateMetaData", function () {
-        it("should not crash if legend doesn't exist yet", function () {
-            const parsedData = {
-                date: "",
-                orgaOwner: "",
-                address: {},
-                email: "",
-                tel: "",
-                url: ""
-            };
-
-            buildSpec.updateMetaData("testLayerName", parsedData);
-            expect(buildSpec.defaults.attributes.legend).to.be.undefined;
-        });
-        it("should write parsedData to layer", function () {
-            const parsedData = {
-                    date: "1.1.2019",
-                    orgaOwner: "LGV",
-                    address: {},
-                    email: "e@mail.de",
-                    tel: "123456",
-                    url: "www.url.de"
-                },
-                legend = {
-                    "layers": [
-                        {
-                            "layerName": "testLayerName",
-                            "values": []
-                        }
-                    ]
-                };
-
-            buildSpec.defaults.attributes.legend = legend;
-            buildSpec.updateMetaData("testLayerName", parsedData);
-            expect(buildSpec.defaults.attributes.legend.layers[0]).to.own.include({
-                metaDate: "1.1.2019",
-                metaOwner: "LGV",
-                metaAddress: "n.N.",
-                metaEmail: "e@mail.de",
-                metaTel: "123456",
-                metaUrl: "www.url.de"
-            });
-        });
-    });
     describe("legendContainsPdf", function () {
         it("should return false if legend array of strings does not contain PDF", function () {
             const legend = ["foobar", "barfoo"];
@@ -338,25 +208,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
                 }
             ]);
         });
-        it("should return prepared legend attributes with sldVersion for GetLegendGraphic-Requests", function () {
-            const legend = [
-                    {
-                        graphic: "SomeGetLegendGraphicRequest",
-                        name: "name_WMS"
-                    }
-                ],
-                sldVersion = "1.1.0";
-
-            expect(buildSpec.prepareLegendAttributes(legend, sldVersion)).to.deep.equal([{
-                legendType: "wmsGetLegendGraphic",
-                geometryType: "",
-                imageUrl: "SomeGetLegendGraphicRequest&sld_version=1.1.0",
-                color: "",
-                label: "name_WMS"
-            }]);
-        });
     });
-
     describe("getFillColorFromSVG", function () {
         it("should return fillColor from svg string in rgb for polygon geometry", function () {
             const svg_string = "<svg foobar fill:rgb(255, 0, 0);/>";
@@ -384,231 +236,25 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
             expect(buildSpec.getFillColorFromSVG(svg_string)).to.equal("#ff0000");
         });
     });
+    describe("getStyleModel", function () {
+        const vectorLayer = new Vector();
+        let layerId;
 
-    describe("getFillStrokeFromSVG", function () {
-        it("should add stroke attributes from svg string to legendObj for polygon geometry", function () {
-            const svg_string = "data:image/svg+xml;charset=utf-8,<svg height='35' width='35' version='1.1' xmlns='http://www.w3.org/2000/svg'><polygon points='5,5 30,5 30,30 5,30' style='fill:rgb(237, 107, 83);fill-opacity:0.35;stroke:rgb(0, 0, 0);stroke-opacity:1;stroke-width:3;stroke-linecap:round;stroke-dasharray:10,8;'/></svg>",
-                legendObj = {};
-
-            buildSpec.getFillStrokeFromSVG(svg_string, legendObj);
-            expect(legendObj).to.deep.equals({
-                strokeColor: "rgba(0, 0, 0, 1)",
-                strokeWidth: "3",
-                strokeStyle: "Dashed"
+        it("should return the style model from a given layer", function () {
+            layerId = "1711";
+            sinon.stub(Radio, "request").callsFake(() => {
+                return modelFromRadio;
             });
+            buildSpec.getStyleModel = originalGetStyleModel;
+            expect(buildSpec.getStyleModel(vectorLayer, layerId)).to.eql(modelFromRadio);
         });
-
-        it("should add stroke attributes from svg string to legendObj for point geometry", function () {
-            const svg_string = "data:image/svg+xml;charset=utf-8,<svg height='23' width='23' version='1.1' xmlns='http://www.w3.org/2000/svg'><circle cx='11.5' cy='11.5' r='10' stroke='rgb(0, 0, 0)' stroke-opacity='1' stroke-width='2' fill='rgb(10, 200, 100)' fill-opacity='0.5'/></svg>",
-                legendObj = {};
-
-            buildSpec.getFillStrokeFromSVG(svg_string, legendObj);
-            expect(legendObj).to.deep.equals({
-                strokeColor: "rgba(0, 0, 0, 1)",
-                strokeWidth: "2"
+        it("should return the style model of a child from a group layer", function () {
+            layerId = "8712-child";
+            sinon.stub(Radio, "request").callsFake(() => {
+                return groupLayer;
             });
-        });
-    });
-
-    describe("getGeometryTypeFromSVG", function () {
-        it("should return geometry type for polygon", function () {
-            const svg_string = "data:image/svg+xml;charset=utf-8,<svg height='35' width='35' version='1.1' xmlns='http://www.w3.org/2000/svg'><polygon points='5,5 30,5 30,30 5,30' style='fill:rgb(237, 107, 83);fill-opacity:0.35;stroke:rgb(0, 0, 0);stroke-opacity:1;stroke-width:3;stroke-linecap:round;stroke-dasharray:10,8;'/></svg>";
-
-            expect(buildSpec.getGeometryTypeFromSVG(svg_string)).to.equals("polygon");
-        });
-
-        it("should return geometry type for point", function () {
-            const svg_string = "data:image/svg+xml;charset=utf-8,<svg height='23' width='23' version='1.1' xmlns='http://www.w3.org/2000/svg'><circle cx='11.5' cy='11.5' r='10' stroke='rgb(0, 0, 0)' stroke-opacity='1' stroke-width='2' fill='rgb(10, 200, 100)' fill-opacity='0.5'/></svg>";
-
-            expect(buildSpec.getGeometryTypeFromSVG(svg_string)).to.equals("point");
-        });
-    });
-
-    describe("prepareGfiAttributes", function () {
-        it("should create gfi attributes array", function () {
-            const gfiAttributes = {
-                attr1: "value1",
-                attr2: "value2",
-                attr3: "value3"
-            };
-
-            expect(buildSpec.prepareGfiAttributes(gfiAttributes)[0]).to.deep.own.include({
-                key: "attr1",
-                value: "value1"
-            });
-            expect(buildSpec.prepareGfiAttributes(gfiAttributes)[1]).to.deep.own.include({
-                key: "attr2",
-                value: "value2"
-            });
-            expect(buildSpec.prepareGfiAttributes(gfiAttributes)[2]).to.deep.own.include({
-                key: "attr3",
-                value: "value3"
-            });
-        });
-        it("should create empty gfi attributes array for empty attributes", function () {
-            expect(buildSpec.prepareGfiAttributes({})).to.be.an("array").that.is.empty;
-        });
-        it("should create empty gfi attributes array for undefined attributes", function () {
-            expect(buildSpec.prepareGfiAttributes({})).to.be.an("array").that.is.empty;
-        });
-    });
-    describe("buildScale", function () {
-        it("should create scale that is \"1:20000\" for number input", function () {
-            buildSpec.buildScale(20000);
-            expect(buildSpec.defaults.attributes.scale).to.deep.include("1:20000");
-        });
-        it("should create scale that is \"1:undefined\" for undefined input", function () {
-            buildSpec.buildScale(undefined);
-            expect(buildSpec.defaults.attributes.scale).to.deep.include("1:undefined");
-        });
-
-    });
-    describe("inInScaleRange", function () {
-        it("Should return false if current resolution is higher than layer max resolution", function () {
-            expect(buildSpec.isInScaleRange(1000, 5000, 10000)).to.be.false;
-        });
-        it("Should return false if current resolution is lower than layer min resolution", function () {
-            expect(buildSpec.isInScaleRange(2500, 5000, 1000)).to.be.false;
-        });
-        it("Should return true if current resolution is lower than layer max resolution and higher than layer min resolution", function () {
-            expect(buildSpec.isInScaleRange(0, Infinity, 10000)).to.be.true;
-        });
-        it("Should return true if current resolution is lower than layer max resolution and higher than layer min resolution", function () {
-            expect(buildSpec.isInScaleRange(0, 10000, 5000)).to.be.true;
-        });
-        it("Should return true if current resolution the layer max resolution", function () {
-            expect(buildSpec.isInScaleRange(0, 5000, 5000)).to.be.true;
-        });
-        it("Should return true if current resolution the layer min resolution", function () {
-            expect(buildSpec.isInScaleRange(1000, 5000, 1000)).to.be.true;
-        });
-
-    });
-    describe("buildWmts", () => {
-        const matrixIds = [0, 1, 2],
-            matrixSizes = [[1, 1], [2, 2], [4, 4]],
-            origin = [0, 0],
-            scales = [2, 1, 0],
-            tileSize = 512,
-            wmtsLayer = new Tile({
-                source: new WMTS({
-                    tileGrid: new WMTSTileGrid({
-                        origin,
-                        resolutions: [2, 1, 0],
-                        matrixIds,
-                        tileSize
-                    }),
-                    urls: ["url"],
-                    matrixSet: "tileMatrixSet",
-                    layer: "my_layer",
-                    style: "lit",
-                    requestEncoding: "REST"
-                }),
-                opacity: 1
-            });
-
-        wmtsLayer.getSource().matrixSizes = matrixSizes;
-        wmtsLayer.getSource().scales = scales;
-
-        it("should buildWmts", function () {
-            const matrices = [];
-
-            for (let i = 0; i < matrixIds.length; i++) {
-                matrices.push({
-                    identifier: matrixIds[i],
-                    matrixSize: matrixSizes[i],
-                    topLeftCorner: origin,
-                    scaleDenominator: scales[i],
-                    tileSize: [tileSize, tileSize]
-                });
-            }
-
-            expect(buildSpec.buildWmts(wmtsLayer, wmtsLayer.getSource())).to.deep.own.include({
-                baseURL: "url",
-                opacity: 1,
-                type: "WMTS",
-                layer: "my_layer",
-                style: "lit",
-                imageFormat: "image/jpeg",
-                matrixSet: "tileMatrixSet",
-                matrices,
-                requestEncoding: "REST"
-            });
-        });
-    });
-    describe("buildTileWms", function () {
-        const tileWmsLayer = new Tile({
-            source: new TileWMS({
-                url: "url",
-                params: {
-                    LAYERS: "layer1,layer2",
-                    FORMAT: "image/png",
-                    TRANSPARENT: true,
-                    WIDTH: 512,
-                    HEIGHT: 512
-                },
-                tileGrid: new TileGrid({
-                    extent: [510000.0, 5850000.0, 625000.4, 6000000.0],
-                    resolutions: [78271.51696401172, 305.7481131406708, 152.8740565703354, 76.4370282851677, 2.3886571339114906],
-                    tileSize: [512, 512]
-                })
-            }),
-            opacity: 1
-        });
-
-        it("should buildTileWms", function () {
-            expect(buildSpec.buildTileWms(tileWmsLayer)).to.deep.own.include({
-                baseURL: "url",
-                opacity: 1,
-                type: "tiledwms",
-                layers: ["layer1", "layer2"],
-                imageFormat: "image/png",
-                customParams: {
-                    TRANSPARENT: true,
-                    DPI: 200
-                },
-                tileSize: [512, 512]
-            });
-        });
-    });
-    describe("buildImageWms", function () {
-        it("should buildImageWms", function () {
-            const imageWmsLayer = new Tile({
-                source: new ImageWMS({
-                    url: "url",
-                    params: {
-                        LAYERS: "layer1,layer2",
-                        FORMAT: "image/png",
-                        TRANSPARENT: true
-                    }
-                }),
-                opacity: 1
-            });
-
-            expect(buildSpec.buildImageWms(imageWmsLayer)).to.deep.own.include({
-                baseURL: "url",
-                opacity: 1,
-                type: "WMS",
-                layers: ["layer1", "layer2"],
-                imageFormat: "image/png",
-                customParams: {
-                    TRANSPARENT: true,
-                    DPI: 200
-                }
-            });
-        });
-        it("should buildImageWms for static image", function () {
-            const imageWmsLayer = new Tile({
-                source: new StaticImageSource({
-                    url: "url"
-                })
-            });
-
-            expect(buildSpec.buildImageWms(imageWmsLayer)).to.deep.own.include({
-                baseURL: "url",
-                opacity: 1,
-                type: "image"
-            });
+            buildSpec.getStyleModel = originalGetStyleModel;
+            expect(buildSpec.getStyleModel(vectorLayer, layerId)).to.eql(groupLayer);
         });
     });
 
@@ -704,6 +350,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
             expect(list).to.be.an("array");
             expect(list[0]).to.deep.own.include({
                 type: "Feature",
+                id: "APP_SPASS_IM_UND_AM_WASSER_1",
                 properties: {
                     nummer: "1",
                     name: "Ostender Teich - Sommerbad Ostende (Eintritt)",
@@ -728,6 +375,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
             expect(list).to.be.an("array");
             expect(list[0]).to.deep.own.include({
                 type: "Feature",
+                id: "APP_STRASSENNETZ_INSPIRE_BAB_6351",
                 properties: {
                     abs: "252500101 252500102",
                     abschnittslaenge: "469.0",
@@ -765,6 +413,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
             expect(list).to.be.an("array");
             expect(list[0]).to.deep.own.include({
                 type: "Feature",
+                id: "Erster_Gruener_Ring.1",
                 properties: {
                     RoutenTyp: "Radfernwege",
                     Status: "Hauptroute",
@@ -797,6 +446,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
             expect(list).to.be.an("array");
             expect(list[0]).to.deep.own.include({
                 type: "Feature",
+                id: "APP_AUSGLEICHSFLAECHEN_333876",
                 properties: {
                     vorhaben: "W-006 - BPlan Marienthal 22 (Husarenweg)",
                     vorhaben_zulassung_am: "23.04.1996",
@@ -835,6 +485,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
             expect(list).to.be.an("array");
             expect(list[0]).to.deep.own.include({
                 type: "Feature",
+                id: "APP_PROSIN_FESTGESTELLT_1",
                 properties: {
                     aenderung1: undefined,
                     aenderung2: undefined,
@@ -917,6 +568,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
         it("should convert multiPoint feature to JSON", function () {
             expect(buildSpec.convertFeatureToGeoJson(multiPointFeatures[0], style)).to.deep.own.include({
                 type: "Feature",
+                id: "APP_SPASS_IM_UND_AM_WASSER_1",
                 properties: {
                     nummer: "1",
                     name: "Ostender Teich - Sommerbad Ostende (Eintritt)",
@@ -937,6 +589,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
         it("should convert lineString feature to JSON", function () {
             expect(buildSpec.convertFeatureToGeoJson(lineStringFeatures[0], style)).to.deep.own.include({
                 type: "Feature",
+                id: "APP_STRASSENNETZ_INSPIRE_BAB_6351",
                 properties: {
                     abs: "252500101 252500102",
                     abschnittslaenge: "469.0",
@@ -970,6 +623,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
         it("should convert multiLineString feature to JSON", function () {
             expect(buildSpec.convertFeatureToGeoJson(multiLineStringFeatures[0], style)).to.deep.own.include({
                 type: "Feature",
+                id: "Erster_Gruener_Ring.1",
                 properties: {
                     RoutenTyp: "Radfernwege",
                     Status: "Hauptroute",
@@ -998,6 +652,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
         it("should convert polygon feature to JSON", function () {
             expect(buildSpec.convertFeatureToGeoJson(polygonFeatures[0], style)).to.deep.own.include({
                 type: "Feature",
+                id: "APP_AUSGLEICHSFLAECHEN_333876",
                 properties: {
                     vorhaben: "W-006 - BPlan Marienthal 22 (Husarenweg)",
                     vorhaben_zulassung_am: "23.04.1996",
@@ -1032,6 +687,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
         it("should convert multiPolygon feature to JSON", function () {
             expect(buildSpec.convertFeatureToGeoJson(multiPolygonFeatures[0], style)).to.deep.own.include({
                 type: "Feature",
+                id: "APP_PROSIN_FESTGESTELLT_1",
                 properties: {
                     aenderung1: undefined,
                     aenderung2: undefined,
@@ -1098,6 +754,7 @@ describe("src/modules/tools/print/utils/buildSpec", function () {
 
             expect(convertedFeature).to.deep.own.include({
                 type: "Feature",
+                id: "123456",
                 properties: {
                     name: "The circle feature",
                     _label: "veryCreativeLabelText"

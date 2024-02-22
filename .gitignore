@@ -11,12 +11,14 @@
 /img/*.db
 /jsdoc
 /docHtml
-/nbproject/private/
+/nbproject/
 styleguide
 .history
 
 addons/*
 !addons/readme.txt
+addons/addons_3_0_0/*
+!addons/addons_3_0_0/readme.txt
 
 bowerupdate.log
 build
@@ -33,8 +35,6 @@ examples*
 
 examples.zip
 portal/master
-portal/masterCustom
-portal/masterDefault
 
 jshintrc
 lgv-config
@@ -56,11 +56,5 @@ npm-debug.log
 # ignore all dev portals except the four standard portals
 /portal/*
 !/portal/basic
-!/portal/amarex
 !/portal/master
-!/portal/masterCustom
-!/portal/masterDefault
-
-#ignore pipeline files
-.gitlab-ci.yml
-bitbucket-pipelines.yml
+!/portal/auto

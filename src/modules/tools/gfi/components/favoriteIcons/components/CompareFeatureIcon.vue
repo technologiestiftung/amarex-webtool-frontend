@@ -92,18 +92,17 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@import "~/css/mixins.scss";
 
 $color: #fec44f;
 
-span.bootstrap-icon {
-    &:focus {
-        @include primary_action_focus;
-    }
-    &:hover {
-        @include primary_action_hover;
-    }
-}
+// span.bootstrap-icon {
+//     &:focus {
+//         @include primary_action_focus;
+//     }
+//     &:hover {
+//         @include primary_action_hover;
+//     }
+// }
 
 .bi-star-fill {
     color: $color;

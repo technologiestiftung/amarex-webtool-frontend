@@ -63,7 +63,6 @@ const Util = Backbone.Model.extend(/** @lends Util.prototype */{
             "sort": sort,
             "isInternetExplorer": isInternetExplorer,
             "convertArrayElementsToString": this.convertArrayElementsToString,
-            "renameKeys": this.renameKeys,
             "renameValues": this.renameValues,
             "pickKeyValuePairs": this.pickKeyValuePairs,
             "groupBy": this.groupBy,
@@ -244,22 +243,6 @@ const Util = Backbone.Model.extend(/** @lends Util.prototype */{
         else {
             this.setIsViewMobile(true);
         }
-    },
-
-    /**
-     * replaces the names of object keys with the values provided.
-     * @param {object} keysMap - keys mapping object
-     * @param {object} obj - the original object
-     * @returns {object} the renamed object
-     */
-    renameKeys: function (keysMap, obj) {
-        return Object.keys(obj).reduce((acc, key) => {
-            return {
-                ...acc,
-                ...{[keysMap[key] || key]: obj[key]}
-            };
-        },
-        {});
     },
 
     /**

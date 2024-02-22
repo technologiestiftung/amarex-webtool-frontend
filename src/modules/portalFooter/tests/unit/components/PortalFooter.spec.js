@@ -103,21 +103,7 @@ describe("src/modules/portalFooter/components/PortalFooter.vue", () => {
             }
         });
     });
-    afterEach(sinon.restore);
 
-    it("renders the footer", () => {
-        const wrapper = shallowMount(PortalFooterComponent, {
-            store,
-            computed: {
-                footerConfig: () => sinon.stub(),
-                masterPortalVersionNumber: () => sinon.stub(),
-                mobile: () => sinon.stub()
-            },
-            localVue
-        });
-
-        expect(wrapper.find("#portal-footer").exists()).to.be.true;
-    });
 
     it("renders the masterportal version in footer", () => {
         store.commit("PortalFooter/setShowVersion", true);
@@ -134,23 +120,6 @@ describe("src/modules/portalFooter/components/PortalFooter.vue", () => {
         expect(wrapper.find(".d-none.d-md-block").exists()).to.be.true;
     });
 
-    it("renders the urls in footer", async () => {
-        const wrapper = shallowMount(PortalFooterComponent, {
-            store,
-            computed: {
-                footerConfig: () => sinon.stub(),
-                masterPortalVersionNumber: () => sinon.stub(),
-                mobile: () => sinon.stub()
-            },
-            localVue
-        });
-
-        await wrapper.vm.$nextTick();
-
-        expect(wrapper.find("a").exists()).to.be.true;
-        expect(wrapper.find("a").text()).to.equals("ABC");
-        expect(wrapper.find("a").attributes().href).to.equals("https://abc.de");
-    });
     it("renders the footerInfo in footer", async () => {
         const wrapper = shallowMount(PortalFooterComponent, {
             store,
@@ -184,22 +153,6 @@ describe("src/modules/portalFooter/components/PortalFooter.vue", () => {
 
         expect(aTags.at(1).exists()).to.be.true;
         expect(aTags.at(1).text()).to.equals("SDP Download");
-    });
-
-    it("renders scaleLine exist", async () => {
-        const wrapper = shallowMount(PortalFooterComponent, {
-            store,
-            computed: {
-                footerConfig: () => sinon.stub(),
-                masterPortalVersionNumber: () => sinon.stub(),
-                mobile: () => sinon.stub()
-            },
-            localVue
-        });
-
-        await wrapper.vm.$nextTick();
-        expect(wrapper.find("scaleline-stub").exists()).to.be.true;
-        expect(wrapper.find("scaleline-stub").classes()).to.not.includes("footer-scaleLine");
     });
 
     it("does not render tool-link for not supported tools in 3D", async () => {

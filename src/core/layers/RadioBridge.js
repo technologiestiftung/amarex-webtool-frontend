@@ -38,26 +38,6 @@ export function listenToLayerVisibility (layerModel, listener) {
     });
 }
 
-/* ******************* Legend ******************* */
-/**
- * Set layer to rebuild legend
- * Can be done directly or is no longer needed if all layers are handled by store and modelList is refactored.
- * @returns {void}
- */
-export function setLegendLayerList () {
-    Radio.trigger("Legend", "setLayerList");
-}
-/**
- * Listens to changes of attribute SLDBody.
- * Can be done directly or is no longer needed if tree filter are refactored.
- * @param {Object} layerModel the layer
- * @returns {void}
- */
-export function listenToChangeSLDBody (layerModel) {
-    Radio.channel("Layer").on({
-        "change:SLDBody": layerModel.updateSourceSLDBody
-    });
-}
 
 /* ******************* MapView ******************* */
 /**
@@ -211,7 +191,7 @@ export function refreshLayerTree () {
 /**
  * Triggers resetFeatures on VectorLayer.
  * @param {String} layerId id of the layer
- * @param {Array.<module:ol/Feature~Feature.<Geometry>>} allLayerFeatures all features of the layer
+ * @param {Array<module:ol/Feature~Feature.<Geometry>>} allLayerFeatures all features of the layer
  * @returns {void}
  */
 export function resetVectorLayerFeatures (layerId, allLayerFeatures) {
@@ -220,7 +200,7 @@ export function resetVectorLayerFeatures (layerId, allLayerFeatures) {
 /**
  * Triggers featuresLoaded on VectorLayer.
  * @param {String} layerId id of the layer
- * @param {Array.<module:ol/Feature~Feature.<Geometry>>} features all features of the layer
+ * @param {Array<module:ol/Feature~Feature.<Geometry>>} features all features of the layer
  * @returns {void}
  */
 export function featuresLoaded (layerId, features) {

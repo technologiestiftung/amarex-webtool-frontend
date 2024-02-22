@@ -59,7 +59,7 @@ export default {
             this.$emit("updateFeatureDone");
         }
     },
-    beforeDestroy: function () {
+    beforeUnmount: function () {
         if (this.$el.style.cssText) {
             this.setCurrentPosition(this.$el.style.cssText);
         }

@@ -87,7 +87,7 @@
         "showAllTopics": "Показати всі теми",
         "securedAllTopics": "Захищені теми",
         "category": "Категорія",
-        "backgroundMaps": "Фонові карти",
+        "baselayers": "Фонові карти",
         "subjectData": "Cпеціалізовані дані",
         "subjectData3D": "3D дані",
         "subjectDataTime": "Часові ряди",
@@ -788,7 +788,6 @@
                 "undefinedInnerCircle": "Будь ласка, також визначте внутрішнє коло.",
                 "undefinedRadius": "Будь ласка, вкажіть радіус.",
                 "undefinedOuterCircle": "Будь ласка, також визначте зовнішнє коло.",
-                "undefinedSquareArea": "Будь ласка, визначте площу квадрата",
                 "limitReached_one": "Ви вже намалювали об'єкт  {{count}}, будь ласка, видаліть його, перш ніж продовжити!",
                 "limitReached_other": "Ви вже намалювали об'єкти  {{count}},  будь ласка, спочатку видаліть один, перш ніж продовжити!",
                 "drawSymbol": "Символ",
@@ -796,7 +795,6 @@
                 "drawLine": "Лінія",
                 "drawCurve": "Лінія від руки",
                 "drawArea": "Поверхня",
-                "drawSquare": "Площа",
                 "drawCircle": "Коло",
                 "drawDoubleCircle": "Подвійне коло",
                 "doubleCirclePlaceholder": "Будь ласка, введіть радіус",
@@ -834,11 +832,7 @@
                     "iconCloud": "Хмара",
                     "iconMeadow": "Луг",
                     "gelber Pin": "жовтий Pin"
-                },
-                "squareDefinedInfo": "(без урахування кривизни землі)",
-                "areaLabel": "площа",
-                "squareSideLengthLabel": "довжина сторони",
-                "lineLengthLabel": "загальна довжина"
+                }
             },
             "measure": {
                 "geometry": "Геометрія",
@@ -933,7 +927,7 @@
                     "FERRIES": "Пороми",
                     "STEPS": "Сходи",
                     "UNPAVEDROADS": "ґрунтові дороги",
-                    "MIXEDTRAFFIC": "змішаний рух Speed 50",
+                    "MIXEDTRAFFIC": "змішаний рух",
                     "COBBLESTONE": "бруківка",
                     "NARROWWAYS": "вузькі шляхи"
 
@@ -951,10 +945,8 @@
                     "restrictedAreas": "бар'єрні зони",
                     "editRestrictedAreas": "Малювання / редагування бар'єрних зон",
                     "deleteRestrictedAreas": "Видалення бар'єрних зон",
-                    "keepRoutesAfterClose": "Зберігати маршрут після закриття інструмента",
                     "batchProcessing": {
                         "structure": "ID;lon(Startpunkt);lat(Startpunkt);lon(Endpunkt);lat(Endpunkt)",
-                        "errorAllFailed": "Всі запити не виконані. Запит може бути заблокований сервісом. Файл не містить результатів.",
                         "errorSomeFailed": "Не вдалося правильно розрахувати результати  {{countFailed}}. Файл результатів містить порожні клітинки в цих позиціях.",
                         "errorNoEntries": "Немає записів у файлі CSV",
                         "errorToManyEntriesInFile": "Перевищено максимальну кількість рядків ({{limit}})",
@@ -986,7 +978,6 @@
                     "legend": "Легенда",
                     "batchProcessing": {
                         "structure": "ID;lon(Startpunkt);lat(Startpunkt)",
-                        "errorAllFailed": "Всі запити не виконані. Запит може бути заблокований сервісом. Файл не містить результатів.",
                         "errorSomeFailed": "Не вдалося правильно розрахувати результати {{countFailed}}. Файл результатів містить порожні клітинки в цих позиціях.",
                         "errorNoEntries": "Немає записів у файлі CSV",
                         "errorToManyEntriesInFile": "Перевищено максимальну кількість рядків ({{limit}})",
@@ -1138,22 +1129,6 @@
                 "getGeometryTypeFromWFSFetchfailedMessage": "Деталі: необхідна служба не відповідає.",
                 "getGeometryTypeFromOAFFetchfailed": "Не вдалося створити легенду в інформації про шар!",
                 "getGeometryTypeFromOAFFetchfailedMessage": "Деталі: API недоступний."
-            }
-        },
-        "wmsTime": {
-            "layerSwiper": {
-                "description": "Swiper можна переміщати за допомогою миші або клавіш зі стрілками на клавіатурі. При використанні клавіш зі стрілками Swiper {{amount}}px переміщається у відповідному напрямку.",
-                "title": "Порівняти шари"
-            },
-            "timeSlider": {
-                "buttons": {
-                    "backward": "Один крок назад",
-                    "deactivateLayerSwiper": "Видалити шар",
-                    "forward": "Один крок вперед",
-                    "layerSwiper": "Порівняння часових точок",
-                    "play": "Автоматичне відтворення всіх часових точок, починаючи з обраного в даний момент часу"
-                },
-                "inputRangeLabel": "Виберіть момент часу"
             }
         },
         "legend": {

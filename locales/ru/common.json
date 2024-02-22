@@ -87,7 +87,7 @@
         "showAllTopics": "Показать все темы",
         "securedAllTopics": "Защищенные темы",
         "category": "Категории",
-        "backgroundMaps": "Карты заднего плана/ фоновые карты",
+        "baselayers": "Карты заднего плана/ фоновые карты",
         "subjectData": "Тематические данные",
         "subjectData3D": "3D- файлы",
         "subjectDataTime": "Временные ряды",
@@ -785,7 +785,6 @@
                 "undefinedInnerCircle": "Пожалуйста, дайте также определение внутреннего круга.",
                 "undefinedRadius": "Пожалуйста, введите радиус.",
                 "undefinedOuterCircle": "Пожалуйста, определите также внешний круг.",
-                "undefinedSquareArea": "Пожалуйста, определите площадь квадрата",
                 "limitReached_one": "Вы уже нарисовали {{count}} объект, пожалуйста, удалите его перед продолжением!",
                 "limitReached_other": "Вы уже нарисовали {{count}} объекты, пожалуйста, удалите один, прежде чем продолжить!",
                 "drawSymbol": "Символ",
@@ -793,7 +792,6 @@
                 "drawLine": "Линии",
                 "drawCurve": "Свободная линия",
                 "drawArea": "Площадь",
-                "drawSquare": "Квадрат",
                 "drawCircle": "Круг",
                 "drawDoubleCircle": "Двойной круг",
                 "doubleCirclePlaceholder": "Пожалуйста, введите радиус",
@@ -831,11 +829,7 @@
                     "iconCloud": "Облако",
                     "iconMeadow": "Луг",
                     "gelber Pin": "Желтый штифт"
-                },
-                "squareDefinedInfo": "(без учета кривизны Земли)",
-                "areaLabel": "площадь",
-                "squareSideLengthLabel": "длина стороны",
-                "lineLengthLabel": "общая длина"
+                }
             },
             "measure": {
                 "geometry": "Геометрия",
@@ -930,7 +924,7 @@
                     "FERRIES": "Паромы",
                     "STEPS": "Лестницы",
                     "UNPAVEDROADS": "грунтовые дороги",
-                    "MIXEDTRAFFIC": "смешанное движение Speed 50",
+                    "MIXEDTRAFFIC": "смешанное движение",
                     "COBBLESTONE": "булыжник",
                     "NARROWWAYS": "узкие пути"
 
@@ -948,10 +942,8 @@
                     "restrictedAreas": "Запретные зоны",
                     "editRestrictedAreas": "Запретные зоны рисовать/редактировать",
                     "deleteRestrictedAreas": "Запретные зоны удалить",
-                    "keepRoutesAfterClose": "Сохранить маршрут после закрытия инструмента",
                     "batchProcessing": {
                         "structure": "ID;lon(Отправная точка);lat(Отправная точка);lon(Конечная точка);lat(Конечная точка)",
-                        "errorAllFailed": "Все запросы завершились неудачей. Запрос может быть заблокирован службой. Файл не содержит результатов.",
                         "errorSomeFailed": "Результаты не могут быть рассчитаны правильно {{countFailed}}. Результирующий файл содержит пустые ячейки в этих местах.",
                         "errorNoEntries": "Отсутствие записей в CSV",
                         "errorToManyEntriesInFile": "Превышено максимальное количество строк ({{limit}})",
@@ -983,7 +975,6 @@
                     "legend": "Легенда",
                     "batchProcessing": {
                         "structure": "ID;lon(Начальная точка);lat(Начальная точка)",
-                        "errorAllFailed": "Все запросы завершились неудачей. Запрос может быть заблокирован службой. Файл не содержит результатов.",
                         "errorSomeFailed": "Не удалось вычислить {{countFailed}} Результаты не могут быть рассчитаны правильно. Результирующий файл содержит пустые ячейки в этих местах.",
                         "errorNoEntries": "Отсутствие записей в CSV",
                         "errorToManyEntriesInFile": "Превышено максимальное количество строк ({{limit}})",
@@ -1135,22 +1126,6 @@
                 "getGeometryTypeFromWFSFetchfailedMessage": "Подробности: требуемый сервис не отвечает.",
                 "getGeometryTypeFromOAFFetchfailed": "Легенда не может быть создана в информации о слое!",
                 "getGeometryTypeFromOAFFetchfailedMessage": "Подробности: API не отвечает."
-            }
-        },
-        "wmsTime": {
-            "layerSwiper": {
-                "description": "Свайпер можно перемещать с помощью мыши или клавиш со стрелками на клавиатуре. При использовании клавиш со стрелками свайпер перемещается {{amount}} в соответствующем направлении..",
-                "title": "Сравнить слои"
-            },
-            "timeSlider": {
-                "buttons": {
-                    "backward": "Один срок назад",
-                    "deactivateLayerSwiper": "Удалить слой",
-                    "forward": "Один срок вперёд",
-                    "layerSwiper": "Сравнение сроков",
-                    "play": "Автоматическое воспроизведение всех временных точек, начиная с текущей выбранной временной точки"
-                },
-                "inputRangeLabel": "Выберите время"
             }
         },
         "legend": {

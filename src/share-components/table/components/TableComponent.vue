@@ -70,7 +70,7 @@ export default {
          * Handles the select on a td element.
          * @param {String} columnName The column name of the selected td.
          * @param {Number} columnIdx The index of the column.
-         * @param {*[]} row The row as an array.
+         * @param {[]} row The row as an array.
          * @returns {void}
          */
         handleTDSelect (columnName, columnIdx, row) {
@@ -84,7 +84,7 @@ export default {
         /**
          * Selects the row.
          * @emits rowSelected The row stringified.
-         * @param {*[]} row The row as array.
+         * @param {[]} row The row as array.
          * @returns {void}
          */
         selectRow (row) {
@@ -170,7 +170,7 @@ export default {
         },
         /**
          * Gets the row stringified.
-         * @param {*[]} row The row.
+         * @param {[]} row The row.
          * @returns {String} the stringified row.
          */
         getStringifiedRow (row) {

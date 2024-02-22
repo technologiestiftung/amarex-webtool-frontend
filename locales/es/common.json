@@ -79,7 +79,7 @@
         "showAllTopics": "Activar todas las capas de datos",
         "securedAllTopics": "Capas de datos archivadas",
         "category": "Categorías",
-        "backgroundMaps": "Mapa base",
+        "baselayers": "Mapa base",
         "subjectData": "Datos temáticos",
         "subjectData3D": "Datos 3D",
         "selectedTopics": "Capas de datos seleccionadas",
@@ -613,7 +613,6 @@
                 "undefinedInnerCircle": "Por favor, defina también el círculo interior.",
                 "undefinedRadius": "Por favor, especifique el radio.",
                 "undefinedOuterCircle": "Por favor, defina también el círculo exterior.",
-                "undefinedSquareArea": "Por favor, defina el área del cuadrado",
                 "limitReached_one": "Ya has dibujado el objeto {{count}}, por favor, elimínalo antes de continuar!.",
                 "limitReached_other": "¡Ya has dibujado {{count}} objetos, por favor, borra uno antes de continuar!.",
                 "drawSymbol": "Simbolo",
@@ -621,7 +620,6 @@
                 "drawLine": "Líneas",
                 "drawCurve": "Línea a mano alzada",
                 "drawArea": "Área",
-                "drawSquare": "Cuadrado",
                 "drawCircle": "Círculo",
                 "drawDoubleCircle": "Círculo doble",
                 "doubleCirclePlaceholder": "Por favor, introduzca el radio",
@@ -658,11 +656,7 @@
                     "iconLeaf": "Hoja",
                     "iconCloud": "Nube",
                     "iconMeadow": "Campo"
-                },
-                "squareDefinedInfo": " (sin tener en cuenta la curvatura de la tierra)",
-                "areaLabel": "Área",
-                "squareSideLengthLabel": "Longitud lateral",
-                "lineLengthLabel": "longitud total"
+                }
             },
             "measure": {
                 "geometry": "Geometría",

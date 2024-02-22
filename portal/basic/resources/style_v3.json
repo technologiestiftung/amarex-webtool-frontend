@@ -133,6 +133,96 @@
     ]
   },
   {
+    "styleId": "8712.1",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Grundschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "grundschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "8712.2",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Stadtteilschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "stadtteilschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Langformschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "langformschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "8712.3",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Gymnasien"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "gymnasien.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "8712.4",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Sonderschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "sonderschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
     "styleId": "10882",
     "rules": [
       {

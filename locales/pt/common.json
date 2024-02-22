@@ -61,7 +61,7 @@
         "hideAllTopics": "Remover todos os temas",
         "showAllTopics": "Visualizar todos os temas",
         "category": "Categoria",
-        "backgroundMaps": "Mapas de fundo",
+        "baselayers": "Mapas de fundo",
         "subjectData": "Dados temáticos",
         "subjectData3D": "Dados 3D",
         "selectedTopics": "Temas selecionados",
@@ -589,7 +589,6 @@
                 "undefinedInnerCircle": "Por favor, defina também o círculo interno.",
                 "undefinedDiameter": "Por favor especifique um diâmetro.",
                 "undefinedOuterCircle": "Por favor, defina também o círculo exterior.",
-                "undefinedSquareArea": "Por favor, defina a área do quadrado",
                 "limitReached_one": "Já desenhou o objecto {{count}}, por favor apague-o antes de continuar!",
                 "limitReached_other": "Já desenhou os objectos {{count}}, por favor apague um antes de continuar!",
                 "drawSymbol": "Símbolo",
@@ -597,7 +596,6 @@
                 "drawLine": "Linhas",
                 "drawCurve": "Linha à mão livre",
                 "drawArea": "Área",
-                "drawSquare": "Quadrado",
                 "drawCircle": "Círculo",
                 "drawDoubleCircle": "Círculo duplo",
                 "doubleCirclePlaceholder": "Por favor introduza um diâmetro",
@@ -632,11 +630,7 @@
                     "iconLeaf": "Folha",
                     "iconCloud": "Nuvem",
                     "iconMeadow": "Relva"
-                },
-                "squareDefinedInfo": " (sem ter em conta a curvatura da Terra)",
-                "areaLabel": "Área",
-                "squareSideLengthLabel": "Comprimento do lado",
-                "lineLengthLabel": "comprimento total"
+                }
             },
             "download": {
                 "format": "Formato",
@@ -783,11 +777,6 @@
             "styleObject": {
                 "getGeometryTypeFromWFSFetchfailed": "A legenda não podia ser criada na camada de informação!",
                 "getGeometryTypeFromWFSFetchfailedMessage": "Detalhes: Um serviço necessário não responde."
-            }
-        },
-        "wmsTime": {
-            "layerSwiper": {
-                "title": "Confrontare gli strati"
             }
         },
         "legend": {

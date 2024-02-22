@@ -1,4 +1,5 @@
-import {transform, get} from "ol/proj.js";
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import store from "../../../../app-store";
 
 export default {
@@ -14,10 +15,10 @@ export default {
      * @returns {void}
      */
     async setMapAttributes ({commit, dispatch, rootState}, {map}) {
-        dispatch("registerListener", {type: "change:size", listener: "setSize", listenerType: "commit"});
-        dispatch("registerListener", {type: "pointermove", listener: "updatePointer", listenerType: "dispatch"});
-        dispatch("registerListener", {type: "moveend", listener: "updateAttributes", listenerType: "dispatch"});
-        dispatch("registerListener", {type: "click", listener: "updateClick", listenerType: "dispatch"});
+        // dispatch("registerListener", {type: "change:size", listener: "setSize", listenerType: "commit"});
+        // dispatch("registerListener", {type: "pointermove", listener: "updatePointer", listenerType: "dispatch"});
+        // dispatch("registerListener", {type: "moveend", listener: "updateAttributes", listenerType: "dispatch"});
+        // dispatch("registerListener", {type: "click", listener: "updateClick", listenerType: "dispatch"});
 
         if (rootState.configJson.Portalconfig.mapView?.twoFingerPan) {
             const mapDiv = document.getElementById("map");
@@ -26,19 +27,10 @@ export default {
             mapDiv.addEventListener("touchend", (event) => dispatch("oneFingerDragMessageEnd", event));
         }
 
-        dispatch("setViewAttributes", map.getView());
+        // dispatch("setViewAttributes", map.getView());
 
         const layerIds = await dispatch("normalizeLayers", await map.getLayers().getArray()),
             channel = Radio.channel("VectorLayer");
-
-        if (rootState.urlParams["Maps/highlightFeature"]) {
-            channel.once({"featuresLoaded": () => {
-                const ids = rootState.urlParams["Maps/highlightFeature"].split(","),
-                    layerId = ids.shift();
-
-                dispatch("Maps/zoomToFilteredFeatures", {ids, layerId}, {root: true});
-            }});
-        }
 
         // listen to featuresLoaded event to be able to determine if all features of a layer are completely loaded
         channel.on({"featuresLoaded": id => {
@@ -48,9 +40,9 @@ export default {
             }
         }});
 
-        commit("setMode", map.mode);
+        // commit("setMode", map.mode);
         // update state once initially to get initial settings
-        dispatch("updateAttributes", {map: map});
+        // dispatch("updateAttributes", {map: map});
         commit("setLayerIds", layerIds[1]);
     },
 
@@ -73,15 +65,15 @@ export default {
      */
     setViewAttributes ({commit}, mapView) {
         // currently has no change mechanism
-        commit("setProjection", mapView.getProjection());
+        // commit("setProjection", mapView.getProjection());
         commit("setBackgroundImage", mapView.get("backgroundImage"));
         // note initial values for quick comparisons/resets
-        commit("setInitialZoomLevel", mapView.getZoom());
-        commit("setInitialCenter", mapView.getCenter());
+        // commit("setInitialZoomLevel", mapView.getZoom());
+        // commit("setInitialCenter", mapView.getCenter());
         commit("setInitialResolution", mapView.getResolution());
         commit("setZoom", mapView.getZoom());
-        commit("setMinZoomLevel", mapView.getMinZoom());
-        commit("setMaxZoomLevel", mapView.getMaxZoom());
+        // commit("setMinZoomLevel", mapView.getMinZoom());
+        // commit("setMaxZoomLevel", mapView.getMaxZoom());
     },
 
     /**
@@ -94,53 +86,22 @@ export default {
      * @returns {Function} update function for state parts to update onmoveend
      */
     updateAttributes ({commit, getters, dispatch}, evt) {
-        let map;
+        // let map;
 
-        if (evt) {
-            map = evt.map;
-        }
-        else {
-            ({map} = getters);
-        }
+        // if (evt) {
+        //     map = evt.map;
+        // }
+        // else {
+        //     ({map} = getters);
+        // }
 
-        const mapView = map.getView();
+        // const mapView = map.getView();
 
-        commit("setResolution", mapView.getResolution());
-        commit("setBoundingBox", mapView.calculateExtent(map.getSize()));
+        // commit("setResolution", mapView.getResolution());
+        // commit("setBoundingBox", mapView.calculateExtent(map.getSize()));
         commit("setRotation", mapView.getRotation());
-        commit("setZoom", mapView.getZoom());
+        // commit("setZoom", mapView.getZoom());
         dispatch("setCenter", mapView.getCenter());
-    },
-
-    /**
-     *  Updates the mouse coordinates
-     * @param {Object} param store context
-     * @param {Object} param.commit the commit
-     * @param {Object} param.getters the getters
-     * @param {Object} event update event
-     * @returns {Function} update function for mouse coordinate
-     */
-    updatePointer ({commit, getters}, event) {
-        if (event.dragging) {
-            return;
-        }
-        if (getters.mode === "2D") {
-            commit("setMouseCoordinate", event.coordinate);
-        }
-        else if (getters.mode === "3D") {
-            try {
-                const scene = mapCollection.getMap("3D").getCesiumScene(),
-                    pickedPositionCartesian = scene.pickPosition(event.endPosition),
-                    cartographicPickedPosition = scene.globe.ellipsoid.cartesianToCartographic(pickedPositionCartesian),
-                    transformedPickedPosition = transform([Cesium.Math.toDegrees(cartographicPickedPosition.longitude), Cesium.Math.toDegrees(cartographicPickedPosition.latitude)], get("EPSG:4326"), getters.projection);
-
-                transformedPickedPosition.push(cartographicPickedPosition.height);
-                commit("setMouseCoordinate", transformedPickedPosition);
-            }
-            catch {
-                // An error is thrown if the scene is not rendered yet.
-            }
-        }
     },
 
     /**
@@ -155,17 +116,14 @@ export default {
      * @returns {void}
      */
     updateClick ({getters, commit, dispatch, rootGetters}, evt) {
-        if (getters.mode === "2D" || getters.mode === "Oblique") {
-            commit("setClickCoordinate", evt.coordinate);
-            commit("setClickPixel", evt.pixel);
-        }
-        else {
-            commit("setClickCoordinate", evt.pickedPosition);
-            commit("setClickCartesianCoordinate", [evt.position.x, evt.position.y]);
-            commit("setAltitude", evt.pickedPosition[2]);
-            commit("setLongitude", evt.longitude);
-            commit("setLatitude", evt.latitude);
-        }
+        // if (getters.mode === "2D" || getters.mode === "Oblique") {
+        //     commit("setClickCoordinate", evt.coordinate);
+        //     commit("setClickPixel", evt.pixel);
+        // }
+        // else {
+        //     commit("setClickCoordinate", evt.pickedPosition);
+        //     commit("setClickCartesianCoordinate", [evt.position.x, evt.position.y]);
+        // }
 
         if (!rootGetters["controls/orientation/poiModeCurrentPositionEnabled"]) {
             dispatch("MapMarker/placingPointMarker", evt.coordinate, {root: true});

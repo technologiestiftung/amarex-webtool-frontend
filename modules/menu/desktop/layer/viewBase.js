@@ -142,7 +142,6 @@ const LayerBaseView = Backbone.View.extend(/** @lends LayerBaseView.prototype */
             Radio.trigger("ModelList", "setIsSelectedOnParent", this.model);
         }
         this.rerender();
-        this.toggleColor(this.model, this.model.get("isOutOfRange"));
     },
 
     /**
@@ -224,16 +223,13 @@ const LayerBaseView = Backbone.View.extend(/** @lends LayerBaseView.prototype */
 
         this.$el.addClass("disabled");
         this.$el.find("*").css("cursor", "not-allowed");
-        this.$el.find("*").css("pointer-events", "none");
         if (!showScaleTooltip) {
-            this.$el.attr("title", text);
-        }
-        else {
-            this.$el.attr("title", `${this.model.get("name")}\n${this.model.get("scaleText")}`);
+            this.$el.find("*").css("pointer-events", "none");
         }
         if (statusCheckbox === 0) {
             this.$el.find("span.float-start").css({"pointer-events": "auto", "cursor": "pointer"});
         }
+        this.$el.attr("title", text);
 
         this.$el.find(".tabable").addClass("disable-tabable");
         this.$el.find("*").removeClass("tabable");

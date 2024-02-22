@@ -36,7 +36,7 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
      * @constructs
      * @property {Array} itemList=[] lightModels
      * @property {Array} overlayer=[] Themenconfig.Fachdaten
-     * @property {Array} baselayer=[] Themenconfig.Hintergrundkarten
+     * @property {Array} baselayer=[] Themenconfig.Baselayer
      * @property {Object} portalConfig={} Portalconfig
      * @property {String} treeType="" the attribute Baumtyp
      * @property {String[]} categories=["Opendata", "Inspire", "Behörde"] categories for Fachdaten in DefaultTree
@@ -108,9 +108,6 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
             },
             "getOverlayer": function () {
                 return this.get("overlayer");
-            },
-            "getItems": function () {
-                return this.get("itemList");
             }
         }, this);
 
@@ -406,7 +403,6 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
             layerAttribution: "nicht vorhanden",
             maxScale,
             minScale,
-            singleBaseLayer: "",
             singleTile: false,
             supported: ["2D", "3D"],
             tilesize: "512",
@@ -688,7 +684,7 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
             overLayers = this.get("overlayer"),
             baseLayersName = baseLayers?.name ? baseLayers.name : null,
             overLayersName = overLayers?.name ? overLayers.name : null,
-            baseLayersDefaultKey = "common:tree.backgroundMaps",
+            baseLayersDefaultKey = "common:tree.baselayers",
             overLayersDefaultKey = "common:tree.subjectData";
         let baseLayerI18nextTranslate = null,
             overLayerI18nextTranslate = null,
@@ -834,7 +830,7 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
     getPreviousFolderName (id) {
         switch (id) {
             case "3d_daten":
-                return "Hintergrundkarten";
+                return "Baselayer";
             case "TimeLayer":
                 return "Fachdaten";
             default:
@@ -842,47 +838,6 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
         }
     },
 
-    /**
-     * Groups objects from the layerlist that match the IDs in the passed list.
-     * @param  {string[]} [ids=[]] - Array of ids whose objects are grouped together
-     * @param  {Object[]} [layerlist=[]] - Objects from the services.json
-     * @return {Object[]} layerlist - Objects from the services.json
-     */
-    mergeObjectsByIds: function (ids = [], layerlist = []) {
-        const objectsByIds = [],
-            maxScales = [],
-            minScales = [];
-        let newObject = {};
-
-        // Objekte die gruppiert werden
-        ids.forEach(id => {
-            const lay = layerlist.find(layer => layer.id === id);
-
-            if (lay) {
-                objectsByIds.push(lay);
-            }
-        });
-
-        // Wenn nicht alle LayerIDs des Arrays gefunden werden
-        if (objectsByIds.length !== ids.length) {
-            return null;
-        }
-        // Das erste Objekt wird kopiert
-        newObject = {...objectsByIds[0]};
-        // Das Attribut layers wird gruppiert und am kopierten Objekt gesetzt
-        newObject.layers = objectsByIds.map(value => value.layers).toString();
-        // Das Attribut maxScale wird gruppiert
-        // Am kopierten Objekt wird der höchste Wert gesetzt
-        objectsByIds.forEach(object => maxScales.push(parseInt(object.maxScale, 10)));
-        newObject.maxScale = Math.max(...maxScales);
-
-        // Das Attribut minScale wird gruppiert
-        // Am kopierten Objekt wird der niedrigste Wert gesetzt
-        objectsByIds.forEach(object => minScales.push(parseInt(object.minScale, 10)));
-        newObject.minScale = Math.min(...minScales);
-
-        return newObject;
-    },
 
     /**
      * Generates a Uniq ID with prefix
@@ -890,11 +845,11 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
      * @param  {String} value - Prefix for Uniq-Id
      * @return {String} value - Uniq-Id
      */
-    createUniqId: function (value) {
-        const trimmedValue = value.replace(/[^a-zA-Z0-9]/g, "");
+    // createUniqId: function (value) {
+    //     const trimmedValue = value.replace(/[^a-zA-Z0-9]/g, "");
 
-        return uniqueId(trimmedValue);
-    },
+    // return uniqueId(trimmedValue);
+    // },
 
     /**
      * todo

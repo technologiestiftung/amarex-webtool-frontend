@@ -1,7 +1,7 @@
 import Layer from "./model";
 import ImageLayer from "ol/layer/Image.js";
 import StaticImageSource from "ol/source/ImageStatic.js";
-import getProxyUrl from "../../../../src/utils/getProxyUrl";
+// import getProxyUrl from "../../../../src/utils/getProxyUrl";
 import store from "../../../../src/app-store";
 
 const StaticImageLayer = Layer.extend({
@@ -21,12 +21,12 @@ const StaticImageLayer = Layer.extend({
          * useProxy
          * getProxyUrl()
          */
-        const url = this.get("useProxy") ? getProxyUrl(this.get("url")) : this.get("url");
+        // const url = this.get("useProxy") ? getProxyUrl(this.get("url")) : this.get("url");
 
         this.setLayerSource(new StaticImageSource({
-            url: url,
-            projection: store.getters["Maps/projection"],
-            imageExtent: this.get("extent")
+            // url: url,
+            projection: store.getters["Maps/projection"]
+            // imageExtent: this.get("extent")
         }));
     },
 
@@ -36,9 +36,9 @@ const StaticImageLayer = Layer.extend({
      */
     createLayer: function () {
         this.setLayer(new ImageLayer({
-            source: this.get("layerSource"),
-            name: this.get("name"),
-            typ: "StaticImage",
+            // source: this.get("layerSource"),
+            // name: this.get("name"),
+            // typ: "StaticImage",
             legendURL: this.get("legendURL"),
             transparency: this.get("transparency")
         }));

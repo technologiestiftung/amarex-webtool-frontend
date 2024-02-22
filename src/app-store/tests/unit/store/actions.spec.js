@@ -6,7 +6,6 @@ const deprecatedParamsConfigJson = {
         "Portalconfig.portalTitle.logo": ["Portalconfig.PortalLogo"],
         "Portalconfig.portalTitle.link": ["Portalconfig.LogoLink"],
         "Portalconfig.portalTitle.toolTip": ["Portalconfig.portalTitle.tooltip", "Portalconfig.LogoToolTip"],
-        "Portalconfig.searchBar.bkg.zoomToResultOnHover": ["Portalconfig.searchBar.bkg.zoomToResult"],
         "Portalconfig.treeType": ["Portalconfig.Baumtyp"],
         "Portalconfig.controls.overviewMap.layerId": ["Portalconfig.controls.overviewMap.baselayer"],
         "Portalconfig.mapView.startResolution": ["Portalconfig.mapView.resolution"],

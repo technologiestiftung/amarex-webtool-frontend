@@ -761,15 +761,6 @@ async function ParametricUrlTests ({builder, url, resolution, browsername, mode,
 
                     // // no alert present
                     // expect(await driver.findElements(By.css(".singleAlertMessage"))).to.be.empty;
-
-                    // test by redirecting master to custom
-                    await loadUrl(driver, `${url}?config=../masterCustom${urlAffix}/config.json`, mode);
-
-                    if (await (await driver.findElements(By.xpath("//div[@class='singleAlertMessage']//parent::div//parent::div//parent::div//parent::div//parent::div//preceding-sibling::span"))).length > 0) {
-                        await closeSingleAlert(driver);
-                    }
-
-                    expect(await driver.findElement(By.css("ul#tree .layer-catalog .header .form-label"))).to.exist;
                 });
 
                 it("?configJson= allows selecting a config", async function () {
@@ -785,11 +776,6 @@ async function ParametricUrlTests ({builder, url, resolution, browsername, mode,
                     await loadUrl(driver, `${url}?configJson=../masterDefault${urlAffix}/config.json`, mode);
 
                     expect(await driver.findElement(By.css("ul#tree .layer-catalog .menu-row.header > div > form > .catalog-selection > select"))).to.exist;
-
-                    // test by redirecting master to custom
-                    await loadUrl(driver, `${url}?configJson=../masterCustom${urlAffix}/config.json`, mode);
-
-                    expect(await driver.findElement(By.css("ul#tree .layer-catalog .header .form-label"))).to.exist;
                 });
             }
 

@@ -15,11 +15,11 @@ describe("core/modelList/layer/model", function () {
             model = new Layer();
             model.set("isSelected", false);
             model.set("id", "model1");
-            model.set("parentId", "Baselayer");
+            model.set("parentId", "baselayer");
             model.set("layerSource", {});
             model.createLayerSource = sinon.stub();
             secondModel.attributes.isSelected = true;
-            secondModel.attributes.parentId = "Baselayer";
+            secondModel.attributes.parentId = "baselayer";
             secondModel.attributes.layerSource = {};
             secondModel.attributes.id = "model2";
             secondModel.createLayerSource = sinon.stub();

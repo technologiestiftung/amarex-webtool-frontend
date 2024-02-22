@@ -16,23 +16,22 @@
         "Backbone": true,
         "Cesium": true,
         "i18next": true,
-        "mapCollection": true
+        "mapCollection": true,
+        "moduleCollection": true
     },
     "plugins": [
         "chai-friendly",
         "vuejs-accessibility"
     ],
     "parserOptions": {
-        "ecmaVersion": 2022,
+        "ecmaVersion": 2023,
         "sourceType": "module",
         "allowImportExportEverywhere": true
     },
     "extends": [
         "eslint:recommended",
-        "plugin:backbone/recommended",
-        "plugin:vue/recommended",
-        "plugin:vuejs-accessibility/recommended",
-        "plugin:you-dont-need-lodash-underscore/all"
+        "plugin:vue/vue3-recommended", // --> vue3
+        "plugin:vuejs-accessibility/recommended"
     ],
     "rules": {
         // Possible Problems - These rules relate to possible logic errors in code:
@@ -65,7 +64,6 @@
         "max-depth": "error",
         "max-nested-callbacks": ["error", 10],
         "max-params": ["warn", 9],
-        "new-cap": "error",
         "no-alert": "error",
         "no-array-constructor": "error",
         "no-caller": "error",
@@ -207,9 +205,11 @@
         "vue/one-component-per-file": ["error"],
         "vue/prop-name-casing": ["error"],
         "vue/require-default-prop": ["error"],
+        "vue/require-explicit-emits": ["error"],
         "vue/require-prop-types": ["error"],
         "vue/singleline-html-element-content-newline": ["error"],
         "vue/v-bind-style": ["error"],
+        "vue/v-on-event-hyphenation": ["error"],
         "vue/v-on-style": ["error"],
         "vue/v-slot-style": ["error"],
         // vue plugin Recommended Rules
@@ -245,7 +245,7 @@
             }
         ],
         /*
-         * rule turned off since it's e.g. deprecated here:
+         * rule turned off since it`s e.g. deprecated here:
          * https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/398
          * It does not work too well for the Masterportal where changes in
          * e.g. select elements are supposed to immediately trigger changes
@@ -253,10 +253,6 @@
          */
         "vuejs-accessibility/no-onchange": "off",
         // eslint-plugin-chai-friendly
-        "chai-friendly/no-unused-expressions": 2,
-        // eslint-plugin-backbone
-        "backbone/no-native-jquery": [0, "selector"],
-        "backbone/no-silent": 0
-
+        "chai-friendly/no-unused-expressions": 2
     }
 }

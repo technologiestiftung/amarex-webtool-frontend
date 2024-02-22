@@ -2,16 +2,8 @@ import SearchbarTemplate from "text-loader!./template.html";
 import TemplateTable from "text-loader!./templateTable.html";
 import SearchbarRecommendedListTemplate from "text-loader!./templateRecommendedList.html";
 import SearchbarHitListTemplate from "text-loader!./templateHitList.html";
-import GAZModel from "./gaz/model.js";
 import SpecialWFSModel from "./specialWFS/model.js";
-import VisibleVectorModel from "./visibleVector/model.js";
-import BKGModel from "./bkg/model.js";
-import TreeModel from "./tree/model.js";
-import OSMModel from "./osm/model.js";
-import LocationFinderModel from "./locationFinder/model.js";
 import GdiModel from "./gdi/model.js";
-import ElasticSearchModel from "./elasticSearch/model.js";
-import KomootModel from "./komoot/model.js";
 import Searchbar from "./model.js";
 import "./RadioBridge.js";
 import store from "../../src/app-store/index";
@@ -19,7 +11,6 @@ import { getWKTGeom } from "../../src/utils/getWKTGeom";
 import Collapse from "bootstrap/js/dist/collapse";
 import isMobile from "../../src/utils/isMobile";
 import uiStyle from "../../src/utils/uiStyle";
-import styleList from "@masterportal/masterportalapi/src/vectorStyle/styleList";
 
 /**
  * @member SearchbarTemplate
@@ -137,43 +128,11 @@ const SearchbarView = Backbone.View.extend(
             // Manage search algorithms for initial search.
             this.model.setInitialSearchTasks(config);
 
-            // On-demand loading of the search algorithms.
-            if (Object.prototype.hasOwnProperty.call(config, "gazetteer")) {
-                new GAZModel(config.gazetteer);
-            }
             if (Object.prototype.hasOwnProperty.call(config, "specialWFS")) {
                 new SpecialWFSModel(config.specialWFS);
             }
-            if (Object.prototype.hasOwnProperty.call(config, "visibleVector")) {
-                new VisibleVectorModel(config.visibleVector);
-            } else if (
-                Object.prototype.hasOwnProperty.call(config, "visibleWFS")
-            ) {
-                // Deprecated in new stable
-                new VisibleVectorModel(config.visibleWFS);
-            }
-            if (Object.prototype.hasOwnProperty.call(config, "bkg")) {
-                new BKGModel(config.bkg);
-            }
-            if (Object.prototype.hasOwnProperty.call(config, "tree")) {
-                new TreeModel(config.tree);
-            }
-            if (Object.prototype.hasOwnProperty.call(config, "osm")) {
-                new OSMModel(config.osm);
-            }
-            if (
-                Object.prototype.hasOwnProperty.call(config, "locationFinder")
-            ) {
-                new LocationFinderModel(config.locationFinder);
-            }
             if (Object.prototype.hasOwnProperty.call(config, "gdi")) {
                 new GdiModel(config.gdi);
-            }
-            if (Object.prototype.hasOwnProperty.call(config, "elasticSearch")) {
-                new ElasticSearchModel(config.elasticSearch);
-            }
-            if (Object.prototype.hasOwnProperty.call(config, "komoot")) {
-                new KomootModel(config.komoot);
             }
 
             this.model.setHitIsClick(false);
@@ -381,12 +340,7 @@ const SearchbarView = Backbone.View.extend(
         renderRecommendedList: function () {
             const attr = this.model.toJSON(),
                 height = this.getDropdownHeight(),
-                width = this.$("#searchForm").width(),
-                exactRecommendedHits = this.model
-                    .get("recommendedList")
-                    .filter(
-                        (hit) => hit.name === this.model.get("initSearchString")
-                    );
+                width = this.$("#searchForm").width();
 
             attr.uiStyle = uiStyle.getUiStyle();
 
@@ -414,13 +368,12 @@ const SearchbarView = Backbone.View.extend(
             this.$("ul.dropdown-menu-search").css("width", width);
             this.$("ul.dropdown-menu-search").css("max-width", width);
 
-            // With only one hit in the finalHitList or an exact match in recommendedList, the marker is set directly
+            // With only one hit in the recommendedList, the marker is set directly
             // and in case of a Tree-Search the menu folds out.
             if (
-                (this.model.get("finalHitList").length === 1 &&
-                    this.model.get("initSearchString") ===
-                        this.model.get("finalHitList")[0].name) ||
-                exactRecommendedHits.length === 1
+                this.model.get("finalHitList").length === 1 &&
+                this.model.get("initSearchString") ===
+                    this.model.get("finalHitList")[0].name
             ) {
                 this.hitSelected();
             }
@@ -501,10 +454,9 @@ const SearchbarView = Backbone.View.extend(
                 hitID,
                 pick,
                 isElement = false;
-            const modelHitList = this.model.get("isSearchQuery")
-                ? this.model.get("recommendedList")
-                : this.model.get("finalHitList");
+            const modelHitList = this.model.get("finalHitList");
 
+            // distingiush hit
             if (evt && Object.prototype.hasOwnProperty.call(evt, "cid")) {
                 // in this case, evt = model
                 pick = Radio.request("Util", "pick", modelHitList, [0]);
@@ -531,10 +483,7 @@ const SearchbarView = Backbone.View.extend(
                     { id: evt.id }
                 );
                 isElement = true;
-            } else if (
-                modelHitList.length > 1 &&
-                !this.model.get("isSearchQuery")
-            ) {
+            } else if (modelHitList.length > 1) {
                 return;
             } else {
                 hit = modelHitList[0];
@@ -718,23 +667,11 @@ const SearchbarView = Backbone.View.extend(
             ) {
                 store.dispatch("MapMarker/removePolygonMarker");
                 hit.coordinate = this.sanitizePoint(hit.coordinate);
-                const isPointInsidePolygon =
-                    this.checkIsCoordInsidePolygon(hit);
-                let coordinateForMarker = hit.coordinate;
-
-                if (!isPointInsidePolygon) {
-                    coordinateForMarker = this.getRandomCoordinate(
-                        hit.feature.getGeometry().getCoordinates()
-                    );
-                }
-                store.dispatch(
-                    "MapMarker/placingPointMarker",
-                    coordinateForMarker
-                );
+                store.dispatch("MapMarker/placingPointMarker", hit.coordinate);
                 Radio.trigger(
                     "MapView",
                     "setCenter",
-                    coordinateForMarker,
+                    hit.coordinate,
                     zoomLevel
                 );
                 store.commit("Maps/setClickCoordinate", hit.coordinate);
@@ -1154,7 +1091,6 @@ const SearchbarView = Backbone.View.extend(
             this.hideMarker();
             store.dispatch("MapMarker/removePointMarker");
             store.dispatch("MapMarker/removePolygonMarker");
-            store.dispatch("Maps/removeHighlightFeature");
             this.hideMenu();
             this.$("#searchInputUL").html("");
         },
@@ -1173,8 +1109,6 @@ const SearchbarView = Backbone.View.extend(
                           .find((obj) => obj.id === hitId)
                     : null,
                 hitName = isEvent ? hit?.name : "undefined";
-
-            let highlightObject = {};
 
             // with gdi-search no action on mousehover or on GFI onClick
             if (
@@ -1199,41 +1133,15 @@ const SearchbarView = Backbone.View.extend(
             } else if (hit && hit?.coordinate) {
                 store.dispatch("MapMarker/removePolygonMarker");
                 await store.dispatch("MapMarker/removePointMarker");
-                await store.dispatch("Maps/removeHighlightFeature");
 
                 if (
                     hit.coordinate.length === 2 &&
                     !Array.isArray(hit.coordinate[0])
                 ) {
                     hit.coordinate = this.sanitizePoint(hit.coordinate);
-                    const isPointInsidePolygon =
-                        this.checkIsCoordInsidePolygon(hit);
-                    let coordinateForMarker = hit.coordinate;
-
-                    if (!isPointInsidePolygon) {
-                        coordinateForMarker = this.getRandomCoordinate(
-                            hit.feature.getGeometry().getCoordinates()
-                        );
-                    }
-                    highlightObject = Radio.request(
-                        "ModelList",
-                        "getModelByAttributes",
-                        { id: hit.layer_id }
-                    )
-                        ? this.setHighlightObjectProperties(
-                              highlightObject,
-                              hit
-                          )
-                        : null;
-                    if (highlightObject) {
-                        store.dispatch(
-                            "Maps/highlightFeature",
-                            highlightObject
-                        );
-                    }
                     store.dispatch(
                         "MapMarker/placingPointMarker",
-                        coordinateForMarker
+                        hit.coordinate
                     );
                 } else {
                     store.dispatch(
@@ -1301,7 +1209,6 @@ const SearchbarView = Backbone.View.extend(
                 this.$(".dropdown-menu-search").css("display") === "block"
             ) {
                 store.dispatch("MapMarker/removePointMarker");
-                store.dispatch("Maps/removeHighlightFeature");
             }
         },
 
@@ -1315,78 +1222,6 @@ const SearchbarView = Backbone.View.extend(
 
             element.focus();
             element[0].setSelectionRange(strLength, strLength);
-        },
-
-        /**
-         * Checks whether the given coordinate is within a Polygon.
-         * @param {hit} hit - the result within a search.
-         * @returns {polygonAndIsInside} - an object with polygonGeometryCoordinates and a boolean if a given coordinate is inside
-         */
-        checkIsCoordInsidePolygon: function (hit) {
-            const pointToCheck = hit.coordinate;
-
-            if (hit.feature) {
-                return hit.feature
-                    .getGeometry()
-                    .intersectsCoordinate(pointToCheck);
-            }
-            return true;
-        },
-
-        /**
-         * Determines a random coordinate given within a polygon.
-         * @param {coordinates} coordinates - the coordinates within a polygon.
-         * @returns {coordinates} - returns a random coordinate.
-         */
-        getRandomCoordinate: function (coordinates) {
-            if (
-                Array.isArray(coordinates) &&
-                coordinates[coordinates.length - 1]
-            ) {
-                const randomIndex = Math.floor(
-                    Math.random() * coordinates.length
-                );
-
-                return this.getRandomCoordinate(coordinates[randomIndex]);
-            }
-            return coordinates;
-        },
-
-        /**
-         * Sets the properties for a feature to highlight.
-         * @param {highlightObject} highlightObject - the given object, that is to be highlighted.
-         * @param {hit} hit - the result within a search.
-         * @returns {highlightObject} - the given object, that is to be highlighted.
-         */
-        setHighlightObjectProperties: function (highlightObject, hit) {
-            const styleObject = styleList.returnStyleObject(
-                    "defaultMapMarkerPolygon"
-                ),
-                masterportalapiDefaultStyle = styleObject.rules[0].style,
-                fill = {
-                    color: `rgb(${masterportalapiDefaultStyle.polygonFillColor.join(
-                        ", "
-                    )})`,
-                },
-                stroke = {
-                    color: `rgb(${masterportalapiDefaultStyle.polygonStrokeColor.join(
-                        ", "
-                    )})`,
-                    width: masterportalapiDefaultStyle.polygonStrokeWidth[0],
-                };
-
-            highlightObject.highlightStyle = { fill, stroke };
-            highlightObject.type = "highlightMultiPolygon";
-            highlightObject.feature = hit.feature;
-            highlightObject.styleId = Radio.request(
-                "ModelList",
-                "getModelByAttributes",
-                { id: hit.layer_id }
-            ).attributes.styleId;
-            highlightObject.polygons = highlightObject.feature
-                ? highlightObject.feature.getGeometry().getPolygons()
-                : null;
-            return highlightObject;
         },
     }
 );

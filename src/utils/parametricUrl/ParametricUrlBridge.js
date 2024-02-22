@@ -177,14 +177,14 @@ export function doSpecialBackboneHandling(key, value) {
 }
 
 /**
- * Returns the ids of the layer with the given metadataid and the last configured basemap.
+ * Returns the ids of the layer with the given metadataid and the last configured baselayer.
  * @param {String} values comma separated list of meta-ids
  * @returns {Object} containing layerIdList, visibilityList and transparencyList
  */
 function getLayersUsingMetaId(values) {
     const metaIds = values.split(","),
         layersIds = [],
-        baseMaps = Radio.request("Parser", "getItemsByAttributes", {
+        baselayers = Radio.request("Parser", "getItemsByAttributes", {
             isBaseLayer: true,
         });
 
@@ -194,8 +194,8 @@ function getLayersUsingMetaId(values) {
     if (Config.view) {
         Config.view.zoomLevel = 0;
     }
-    if (baseMaps) {
-        layersIds.push(baseMaps[baseMaps.length - 1].id);
+    if (baselayers) {
+        layersIds.push(baselayers[baselayers.length - 1].id);
     }
 
     metaIds.forEach((metaId) => {

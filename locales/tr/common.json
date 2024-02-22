@@ -71,7 +71,7 @@
         "showAllTopics": "tüm konular göster",
         "securedAllTopics": "güvenli konular",
         "category": "kategori",
-        "backgroundMaps": "arka plan haritası",
+        "baselayers": "arka plan haritası",
         "subjectData": "teknik veriler",
         "subjectData3D": "3D veriler",
         "subjectDataTime": "Zaman serisi",
@@ -720,7 +720,6 @@
                 "undefinedInnerCircle": "Lütfen iç çemberi de tanımlayın.",
                 "undefinedRadius": "Lütfen çemberin çapını girin.",
                 "undefinedOuterCircle": "Lütfen dış çemberi de tanımlayın.",
-                "undefinedSquareArea": "Lütfen karenin alanını tanımlayın",
                 "limitReached_one": "Daha önce {{count}} nesne çizdiniz, lütfen devam etmeden önce bunları silin!",
                 "limitReached_other": "Daha önce {{count}} nesne çizdiniz, lütfen devam etmeden önce birini silin!",
                 "drawSymbol": "Sembol",
@@ -728,7 +727,6 @@
                 "drawLine": "çizgiler",
                 "drawCurve": "Serbest çizgi",
                 "drawArea": "Alan",
-                "drawSquare": "Kare",
                 "drawCircle": "Çember",
                 "drawDoubleCircle": "Çift ​​çember",
                 "doubleCirclePlaceholder": "Lütfen bir çap girin",
@@ -766,11 +764,7 @@
                     "iconCloud": "Bulut",
                     "iconMeadow": "Çimen",
                     "gelber Pin": "sarı Pin"
-                },
-                "squareDefinedInfo": "(dünyanın eğriliğini hesaba katmadan)",
-                "areaLabel": "Alan",
-                "squareSideLengthLabel": "Yan uzunluk",
-                "lineLengthLabel": "toplam uzunluk"
+                }
             },
             "measure": {
                 "geometry": "Geometri",
@@ -958,22 +952,6 @@
             "styleObject": {
                 "getGeometryTypeFromWFSFetchfailed": "Katman bilgileri oluşturulamadı!",
                 "getGeometryTypeFromWFSFetchfailedMessage": "Ayrıntılar: Gerekli hizmet yanıt vermiyor."
-            }
-        },
-        "wmsTime": {
-            "layerSwiper": {
-                "description": "Kaydırıcı (Swiper i), fare (mouse) veya klavye ok tuşları kullanılarak hareket ettirilebilirsiniz. Ok tuşlarını kullanırken, {{amount}}px kaydırıcı ilgili yönde hareket eder.",
-                "title": "Katmanları karşılaştırın"
-            },
-            "timeSlider": {
-                "buttons": {
-                    "backward": "Geriye doğru bir zaman",
-                    "deactivateLayerSwiper": "Katmanı sil",
-                    "forward": "Öne doğru bir zaman",
-                    "layerSwiper": "Zamanları karşılaştır",
-                    "play": "O anda seçili olan zaman noktasına göre zaman içindeki tüm noktaların otomatik olarak yeniden oynatılması"
-                },
-                "inputRangeLabel": "Bir zaman dilimi seçin"
             }
         },
         "legend": {

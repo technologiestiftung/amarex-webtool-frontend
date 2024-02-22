@@ -3,7 +3,7 @@ import {expect} from "chai";
 import Util from "@modules/core/util.js";
 
 describe("core/configLoader/parserCustomTree", function () {
-    let testData, backgroundMapsNoChildren, backgroundMapsWithChildren;
+    let testData, baselayersNoChildren, baselayersWithChildren;
 
     before(function () {
         new Util();
@@ -29,7 +29,7 @@ describe("core/configLoader/parserCustomTree", function () {
                 ]
             }
         };
-        backgroundMapsNoChildren = {"Ordner": [{
+        baselayersNoChildren = {"Ordner": [{
             "Titel": "Karten",
             "isFolderSelectable": false,
             "Layer": [{
@@ -44,7 +44,7 @@ describe("core/configLoader/parserCustomTree", function () {
             }
             ]
         }]};
-        backgroundMapsWithChildren = {
+        baselayersWithChildren = {
             "Ordner": [
                 {
                     "Titel": "Karten 1:5000",
@@ -99,7 +99,7 @@ describe("core/configLoader/parserCustomTree", function () {
      * @param {array} options - the model options
      * @returns {object} the model
      */
-    function getCustomBackgroundMapModel (options = {backgroundMapsWithChildren: false}) {
+    function getCustomBaselayerModel (options = {baselayersWithChildren: false}) {
         const model = new CustomTreeParser(options),
             testConfig = {};
 
@@ -129,14 +129,14 @@ describe("core/configLoader/parserCustomTree", function () {
 
         };
 
-        if (options.backgroundMapsWithChildren) {
-            testConfig.Hintergrundkarten = backgroundMapsWithChildren;
+        if (options.baselayersWithChildren) {
+            testConfig.Baselayer = baselayersWithChildren;
         }
         else {
-            testConfig.Hintergrundkarten = backgroundMapsNoChildren;
+            testConfig.Baselayer = baselayersNoChildren;
         }
         model.setItemList([]);
-        model.parseTree(testConfig.Hintergrundkarten, "Baselayer", 0);
+        model.parseTree(testConfig.Baselayer, "Baselayer", 0);
         return model;
     }
 
@@ -167,10 +167,10 @@ describe("core/configLoader/parserCustomTree", function () {
         });
     });
 
-    describe("background maps in folder structure shall always be in background", function () {
+    describe("baselayers in folder structure shall always be in background", function () {
         it("should be three with parentId baselayer or folderId", function () {
             let folder = null;
-            const itemList = getCustomBackgroundMapModel().get("itemList");
+            const itemList = getCustomBaselayerModel().get("itemList");
 
             expect(itemList.length).to.be.equal(3);
             folder = itemList.filter(item => item.type === "folder")[0];
@@ -186,9 +186,9 @@ describe("core/configLoader/parserCustomTree", function () {
 
             });
         });
-        it("backgroundmaps with children should have 'isBaseLayer' true", function () {
+        it("baselayers with children should have 'isBaseLayer' true", function () {
             let folder = null;
-            const itemList = getCustomBackgroundMapModel({backgroundMapsWithChildren: true}).get("itemList");
+            const itemList = getCustomBaselayerModel({baselayersWithChildren: true}).get("itemList");
 
             expect(itemList.length).to.be.equal(2);
             folder = itemList.filter(item => item.type === "folder")[0];

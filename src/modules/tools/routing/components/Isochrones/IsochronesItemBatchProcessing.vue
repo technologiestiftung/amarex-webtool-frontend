@@ -18,8 +18,7 @@ export default {
     data () {
         return {
             isProcessing: false,
-            countFailed: 0,
-            serviceRequests: 0
+            countFailed: 0
         };
     },
     computed: {
@@ -37,14 +36,13 @@ export default {
          * @returns {void}
          */
         addFiles (files) {
-            Array.from(files).forEach(file => {
+            files.forEach(file => {
                 const reader = new FileReader();
 
                 reader.onload = async f => {
                     this.isProcessing = true;
                     this.setTaskHandler(null);
                     this.countFailed = 0;
-                    this.serviceRequests = 0;
 
                     this.resetIsochronesResult();
                     this.setIsLoadingIsochrones(true);
@@ -55,13 +53,7 @@ export default {
                         if (result) {
                             this.downloadResults(file.name, result);
                         }
-                        if (this.countFailed === this.serviceRequests) {
-                            this.addSingleAlert({
-                                category: this.$t("common:modules.alerting.categories.error"),
-                                content: this.$t("common:modules.tools.routing.isochrones.batchProcessing.errorAllFailed")
-                            });
-                        }
-                        else if (this.countFailed !== 0) {
+                        if (this.countFailed !== 0) {
                             this.addSingleAlert({
                                 category: this.$t("common:modules.alerting.categories.error"),
                                 content: this.$t("common:modules.tools.routing.isochrones.batchProcessing.errorSomeFailed", {countFailed: this.coundFailed})
@@ -155,7 +147,7 @@ export default {
                     const line = lines[i],
                         lineParts = line.split(";");
 
-                    if (lineParts.length === 1 && lineParts.includes("")) {
+                    if (lineParts.length === 0) {
                         continue;
                     }
 
@@ -193,7 +185,6 @@ export default {
                 startLat = Number(lineParts[2]);
 
             try {
-                this.serviceRequests += 1;
                 const isochronesResult = await this.fetchIsochrones({
                     wgs84Coords: [startLon, startLat],
                     transformCoordinates: false
@@ -202,8 +193,8 @@ export default {
                 return isochronesResult.getAreas().map(
                     area => area.getGeojsonFeature({
                         ID: id,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat
+                        [this.$t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
+                        [this.$t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat
                     })
                 );
             }
@@ -219,8 +210,8 @@ export default {
                     },
                     properties: {
                         ID: id,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat,
+                        [this.$t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
+                        [this.$t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat,
                         error: true
                     }
                 }

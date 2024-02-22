@@ -10,7 +10,6 @@ import AddWMS from "./addWMS/store/indexAddWMS";
 import BufferAnalysis from "./bufferAnalysis/store/indexBufferAnalysis";
 import CompareFeatures from "./compareFeatures/store/indexCompareFeatures";
 import Contact from "./contact/store/indexContact";
-import CoordToolkit from "./coordToolkit/store/indexCoordToolkit";
 import Draw from "./draw/store/indexDraw";
 import FeatureLister from "./featureLister/store/indexFeatureLister";
 import FileImport from "./fileImport/store/indexFileImport";
@@ -18,7 +17,6 @@ import Filter from "./filter/store/indexFilter";
 import Gfi from "./gfi/store/indexGfi";
 import LayerClusterToggler from "./layerClusterToggler/store/indexLayerClusterToggler";
 import LayerSlider from "./layerSlider/store/indexLayerSlider";
-import Login from "./login/store/indexLogin";
 import Measure from "./measure/store/indexMeasure";
 import Modeler3D from "./modeler3D/store/indexModeler3D";
 import Print from "./print/store/indexPrint";
@@ -26,9 +24,9 @@ import Routing from "./routing/store/indexRouting";
 import SaveSelection from "./saveSelection/store/indexSaveSelection";
 import ScaleSwitcher from "./scaleSwitcher/store/indexScaleSwitcher";
 import SearchByCoord from "./searchByCoord/store/indexSearchByCoord";
+import SearchByCoord from "./searchByCoord/store/indexSearchByCoord";
 import SelectFeatures from "./selectFeatures/store/indexSelectFeatures";
 import Shadow from "./shadowTool/store/indexShadowTool";
-import StatisticDashboard from "./statisticDashboard/store/indexStatisticDashboard";
 import StyleVT from "./styleVT/store/indexStyleVT";
 import SupplyCoord from "./supplyCoord/store/indexSupplyCoord";
 import WfsSearch from "./wfsSearch/store/indexWfsSearch";
@@ -45,7 +43,6 @@ export default {
         BufferAnalysis,
         CompareFeatures,
         Contact,
-        CoordToolkit,
         Draw,
         FeatureLister,
         FileImport,
@@ -53,7 +50,6 @@ export default {
         Gfi,
         LayerClusterToggler,
         LayerSlider,
-        Login,
         Measure,
         Modeler3D,
         Print,
@@ -63,7 +59,6 @@ export default {
         SearchByCoord,
         SelectFeatures,
         Shadow,
-        StatisticDashboard,
         StyleVT,
         SupplyCoord,
         WfsSearch,

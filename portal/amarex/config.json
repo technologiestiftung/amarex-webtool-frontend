@@ -1,90 +1,214 @@
 {
-  "Portalconfig": {
-    "treeType": "light",
-    "searchBar": {
-      "komoot": {
-        "minChars": 3,
-        "serviceId": "11",
-        "limit": 20,
-        "lang": "de",
-        "lat": 53.6,
-        "lon": 10.0,
-        "bbox": "9.6,53.3,10.4,53.8"
-      },
-      "visibleVector": {},
-      "tree": {},
-      "startZoomLevel": 9,
-      "placeholder": "Suche nach: - Adresse - Aktiven WFS"
-    },
-    "mapView": {
-      "backgroundImage": "./resources/img/backgroundCanvas.jpeg",
-      "startCenter": [
-        561210,
-        5932600
-      ],
-      "extent": [
-        510000.0,
-        5850000.0,
-        625000.4,
-        6000000.0
-      ],
-      "startZoomLevel": 1
-    },
-    "menu": {
-      "tree": {
-        "name": "Themen"
-      },
-      "tools": {
-        "name": "Werkzeuge",
-        "children": {
-          "gfi": {
-            "name": "Informationen abfragen",
-            "active": true
-          },
-          "coordToolkit": {
-            "name": "Koordinaten"
-          },
-          "measure": {
-            "name": "Strecke / Fläche messen"
-          },
-          "draw": {
-            "name": "Zeichnen / Schreiben"
-          },
-          "fileImport": {
-            "name": "Datei Import"
-          },
-          "saveSelection": {
-            "name": "Auswahl speichern"
-          }
+  "portalConfig": {
+    "map": {
+      "controls": {
+        "zoom": true,
+        "orientation": {
+          "zoomMode": "once"
         }
       },
-      "legend": {
-        "name": "Legende"
-      },
-      "info": {
-        "name": "Informationen",
-        "children": {
-          "staticlinks": [
-            {
-              "name": "Masterportal",
-              "url": "https://masterportal.org"
-            }
-          ]
-        }
+      "mapView": {
+        "backgroundImage": "./resources/img/backgroundCanvas.jpeg",
+        "startCenter": [
+          561210,
+          5932600
+        ],
+        "extent": [
+          510000.0,
+          5850000.0,
+          625000.4,
+          6000000.0
+        ],
+        "startZoomLevel": 1
       }
     },
-    "controls": {
-      "zoom": true,
-      "orientation": {
-        "zoomMode": "once"
+    "portalFooter": {
+      "urls": [
+        {
+          "bezeichnung": "common:modules.portalFooter.designation",
+          "url": "https://geoinfo.hamburg.de/",
+          "alias": "Landesbetrieb Geoinformation und Vermessung",
+          "alias_mobil": "LGV"
+        }
+      ]
+    },
+    "tree": {
+      "addLayerButton": {
+        "active": false,
+        "searchBar": {
+          "active": true,
+          "searchInterfaceInstanceId": "elasticSearch_0",
+          "searchCategory": "Thema (externe Fachdaten)"
+        }
       },
-      "attributions": true,
-      "mousePosition": true
+      "highlightedFeatures": {
+        "active": true
+      }
+    },
+    "mainMenu": {
+      "expanded": true,
+      "title": {
+        "text": "Basic",
+        "logo": "./resources/img/mp_logo.png",
+        "link": "https://masterportal.org",
+        "toolTip": "Masterportal"
+      },
+      "searchBar": {
+        "searchInterfaces": [
+          {
+            "type": "komootPhoton",
+            "minChars": 3,
+            "serviceId": "11",
+            "limit": 10,
+            "lang": "de",
+            "lat": 53.6,
+            "lon": 10.0,
+            "bbox": "9.6,53.3,10.4,53.8"
+          },
+          {
+            "type": "visibleVector",
+            "resultEvents": {
+              "onClick": [
+                "openGetFeatureInfo",
+                "setMarker",
+                "zoomToResult"
+              ],
+              "onHover": [
+                "setMarker"
+              ]
+            }
+          },
+          {
+            "type": "topicTree",
+            "hitTemplate": "layer"
+          }
+        ]
+      },
+      "sections": [
+        [
+          {
+            "type": "fileImport"
+          },
+          {
+            "type": "openConfig"
+          },
+          {
+            "type": "contact",
+            "serviceId": "80001",
+            "includeSystemInfo": true,
+            "from": [
+              {
+                "email": "lgvgeoportal-hilfe@gv.hamburg.de",
+                "name": "LGVGeoportalHilfe"
+              }
+            ],
+            "to": [
+              {
+                "email": "lgvgeoportal-hilfe@gv.hamburg.de",
+                "name": "LGVGeoportalHilfe"
+              }
+            ]
+          },
+          {
+            "type": "language"
+          }
+        ]
+      ]
+    },
+    "secondaryMenu": {
+      "expanded": false,
+      "sections": [
+        [
+          {
+            "type": "wfst",
+            "name": "WFS-T Tool",
+            "layerIds": [
+              "lgvline",
+              "lgvpoint",
+              "lgvpolygon"
+            ],
+            "toggleLayer": false,
+            "lineButton": [
+              {
+                "layerId": "lgvline",
+                "available": true
+              }
+            ],
+            "pointButton": [
+              {
+                "layerId": "lgvpoint",
+                "available": true
+              }
+            ],
+            "polygonButton": [
+              {
+                "layerId": "lgvpolygon",
+                "available": true
+              }
+            ],
+            "update": "Bearbeiten!",
+            "delete": true
+          },
+          {
+            "type": "legend"
+          },
+          {
+            "type": "scaleSwitcher"
+          },
+          {
+            "type": "shareView"
+          },
+          {
+            "type": "measure"
+          },
+          {
+            "type": "coordToolkit",
+            "heightLayerId": "19173",
+            "heightElementName": "value_0",
+            "heightValueWater": "-20",
+            "heightValueBuilding": "200",
+            "zoomLevel": 5
+          },
+          {
+            "type": "bufferAnalysis"
+          },
+          {
+            "type": "layerSlider",
+            "layerIds": [
+              {
+                "title": "common:modules.layerSlider.serviceOne",
+                "layerId": "19173"
+              },
+              {
+                "title": "common:modules.layerSlider.serviceTwo",
+                "layerId": "2426"
+              },
+              {
+                "title": "common:modules.layerSlider.serviceThree",
+                "layerId": "8712.2"
+              },
+              {
+                "title": "common:modules.layerSlider.serviceFour",
+                "layerId": "1711"
+              }
+            ]
+          },
+          {
+            "type": "layerClusterToggler",
+            "layerIdList": [
+              "8712.1",
+              "8712.2",
+              "8712.3",
+              "8712.4"
+            ]
+          }
+        ]
+      ]
     }
   },
-  "Themenconfig": {
-    "Hintergrundkarten": {
-      "Layer": [
+  "layerConfig": {
+    "baselayer": {
+      "elements": [
         {
           "id": "453",
           "visibility": true
@@ -104,11 +228,36 @@
             "13716"
           ],
           "name": "Geobasiskarten (farbig)"
+        },
+        {
+          "id": "topplus_wmts",
+          "name": "TopPlusOpen (WMTS)",
+          "typ": "WMTS",
+          "visibility": false,
+          "showInLayerTree": true
         }
       ]
     },
-    "Fachdaten": {
-      "Layer": [
+    "subjectlayer": {
+      "elements": [
+        {
+          "id": "lgvline",
+          "name": "wfst_linie_test",
+          "visibility": false,
+          "typ": "WFS"
+        },
+        {
+          "id": "lgvpoint",
+          "name": "wfst_punkt_test",
+          "visibility": false,
+          "typ": "WFS"
+        },
+        {
+          "id": "lgvpolygon",
+          "name": "wfst_polygon_test",
+          "visibility": false,
+          "typ": "WFS"
+        },
         {
           "id": "2426",
           "name": "WMS Bezirke",
@@ -123,18 +272,6 @@
         {
           "id": "3302",
           "name": "WMS Trinkwasser"
-        },
-        {
-          "id": "myId2",
-          "children": [
-            {
-              "id": "682"
-            },
-            {
-              "id": "1731"
-            }
-          ],
-          "name": "WMS Kita und WMS Krankenhäuser"
         },
         {
           "id": "2003",
@@ -186,6 +323,60 @@
         {
           "id": "18105",
           "name": "STA Anzahl frei verfügbarer Fahrräder je StadtRad-Station"
+        },
+        {
+          "id": "8712.1",
+          "styleId": "8712.1",
+          "name": "Grundschulen",
+          "wfsFilter": "resources/xml/schulstandort.staatlich.5.grundschulen.xml",
+          "typ": "WFS",
+          "visibility": false,
+          "clusterDistance": 60,
+          "mouseHoverField": [
+            "schulname",
+            "kapitelbezeichnung"
+          ],
+          "showInLayerTree": true
+        },
+        {
+          "id": "8712.2",
+          "styleId": "8712.2",
+          "name": "Stadtteilschulen",
+          "wfsFilter": "resources/xml/schulstandort.staatlich.5.stadtteilschulen.xml",
+          "typ": "WFS",
+          "visibility": false,
+          "clusterDistance": 60,
+          "mouseHoverField": [
+            "schulname",
+            "kapitelbezeichnung"
+          ],
+          "showInLayerTree": true
+        },
+        {
+          "id": "8712.3",
+          "styleId": "8712.3",
+          "name": "Gymnasien",
+          "wfsFilter": "resources/xml/schulstandort.staatlich.5.gymnasien.xml",
+          "typ": "WFS",
+          "visibility": false,
+          "clusterDistance": 60,
+          "mouseHoverField": [
+            "schulname",
+            "kapitelbezeichnung"
+          ]
+        },
+        {
+          "id": "8712.4",
+          "styleId": "8712.4",
+          "name": "Sonderschulen",
+          "wfsFilter": "resources/xml/schulstandort.staatlich.5.sonderschulen.xml",
+          "typ": "WFS",
+          "visibility": false,
+          "clusterDistance": 60,
+          "mouseHoverField": [
+            "schulname",
+            "kapitelbezeichnung"
+          ]
         }
       ]
     }

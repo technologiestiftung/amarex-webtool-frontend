@@ -8,11 +8,11 @@
     },
     "button": {
         "back": "Zurück",
-        "download": "Herunterladen",
+        // "download": "Herunterladen",
         "search": "Suchen",
         "close": "Schließen",
         "minimize": "Minimieren",
-        "confirm": "Bestätigen",
+        // "confirm": "Bestätigen",
         "edit": "Bearbeiten",
         "delete": "Löschen",
         "save": "Speichern",
@@ -20,68 +20,75 @@
         "open": "Öffnen",
         "load": "Laden",
         "reset": "Zurücksetzen",
-        "stop": "Abbrechen"
+        // "stop": "Abbrechen"
     },
-    "colors": {
-        "blue": "Blau",
-        "yellow": "Gelb",
-        "grey": "Grau",
-        "green": "Grün",
-        "orange": "Orange",
-        "red": "Rot",
-        "black": "Schwarz",
-        "white": "Weiß"
-    },
-    "mouseHover": {
-        "infoText": "(weitere Objekte. Bitte zoomen.)"
-    },
+    // "colors": {
+    //     "blue": "Blau",
+    //     "yellow": "Gelb",
+    //     "grey": "Grau",
+    //     "green": "Grün",
+    //     "orange": "Orange",
+    //     "red": "Rot",
+    //     "black": "Schwarz",
+    //     "white": "Weiß"
+    // },
+    // "app-store": {
+    //   "loadServicesJsonFailed": "<strong>Die Datei {{layerConf}} konnte nicht geladen werden!</strong>",
+    //   "loadStylev3JsonFailed": "<strong>Die Datei {{style_v3}} konnte nicht geladen werden!</strong></br>Bitte prüfen Sie die Konfiguration 'styleConf' in der config.js."
+    // },
+    // "mouseHover": {
+    //     "infoText": "(weitere Objekte. Bitte zoomen.)"
+    // },
     "mapRegion": {
         "twoFingerPanAlert": "Bitte nutzen Sie zum Navigieren und Zoomen in der Karte zwei Finger."
     },
     "menu": {
         "topics": "Themen",
-        "name": "Menü",
+        // "name": "Menü",
+        // "ariaLabelOpen": "$t(menu.name) öffnen",
+        // "ariaLabelClose": "$t(menu.name) schließen",
         "views": {
             "name": "Ansichten",
             "view01": "Ansicht 1"
         },
         "wayToSchool": "Schulweg-Routing",
-        "filter": "Filter",
+        // "filter": "Filter",
         "tools": {
             "name": "Werkzeuge",
             "compareFeatures": "Vergleichsliste",
-            "parcelSearch": "Flurstückssuche",
-            "print": "Karte Drucken",
-            "measure": "Strecke / Fläche messen",
-            "coordToolkit": "Koordinaten",
+            // "parcelSearch": "Flurstückssuche",
+            // "print": "Karte Drucken",
+            // "measure": "Strecke / Fläche messen",
+            // "coordToolkit": "Koordinaten",
             "coord": "Koordinaten abfragen",
             "supplyCoord": "Koordinaten abfragen",
             "searchByCoord": "Koordinatensuche",
-            "fileImport": "Datei-Import",
-            "modeler3D": "3D Modeller",
-            "draw": "Zeichnen / Schreiben",
-            "shadow": "Schatten",
+            // "fileImport": "Datei-Import",
+            // "draw": "Zeichnen / Schreiben",
+            // "shadow": "Schatten",
             "commuterLines": "Pendler (Linien)",
             "commuterAnimation": "Pendler (Animation)",
-            "layerSlider": "Zeitreihe",
-            "featureLister": "Liste",
+            // "layerSlider": "Layerserie",
+            // "featureLister": "Liste",
             "saveSelection": "Auswahl speichern",
-            "getInfos": "Informationen abfragen",
-            "addWms": "WMS hinzufügen",
-            "wfsTransaction": "WFS-T Tool",
-            "scaleSwitcher": "Maßstab umschalten",
-            "selectFeatures": "Features auswählen",
-            "legend": "Legende",
-            "styleVt": "Style Vector Tile Layers",
-            "bufferAnalysis": "Buffer Analyse",
-            "wfsSearch": "WFS Suche",
-            "routing": "Routing",
-            "statisticDashboard": "Statistik Dashboard",
-            "layerClusterToggler": "Layer-Gruppe öffnen",
-            "login": "Login"
+            // "getInfos": "Informationen abfragen",
+            // "addWms": "WMS hinzufügen",
+            // "wfsTransaction": "WFS-T Tool",
+            // "scaleSwitcher": "Maßstab umschalten",
+            // "selectFeatures": "Features auswählen",
+            // "shareView": "Auswahl teilen",
+            // "legend":"Legende",
+            // "styleVt": "Style Vector Tile Layers",
+            // "bufferAnalysis": "Buffer Analyse",
+            // "wfsSearch": "WFS Suche",
+            // "routing": "Routing",
+            // "layerClusterToggler": "Layer-Gruppe öffnen",
+            // "openConfig": "Karte öffnen",
+            // "language": "Sprache ändern",
+            // "news": "Neuigkeiten"
         },
-        "contact": "Kontakt",
-        "info": "Informationen"
+        // "contact": "Kontakt",
+        // "info": "Informationen"
     },
     "tree": {
         "trafficCameras": "Verkehrskameras",
@@ -92,13 +99,17 @@
         "showAllTopics": "Alle Themen darstellen",
         "securedAllTopics": "Abgesicherte Themen",
         "category": "Kategorie",
-        "backgroundMaps": "Hintergrundkarten",
+        // "categoryOpendata": "Opendata",
+        // "categoryInspire": "Inspire",
+        // "categoryOrganisation": "Behörde",
+        "baselayers": "Hintergrundkarten",
         "subjectData": "Fachdaten",
         "subjectData3D": "3D Daten",
         "subjectDataTime": "Zeitreihen",
         "selectedTopics": "Ausgewählte Themen",
         "removeSelection": "Auswahl entfernen",
-        "infosAndLegend": "Informationen und Legende",
+        "drag": "Verschieben",
+        // "infosAndLegend": "Informationen zum Datensatz anzeigen",
         "removeTopic": "Thema entfernen",
         "showTopic": "Thema darstellen",
         "securedTopic": "Abgesichertes Thema",
@@ -111,42 +122,56 @@
         "levelUp": "Ebene nach oben",
         "levelDown": "Ebene nach unten",
         "externalTechnicalData": "Externe Fachdaten",
-        "selectedFeatures": "Auswahl:",
+        // "selectedFeatures": "Auswahl:",
         "filterIconText": "Filter öffnen",
-        "scaleText": "Wird im folgenden Maßstabsbereich angezeigt: "
+        "<": "Wird im folgenden Maßstabsbereich angezeigt: ",
+        // "selectAll": "alle auswählen",
+        // "iconRemoveLayer": "Thema aus Karte entfernen",
+        // "iconSubMenu": "Weitere Funktionen anzeigen",
+        // "iconTransparency": "Transparenz",
+        // "addLayer": "hinzufügen",
+        // "addSubject": "Thema hinzufügen",
+        // "backgrounds": "Hintergründe",
+        // "selectedSubjectsCount_one": "Sie haben {{count}} zusätzliches Thema ausgewählt",
+        // "selectedSubjectsCount_other": "Sie haben {{count}} zusätzliche Themen ausgewählt",
+        // "addSelectedSubjectsToMap": "Ausgewählte Themen der Karte hinzufügen"
     },
     "date": "Datum",
     "time": "Zeit",
     "modules": {
         "core": {
-            "modelList": {
-                "layer": {
-                    "wrongStyleId": "Unter der angegeben StyleId: {{styleId}} konnte kein Styleobjekt gefunden werden. Bitte stellen Sie sicher, dass in der verwendeten Style.json ein Style mit der StyleId: {{styleId}} konfiguriert ist.",
-                    "sensor": {
-                        "httpOnError": "<strong>Unerwarteter Fehler beim Laden der Sensordaten des Layers {{name}} aufgetreten</strong>"
-                    },
-                    "wms": {
-                        "allowCookies": "<strong>Bitte erlauben sie Cookies, damit diese Hintergrundkarte geladen werden kann.</strong>",
-                        "errorTimeLayer": "Es ist ein Fehler bei der Vorbereitung des Layer mit der id {{id}} aufgetreten: {{error}}",
-                        "invalidTimeLayer": "Der konfigurierte Layer mit der Id {{id}} enthält nicht alle notwendigen Parameter für einen WMS-T.",
-                        "warningTimeLayerQuantity": "<strong>Achtung:</strong> Es wurden mehr als ein Timelayer initial ausgewählt. </br>Es wird nur <strong> {{name}} </strong>angezeigt."
-                    },
-                    "errorHandling": {
-                        "403": "<strong>Zugriff auf {{layerName}} nicht möglich!</strong></br> Sie sind leider nicht berechtigt, die Daten für {{layerName}} anzuzeigen. Das Thema wurde automatisch deaktiviert.</br></br>Bitte wenden sie sich für eine Zugriffsberechtigung an die für diese Daten verantwortliche Stelle.</br></br>",
-                        "LinkMetadata": "Kontaktdaten und weitere Informationen finden sie <a href={{linkMetadata}} target=\"_blank\">hier</a>."
-                    }
-                }
+          "modelList": {
+            "layer": {
+              "urlParamWarning": "Der parametrisierte Aufruf ist fehlerhaft. Der Layer mit der Id: <b>{{layerId}}</b> existiert nicht und wird ignoriert.",
+              // "wrongStyleId": "Unter der angegeben StyleId: {{styleId}} konnte kein Styleobjekt gefunden werden. Bitte stellen Sie sicher, dass in der verwendeten Style.json ein Style mit der StyleId: {{styleId}} konfiguriert ist.",
+              "sensor": {
+                "httpOnError": "<strong>Unerwarteter Fehler beim Laden der Sensordaten des Layers {{name}} aufgetreten</strong>"
+              },
+              "wms": {
+                "allowCookies":"<strong>Bitte erlauben sie Cookies, damit diese Baselayer geladen werden kann.</strong>",
+                "errorTimeLayer": "Es ist ein Fehler bei der Vorbereitung des Layer mit der id {{id}} aufgetreten: {{error}}",
+                "invalidTimeLayer": "Der konfigurierte Layer mit der Id {{id}} enthält nicht alle notwendigen Parameter für einen WMS-T.",
+                "warningTimeLayerQuantity": "<strong>Achtung:</strong> Es wurden mehr als ein Timelayer initial ausgewählt. </br>Es wird nur <strong> {{name}} </strong>angezeigt."
+              },
+              // "errorHandling": {
+                // "403": "<strong>Zugriff auf {{layerName}} nicht möglich!</strong></br> Sie sind leider nicht berechtigt, die Daten für {{layerName}} anzuzeigen. Das Thema wurde automatisch deaktiviert.</br></br>Bitte wenden sie sich für eine Zugriffsberechtigung an die für diese Daten verantwortliche Stelle.</br></br>" ,
+                // "LinkMetadata": "Kontaktdaten und weitere Informationen finden sie <a href={{linkMetadata}} target=\"_blank\">hier</a>."
+              // }
             }
         },
-        "alerting": {
-            "hideMessage": "Diese Meldung nicht mehr anzeigen",
-            "categories": {
-                "error": "Fehler",
-                "info": "Info",
-                "success": "Erfolg",
-                "warning": "Achtung"
-            }
-        },
+        // "alerting": {
+            // "alertWindowTitle": "Informationen"
+            // "categories": {
+            //   "error": "Fehler",
+            //   "info": "Info",
+            //   "news": "News",
+            //   "success": "Erfolg",
+            //   "warning": "Achtung"
+            // },
+            // "created": "Erstellt: ",
+            // "hideMessage": "Diese Meldung nicht mehr anzeigen",
+            // "showMessage": "Diese Meldung anzeigen"
+        // },
         "confirmAction": {
             "defaultHeadline": "Bestätigung benötigt",
             "defaultCopy": "Bitte bestätigen Sie diese Aktion.",
@@ -156,48 +181,48 @@
         "language": {
             "languageTitle": "Bitte wählen Sie eine Sprache aus",
             "toggleWindow": "Fenster öffnen oder schließen",
-            "de": "Deutsch",
-            "en": "English",
-            "es": "Español",
-            "it": "Italiano",
-            "platt": "Platt",
-            "pt": "Português",
-            "ru": "Русский",
-            "tr": "Türkçe",
-            "ua": "Українська"
+            // "de": "Deutsch",
+            // "en": "English",
+            // "es": "Español",
+            // "it": "Italiano",
+            // "platt": "Platt",
+            // "pt": "Português",
+            // "ru": "Русский",
+            // "tr": "Türkçe",
+            // "ua": "Українська"
         },
         "cswParser": {
             "noMetadataMessage": "Keine Metadaten vorhanden.",
-            "continual": "kontinuierlich",
-            "daily": "täglich",
-            "weekly": "wöchentlich",
-            "fortnightly": "zweimal wöchentlich",
-            "monthly": "monatlich",
-            "quarterly": "quartalsweise",
-            "biannually": "zweimal jährlich",
-            "annually": "jährlich",
-            "asNeeded": "bei Bedarf",
-            "irregular": "unregelmäßige Intervalle",
-            "notPlanned": "nicht geplant",
-            "unknown": "unbekannt"
+            // "continual": "kontinuierlich",
+            // "daily": "täglich",
+            // "weekly": "wöchentlich",
+            // "fortnightly": "zweimal wöchentlich",
+            // "monthly": "monatlich",
+            // "quarterly": "quartalsweise",
+            // "biannually": "zweimal jährlich",
+            // "annually": "jährlich",
+            // "asNeeded": "bei Bedarf",
+            // "irregular": "unregelmäßige Intervalle",
+            // "notPlanned": "nicht geplant",
+            // "unknown": "unbekannt"
         },
         "layerInformation": {
-            "additionalMetadata": "weitere Metadaten",
-            "addressSuffix": "Adresse",
-            "multiAddress": "Dienstadressen",
-            "attachFileMessage": "ggf. Datei-Typ beim Download anhängen",
-            "closeButton": "Schließen",
-            "downloadDataset": "Datensatz herunterladen",
-            "errorMessage": "Die Abfrage der Metadaten ist fehlgeschlagen. Falls das Problem weiterhin besteht, wenden Sie sich bitte an den Eigentümer des Dienstes: <b>{{cswObjCswUrl}}</b>",
-            "informationAndLegend": "Informationen und Legende",
-            "lastModified": "Letzte Änderung",
-            "legend": "Legende",
-            "noMetadataLoaded": "Es konnten keine Metadaten geladen werden!",
-            "noMetadataMessage": "$t(modules.cswParser.noMetadataMessage)",
-            "periodicityTitle": "Periodizität",
-            "publicationCreation": "Publikation / Erstellung",
-            "buildings": "Gebäude",
-            "changeLayerInfo": "Informationstext wechseln"
+          // "additionalMetadata": "weitere Informationen...",
+          // "addressSuffix": "Adresse",
+          "multiAddress": "Dienstadressen",
+          // "attachFileMessage": "ggf. Datei-Typ beim Download anhängen",
+          "closeButton": "Schließen",
+          // "downloadDataset": "Datensatz herunterladen",
+          // "errorMessage": "Die Abfrage der Metadaten ist fehlgeschlagen. Falls das Problem weiterhin besteht, wenden Sie sich bitte an den Eigentümer des Dienstes: <b>{{cswObjCswUrl}}</b>",
+          // "informationAndLegend": "Informationen und Legende",
+          // "lastModified": "Letzte Änderung",
+          // "legend": "Legende",
+          // "noMetadataLoaded": "Es konnten keine Metadaten geladen werden!",
+          "noMetadataMessage": "$t(modules.cswParser.noMetadataMessage)",
+          // "periodicityTitle": "Periodizität",
+          // "publicationCreation": "Publikation / Erstellung",
+          "buildings":"Gebäude",
+          "changeLayerInfo": "Informationstext wechseln"
         },
         "login": {
             "login": "Login",
@@ -221,22 +246,22 @@
             "folderName": "Über URL übergebene Feature",
             "typeLabel": "Geometrietyp",
             "messages": {
-                "featureParsing": "FeatureViaURL: Es konnten nicht alle übergebenen Feature verarbeitet werden.",
-                "featureParsingAll": "FeatureViaURL: Alle übergebenen Feature wurden nicht mit dem richtigen Datentyp übergeben. Bitte beachten Sie die Dokumentation.",
-                "featureParsingNoneAdded": "FeatureViaURL: Allen übergebenen Feature fehlen mindestens ein Parameter. Es wurden keine Feature der Karte hinzugefügt. Bitte beachten Sie die Dokumentation.",
+                // "featureParsing": "FeatureViaURL: Es konnten nicht alle übergebenen Feature verarbeitet werden.",
+                // "featureParsingAll": "FeatureViaURL: Alle übergebenen Feature wurden nicht mit dem richtigen Datentyp übergeben. Bitte beachten Sie die Dokumentation.",
+                // "featureParsingNoneAdded": "FeatureViaURL: Allen übergebenen Feature fehlen mindestens ein Parameter. Es wurden keine Feature der Karte hinzugefügt. Bitte beachten Sie die Dokumentation.",
                 "geometryNotSupported": "FeatureViaURL: Der in der Konfiguration für den Layer {{layerId}} deklarierte Geometrietyp {{geometryType}} wird nicht unterstützt.",
-                "layerNotFound": "FeatureViaURL: Es konnte kein Layer mit der ID {{layerId}} gefunden werden.",
+                // "layerNotFound": "FeatureViaURL: Es konnte kein Layer mit der ID {{layerId}} gefunden werden.",
                 "noLayers": "FeatureViaURL: Für die übergebenen Feature wurden keine Layer in der Konfiguration definiert.",
-                "noNameDefined": "FeatureViaURL: Es wurde kein Name für den Layer mit der ID {{layerId}} in der Konfiguration definiert.",
+                // "noNameDefined": "FeatureViaURL: Es wurde kein Name für den Layer mit der ID {{layerId}} in der Konfiguration definiert.",
                 "defaultTreeNotSupported": "FeatureViaURL: FeatureViaURL ist nur für den Treetype custom oder light verfügbar."
             }
         },
-        "highlightFeaturesByAttribute": {
-            "messages": {
-                "requestFailed": "Datenabfrage fehlgeschlagen.",
-                "configurationError": "Konfiguration fehlerhaft. Bitte Konsolenausgabe prüfen."
-            }
-        },
+        // "highlightFeaturesByAttribute": {
+        //     "messages": {
+        //         "requestFailed": "Datenabfrage fehlgeschlagen.",
+        //         "configurationError": "Konfiguration fehlerhaft. Bitte Konsolenausgabe prüfen."
+        //     }
+        // },
         "quickHelp": {
             "titleTag": "Hilfe öffnen/schließen",
             "search": {
@@ -258,7 +283,7 @@
                 "topics": "Wie baut sich der Themenbaum unter Fachdaten auf?",
                 "selection": "Was ist die Auswahl?",
                 "saveSelection": "Die Auswahl speichern",
-                "topicsHelp1": "Der Themenbaum ist gegliedert in Hintergrundkarten, einen Katalog an Fachdaten und die aktuelle Auswahl an Kartenebenen.",
+                "topicsHelp1": "Der Themenbaum ist gegliedert in Baselayer, einen Katalog an Fachdaten und die aktuelle Auswahl an Kartenebenen.",
                 "topicsHelp2": "Der FHH-Atlas stellt alle Kartenebenen (Layer) dar, denen ein Datensatz im Hamburger Metadatenkatalog (HMDK) zugeordnet ist. Die Zuordnung nimmt LGV gemäß der Verweise im HMDK vor. In Zweifelsfällen erfolgt eine Absprache mit den Fachdatenhaltern. Die den Kartenebenen zugeordneten Datensätze steuern den automatisierten Aufbau des Themenbaums im FHH-Atlas:<br/><br/> Die Oberkategorien des Themenbaums ergeben sich aus den Open Data-Kategorien (z.B. Bevölkerung, Gesundheit), die den Datensätzen im HMDK zugeordnet wurden (s. Bild unten).  Jeder Datensatz taucht in ‚seiner‘ Kategorie auf. Zurzeit muss für die Auswahl einer Open Data-Kategorie der Datensatz auch als Open Data veröffentlicht werden. Diese technische Restriktion wird bald durch eine Weiterentwicklung der Erfassungsoberfläche des HMDK aufgehoben. Die Auswahl einer Open Data- Kategorie kann dann unabhängig von der Veröffentlichung als Open Data erfolgen. Ist einem Datensatz keine Kategorie zugeordnet, wird der Datensatz im Themenbaum unter Sonstiges angezeigt.<br/> Wir haben uns für die Open Data-Kategorien entschieden, da die Daten im Transparenzportal ebenfalls nach diesen Kategorien geordnet werden und viele Datensätze schon entsprechend kategorisiert sind.<br/> Alternativ kann der Baum auch nach den INSPIRE-Kategorien aufgebaut werden.",
                 "topicsHelp3": "Die Ebene unterhalb der Oberkategorien stellt einen Datensatz aus dem HMDK dar. Sind einem Datensatz mehrere Kartenebenen zugeordnet, wird ein Ordner erzeugt. Der Ordner heißt so wie der Datensatz im HMDK (z.B. Verkehrszählstellen Hamburg, s. Bild unten). Innerhalb des Ordners finden sich dann die einzelnen Kartenebenen, die dem Datensatz zugeordnet sind (z.B. Bedarfszählstelle, s. Bild unten). (Für Fachleute: Die Kartenebenen heißen in der Regel so, wie sie im zugehörigen Kartendienst heißen, d.h. wie sie im zugrundeliegenden Kartendokument benannt wurden.)<br/> Ist einem Datensatz genau eine Kartenebene zugeordnet, wird ein einfacher Eintrag im Themenbaum erzeugt. Der einfache Eintrag heißt ebenfalls so wie der Datensatz im HMDK (z.B. Aktuelle Baustellen, s. Bild unten).<br/> Für jeden Layer können über den i-Button (<span class=\"{{iconCls}}\"></span>) so die zugehörigen Metadaten zu Datensätzen aufgerufen werden.",
                 "topicsHelp4": "Der Themenbaum wird täglich auf Basis der Informationen im HMDK erzeugt und aktualisiert. Falls ‚Ihr‘ Datensatz also nicht in der richtigen Kategorie auftaucht, können Sie das selbst ändern. Sie passen im zugehörigen HMDK-Eintrag einfach die OpenData-Kategorie an und am nächsten Tag taucht der Datensatz in der richtigen Kategorie im FHH-Atlas auf. Falls die ‚Ihrem‘ Datensatz zugeordneten Kartenebenen nicht korrekt sind, wenden Sie sich bitte an GVGeoportal@gv.hamburg.de.<br/><br/> Wir bitten darum, die Kategorien auf Richtigkeit zu prüfen. Wenn im HMDK einem Datensatz mehrere Kategorien zugeordnet sind, erscheint der der Datensatz im Themenbaum mehrfach. Aus Gründen der Übersichtlichkeit, empfehlen wir pro Datensatz nur eine Kategorie zu vergeben.",
@@ -326,11 +351,16 @@
             }
         },
         "footer": {
-            "designation": "Kartographie und Gestaltung:",
-            "mapDiscrepancy": "Kartenunstimmigkeit",
-            "scale": "Skalierung der Karte",
+            // "designation": "Kartographie und Gestaltung:",
+            // "mapDiscrepancy": "Kartenunstimmigkeit",
+            // "scale": "Skalierung der Karte",
             "mouse": "Position der Maus"
         },
+        // "layerPill": {
+        //     "next": "Nächsten Layer anzeigen",
+        //     "previous": "Vorherigen Layer anzeigen",
+        //     "remove": "Layer entfernen"
+        // },
         "tools": {
             "info": {
                 "disclaimer": "Haftungsausschluss",
@@ -339,214 +369,182 @@
                 }
             },
             "addWMS": {
-                "completeMessage": "&#9989; Die Layer des angeforderten WMS wurden dem Themenbaum unter dem Menüpunkt <strong>Externe Fachdaten</strong> hinzugefügt!",
+                // "completeMessage": "&#9989; Die Layer des angeforderten WMS wurden dem Themenbaum unter dem Menüpunkt <strong>Externe Fachdaten</strong> hinzugefügt!",
                 "error": "&#10060; Leider konnte unter der angegebenen URL kein (gültiger) WMS gefunden werden!",
-                "errorMessage": "&#10060; Der angegebene Dienst konnte nicht geladen werden. Bitte stellen Sie sicher, dass die URL richtig angegeben wurde.<br><br> Falls das Problem weiterhin auftritt, wenden Sie sich bitte an den Betreiber des Dienstes mit folgendem Hinweis:<br><strong>Es soll sichergestellt werden, dass ein CORS-Header für den Dienst gesetzt ist. Dies wird von der <a target='_blank' href='https://www.gdi-de.org/SharedDocs/Downloads/DE/GDI-DE/Dokumente/Architektur_GDI-DE_Bereitstellung_Darstellungsdienste.pdf?__blob=publicationFile'>GDI-DE</a> im Kapitel 4.7.1 empfohlen.</strong>",
-                "errorHttpsMessage": " &#10060; Das von Ihnen angeforderte WMS befindet sich unter einer http-Url. Das Masterportal kann nur WMS über https (SSL) einbinden.",
-                "errorEmptyUrl": "Bitte die URL eines WMS in das Textfeld eingeben!",
-                "placeholder": "Hier bitte die WMS-URL eingeben.",
-                "textLoadLayer": "Layer Laden",
-                "ifInExtent": "&#10060; Die über den WMS bereitgestellten Geodaten liegen außerhalb des darstellbaren Bereichs. WMS hinzufügen ist nicht möglich.",
-                "checkVersion": "&#10060; WMS hinzufügen ist nur möglich wenn die Version des externen WMS Layers gleich oder größer als 1.3.0 ist."
+                // "errorMessage": "&#10060; Der angegebene Dienst konnte nicht geladen werden. Bitte stellen Sie sicher, dass die URL richtig angegeben wurde.<br><br> Falls das Problem weiterhin auftritt, wenden Sie sich bitte an den Betreiber des Dienstes mit folgendem Hinweis:<br><strong>Es soll sichergestellt werden, dass ein CORS-Header für den Dienst gesetzt ist. Dies wird von der <a target='_blank' href='https://www.gdi-de.org/SharedDocs/Downloads/DE/GDI-DE/Dokumente/Architektur_GDI-DE_Bereitstellung_Darstellungsdienste.pdf?__blob=publicationFile'>GDI-DE</a> im Kapitel 4.7.1 empfohlen.</strong>",
+                // "errorHttpsMessage": " &#10060; Das von Ihnen angeforderte WMS befindet sich unter einer http-Url. Das Masterportal kann nur WMS über https (SSL) einbinden.",
+                // "errorEmptyUrl": "Bitte die URL eines WMS in das Textfeld eingeben!",
+                // "placeholder": "Hier bitte die WMS-URL eingeben.",
+                // "textLoadLayer": "Layer Laden",
+                // "ifInExtent": "&#10060; Die über den WMS bereitgestellten Geodaten liegen außerhalb des darstellbaren Bereichs. WMS hinzufügen ist nicht möglich.",
+                "checkVersion": "&#10060; WMS hinzufügen ist nur möglich wenn die Version des externen WMS Layers gleich oder größer als 1.3.0 ist.",
+                // "alreadyAdded": "Die Layer des angeforderten WMS wurden bereits hinzugefügt.",
+                // "alertTitleSuccess": "Layer erfolgreich hinzugefügt",
+                // "errorTitle": "Layer konnte nicht hinzugefügt werden"
             },
-            "contact": {
-                "error": {
-                    "mail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
-                    "message": "Versendung der E-Mail fehlgeschlagen!",
-                    "messageInput": "Ihre Nachricht muss mindestens eine Länge von {{length}} Zeichen aufweisen.",
-                    "phone": "Unter welcher Telefonnummer können wir Sie erreichen?",
-                    "username": "Bitte nennen Sie uns Ihren Namen."
-                },
-                "placeholder": {
-                    "mail": "Ihre E-Mail-Adresse",
-                    "message": "Bitte formulieren Sie hier Ihre Frage und drücken Sie auf \"$t(common:modules.tools.contact.sendButton)\".",
-                    "phone": "Ihre Telefonnummer",
-                    "username": "Ihr Name"
-                },
-                "errorIncompleteDeclarations": "Bitte füllen Sie alle Felder des Kontaktformulars korrekt aus damit Ihre Anfrage verschickt werden kann.",
-                "mailSubject": "Supportanfrage zum Portal ",
-                "messageLabel": "Ihre Nachricht",
-                "privacyPolicy": {
-                    "info": "Sie erklären sich damit einverstanden, dass Ihre Daten zur Bearbeitung Ihres Anliegens verwendet werden. Weitere Informationen und Widerrufshinweise finden Sie in der <a href=\"{{privacyPolicyLink}}\" target=\"_blank\">Datenschutzerklärung</a>.",
-                    "label": "Bitte akzeptieren Sie die Datenschutzerklärung."
-                },
-                "sendButton": "Abschicken",
-                "successMessage": "Ihre Anfrage wurde erfolgreich versendet.",
-                "successTicket": "Ihre Ticketnummer lautet: "
+            // "contact": {
+                // "error": {
+                //     "mail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+                //     "message": "Versendung der E-Mail fehlgeschlagen!",
+                //     "messageInput": "Ihre Nachricht muss mindestens eine Länge von {{length}} Zeichen aufweisen.",
+                //     "phone": "Unter welcher Telefonnummer können wir Sie erreichen?",
+                //     "username": "Bitte nennen Sie uns Ihren Namen."
+                // },
+                // "placeholder": {
+                //     "mail": "Ihre E-Mail-Adresse",
+                //     "message": "Bitte formulieren Sie hier Ihre Frage und drücken Sie auf \"$t(common:modules.tools.contact.sendButton)\".",
+                //     "phone": "Ihre Telefonnummer",
+                //     "username": "Ihr Name"
+                // },
+                // "errorIncompleteDeclarations": "Bitte füllen Sie alle Felder des Kontaktformulars korrekt aus damit Ihre Anfrage verschickt werden kann.",
+                // "mailSubject": "Supportanfrage zum Portal ",
+                // "messageLabel": "Ihre Nachricht",
+                // "privacyPolicy": {
+                //   "info": "Sie erklären sich damit einverstanden, dass Ihre Daten zur Bearbeitung Ihres Anliegens verwendet werden. Weitere Informationen und Widerrufshinweise finden Sie in der <a href=\"{{privacyPolicyLink}}\" target=\"_blank\">Datenschutzerklärung</a>.",
+                //   "label": "Bitte akzeptieren Sie die Datenschutzerklärung."
+                // },
+                // "sendButton": "Kontakt aufnehmen",
+                // "addFileButton": "Bild anhängen",
+                // "successMessage": "Ihre Anfrage wurde erfolgreich versendet.",
+                // "successTicket": "Ihre Ticketnummer lautet: ",
+                // "fileSizeMessage": "Die angehängte Datei überschreitet die festgelegte Dateigröße.",
+                // "fileFormatMessage": "Die angehängte Datei befindet sich nicht im korrekten Format. Zulässige Formate sind: .jpg, .jpeg und .png"
+            // },
+            "openConfig": {
+              // "explanation": "Öffnen Sie eine Karte, die Sie als lokale Konfigurationsdatei abgespeichert haben.",
+              // "loadFileFailed": "Die Konfigurationsdatei <b>{{targetFileName}}</b> wurde nicht geladen. Das Dateiformat <b>{{targetFileFormat}}</b> wird nicht unterstützt. Bitte laden Sie eine Datei im Dateiformat <b>json</b>.",
+              // "loadFileSuccess": "Die Konfigurationsdatei <b>{{targetFileName}}</b> wurde erfolgreich geladen",
+              "headline": "Karte öffnen",
+              // "openFile": "Konfigurationsdatei öffnen"
             },
             "print": {
-                "titleLabel": "Titel",
+                // "titleLabel": "Titel",
                 "titlePlaceholder": "Mein Titel",
-                "subtitleLabel": "Untertitel",
-                "textFieldLabel": "Freitextfeld",
-                "authorLabel": "Ersteller",
-                "layoutLabel": "Layout",
-                "formatLabel": "Format",
-                "dpiLabel": "DPI",
-                "scaleLabel": "Druckmaßstab",
-                "outputfileTitleLabel": "Dateiname",
-                "validationWarning": "Der Dateiname darf nur Buchstaben und die Sonderzeichen '-' und '_' enthalten.",
-                "withLegendLabel": "Mit Legende",
-                "autoAdjustScale": "Druckmaßstab automatisch anpassen",
-                "printGeometries": "Gezeichnete Geometrien ausgeben",
-                "printLabel": "Datei erstellen",
-                "downloadFile": "Herunterladen",
-                "createDownloadFile": "Wird erstellt...",
-                "alertMessage": "Die maximale Anzahl an parallel ausgeführten Ausdrucken ist überschritten.<br>Bitte versuchen Sie es erneut sobald die Erstellung anderer Ausdrucke abgeschlossen ist.",
-                "waitForPrintErrorMessage": "Die Erstellung des Ausdrucks ist fehlgeschlagen.<br>Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut oder wenden Sie sich an den Betreiber des Portal.",
-                "withInfoLabel": "Mit Informationen",
-                "vtlWarning": "Da MapFish 3 keine Vector Tile Layer unterstützt, werden die folgenden aktiven Layer nicht in der Printansicht erscheinen:",
+                // "layoutLabel": "Layout",
+                // "formatLabel": "Format",
+                // "dpiLabel": "DPI",
+                // "scaleLabel": "Druckmaßstab",
+                // "outputfileTitleLabel": "Dateiname",
+                // "validationWarning": "Der Dateiname darf nur Buchstaben und die Sonderzeichen '-' und '_' enthalten.",
+                // "withLegendLabel": "Mit Legende",
+                // "autoAdjustScale": "Druckmaßstab automatisch anpassen",
+                // "printLabel": "Datei erstellen",
+                // "downloadFile": "Herunterladen",
+                // "createDownloadFile": "Wird erstellt...",
+                // "alertMessage": "Die maximale Anzahl an parallel ausgeführten Ausdrucken ist überschritten.<br>Bitte versuchen Sie es erneut sobald die Erstellung anderer Ausdrucke abgeschlossen ist.",
+                // "waitForPrintErrorMessage": "Die Erstellung des Ausdrucks ist fehlgeschlagen.<br>Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut oder wenden Sie sich an den Betreiber des Portal.",
+                // "withInfoLabel": "Mit Informationen",
+                // "vtlWarning": "Da MapFish 3 keine Vector Tile Layer unterstützt, werden die folgenden aktiven Layer nicht in der Printansicht erscheinen:",
                 "layoutNameList": {
                     "A4 Hochformat": "A4 Hochformat",
                     "A4 Querformat": "A4 Querformat",
                     "A3 Hochformat": "A3 Hochformat",
                     "A3 Querformat": "A3 Querformat"
                 },
-                "hintInfoScale": "Der ausgewählte Druckmaßstab weicht vom Maßstab im Kartenfenster ab. Das kann zu einem veränderten Kartenlayout im Druck führen.",
-                "invisibleLayer": "Folgende Themen können im ausgewählten Druckmaßstab {{scale}} nicht gedruckt werden:",
-                "improveResolution": "Auflösung verbessern"
+                // "hintInfoScale": "Wenn der ausgewählte Druckmaßstab vom Maßstab im Kartenfenster abweicht, kann dies zu einem veränderten Kartenlayout im Druck führen.",
+                // "invisibleLayer": "Folgende Themen können im ausgewählten Druckmaßstab {{scale}} nicht gedruckt werden:"
             },
             "shadow": {
-                "shadowDisplay": "Schattendarstellung:",
-                "pickDate": "Wählen Sie ein Datum:",
-                "slideHour": "Wählen Sie eine Uhrzeit:",
+                // "shadowDisplayOn": "Schatten auf der Karte einblenden",
+                // "shadowDisplayOff": "Schatten auf der Karte ausblenden",
+                // "pickDate": "Wählen Sie ein Datum:",
+                // "slideHour": "Wählen Sie eine Uhrzeit:",
                 "slideDate": "Wählen Sie ein Datum:"
-            },
-            "styleVT": {
-                "introText": "Auf VectorTiles-Layer können verschiedene vordefinierte Styles angewendet werden, um die Ansicht für den jeweiligen Anwendungszweck zu optimieren.",
-                "noStyleableLayers": "Derzeit sind keine Themen verfügbar, auf die dieses Werkzeug angewendet werden könnte.",
-                "theme": "Thema",
-                "chooseTheme": "Bitte aktives Thema auswählen",
-                "style": "Style"
-            },
+              },
+            // "styleVT": {
+              // "introText": "Auf VectorTiles-Layer können verschiedene vordefinierte Styles angewendet werden, um die Ansicht für den jeweiligen Anwendungszweck zu optimieren.",
+              // "noStyleableLayers": "Derzeit sind keine Themen verfügbar, auf die dieses Werkzeug angewendet werden könnte.",
+              // "theme": "Thema",
+              // "chooseTheme": "Bitte aktives Thema auswählen",
+              // "style": "Style"
+            // },
             "featureLister": {
-                "title": "Feature List",
-                "chooseTheme": "Thema wählen",
-                "visibleVectorLayers": "Sichtbare Vektorlayer",
-                "list": "Liste",
-                "details": "Details",
-                "more": "Mehr...",
-                "detailsOfSelected": "Details des ausgewählten Features",
+                // "chooseTheme": "Thema wählen",
+                // "visibleVectorLayers": "Sichtbare Vektorlayer",
+                // "list": "Liste",
+                // "details": "Details",
+                // "more": "Mehr...",
+                // "detailsOfSelected": "Details des ausgewählten Features",
                 "alert": "Der Versuch das selektierte Feature zu zeigen ist fehlgeschlagen, da es keine Geometrie hat.",
-                "key": "{{shownFeatures}} von {{featureCount}} Features gelistet"
+                // "key": "{{shownFeatures}} von {{featureCount}} Features gelistet"
             },
-            "layerSlider": {
-                "displayLayers": "Anzeige diverser Layer.",
-                "title": "Simulation von Beispiel-WMS",
-                "titleNotConfigured": "Titel nicht konfiguriert",
-                "serviceOne": "Dienst 1",
-                "serviceTwo": "Dienst 2",
-                "serviceThree": "Dienst 3",
-                "serviceFour": "Dienst 4"
-            },
+            // "layerSlider": {
+                // "displayLayers": "Anzeige diverser Layer.",
+                // "sliderTypeHandle": "Slider-Modus",
+                // "sliderTypePlayer": "Player-Modus",
+                // "title": "Simulation von Beispiel-Diensten",
+                // "titleNotConfigured": "Titel nicht konfiguriert",
+                // "serviceOne": "Dienst 1",
+                // "serviceTwo": "Dienst 2",
+                // "serviceThree": "Dienst 3",
+                // "serviceFour": "Dienst 4"
+            // },
             "filter": {
-                "alertingMessages": {
-                    "noMatchingFilterId": "Die konfigurierte Filter Id ist nicht vorhanden."
-                },
-                "filterButton": "Filtern",
-                "searchInMapExtent": "Suche im aktuellen Kartenausschnitt",
-                "snippetTags": {
-                    "selectionText": "Ihre Auswahl:",
-                    "resetAll": "Zurücksetzen"
-                },
-                "info": {
-                    "snippetCheckbox": "Das Kontrollkästchen kann durch einen Mausklick aktiviert/deaktiviert werden.",
-                    "snippetDropdown": "Sie können einen oder mehrere Werte aus der vorgegebenen Werte-Liste auswählen.",
-                    "snippetInput": "Sie können die gewünschten Suchkriterien im Textfeld eingeben.",
-                    "snippetSlider": "Für die Eingabe eines numerischen Wertes als Suchkriterium, können Sie den Schieberegler nach Rechts oder Links schieben. Zusätzlich können Sie den Wert direkt im Eingabefeld eingeben.",
-                    "snippetSliderRange": "Für die Eingabe von numerischen Werten als Minimum- bzw. Maximum-Suchkriterium können Sie den linken bzw. den rechten Schieberegler verschieben. Zusätzlich können Sie die Werte direkt in den Eingabefeldern eingeben.",
-                    "snippetDate": "Für die Eingabe eines Datums als Suchkriterium, klicken Sie im Datumseingabefeld und wählen Sie ein Datum aus dem geöffneten Kalender aus.",
-                    "snippetDateRange": "Für die Eingabe eines Datumsbereichs als Suchkriterium, klicken Sie in das Eingabefeld für das Start- bzw. End-Datum und wählen jeweils ein Start- bzw. End-Datum aus dem geöffneten Kalender aus."
-                },
+                // "alertingMessages": {
+                //     "noMatchingFilterId": "Die konfigurierte Filter Id ist nicht vorhanden."
+                // },
+                // "filterButton": "Filtern",
+                // "searchInMapExtent": "Suche im aktuellen Kartenausschnitt",
+                // "snippetTags": {
+                //     "selectionText": "Ihre Auswahl:",
+                //     "resetAll": "Zurücksetzen"
+                // },
+                // "info": {
+                //     "snippetCheckbox": "Das Kontrollkästchen kann durch einen Mausklick aktiviert/deaktiviert werden.",
+                //     "snippetDropdown": "Sie können einen oder mehrere Werte aus der vorgegebenen Werte-Liste auswählen.",
+                //     "snippetInput": "Sie können die gewünschten Suchkriterien im Textfeld eingeben.",
+                //     "snippetSlider": "Für die Eingabe eines numerischen Wertes als Suchkriterium, können Sie den Schieberegler nach Rechts oder Links schieben. Zusätzlich können Sie den Wert direkt im Eingabefeld eingeben.",
+                //     "snippetSliderRange": "Für die Eingabe von numerischen Werten als Minimum- bzw. Maximum-Suchkriterium können Sie den linken bzw. den rechten Schieberegler verschieben. Zusätzlich können Sie die Werte direkt in den Eingabefeldern eingeben.",
+                //     "snippetDate": "Für die Eingabe eines Datums als Suchkriterium, klicken Sie im Datumseingabefeld und wählen Sie ein Datum aus dem geöffneten Kalender aus.",
+                //     "snippetDateRange": "Für die Eingabe eines Datumsbereichs als Suchkriterium, klicken Sie in das Eingabefeld für das Start- bzw. End-Datum und wählen jeweils ein Start- bzw. End-Datum aus dem geöffneten Kalender aus."
+                // },
                 "dropdown": {
                     "defaultLabel": "Wählen Sie eine Option",
-                    "selectAll": "Alles auswählen",
-                    "deselectAll": "Alles abwählen",
-                    "emptyList": "Die Liste ist leer",
-                    "noElements": "Keine Elemente gefunden"
+                    // "selectAll": "Alles auswählen",
+                    // "deselectAll": "Alles abwählen",
+                    // "emptyList": "Die Liste ist leer",
+                    // "noElements": "Keine Elemente gefunden"
                 },
-                "ariaLabel": {
-                    "input": "Input für {{param}}",
-                    "checkbox": "Checkbox für {{param}}",
-                    "radio": "Radio für {{param}}",
-                    "dropdown": "SelectBox für {{param}}",
-                    "sliderRange": {
-                        "min": "Slider min für {{param}}",
-                        "max": "Slider max für {{param}}"
-                    },
-                    "slider": "Slider range für {{param}}",
-                    "date": "Datum für {{param}}",
-                    "dateRange": {
-                        "from": "Startdatum von {{param}}",
-                        "to": "Enddatum von {{param}}"
-                    }
-                },
-                "filterResult": {
-                    "label": "Alle Filter-Treffer",
-                    "unit": "{{amountOfFilteredItems}} Treffer",
-                    "disabledInfo": "Der Filter ist in der aktuellen Zoomstufe deaktiviert."
-                },
-                "geometryFilter": {
-                    "activate": "Gebiet für Filterung setzen",
-                    "help": "Wählen Sie auf der Karte ein Gebiet aus um nur innerhalb dieses Gebietes zu filtern.",
-                    "selectGeometry": "Wählen Sie eine Geometrie aus.",
-                    "buffer": "Puffer [m]",
-                    "removeGeometry": "Gebiet entfernen",
-                    "geometries": {
-                        "polygon": "Fläche",
-                        "rectangle": "Rechteck",
-                        "circle": "Kreis",
-                        "lineString": "Linie + Puffer"
-                    }
-                },
-                "download": {
-                    "label": "Gefilterte Daten herunterladen",
-                    "labelBtn": "Herunterladen"
-                },
-                "upload": {
-                    "geometryParseError": "Die angegebene Geometry konnte nicht geladen werden"
-                }
-            },
-            "statisticDashboard": {
-                "title": "Statistik Dashboard",
-                "headings": {
-                    "mrhstatistics": "Zahlen, Daten, Fakten der MRH - Regionalstatistik",
-                    "mrhstatisticsTooltip": "Link zu den Metadaten"
-                },
-                "button": {
-                    "difference": "Differenz",
-                    "table": "Tabelle",
-                    "chart": "Diagramm",
-                    "add": "Hinzufügen",
-                    "reset": "zurücksetzen",
-                    "filter": "Filter",
-                    "showMore": "weitere anzeigen...",
-                    "showLess": "weniger anzeigen..."
-                },
-                "label": {
-                    "category": "Kategorie",
-                    "area": "Gebiet",
-                    "year": "Jahr",
-                    "statistics": "Statistiken",
-                    "communities": "Gemeinden",
-                    "districts": "Kreise",
-                    "more": "mehr"
-                },
-                "filterInputs": {
-                    "additional": "Sonstiges"
-                },
-                "reference": {
-                    "title": "Referenzart",
-                    "description": "Differenzwerte darstellen, bezogen auf ein Referenzjahr oder Gebiet",
-                    "placeholder": "Bitte wählen Sie eine Option!",
-                    "tagLabel": "Referenz"
-                },
-                "legend": {
-                    "under": "unter",
-                    "between": "{{minimum}} bis unter {{maximum}}",
-                    "nodata": "Die Visualisierung der Daten von mehreren Statistiken auf der Karte steht noch nicht zur Verfügung.",
-                    "legend": "Kartenlegende"
-                }
+                // "ariaLabel": {
+                    // "input": "Input für {{param}}",
+                    // "checkbox": "Checkbox für {{param}}",
+                    // "radio": "Radio für {{param}}",
+                    // "dropdown": "SelectBox für {{param}}",
+                    // "sliderRange": {
+                    //     "min": "Slider min für {{param}}",
+                    //     "max": "Slider max für {{param}}"
+                    // },
+                    // "slider": "Slider range für {{param}}",
+                    // "date": "Datum für {{param}}",
+                    // "dateRange": {
+                    //     "from": "Startdatum von {{param}}",
+                    //     "to": "Enddatum von {{param}}"
+                    // }
+                // },
+                // "filterResult": {
+                //     "label": "Alle Filter-Treffer",
+                //     "unit": "{{amountOfFilteredItems}} Treffer"
+                // },
+                // "geometryFilter": {
+                    // "activate": "Gebiet für Filterung setzen",
+                    // "help": "Wählen Sie auf der Karte ein Gebiet aus um nur innerhalb dieses Gebietes zu filtern.",
+                    // "selectGeometry": "Wählen Sie eine Geometrie aus.",
+                    // "buffer": "Puffer [m]",
+                    // "removeGeometry": "Gebiet entfernen",
+                    // "geometries": {
+                    //     "polygon": "Fläche",
+                    //     "rectangle": "Rechteck",
+                    //     "circle": "Kreis",
+                    //     "lineString": "Linie + Puffer"
+                    // }
+                // },
+                // "download": {
+                //     "label": "Gefilterte Daten herunterladen",
+                //     "labelBtn": "Herunterladen"
+                // },
+                // "upload": {
+                //     "geometryParseError": "Die angegebene Geometry konnte nicht geladen werden"
+                // }
             },
             "pendler": {
                 "animation": {
@@ -615,32 +613,40 @@
             },
             "layerClusterToggler": {
                 "idFormatError": "Prüfen Sie die LayerId. Das Format muss ein Array oder ein Objekt sein.",
-                "idError": "Der Layer mit der ID {{ layerId }} ist nicht geladen, prüfen Sie die Layer-ID auf Richtigkeit."
+                "idError": "Der Layer mit der ID {{ layerId }} ist nicht geladen, prüfen Sie die Layer-ID auf Richtigkeit.",
+                // "toggle": "Sichtbarkeit der Layer umschalten",
+                "info": "Schalte die Sichtbarkeit der folgenden Layer ein bzw. aus:"
             },
             "fileImport": {
-                "captions": {
-                    "introFormats": "Es können KML-Dateien (*.kml), GPX-Dateien (*.gpx) oder GeoJson-Dateien (*.geojson, *.json) importiert werden.",
-                    "introDrawTool": "Importierte Geometrien können im Nachhinein verändert werden. Nutzen Sie hierfür das Werkzeug &quot;$t(common:menu.tools.draw)&quot;.",
-                    "drawTool": "$t(common:menu.tools.draw) öffnen",
-                    "supportedFiletypes": {
-                        "auto": "Automatische Erkennung",
-                        "kml": "KML-Datei (*.kml)",
-                        "gpx": "GPX-Datei (*.gpx)",
-                        "geojson": "GeoJson-Datei (*.geojson, *.json)"
-                    }
-                },
-                "alertingMessages": {
-                    "success": "Die Datei \"{{filename}}\" wurde erfolgreich importiert.",
-                    "successPartly": "Die Datei \"{{filename}}\" wurde teilweise importiert.",
-                    "formatError": "Die Datei \"{{filename}}\" konnte nicht gelesen werden. Bitte prüfen Sie, ob die Datei das Format *.kml. *.gpx, *.geojson oder *.json hat.",
-                    "missingFileContent": "Fehler beim Lesen der Datei \"{{filename}}\". Bitte überprüfen Sie den Dateityp sowie den Inhalt der Datei. Falls die Datei fehlerfrei ist, wenden Sie sich bitte an den Support.",
-                    "missingFormat": "Das Dateiformat {{format}} wird nicht unterstützt. Bitte wenden Sie sich an den Support.",
-                    "featureError": "Ein Feature in dieser Datei konnte nicht gelesen werden."
-                },
-                "successfullyImportedLabel": "Erfolgreich importiert:",
-                "title": "Datei importieren",
-                "zoom": "Zoomen",
-                "fileZoom": "Auf Features dieser Datei \"{{filename}}\" zoomen"
+                // "captions": {
+                    // "introInfo": "Importieren Sie Ihre gewünschte Datei einfach per Drag and Drop oder alternativ mit dem Öffnen-Dialog des Browsers.",
+                    // "introFormats": "Es können KML-Dateien (*.kml), GPX-Dateien (*.gpx) oder GeoJson-Dateien (*.geojson, *.json) importiert werden.",
+                    // "introDrawTool": "Importierte Geometrien können im Nachhinein verändert werden. Nutzen Sie hierfür das Werkzeug &quot;$t(common:menu.tools.draw)&quot;.",
+                    // "drawTool": "$t(common:menu.tools.draw) öffnen",
+                    // // "dropzone": "Datei hier ablegen",
+                    // "or": "oder ",
+                    // "browse": "Datei auswählen",
+                    // "supportedFiletypes": {
+                    //     "auto": "Automatische Erkennung",
+                    //     "kml": "KML-Datei (*.kml)",
+                    //     "gpx": "GPX-Datei (*.gpx)",
+                    //     "geojson": "GeoJson-Datei (*.geojson, *.json)"
+                    // }
+                // },
+                // "alertingMessages": {
+                //     "success": "Die Datei \"{{filename}}\" wurde erfolgreich importiert.",
+                //     "successPartly": "Die Datei \"{{filename}}\" wurde teilweise importiert.",
+                //     "formatError": "Die Datei \"{{filename}}\" konnte nicht gelesen werden. Bitte prüfen Sie, ob die Datei das Format *.kml. *.gpx, *.geojson oder *.json hat.",
+                //     "missingFileContent": "Fehler beim Lesen der Datei \"{{filename}}\". Bitte überprüfen Sie den Dateityp sowie den Inhalt der Datei. Falls die Datei fehlerfrei ist, wenden Sie sich bitte an den Support.",
+                //     "missingFormat": "Das Dateiformat {{format}} wird nicht unterstützt. Bitte wenden Sie sich an den Support.",
+                //     "featureError": "Ein Feature in dieser Datei konnte nicht gelesen werden."
+                // },
+                // "successfullyImportedLabel": "Erfolgreich importiert:",
+                "title": "Datei importieren"
+                // "zoom": "Zoomen",
+                // "fileZoom": "Auf Features dieser Datei \"{{filename}}\" zoomen",
+                // "importFiles": "Ausgewählte Dateien importieren",
+                // "removeAttachment": "Datei entfernen"
             },
             "modeler3D": {
                 "entity": {
@@ -756,11 +762,11 @@
                 "parcelNumberPlaceholder": "Nummer eingeben",
                 "generateReport": "Bericht erzeugen"
             },
-            "selectFeatures": {
-                "zoomToFeature": "Auf dieses Feature zoomen",
-                "noFeatureChosen": "Keine Features ausgewählt. Wählen Sie Features durch Ziehen einer Box um die auszuwählenden Features bzw. Halten von Strg und Ziehen.",
-                "propertylessFeature": "Element ohne Attribute"
-            },
+            // "selectFeatures": {
+            //   "zoomToFeature": "Auf dieses Feature zoomen",
+            //   "noFeatureChosen": "Keine Features ausgewählt. Wählen Sie Features durch Halten von Strg und Ziehen einer Box um die auszuwählenden Features.",
+            //   "propertylessFeature": "Element ohne Attribute"
+            // },
             "supplyCoord": {
                 "title": "Koordinaten abfragen",
                 "coordSystemField": "Koordinatensystem",
@@ -776,95 +782,91 @@
             "coordToolkit": {
                 "coordAndHeight": "Koordinaten / Höhe",
                 "title": "Koordinaten / Höhe",
-                "supply": "Koordinaten / Höhe abfragen",
-                "search": "Koordinaten suchen",
-                "searchBtn": "Suche",
-                "coordSystemField": "Koordinatenreferenzsystem",
-                "postionCoordinates": "Lagekoordinaten",
-                "heightLabel": "Höhe",
-                "noHeightWater": "Gewässerfläche, keine Höhen vorhanden",
-                "noHeightBuilding": "Gebäudefläche, keine Höhen vorhanden",
+                // "supply":"Koordinaten / Höhe abfragen",
+                // "search":"Koordinaten suchen",
+                // "searchBtn": "Suche",
+                // "coordSystemField": "Koordinatenreferenzsystem",
+                // "postionCoordinates": "Lagekoordinaten",
+                // "heightLabel": "Höhe",
+                // "noHeightWater": "Gewässerfläche, keine Höhen vorhanden",
+                // "noHeightBuilding": "Gebäudefläche, keine Höhen vorhanden",
                 "heightLayerInfo": "Grundlage der Höheninformation ist das \"{{layer}}\" mit Höhenangaben in Metern über Normalhöhennull (NHN).",
-                "hdms": {
-                    "eastingLabel": "Breite",
-                    "northingLabel": "Länge"
-                },
-                "cartesian": {
-                    "eastingLabel": "East-Wert / Rechtswert",
-                    "northingLabel": "North-Wert / Hochwert"
-                },
-                "utm": {
-                    "eastingLabel": "Ostwert",
-                    "northingLabel": "Nordwert"
-                },
-                "exampleAcronym": "Bsp. ",
-                "errorMsg": {
-                    "noCoord": "Bitte geben Sie Ihren {{valueKey}} vollständig ein.",
-                    "noMatch": "Die Eingabe für den {{valueKey}} ist nicht korrekt! ",
-                    "hdmsNoCoord": "Bitte geben Sie Ihren Wert der {{valueKey}} vollständig ein.",
-                    "hdmsNoMatch": "Die Eingabe für den Wert der {{valueKey}} ist nicht korrekt!",
-                    "example": "Beispiel: "
-                },
-                "hintSupply": "Klicken Sie in die Karte um Lagekoordinaten und Höhe abzufragen",
-                "hintSearch": "Geben Sie die zu suchenden Koordinaten ein",
-                "copyCoordsBtn": "Koordinatenpaar kopieren",
-                "copyCoordBtn": " {{value}} kopieren"
+                // "hdms": {
+                //     "eastingLabel": "Breite",
+                //     "northingLabel": "Länge"
+                // },
+                // "cartesian": {
+                //     "eastingLabel": "East-Wert / Rechtswert",
+                //     "northingLabel": "North-Wert / Hochwert"
+                // },
+                // "exampleAcronym": "Bsp. ",
+                // "errorMsg": {
+                    // "noCoord": "Bitte geben Sie Ihren {{valueKey}} vollständig ein.",
+                    // "noMatch": "Die Eingabe für den {{valueKey}} ist nicht korrekt! ",
+                    // "hdmsNoCoord": "Bitte geben Sie Ihren Wert der {{valueKey}} vollständig ein.",
+                    // "hdmsNoMatch": "Die Eingabe für den Wert der {{valueKey}} ist nicht korrekt!",
+                    // "example": "Beispiel: "
+                // },
+                // "hintSupply": "Klicken Sie in die Karte um Lagekoordinaten und Höhe abzufragen",
+                // "hintSearch": "Geben Sie die zu suchenden Koordinaten ein",
+                // "copyCoordsBtn": "Koordinatenpaar kopieren",
+                // "copyCoordBtn": " {{- value}} kopieren"
             },
             "gfi": {
-                "errorMessage": "Bei der Informationsabfrage (GetFeatureInfo) ist ein Fehler aufgetreten.<br>Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut. Falls das Problem weiterhin auftritt, wenden Sie sich bitte an den Betreiber des Dienstes.",
+                // "errorMessage": "Bei der Informationsabfrage (GetFeatureInfo) ist ein Fehler aufgetreten.<br>Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut. Falls das Problem weiterhin auftritt, wenden Sie sich bitte an den Betreiber des Dienstes.",
                 "favoriteIcons": {
-                    "compareFeatureIcon": {
-                        "toCompareList": "Auf die Vergleichsliste",
-                        "fromCompareList": "Von der Vergleichsliste entfernen"
-                    }
-                },
-                "themes": {
-                    "default": {
-                        "imgAlt": "Es konnte kein Bild geladen werden.",
-                        "noAttributeAvailable": "Kein Attribut vorhanden!"
-                    },
-                    "sensor": {
-                        "sensor": {
-                            "dataName": "Daten",
-                            "header": {
-                                "name": "Name",
-                                "description": "Beschreibung",
-                                "ownerThing": "Eigentümer"
-                            }
-                        },
-                        "sensorBarChart": {
-                            "clock": "{{value}} Uhr",
-                            "chartTitleAverage": "Mittelwert aus",
-                            "month_one": "{{count}} Monat",
-                            "month_other": "{{count}} Monaten",
-                            "year_one": "{{count}} Jahr",
-                            "year_other": "{{count}} Jahren",
-                            "previousWeekday": "Vorheriger Wochentag",
-                            "nextWeekday": "Nächster Wochentag",
-                            "noticeTextAvailable": "(Es werden ausschließlich Daten mit dem Wert available / verfügbar berücksichtigt)",
-                            "noticeTextCharging": "(Es werden ausschließlich Daten mit dem Wert charging / ladend berücksichtigt)",
-                            "noticeTextOutoforder": "(Es werden ausschließlich Daten mit dem Wert outoforder / Außer Betrieb berücksichtigt)",
-                            "noticeTextFaulted": "(Es werden ausschließlich Daten mit dem Wert faulted / Fehlerzustand berücksichtigt)"
-                        },
-                        "sensorData": {
-                            "firstColumnHeaderName": "Eigenschaften"
-                        },
-                        "chargingStations": {
-                            "available": "Verfügbarkeit",
-                            "charging": "Auslastung",
-                            "outoforder": "Außer Betrieb",
-                            "faulted": "Fehlerzustand"
-                        }
-                    }
-                },
-                "boolean": {
-                    "true": "Ja",
-                    "yes": "Ja",
-                    "1": "Ja",
-                    "false": "Nein",
-                    "no": "Nein",
-                    "0": "Nein"
+                  "compareFeatureIcon": {
+                    "toCompareList": "Auf die Vergleichsliste",
+                    "fromCompareList": "Von der Vergleichsliste entfernen"
+                  }
                 }
+                // "buttonForward": "Weitere Informationen anzeigen",
+                // "buttonBack": "Vorherige Informationen anzeigen",
+                // "themes": {
+                    // "default": {
+                    //   "imgAlt": "Es konnte kein Bild geladen werden.",
+                    //   "noAttributeAvailable": "Kein Attribut vorhanden!"
+                    // },
+                    // "sensor": {
+                      // "sensor": {
+                      //   "dataName": "Daten",
+                      //   "header": {
+                      //     "name": "Name",
+                      //     "description": "Beschreibung",
+                      //     "ownerThing": "Eigentümer"
+                      //   }
+                      // },
+                      // "sensorBarChart": {
+                      //   "clock": "{{value}} Uhr",
+                      //   "chartTitleAverage": "Mittelwert aus",
+                      //   "month_one": "{{count}} Monat",
+                      //   "month_other": "{{count}} Monaten",
+                      //   "year_one": "{{count}} Jahr",
+                      //   "year_other": "{{count}} Jahren",
+                      //   "previousWeekday": "Vorheriger Wochentag",
+                      //   "nextWeekday": "Nächster Wochentag",
+                      //   "noticeTextAvailable": "(Es werden ausschließlich Daten mit dem Wert available / verfügbar berücksichtigt)",
+                      //   "noticeTextCharging": "(Es werden ausschließlich Daten mit dem Wert charging / ladend berücksichtigt)",
+                      //   "noticeTextOutoforder": "(Es werden ausschließlich Daten mit dem Wert outoforder / Außer Betrieb berücksichtigt)"
+                      // },
+                      // "sensorData": {
+                      //   "firstColumnHeaderName": "Eigenschaften"
+                      // },
+                      // "chargingStations": {
+                      //   "available": "Verfügbarkeit",
+                      //   "charging": "Auslastung",
+                      //   "outoforder": "Außer Betrieb"
+                      // }
+                    // }
+                // },
+                // "boolean": {
+                //     "true": "Ja",
+                //     "yes": "Ja",
+                //     "1": "Ja",
+                //     "false": "Nein",
+                //     "no": "Nein",
+                //     "0": "Nein"
+                // }
             },
             "searchByCoord": {
                 "coordinateSystem": "Koordinatensystem",
@@ -886,320 +888,315 @@
                 }
             },
             "draw": {
-                "drawLayerVisible": "Zeichnung ein-/ausblenden",
-                "clickToPlaceText": "Klicken Sie auf die Karte um den Text zu platzieren",
+                // "drawLayerVisible": "Zeichnung ein-/ausblenden",
+                // "clickToPlaceText": "Klicken Sie auf die Karte um den Text zu platzieren",
                 "download": {
-                    "createFirst": "Bitte erstellen Sie zuerst eine Zeichnung oder einen Text!",
-                    "enterFilename": "Bitte Dateiname angeben",
-                    "filename": "Dateiname",
-                    "format": "Format",
-                    "formatNotSupported": "Das Format {{selectedFormat}} wird noch nicht unterstützt.",
-                    "pleaseChoose": "Bitte Auswählen",
-                    "unknownGeometry": "Unbekannte Geometrie: <strong>{{geometry}}</strong>"
+                  "createFirst": "Bitte erstellen Sie zuerst eine Zeichnung oder einen Text!",
+                  // "enterFilename": "Bitte Dateiname angeben",
+                  // "filename": "Dateiname",
+                  // "format": "Format",
+                  "formatNotSupported": "Das Format {{selectedFormat}} wird noch nicht unterstützt.",
+                  // "pleaseChoose": "Bitte Auswählen",
+                  // "unknownGeometry": "Unbekannte Geometrie: <strong>{{geometry}}</strong>"
                 },
                 "draw": "zeichnen",
-                "geometryDrawFailed": "Die übergebene Geometrie konnte nicht dargestellt werden.",
-                "undefinedTwoCircles": "Bitte definieren Sie beide Kreise.",
-                "undefinedInnerCircle": "Bitte definieren Sie auch den inneren Kreis.",
-                "undefinedRadius": "Bitte geben Sie einen Radius an.",
-                "undefinedOuterCircle": "Bitte definieren Sie auch den äußeren Kreis.",
-                "undefinedSquareArea": "Bitte definieren Sie den Flächeninhalt des Quadrats",
-                "limitReached_one": "Sie haben bereits {{count}} Objekt gezeichnet, bitte löschen Sie dieses, bevor Sie fortfahren!",
-                "limitReached_other": "Sie haben bereits {{count}} Objekte gezeichnet, bitte löschen Sie erst eines, bevor Sie fortfahren!",
-                "drawSymbol": "Symbol",
-                "writeText": "Text",
-                "drawLine": "Linien",
-                "drawCurve": "Freihandlinie",
-                "drawArea": "Fläche",
-                "drawSquare": "Quadrat",
-                "drawCircle": "Kreis",
-                "drawDoubleCircle": "Doppelkreis",
-                "doubleCirclePlaceholder": "Bitte geben Sie einen Radius ein",
-                "radius": "Radius",
-                "innerRadius": "Innerer Radius",
-                "outerRadius": "Äußerer Radius",
-                "unit": "Einheit",
-                "text": "Text",
-                "method": "Methode",
-                "interactive": "interaktiv",
-                "defined": "definiert",
-                "transparencyOutline": "Transparenz Umriss",
-                "colorContour": "Umrissfarbe",
-                "innerColorContour": "Innere Umrissfarbe",
-                "outerColorContour": "Äußere Umrissfarbe",
-                "fontSize": "Schriftgröße",
-                "fontName": "Schriftart",
+                // "geometryDrawFailed": "Die übergebene Geometrie konnte nicht dargestellt werden.",
+                // "undefinedTwoCircles": "Bitte definieren Sie beide Kreise.",
+                // "undefinedInnerCircle": "Bitte definieren Sie auch den inneren Kreis.",
+                // "undefinedRadius": "Bitte geben Sie einen Radius an.",
+                // "undefinedOuterCircle": "Bitte definieren Sie auch den äußeren Kreis.",
+                // "limitReached_one": "Sie haben bereits {{count}} Objekt gezeichnet, bitte löschen Sie dieses, bevor Sie fortfahren!",
+                // "limitReached_other": "Sie haben bereits {{count}} Objekte gezeichnet, bitte löschen Sie erst eines, bevor Sie fortfahren!",
+                // "drawSymbol": "Symbol",
+                // "writeText": "Text",
+                // "drawLine": "Linien",
+                // "drawCurve": "Freihandlinie",
+                // "drawArea": "Fläche",
+                // "drawCircle": "Kreis",
+                // "drawDoubleCircle": "Doppelkreis",
+                // "doubleCirclePlaceholder": "Bitte geben Sie einen Radius ein",
+                // "radius": "Radius",
+                // "innerRadius": "Innerer Radius",
+                // "outerRadius": "Äußerer Radius",
+                // "unit": "Einheit",
+                // "text": "Text",
+                // "method": "Methode",
+                // "interactive": "interaktiv",
+                // "defined": "definiert",
+                // "transparencyOutline": "Transparenz Umriss",
+                // "colorContour": "Umrissfarbe",
+                // "innerColorContour": "Innere Umrissfarbe",
+                // "outerColorContour": "Äußere Umrissfarbe",
+                // "fontSize": "Schriftgröße",
+                // "fontName": "Schriftart",
                 "size": "Größe (in px)",
-                "lineWidth": "Strichstärke",
-                "transparency": "Transparenz",
-                "color": "Füllfarbe",
-                "button": {
-                    "draw": "Geometrie / Text zeichnen",
-                    "undo": "Rückgängig machen",
-                    "redo": "Wiederholen",
-                    "edit": "Geometrie bearbeiten",
-                    "editAttributes": "Attribute bearbeiten",
-                    "delete": "Geometrie / Text löschen",
-                    "deleteAll": "Alles löschen",
-                    "saveDrawing": "Zeichnung speichern"
-                },
-                "symbol": "Symbol",
-                "geometry": "Geometrie",
-                "iconList": {
-                    "iconPoint": "Punkt",
-                    "iconLeaf": "Blatt",
-                    "iconCloud": "Wolke",
-                    "iconMeadow": "Wiese",
-                    "gelber Pin": "gelber Pin"
-                },
-                "attributeSelect": {
-                    "attributeKeyError": "Bitte einen Schlüssel fürs Attribut angeben.",
-                    "attributeDuplicatedKeyError": "Der Attribut-Schlüssel existiert bereits.",
-                    "noFeatureSelected": "Derzeit ist noch kein Feature ausgewählt. Bitte wählen Sie ein Feature aus!",
-                    "save": "Speichern",
-                    "remove": "Löschen",
-                    "input": {
-                        "key": "Neuer Schlüssel",
-                        "value": "Neuer Wert"
-                    }
-                },
-                "squareDefinedInfo": " (ohne Berücksichtung der Erdkrümmung)",
-                "areaLabel": "Flächeninhalt",
-                "squareSideLengthLabel": "Seitenlänge",
-                "lineLengthLabel": "Gesamtlänge"
+                // "lineWidth": "Strichstärke",
+                // "transparency": "Transparenz",
+                // "color": "Füllfarbe",
+                // "button": {
+                //     "draw": "Geometrie / Text zeichnen",
+                //     "undo": "Rückgängig machen",
+                //     "redo": "Wiederholen",
+                //     "edit": "Geometrie bearbeiten",
+                //     "editAttributes": "Attribute bearbeiten",
+                //     "delete": "Geometrie / Text löschen",
+                //     "deleteAll": "Alles löschen",
+                //     "saveDrawing": "Zeichnung speichern"
+                // },
+                // "symbol": "Symbol",
+                // "geometry": "Geometrie",
+                // "iconList": {
+                //     "iconPoint": "Punkt",
+                //     "iconLeaf": "Blatt",
+                //     "iconCloud": "Wolke",
+                //     "iconMeadow": "Wiese",
+                //     "gelber Pin": "gelber Pin"
+                // },
+                // "attributeSelect": {
+                    // "attributeKeyError": "Bitte einen Schlüssel fürs Attribut angeben.",
+                    // "attributeDuplicatedKeyError": "Der Attribut-Schlüssel existiert bereits.",
+                    // "noFeatureSelected": "Derzeit ist noch kein Feature ausgewählt. Bitte wählen Sie ein Feature aus!",
+                    // "save": "Speichern",
+                    // "remove": "Löschen",
+                    // "input": {
+                        // "key": "Neuer Schlüssel",
+                        // "value": "Neuer Wert"
+                    // }
+                // }
             },
             "measure": {
-                "geometry": "Geometrie",
-                "measure": "Einheit",
-                "deleteMeasurements": "Messungen löschen",
-                "stretch": "Strecke",
-                "area": "Fläche",
-                "influenceFactors": "Die angezeigten Werte unterliegen Ungenauigkeiten, die u.a. durch folgende Faktoren beeinflusst werden, z.B. Maßstab, Auflösung der Karte und des Bildschirmes.",
-                "scale": "Maßstab",
-                "resolution": "Auflösung der Karte",
-                "screenResolution": "Auflösung des Bildschirmes",
-                "inputAccuracy": "Eingabegenauigkeit und Anzahl der digitalisierten Punkte",
-                "measureDistance": "Strecke der Messlinie bzw. Größe der Messfläche",
-                "finishWithDoubleClick": "Abschließen mit Doppelklick",
+                // "geometry": "Geometrie",
+                // "measure": "Einheit",
+                // "deleteMeasurements": "Messungen löschen",
+                // "stretch": "Strecke",
+                // "area": "Fläche",
+                // "influenceFactors": "Die angezeigten Werte unterliegen Ungenauigkeiten, die u.a. durch folgende Faktoren beeinflusst werden, z.B. Maßstab, Auflösung der Karte und des Bildschirmes.",
+                // "scale": "Maßstab",
+                // "resolution": "Auflösung der Karte",
+                // "screenResolution": "Auflösung des Bildschirmes",
+                // "inputAccuracy": "Eingabegenauigkeit und Anzahl der digitalisierten Punkte",
+                // "measureDistance": "Strecke der Messlinie bzw. Größe der Messfläche",
+                // "finishWithDoubleClick": "Abschließen mit Doppelklick",
                 "3dLength": "Länge: {{length}}",
                 "3dHeight": " Höhe: {{height}}"
             },
-            "scaleSwitcher": {
-                "label": "Maßstab"
-            },
-            "bufferAnalysis": {
-                "sourceSelectLabel": "Quell-Layer",
-                "targetSelectLabel": "Ziel-Layer",
-                "resultTypeLabel": "Ergebnistyp",
-                "overlapping": "innerhalb Radien",
-                "notOverlapping": "außerhalb Radien",
-                "rangeLabel": "Radius (m)",
-                "clearButton": "Zurücksetzen",
-                "saveButton": "Speichern",
-                "sourceLayerNotFound": "Der gespeicherte Quell-Layer mit der ID {{layerId}} wurde nicht gefunden.",
-                "targetLayerNotFound": "Der gespeicherte Ziel-Layer mit der ID {{layerId}} wurde nicht gefunden."
-            },
+            // "scaleSwitcher": {
+            //     "label": "Maßstab"
+            // },
+            // "shareView": {
+                // "shareHeadline": "Wie möchten Sie den Link teilen?",
+                // "share": "Teilen",
+                // "shareFacebook": "Facebook",
+                // "shareTwitter": "Twitter",
+                // "shareQR": "QRCode erstellen",
+                // "shareLink": "Link kopieren",
+                // "downloadQR": "QRCode herunterladen",
+                // "myMap": "Hier ist mein Kartenausschnitt: "
+            // },
+            // "news": {
+            //     "headline": "Neuigkeiten"
+            // },
+            // "bufferAnalysis": {
+                // "sourceSelectLabel": "Quell-Layer",
+                // "targetSelectLabel": "Ziel-Layer",
+                // "resultTypeLabel": "Ergebnistyp",
+                // "overlapping": "innerhalb Radien",
+                // "notOverlapping": "außerhalb Radien",
+                // "rangeLabel": "Radius (m)",
+                // "clearButton": "Zurücksetzen",
+                // "saveButton": "Link kopieren",
+                // "sourceLayerNotFound": "Der gespeicherte Quell-Layer mit der ID {{layerId}} wurde nicht gefunden.",
+                // "targetLayerNotFound": "Der gespeicherte Ziel-Layer mit der ID {{layerId}} wurde nicht gefunden."
+            // },
             "wfsSearch": {
-                "wrongConfig": "Der Layer mit der Id \"{{id}}\" der Suchinstanz \"{{title}}\" ist nicht definiert.",
-                "noResults": "Es wurden keine Ergebnisse für Ihre Suchkriterien gefunden. Bitte versuchen Sie es erneut.",
-                "optionsPlaceholder": "Bitte wählen Sie eine Option aus!",
-                "resetButton": "Zurücksetzen",
-                "searchButton": "Suchen",
-                "resultListTitle": "Suchergebnisse:",
-                "instancesSelectLabel": "Instanzenauswahl",
-                "showResults": "Zeige Ergebnisse",
-                "searchError": "Fehler bei der Suche von Feature: {{error}}.",
-                "userHelp": {
-                    "and": "und",
-                    "or": "oder",
-                    "label": "Informationen bezüglich der Suchergebnisse",
-                    "text": "Die Ergebnisse der Suche werden die Bedingungen / Klauseln {{userHelp}} erfüllen. <br /> *Pflichtfeld"
-                },
-                "district": "Gemarkung",
-                "parcelNumber": "Flurstücksnummer"
+                // "wrongConfig": "Der Layer mit der Id \"{{id}}\" der Suchinstanz \"{{title}}\" ist nicht definiert.",
+                // "noResults": "Es wurden keine Ergebnisse für Ihre Suchkriterien gefunden. Bitte versuchen Sie es erneut.",
+                // "optionsPlaceholder": "Bitte wählen Sie eine Option aus!",
+                // "resetButton": "Zurücksetzen",
+                // "searchButton": "Suchen",
+                "resultListTitle": "Suchergebnisse:"
+                // "instancesSelectLabel": "Instanzenauswahl",
+                // "showResults": "Zeige Ergebnisse",
+                // "searchError": "Fehler bei der Suche von Feature: {{error}}.",
+                // "userHelp": {
+                    // "and": "und",
+                    // "or": "oder",
+                    // "label": "Informationen bezüglich der Suchergebnisse",
+                    // "text": "Die Ergebnisse der Suche werden die Bedingungen / Klauseln {{userHelp}} erfüllen. <br /> *Pflichtfeld"
+                // },
+                // "district": "Gemarkung",
+                // "parcelNumber": "Flurstücksnummer"
             },
             "wfsTransaction": {
-                "layerSelectLabel": "Aktueller Layer:",
-                "polygonHint": "Halten Sie die Strg-Taste und bewegen Sie die Maus mit gedrückter Maustaste, um ein Polygon zu bewegen.",
-                "interactionSelect": {
-                    "update": "Geometrie bearbeiten",
-                    "delete": "Geometrie löschen",
-                    "line": "Linie erfassen",
-                    "point": "Punkt erfassen",
-                    "polygon": "Fläche erfassen"
-                },
-                "error": {
-                    "allLayersNotSelected": "Es wurde kein für dieses Werkzeug konfigurierter WFS-T Layer im Themenbaum aktiviert.",
-                    "geometryOutOfRange": "Die gezeichnete Geometrie befindet sich außerhalb des erlaubten Bereiches des Layers.",
-                    "layerNotConfiguredCorrectly": "Es liegen Probleme bei der Konfiguration des ausgewählten Layers für die Nutzung mit diesem Werkzeug vor; möglicherweise fehlt der Parameter 'featurePrefix'.",
-                    "layerNotSelected": "Der ausgewählte Layer wurde noch nicht im Themenbaum aktiviert.",
-                    "noFeature": "Bitte zeichnen Sie eine zu Ihren Einträgen assoziierte Geometrie.",
-                    "onlyNumbersAllowed": "Das Eingabefeld erlaubt nur Zahlen.",
-                    "requiredPropertiesNotSet": "Bitte geben Sie einen validen Wert für die verpflichtenden Felder {{properties}} ein."
-                },
-                "transaction": {
-                    "success": {
-                        "baseSuccess": "Das {{transaction}} der Geometrie und ihrer Parameter war erfolgreich.",
-                        "delete": "$t(common:modules.tools.wfsTransaction.transaction.success.baseSuccess, {\"transaction\": \"Löschen\"})",
-                        "insert": "$t(common:modules.tools.wfsTransaction.transaction.success.baseSuccess, {\"transaction\": \"Speichern\"})",
-                        "selectedUpdate" : "$t(common:modules.tools.wfsTransaction.transaction.success.baseSuccess, {\"transaction\": \"Bearbeiten\"})"
-                    },
-                    "error": {
-                        "genericFailedTransaction": "Das Speichern bzw. Löschen der Geometrie und ihrer Parameter ist leider fehlgeschlagen. Bitte wenden Sie sich an Ihren Administrator.",
-                        "axios": "$t(common:modules.tools.wfsTransaction.transaction.error.genericFailedTransaction)",
-                        "baseError": "Das Speichern der Geometrie und ihrer Parameter ist leider fehlgeschlagen.",
-                        "InvalidValue": "$t(common:modules.tools.wfsTransaction.transaction.error.baseError) Eine der Eingaben ist unzulässig bzw. nicht im richtigen Format.",
-                        "InvalidParameterValue": "$t(common:modules.tools.wfsTransaction.transaction.error.InvalidValue)",
-                        "MissingParameterValue": "$t(common:modules.tools.wfsTransaction.transaction.error.baseError) Einer oder mehrere der Parameter haben keine Eingabe und der Dienst verfügt über keinen Defaultwert.",
-                        "OperationNotSupported": "$t(common:modules.tools.wfsTransaction.transaction.error.baseError) Der Dienst unterstützt die durchgeführte Operation nicht.",
-                        "OperationParsingFailed": "$t(common:modules.tools.wfsTransaction.transaction.error.baseError) Die Transaktion konnte vom Dienst nicht verarbeitet werden. Bitte wenden Sie sich an den Administrator.",
-                        "OperationProcessingFailed": "$t(common:modules.tools.wfsTransaction.transaction.error.baseError) Während der Transaktion ist ein Fehler aufgetreten."
-                    }
-                },
+                // "layerSelectLabel" : "Aktueller Layer:",
+                // "polygonHint": "Halten Sie die Strg-Taste und bewegen Sie die Maus mit gedrückter Maustaste, um ein Polygon zu bewegen.",
+                // "interactionSelect": {
+                //     "update": "Geometrie bearbeiten",
+                //     "delete": "Geometrie löschen",
+                //     "line": "Linie erfassen",
+                //     "point": "Punkt erfassen",
+                //     "polygon": "Fläche erfassen"
+                // },
+                // "error": {
+                    // "allLayersNotSelected": "Aktiviere einen konfigurierten WFS-T Layer im Themenbaum",
+                    // "geometryOutOfRange": "Die gezeichnete Geometrie befindet sich außerhalb des erlaubten Bereiches des Layers.",
+                    // "layerNotConfiguredCorrectly": "Es liegen Probleme bei der Konfiguration des ausgewählten Layers für die Nutzung mit diesem Werkzeug vor; möglicherweise fehlt der Parameter 'featurePrefix'.",
+                    // "layerNotSelected": "Der ausgewählte Layer wurde noch nicht im Themenbaum aktiviert.",
+                    // "noFeature": "Bitte zeichnen Sie eine zu Ihren Einträgen assoziierte Geometrie.",
+                    // "onlyNumbersAllowed": "Das Eingabefeld erlaubt nur Zahlen.",
+                    // "requiredPropertiesNotSet": "Bitte geben Sie einen validen Wert für die verpflichtenden Felder {{properties}} ein."
+                // },
+                // "transaction": {
+                    // "success": {
+                        // "baseSuccess": "Das {{transaction}} der Geometrie und ihrer Parameter war erfolgreich.",
+                        // "delete": "Löschen",
+                        // "insert": "Speichern",
+                        // "selectedUpdate" : "Bearbeiten"
+                    // },
+                    // "error": {
+                        // "axios": "Das Speichern bzw. Löschen der Geometrie und ihrer Parameter ist leider fehlgeschlagen. Bitte wenden Sie sich an Ihren Administrator.",
+                        // "InvalidParameterValue": "Das Speichern der Geometrie und ihrer Parameter ist leider fehlgeschlagen. Eine der Eingaben ist unzulässig bzw. nicht im richtigen Format.",
+                        // "MissingParameterValue": "Das Speichern der Geometrie und ihrer Parameter ist leider fehlgeschlagen. Einer oder mehrere der Parameter haben keine Eingabe und der Dienst verfügt über keinen Defaultwert.",
+                        // "OperationNotSupported": "Das Speichern der Geometrie und ihrer Parameter ist leider fehlgeschlagen. Der Dienst unterstützt die durchgeführte Operation nicht.",
+                        // "OperationParsingFailed": "Das Speichern der Geometrie und ihrer Parameter ist leider fehlgeschlagen. Die Transaktion konnte vom Dienst nicht verarbeitet werden. Bitte wenden Sie sich an den Administrator.",
+                        // "OperationProcessingFailed": "Das Speichern der Geometrie und ihrer Parameter ist leider fehlgeschlagen. Während der Transaktion ist ein Fehler aufgetreten."
+                    // }
+                // },
                 "deleteInteraction": {
-                    "confirm": "Löschen",
-                    "headline": "Achtung",
-                    "text": "Sind Sie sich sicher, dass Sie diese Geometrie löschen möchten?"
-                },
-                "form": {
-                    "discard": "Verwerfen",
-                    "save": "Speichern"
+                  "confirm": "Löschen"
+                  // "headline": "Achtung",
+                  // "text": "Sind Sie sich sicher, dass Sie diese Geometrie löschen möchten?"
                 }
+                // "form": {
+                //     "discard": "Verwerfen",
+                //     "save": "Speichern"
+                // }
             },
             "routing": {
-                "coordinateInputHelp": "Suchen Sie einen Ort oder fügen Sie einen Punkt durch Klick in die Karte hinzu",
-                "startpoint": "Startpunkt",
-                "endpoint": "Zielpunkt",
-                "waypoint": "Wegpunkt",
-                "addWaypoint": "Wegpunkt hinzufügen",
-                "moveWaypointUp": "Wegpunkt nach oben verschieben",
-                "moveWaypointDown": "Wegpunkt nach unten verschieben",
-                "deleteWaypoint": "Wegpunkt löschen",
-                "resetSettings": "Einstellungen zurücksetzen",
+                // "coordinateInputHelp": "Suchen Sie einen Ort oder fügen Sie einen Punkt durch Klick in die Karte hinzu",
+                // "startpoint": "Startpunkt",
+                // "endpoint": "Zielpunkt",
+                // "waypoint": "Wegpunkt",
+                // "addWaypoint": "Wegpunkt hinzufügen",
+                // "moveWaypointUp": "Wegpunkt nach oben verschieben",
+                // "moveWaypointDown": "Wegpunkt nach unten verschieben",
+                // "deleteWaypoint": "Wegpunkt löschen",
+                // "resetSettings": "Einstellungen zurücksetzen",
                 "helpTooltip": "Hilfe öffnen/schließen",
-                "errors": {
-                    "fetchingCoordinates": "Fehler bei Abfrage der Koordinaten",
-                    "noRouteFound": "Leider konnte keine Route gefunden werden",
-                    "avoidAreaBig": "Die angegebenen Sperrflächen sind zu groß. Bitte korrigieren Sie Ihre Eingabe.",
-                    "serviceBlocksRequest": "Die Anfrage wurde blockiert.",
-                    "errorRouteFetch": "Fehler bei Abfrage der Route",
-                    "errorIsochronesFetch": "Fehler bei Abfrage der Erreichbarkeit"
-                },
-                "download": {
-                    "header": "Herunterladen",
-                    "format": "Format",
-                    "filename": "Dateiname",
-                    "filenamePlaceholder": "Bitte Dateinamen angeben",
-                    "saveResult": "Ergebnis speichern"
-                },
-                "tabs": {
-                    "DIRECTIONS": "Routenplanung",
-                    "ISOCHRONES": "Erreichbarkeit"
-                },
-                "speedprofiles": {
-                    "CAR": "PKW",
-                    "HGV": "LKW",
-                    "CYCLING": "Fahrrad",
-                    "FOOT": "Fußgänger",
-                    "WHEELCHAIR": "Rollstuhl"
-                },
-                "avoidOptions": {
-                    "header": "Verkehrswege vermeiden",
-                    "HIGHWAYS": "Autobahn",
-                    "TOLLWAYS": "Mautstraßen",
-                    "FERRIES": "Fähren",
-                    "STEPS": "Treppen",
-                    "UNPAVEDROADS": "Unbefestigte Straßen",
-                    "MIXEDTRAFFIC": "Mischverkehr Tempo 50",
-                    "COBBLESTONE": "Kopfsteinpflaster",
-                    "NARROWWAYS": "Engstellen"
-                },
-                "batchProcessing": {
-                    "header": "Stapelverarbeitung",
-                    "isProcessing": "Stapelverarbeitung wird durchgeführt",
-                    "cancel": "Stapelverarbeitung abbrechen",
-                    "structure": "Struktur",
-                    "example": "Beispiel",
-                    "placeFile": "Datei hier ablegen",
-                    "uploadFile": "Datei hochladen"
-                },
-                "directions": {
-                    "restrictedAreas": "Sperrflächen",
-                    "editRestrictedAreas": "Sperrflächen zeichnen/bearbeiten",
-                    "deleteRestrictedAreas": "Sperrflächen löschen",
-                    "keepRoutesAfterClose": "Die Route nach dem Schließen des Tools beibehalten",
-                    "batchProcessing": {
-                        "structure": "ID;lon(Startpunkt);lat(Startpunkt);lon(Endpunkt);lat(Endpunkt)",
-                        "errorAllFailed": "Alle Anfragen sind fehlgeschlagen. Eventuell wird die Anfrage vom Dienst blockiert. Die Datei enthält keine Resultate.",
-                        "errorSomeFailed": "Es konnten {{countFailed}} Ergebnisse nicht korrekt errechnet werden. Die Ergebnisdatei enthält an diesen Stellen Leerzellen.",
-                        "errorNoEntries": "Keine Einträge in der CSV",
-                        "errorToManyEntriesInFile": "Maximale Anzahl an Zeilen überschritten ({{limit}})",
-                        "errorToManyEntriesInRow": "Zeile {{row}} enthält mehr als 5 Einträge, bitte beachten Sie die Struktur (ID;lon(Startpunkt);lat(Startpunkt);lon(Endpunkt);lat(Endpunkt))",
-                        "errorRowContainsEntriesNoNumber": "Koordinaten in Zeile {{row}} enthalten keine Zahlen",
-                        "downloadHeader": {
-                            "xStart": "X-Wert_Start",
-                            "yStart": "Y-Wert_Start",
-                            "xEnd": "X-Wert_Ende",
-                            "yEnd": "Y-Wert_Ende",
-                            "time": "Zeit(min)",
-                            "distance": "Entfernung(m)",
-                            "profile": "Profil"
-                        }
-                    },
-                    "preferenceLabel": "Präferenz",
-                    "preference": {
-                        "RECOMMENDED": "Empfohlene Route",
-                        "SHORTEST": "Kürzeste Route",
-                        "GREEN": "Grüne Route"
-                    }
-                },
-                "isochrones": {
-                    "startpoint": "Startpunkt",
-                    "optimizeHeader": "Optimierung nach",
-                    "maxDistance": "Maximale Entfernung",
-                    "maxTraveltime": "Maximale Reisedauer",
-                    "interval": "Intervall",
-                    "calculate": "Berechnen",
-                    "legend": "Legende",
-                    "batchProcessing": {
-                        "structure": "ID;lon(Startpunkt);lat(Startpunkt)",
-                        "errorAllFailed": "Alle Anfragen sind fehlgeschlagen. Eventuell wird die Anfrage vom Dienst blockiert. Die Datei enthält keine Resultate.",
-                        "errorSomeFailed": "Es konnten {{countFailed}} Ergebnisse nicht korrekt errechnet werden. Die Ergebnisdatei enthält an diesen Stellen Leerzellen.",
-                        "errorNoEntries": "Keine Einträge in der CSV",
-                        "errorToManyEntriesInFile": "Maximale Anzahl an Zeilen überschritten ({{limit}})",
-                        "errorToManyEntriesInRow": "Zeile {{row}} enthält mehr als 3 Einträge, bitte beachten Sie die Struktur (ID;lon(Startpunkt);lat(Startpunkt))",
-                        "errorRowContainsEntriesNoNumber": "Koordinaten in Zeile {{row}} enthalten keine Zahlen"
-                    },
-                    "optimization": {
-                        "TIME": "Erreichbarkeit nach Zeit",
-                        "DISTANCE": "Erreichbarkeit nach Distanz"
-                    }
-                }
+                // "errors": {
+                    // "fetchingCoordinates": "Fehler bei Abfrage der Koordinaten",
+                    // "noRouteFound": "Leider konnte keine Route gefunden werden",
+                    // "avoidAreaBig": "Die angegebenen Sperrflächen sind zu groß. Bitte korrigieren Sie Ihre Eingabe.",
+                    // "errorRouteFetch": "Fehler bei Abfrage der Route",
+                    // "errorIsochronesFetch": "Fehler bei Abfrage der Erreichbarkeit"
+                // },
+                // "download": {
+                    // "header": "Herunterladen",
+                    // "format": "Format",
+                    // "filename": "Dateiname",
+                    // "filenamePlaceholder": "Bitte Dateinamen angeben",
+                    // "saveResult": "Ergebnis speichern"
+                // },
+                // "tabs": {
+                //     "DIRECTIONS": "Routenplanung",
+                //     "ISOCHRONES": "Erreichbarkeit"
+                // },
+                // "speedprofiles": {
+                //     "CAR": "PKW",
+                //     "HGV": "LKW",
+                //     "CYCLING": "Fahrrad",
+                //     "FOOT": "Fußgänger",
+                //     "WHEELCHAIR": "Rollstuhl"
+                // },
+                // "avoidOptions": {
+                //     "header": "Verkehrswege vermeiden",
+                //     "HIGHWAYS": "Autobahn",
+                //     "TOLLWAYS": "Mautstraßen",
+                //     "FERRIES": "Fähren",
+                //     "STEPS": "Treppen"
+                // },
+                // "batchProcessing": {
+                    // "header": "Stapelverarbeitung",
+                    // "isProcessing": "Stapelverarbeitung wird durchgeführt",
+                    // "cancel": "Stapelverarbeitung abbrechen",
+                    // "structure": "Struktur",
+                    // "example": "Beispiel",
+                    // "placeFile": "Datei hier ablegen",
+                    // "uploadFile": "Datei hochladen"
+                // },
+                // "directions": {
+                    // "restrictedAreas": "Sperrflächen",
+                    // "editRestrictedAreas": "Sperrflächen zeichnen/bearbeiten",
+                    // "deleteRestrictedAreas": "Sperrflächen löschen",
+                    // "batchProcessing": {
+                        // "structure": "ID;lon(Startpunkt);lat(Startpunkt);lon(Endpunkt);lat(Endpunkt)",
+                        // "errorSomeFailed": "Es konnten {{countFailed}} Ergebnisse nicht korrekt errechnet werden. Die Ergebnisdatei enthält an diesen Stellen Leerzellen.",
+                        // "errorNoEntries": "Keine Einträge in der CSV",
+                        // "errorToManyEntriesInFile": "Maximale Anzahl an Zeilen überschritten ({{limit}})",
+                        // "errorToManyEntriesInRow": "Zeile {{row}} enthält mehr als 5 Einträge, bitte beachten Sie die Struktur (ID;lon(Startpunkt);lat(Startpunkt);lon(Endpunkt);lat(Endpunkt))",
+                        // "errorRowContainsEntriesNoNumber": "Koordinaten in Zeile {{row}} enthalten keine Zahlen",
+                        // "downloadHeader": {
+                            // "xStart": "X-Wert_Start",
+                            // "yStart": "Y-Wert_Start",
+                            // "xEnd": "X-Wert_Ende",
+                            // "yEnd": "Y-Wert_Ende",
+                            // "time": "Zeit(min)",
+                            // "distance": "Entfernung(m)",
+                            // "profile": "Profil"
+                        // }
+                    // },
+                    // "preferenceLabel": "Präferenz",
+                    // "preference": {
+                    //     "RECOMMENDED": "Empfohlene Route",
+                    //     "SHORTEST": "Kürzeste Route"
+                    // }
+                // },
+                // "isochrones": {
+                    // "startpoint": "Startpunkt",
+                    // "optimizeHeader": "Optimierung nach",
+                    // "maxDistance": "Maximale Entfernung",
+                    // "maxTraveltime": "Maximale Reisedauer",
+                    // "interval": "Intervall",
+                    // "calculate": "Berechnen",
+                    // "legend": "Legende",
+                    // "batchProcessing": {
+                    //     "structure": "ID;lon(Startpunkt);lat(Startpunkt)",
+                    //     "errorSomeFailed": "Es konnten {{countFailed}} Ergebnisse nicht korrekt errechnet werden. Die Ergebnisdatei enthält an diesen Stellen Leerzellen.",
+                        // "errorNoEntries": "Keine Einträge in der CSV",
+                        // "errorToManyEntriesInFile": "Maximale Anzahl an Zeilen überschritten ({{limit}})",
+                        // "errorToManyEntriesInRow": "Zeile {{row}} enthält mehr als 3 Einträge, bitte beachten Sie die Struktur (ID;lon(Startpunkt);lat(Startpunkt))",
+                        // "errorRowContainsEntriesNoNumber": "Koordinaten in Zeile {{row}} enthalten keine Zahlen"
+                    // },
+                    // "optimization": {
+                    //     "TIME": "Erreichbarkeit nach Zeit",
+                    //     "DISTANCE": "Erreichbarkeit nach Distanz"
+                    // }
+                // }
             }
         },
         "controls": {
             "fullScreen": {
-                "enable": "Vollbild aktivieren",
-                "disable": "Vollbild deaktivieren",
+                // "enable": "Vollbild aktivieren",
+                // "disable": "Vollbild deaktivieren",
                 "toggle": "Vollbild umschalten"
             },
-            "zoom": {
-                "zoomIn": "Hineinzoomen",
-                "zoomOut": "Herauszoomen"
-            },
-            "orientation": {
-                "titleGeolocate": "Standpunkt",
-                "titleGeolocatePOI": "In der Nähe",
-                "geolocationDeniedText": "Lokalisierung nicht verfügbar",
-                "poiChoiceTitle": "Ausgangspunkt für Umkreissuche wählen:",
-                "poiChoiceCurrentPostion": "Standort",
-                "poiChoiceCustomPostion": "Adresssuche oder Punkt in Karte setzen",
-                "poiChoiceConfirmation": "OK",
-                "poiChoiceStop": "Beenden",
-                "trackingDeniedText": "'In der Nähe' nicht verfügbar.",
-                "distanceUnit": "Meter",
-                "imgAlt": "Bild für Point of Interest"
-            },
+            // "zoom": {
+            //     "zoomIn": "Hineinzoomen",
+            //     "zoomOut": "Herauszoomen"
+            // },
+            // "orientation": {
+                // "titleGeolocate": "Standpunkt",
+                // "titleGeolocatePOI": "In der Nähe",
+                // "geolocationDeniedText": "Lokalisierung nicht verfügbar",
+                // "poiChoiceTitle": "Ausgangspunkt für Umkreissuche wählen:",
+                // "poiChoiceCurrentPostion": "Standort",
+                // "poiChoiceCustomPostion": "Adresssuche oder Punkt in Karte setzen",
+                // "poiChoiceConfirmation": "OK",
+                // "poiChoiceStop": "Beenden",
+                // "trackingDeniedText": "'In der Nähe' nicht verfügbar.",
+                // "distanceUnit": "Meter",
+                // "imgAlt": "Bild für Point of Interest"
+            // },
             "orientation3d": {
                 "compass": {
                     "pointerNorth": "Ansicht einnorden/Ansicht drehen",
@@ -1219,11 +1216,12 @@
                 }
             },
             "totalView": {
-                "titleButton": "Zurück zur Startansicht",
+                // "titleButton": "Zurück zur Startansicht",
                 "titleMenu": "Hauptansicht"
             },
             "3d": {
-                "buttonTitle": "3D",
+                // "buttonTitle3d": "3D",
+                // "buttonTitle2d": "2D",
                 "openView3d": "Ansicht einschalten",
                 "closeView3d": "Ansicht ausschalten",
                 "noCesium": "Cesium/3D-Funktionalität konnte nicht geladen werden - Bitte informieren Sie den Serviceanbieter"
@@ -1235,14 +1233,14 @@
                 "doNotUseIE": "Die Anzeige der Schrägluftbilder wird im Internet Explorer 11 nicht mehr unterstützt. Bitte nutzen Sie für diese Funktion einen aktuellen Browser."
             },
             "freeze": {
-                "freeze": "Ansicht sperren",
-                "unfreeze": "Ansicht entsperren",
+                // "freeze": "Ansicht sperren",
+                // "unfreeze": "Ansicht entsperren",
                 "freezeTable": "$t(common:modules.controls.freeze.freeze)"
             },
-            "backForward": {
-                "stepForward": "Nächste Ansicht",
-                "stepBackward": "Letzte Ansicht"
-            },
+            // "backForward": {
+            //     "stepForward": "Nächste Ansicht",
+            //     "stepBackward": "Letzte Ansicht"
+            // },
             "attributions": {
                 "showAttributions": "Layer-Attributions anzeigen",
                 "hideAttributions": "Layer-Attributions ausblenden"
@@ -1265,28 +1263,28 @@
                 "addressHospitalBplan": "Suche nach Adresse/Krankenhaus/B-Plan",
                 "addressTopicParcel": "Suche Adresse, Stadtteil, Themen, Flurstück",
                 "addressTopic": "Suche Adresse, Stadtteil, Themen",
-                "addressDistrict": "Suche Adresse, Stadtteil",
-                "address": "Suche nach Adresse"
+                "addressDistrict": "Suche Adresse, Stadtteil"
+                // "address": "Suche nach Adresse"
             },
             "locationFinder": {
-                "unknownProjection": "Ergebnisse in unbekanntem Koordinatensystem",
-                "serverError": "Fehler während der serverseitigen Verarbeitung der Anfrage",
+                // "unknownProjection": "Ergebnisse in unbekanntem Koordinatensystem",
+                // "serverError": "Fehler während der serverseitigen Verarbeitung der Anfrage",
                 "invalidServiceId": "Fehler während der Initialisierung des LocationFinder-Suchmoduls: Ungültige Service-ID",
-                "errorMsg": "Suche per LocationFinder fehlgeschlagen",
+                // "errorMsg": "Suche per LocationFinder fehlgeschlagen",
                 "notFound": "Dienst nicht erreichbar"
             },
             "showAllResults": "alle Ergebnisse anzeigen",
+            "searchResults": "Suchergebnisse",
             "type": {
-                "street": "Straße",
-                "district": "Stadtteil",
-                "parcel": "Flurstück",
-                "address": "Adresse",
+                // "street": "Straße",
+                // "district": "Stadtteil",
+                // "parcel": "Flurstück",
+                // "address": "Adresse",
                 "location": "Ort",
-                "subject": "Thema (externe Fachdaten)",
-                "topic": "Thema (Fachdaten)",
-                "topicBaselayer": "Thema (Hintergrundkarten)",
-                "general": "Fachdaten",
-                "folder": "Ordner (Fachdaten)"
+                // "subject": "Thema (externe Fachdaten)",
+                // "topic": "Thema (Fachdaten)",
+                "general": "Fachdaten"
+                // "folder": "Ordner (Fachdaten)"
             },
             "specialWFS": {
                 "ongoing": "im Verfahren",
@@ -1311,49 +1309,50 @@
             "komoot": {
                 "errorMsg": "Komoot-Photon-Suche nicht erreichbar."
             },
-            "noInitialResults": "Die initiale Suche ergab keine Treffer."
+            "noInitialResults": "Die initiale Suche ergab keine Treffer.",
+            "showAll": "Alle anzeigen"
         },
-        "vectorStyle": {
-            "styleObject": {
-                "getGeometryTypeFromWFSFetchfailed": "Die Legende konnte in der Layerinformation nicht erstellt werden!",
-                "getGeometryTypeFromWFSFetchfailedMessage": "Details: Ein benötigter Dienst antwortet nicht.",
-                "getGeometryTypeFromOAFFetchfailed": "Die Legende konnte in der Layerinformation nicht erstellt werden!",
-                "getGeometryTypeFromOAFFetchfailedMessage": "Details: Die API antwortet nicht."
-            }
-        },
-        "wmsTime": {
-            "layerSwiper": {
-                "description": "Der Swiper kann mithilfe der Maus oder den Pfeiltasten der Tastatur bewegt werden. Bei der Nutzung der Pfeiltasten wird der Swiper {{amount}}px in die entsprechende Richtung bewegt.",
-                "title": "Layer vergleichen"
-            },
-            "timeSlider": {
-                "buttons": {
-                    "backward": "Einen Zeitpunkt zurück",
-                    "deactivateLayerSwiper": "Layer entfernen",
-                    "forward": "Einen Zeitpunkt voran",
-                    "layerSwiper": "Zeitpunkte vergleichen",
-                    "play": "Ein automatisches Abspielen aller Zeitpunkte, ausgehend vom aktuell ausgewählten Zeitpunkt"
-                },
-                "inputRangeLabel": "Einen Zeitpunkt auswählen"
-            }
-        },
+        // "vectorStyle": {
+            // "styleObject": {
+                // "getGeometryTypeFromWFSFetchfailed": "Die Legende konnte in der Layerinformation nicht erstellt werden!",
+                // "getGeometryTypeFromWFSFetchfailedMessage": "Details: Ein benötigter Dienst antwortet nicht.",
+                // "getGeometryTypeFromOAFFetchfailed": "Die Legende konnte in der Layerinformation nicht erstellt werden!",
+                // "getGeometryTypeFromOAFFetchfailedMessage": "Details: Die API antwortet nicht."
+            // }
+        // },
+        // "wmsTime": {
+        //     "layerSwiper": {
+        //         "description": "Der Swiper kann mithilfe der Maus oder den Pfeiltasten der Tastatur bewegt werden. Bei der Nutzung der Pfeiltasten wird der Swiper {{amount}}px in die entsprechende Richtung bewegt.",
+        //         "title": "Layer vergleichen"
+        //     },
+        //     "timeSlider": {
+        //         "buttons": {
+        //             "backward": "Einen Zeitpunkt zurück",
+        //             "deactivateLayerSwiper": "Layer entfernen",
+        //             "forward": "Einen Zeitpunkt voran",
+        //             "layerSwiper": "Zeitpunkte vergleichen",
+        //             "play": "Ein automatisches Abspielen aller Zeitpunkte, ausgehend vom aktuell ausgewählten Zeitpunkt"
+        //         },
+        //         "inputRangeLabel": "Einen Zeitpunkt auswählen"
+        //     }
+        // },
         "legend": {
             "name": "Legende",
-            "linkToPdf": "Zur externen Legende (PDF)",
-            "noLegendForLayerInfo": "Legende nicht verfügbar",
+            // "linkToPdf": "Zur externen Legende (PDF)",
+            // "noLegendForLayerInfo": "Legende nicht verfügbar",
             "toggleCollapseAll": "Alle Legenden ein-/ausklappen"
-        },
-        "util": {
-            "copyToClipboard": {
-                "contentSaved": "Inhalt wurde in die Zwischenablage kopiert.",
-                "contentNotSaved": "Inhalt konnte nicht in die Zwischenablage kopiert werden."
-            }
-        },
-        "exportButton": {
-            "error": {
-                "download": "Beim Herunterladen der gewünschten Daten ist ein Fehler aufgetreten."
-            }
         }
+        // "util": {
+        //     "copyToClipboard": {
+        //         "contentSaved": "Inhalt wurde in die Zwischenablage kopiert.",
+        //         "contentNotSaved": "Inhalt konnte nicht in die Zwischenablage kopiert werden."
+        //     }
+        // },
+        // "exportButton": {
+        //     "error": {
+        //         "download": "Beim Herunterladen der gewünschten Daten ist ein Fehler aufgetreten."
+        //     }
+        // }
     },
     "utils": {
         "calendar": {
@@ -1398,19 +1397,19 @@
             "on": "An",
             "off": "Aus"
         },
-        "graphicalSelect": {
-            "displayName": "Geometrie auswählen",
-            "selectBySquare": "Rechteck aufziehen",
-            "selectByCircle": "Kreis aufziehen",
-            "selectByPolygon": "Fläche zeichnen",
-            "tooltipMessage": "Klicken zum Starten und Beenden",
-            "tooltipMessagePolygon": "Klicken um Stützpunkt hinzuzufügen",
-            "alert": {
-                "notSupportedOption": "Graphische Auswahl enthält nicht unterstützte Elemente! Verfügbar sind:",
-                "notSupportedSelection": "SelectedOption der graphischen Auswahl wird nicht unterstützt! Verfügbar sind:",
-                "notSupportedElement": "Template-Element der graphischen Auswahl wird nicht unterstützt! Verfügbar sind:"
-            }
-        },
+        // "graphicalSelect": {
+            // "displayName": "Geometrie auswählen",
+            // "selectBySquare": "Rechteck aufziehen",
+            // "selectByCircle": "Kreis aufziehen",
+            // "selectByPolygon": "Fläche zeichnen",
+            // "tooltipMessage": "Klicken zum Starten und Beenden",
+            // "tooltipMessagePolygon": "Klicken um Stützpunkt hinzuzufügen",
+            // "alert": {
+            //   "notSupportedOption": "Graphische Auswahl enthält nicht unterstützte Elemente! Verfügbar sind:",
+            //   "notSupportedSelection": "SelectedOption der graphischen Auswahl wird nicht unterstützt! Verfügbar sind:",
+            //   "notSupportedElement": "Template-Element der graphischen Auswahl wird nicht unterstützt! Verfügbar sind:"
+            // }
+        // },
         "value": {
             "deleteSelection": "Auswahl löschen"
         },
@@ -1420,28 +1419,23 @@
             "from": " ab",
             "to": " bis",
             "incorrectEntry": "Fehlerhafte Eingabe, bitte eine ganze Zahl eingeben!",
-            "outOfRangeErrorMessage": "Der Eingabewert muss innerhalb des Gültigkeitsbereiches {{minValueSlider}} und {{maxValueSlider}} liegen!",
-            "valueEmptyErrorMessage": "Der Eingabewert darf nicht leer sein!",
-            "valueOutOfRangeErrorMessage": "Der Eingabewert {{inputValue}} muss innerhalb des Gültigkeitsbereiches {{minValueSlider}} und {{maxValueSlider}} liegen!"
+            "outOfRangeErrorMessage": "Der Eingabewert muss innerhalb des Gültigkeitsbereiches {{minValueSlider}} und {{maxValueSlider}} liegen!"
+            // "valueEmptyErrorMessage": "Der Eingabewert darf nicht leer sein!",
+            // "valueOutOfRangeErrorMessage": "Der Eingabewert {{inputValue}} muss innerhalb des Gültigkeitsbereiches {{minValueSlider}} und {{maxValueSlider}} liegen!"
         }
     },
-    "share-components": {
-        "list": {
-            "replace": {
-                "true": "ja",
-                "No": "nein"
-            },
-            "zoomToResult": "Zum Ergebnis zoomen",
-            "zoomToResults": "Zur Auswahl zoomen",
-            "pagination": "Ergebnisseite",
-            "selection": "Zeilenauswahl"
-        },
-        "import": {
-            "browse": "Datei auswählen",
-            "dropzone": "Datei hier ablegen",
-            "introInfo": "Importieren Sie Ihre gewünschte Datei einfach per Drag and Drop oder alternativ mit dem Öffnen-Dialog des Browsers."
-        }
-    },
+    // "share-components": {
+    //     "list": {
+            // "replace": {
+            //     "true": "ja",
+            //     "No": "nein"
+            // },
+            // "zoomToResult": "Zum Ergebnis zoomen",
+            // "zoomToResults": "Zur Auswahl zoomen",
+            // "pagination": "Ergebnisseite",
+            // "selection": "Zeilenauswahl"
+        // }
+    // },
     "libraries": {
         "vue2-datepicker": {
             "lang": {

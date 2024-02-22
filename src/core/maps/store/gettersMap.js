@@ -89,41 +89,6 @@ const getters = {
     /**
      * @param {Object} state the state
      * @param {Object} params getter parameters
-     * @param {Number} params.scale x from computed scale value 1:x
-     * @returns {String} pretty-printed scale to 2cms
-     */
-    scaleWithUnit: (state, {scale}) => {
-        const scaleNumber = Math.round(0.02 * scale);
-
-        return scaleNumber >= 1000 ? `${Math.round(scaleNumber / 100) / 10} km` : `${scaleNumber} m`;
-    },
-
-    /**
-     * Returns a beautified state in format "1 : scale" where scale is rounded based on its value
-     * @param {Object} state the state
-     * @param {Object} params getter parameters
-     * @param {Number} params.scale a value (number) from computed scale 1:x
-     * @returns {String} pretty-printed scale as "1 : scale"
-     */
-    scaleToOne: (state, {scale}) => {
-        if (typeof scale !== "number" || scale <= 0) {
-            return "1 : scale must be a positive number";
-        }
-        let result = Math.round(scale);
-
-        if (result > 10000) {
-            result = Math.round(result / 500) * 500;
-        }
-        else if (result > 1000) {
-            result = Math.round(result / 50) * 50;
-        }
-
-        return "1 : " + thousandsSeparator(result);
-    },
-
-    /**
-     * @param {Object} state the state
-     * @param {Object} params getter parameters
      * @param {Number[]} params.mouseCoord the mouse coord as array
      * @returns {String} pretty-printed mouse coordinate (in 3d with height).
      */
@@ -138,14 +103,6 @@ const getters = {
     projectionCode: (state, getter) => getter.projection?.getCode(),
     projectionMetersPerUnit: (state, getter) => getter.projection?.getMetersPerUnit(),
     projectionUnits: (state, getter) => getter.projection?.getUnits(),
-
-    /**
-     * Gets all visible layers from map
-     * @returns {Object[]} all visible layers
-     */
-    getVisibleLayerList: () => {
-        return mapCollection.getMap("2D").getLayers().getArray().filter(layer => layer.getVisible());
-    },
 
     /**
      * calculate the extent for the current view state and the passed size
@@ -185,15 +142,6 @@ const getters = {
         });
 
         return returnLayer;
-    },
-
-    /**
-    * Returns a layer by a given layer name.
-    * @param  {String} layerName Name of the Layer.
-    * @return {module:ol/layer/Base~BaseLayer} The layer found by name.
-    */
-    getLayerByName: () => (layerName) => {
-        return mapCollection.getMap("2D").getLayers().getArray().find(layer => layer.get("name") === layerName);
     }
 };
 

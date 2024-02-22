@@ -49,32 +49,6 @@ export default function EntitiesLayer(attrs) {
         }
     );
 }
-// Link prototypes and add prototype methods, means EntitiesLayer uses all methods and properties of Layer
-EntitiesLayer.prototype = Object.create(Layer.prototype);
-
-/**
- * Creates the layer by using masterportalAPI's entities-layer.
- * If attribute isSelected is true, setIsSelected is called.
- * @param {Object} attr the attributes for the layer
- * @returns {void}
- */
-EntitiesLayer.prototype.createLayer = function (attr) {
-    const map = mapCollection.getMap(store.state.Maps.mode);
-
-    this.layer = entities.createLayer(attr, map);
-    if (attr.isSelected) {
-        this.setIsSelected(true, attr);
-    }
-};
-
-/**
- * Calls the function setIsSelected.
- * @param {boolean} newValue if true, layer is selected
- * @returns {void}
- */
-EntitiesLayer.prototype.setVisible = function (newValue) {
-    this.setIsSelected(newValue);
-};
 
 /**
  * Calls masterportalAPI's entities-layer to set this layer visible.
@@ -92,11 +66,7 @@ EntitiesLayer.prototype.setIsSelected = function (newValue, attr) {
             this.attributes.isSelected = newValue;
             this.setIsVisibleInMap(newValue);
         }
-        entities.setVisible(
-            newValue,
-            this.attributes ? this.attributes : attr,
-            map
-        );
+        // entities.setVisible(newValue, this.attributes ? this.attributes : attr, map);
         bridge.updateLayerView(this);
         bridge.renderMenu();
         bridge.renderMenuSelection();

@@ -3,22 +3,13 @@ import store from "../../../../../../../app-store";
 import {expect} from "chai";
 import sinon from "sinon";
 import {RoutingGeosearchResult} from "../../../../utils/classes/routing-geosearch-result";
-import {fetchRoutingLocationFinderGeosearch, getRoutingLocationFinderGeosearchUrl} from "../../../../utils/geosearch/routing-locationFinder-geosearch";
+import {fetchRoutingLocationFinderGeosearch} from "../../../../utils/geosearch/routing-locationFinder-geosearch";
 
 describe("src/modules/tools/routing/utils/geosearch/routing-locationFinder-geosearch.js", () => {
-    let service;
-
     beforeEach(() => {
-        service = "https://service";
         sinon.stub(i18next, "t").callsFake((...args) => args);
         store.getters = {
-            getRestServiceById: () => ({url: service})
-        };
-        store.state.Tools.Routing.geosearch = {
-            serviceId: {
-                url: "http://serviceId.url"
-            },
-            limit: 1000
+            getRestServiceById: () => ({url: "tmp"})
         };
     });
 
@@ -98,44 +89,6 @@ describe("src/modules/tools/routing/utils/geosearch/routing-locationFinder-geose
             catch (error) {
                 expect(error.message).equal("testerror");
             }
-        });
-    });
-    describe("getRoutingLocationFinderGeosearchUrl", () => {
-        it("test params", () => {
-            const search = "search",
-                createdUrl = getRoutingLocationFinderGeosearchUrl(search);
-
-            expect(createdUrl.origin).to.eql(service);
-            expect(createdUrl.pathname).to.eql("/Lookup");
-            expect(createdUrl.searchParams.get("limit")).to.eql("1000");
-            expect(createdUrl.searchParams.get("properties")).to.eql("text");
-            expect(createdUrl.searchParams.get("query")).to.eql(search);
-        });
-
-        it("test pathname", () => {
-            service = "https://service/";
-            const search = "search",
-                createdUrl = getRoutingLocationFinderGeosearchUrl(search);
-
-            expect(createdUrl.origin).to.eql("https://service");
-            expect(createdUrl.pathname).to.eql("/Lookup");
-            expect(createdUrl.searchParams.get("limit")).to.eql("1000");
-            expect(createdUrl.searchParams.get("properties")).to.eql("text");
-            expect(createdUrl.searchParams.get("query")).to.eql(search);
-        });
-
-        it("createUrl should respect questionmark in serviceUrl", () => {
-            const search = "search";
-            let createdUrl = null;
-
-            service = "https://mapservice.regensburg.de/cgi-bin/mapserv?map=wfs.map";
-            createdUrl = getRoutingLocationFinderGeosearchUrl(search);
-
-            expect(createdUrl.origin).to.eql("https://mapservice.regensburg.de");
-            expect(decodeURI(createdUrl)).to.eql(service + "%2FLookup&limit=1000&properties=text&query=search");
-            expect(createdUrl.searchParams.get("limit")).to.eql("1000");
-            expect(createdUrl.searchParams.get("properties")).to.eql("text");
-            expect(createdUrl.searchParams.get("query")).to.eql(search);
         });
     });
 });

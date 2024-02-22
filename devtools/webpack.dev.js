@@ -1,11 +1,11 @@
 /* eslint-disable no-sync */
 /* eslint-disable global-require */
 const merge = require("webpack-merge"),
-    // einkommentieren um eine grafische Darstellung vom bundle als html zu erzeugen
-    // BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin,
     Common = require("./webpack.common.js"),
     fse = require("fs-extra"),
     HttpsProxyAgent = require("https-proxy-agent"),
+    // comment in to create a graphical representation of the bundle as html
+    // BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin,
     /* eslint-disable no-process-env */
     proxyServer = process.env.HTTPS_PROXY || process.env.HTTP_PROXY,
     /* eslint-disable no-process-env */
@@ -36,7 +36,7 @@ Object.keys(proxies).forEach(proxy => {
 });
 
 module.exports = function () {
-    return merge.smart(new Common(), {
+    return merge.smart({
         mode: "development",
         devtool: "cheap-module-eval-source-map",
         devServer: {
@@ -68,14 +68,14 @@ module.exports = function () {
                     loader: "file-loader",
                     options: {
                         name: "[name].[ext]",
-                        publicPath: "../../css/fonts"
+                        publicPath: "../../src_3_0_0/assets/css/fonts"
                     }
                 }
             ]
         }
-        // einkommentieren um eine grafische Darstellung vom bundle als html unter "build/statistics.html" zu erzeugen
+        // comment in to create a graphical representation of the bundle as html that is automatically displayed in the browser at 'npm run start'
         // ,plugins: [
         //     new BundleAnalyzerPlugin()
         // ]
-    });
+    }, new Common());
 };

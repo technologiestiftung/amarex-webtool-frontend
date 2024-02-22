@@ -50,8 +50,9 @@ export default {
          */
         feature () {
             this.$nextTick(() => {
-                this.overlay.setPosition(this.clickCoordinate);
-                Popover.getInstance(this.overlay.getElement()).update();
+                const popover = Popover.getInstance(this.overlay.getElement());
+
+                popover.update();
             });
         }
     },
@@ -62,7 +63,7 @@ export default {
         this.createOverlay();
         this.createPopover();
     },
-    beforeDestroy () {
+    beforeUnmount () {
         mapCollection.getMap("2D").removeOverlay(this.overlay);
     },
     methods: {

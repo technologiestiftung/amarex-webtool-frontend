@@ -18,8 +18,7 @@ const capabilities = {
     configs = new Map([
         ["basic", "basic"],
         ["master", "master"],
-        ["custom", "masterCustom"],
-        ["default", "masterDefault"]
+        ["default", "auto"]
     ]),
     modes = [
         "2D"

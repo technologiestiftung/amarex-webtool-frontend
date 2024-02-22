@@ -30,15 +30,14 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
      */
     parseTree: function (object = {}, parentId = "", level = 0, isAbaseLayer = false) {
         const isBaseLayer = isAbaseLayer || Boolean(parentId === "Baselayer" || this.isAncestorBaseLayer(parentId)),
-            treeType = Radio.request("Parser", "getTreeType"),
-            singleBaseLayer = isBaseLayer === true && store.state.configJson?.Portalconfig.singleBaselayer === true;
+            treeType = Radio.request("Parser", "getTreeType");
 
         if (object?.Layer) {
             object.Layer.forEach(layer => {
                 let objFromRawList,
-                    objsFromRawList,
+                    // objsFromRawList,
                     layerExtended = layer,
-                    mergedObjsFromRawList,
+                    // mergedObjsFromRawList,
                     item;
 
                 // For layer with the same layer id but with different properties as filter
@@ -90,43 +89,43 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
                     }
                     layerExtended = Object.assign(objFromRawList, layerExtended, {"isChildLayer": false});
                 }
-                // For Single-Layer (ol.layer.Layer) with more layers (FNP, LAPRO, Geobasisdaten (farbig), etc.)
-                // For Example: {id: ["550","551","552",...,"559"], visible: false}
-                else if (Array.isArray(layerExtended.id) && typeof layerExtended.id[0] === "string") {
-                    objsFromRawList = this.getRawLayerList();
-                    mergedObjsFromRawList = this.mergeObjectsByIds(layerExtended.id, objsFromRawList);
+                // // For Single-Layer (ol.layer.Layer) with more layers (FNP, LAPRO, Geobasisdaten (farbig), etc.)
+                // // For Example: {id: ["550","551","552",...,"559"], visible: false}
+                // else if (Array.isArray(layerExtended.id) && typeof layerExtended.id[0] === "string") {
+                //     objsFromRawList = this.getRawLayerList();
+                //     mergedObjsFromRawList = this.mergeObjectsByIds(layerExtended.id, objsFromRawList);
 
-                    if (mergedObjsFromRawList === null) { // Wenn Layer nicht definiert, dann Abbruch
-                        return;
-                    }
-                    layerExtended = Object.assign(mergedObjsFromRawList, Radio.request("Util", "omit", layerExtended, ["id"]), {"isChildLayer": false});
-                }
-                // For Group-Layer (ol.layer.Group)
-                // For Example: {id: "xxx", children: [{ id: "1364" }, { id: "1365" }], visible: false}
-                else if (layerExtended?.children && typeof layerExtended.id === "string") {
-                    layerExtended.children = layerExtended.children.map(childLayer => {
-                        objFromRawList = null;
-                        if (childLayer.styles && childLayer.styles[0]) {
-                            objFromRawList = rawLayerList.getLayerWhere({id: childLayer.id + childLayer.styles[0]});
-                        }
-                        if (objFromRawList === null || objFromRawList === undefined) {
-                            objFromRawList = rawLayerList.getLayerWhere({id: childLayer.id});
-                        }
-                        if (objFromRawList !== null && objFromRawList !== undefined) {
-                            return Object.assign(objFromRawList, childLayer, {"isChildLayer": true});
-                        }
-                        console.error("A layer of the group \"" + layerExtended.name + "\" with id: " + childLayer.id + " was not created. Id not contained in services.json.");
-                        return undefined;
-                    });
+                //     if (mergedObjsFromRawList === null) { // Wenn Layer nicht definiert, dann Abbruch
+                //         return;
+                //     }
+                //     layerExtended = Object.assign(mergedObjsFromRawList, Radio.request("Util", "omit", layerExtended, ["id"]), {"isChildLayer": false});
+                // }
+                // // For Group-Layer (ol.layer.Group)
+                // // For Example: {id: "xxx", children: [{ id: "1364" }, { id: "1365" }], visible: false}
+                // else if (layerExtended?.children && typeof layerExtended.id === "string") {
+                //     layerExtended.children = layerExtended.children.map(childLayer => {
+                //         objFromRawList = null;
+                //         if (childLayer.styles && childLayer.styles[0]) {
+                //             objFromRawList = getLayerWhere({id: childLayer.id + childLayer.styles[0]});
+                //         }
+                //         if (objFromRawList === null || objFromRawList === undefined) {
+                //             objFromRawList = getLayerWhere({id: childLayer.id});
+                //         }
+                //         if (objFromRawList !== null && objFromRawList !== undefined) {
+                //             return Object.assign(objFromRawList, childLayer, {"isChildLayer": true});
+                //         }
 
-                    layerExtended.children = layerExtended.children.filter(function (childLayer) {
-                        return childLayer !== undefined;
-                    });
+                //         return undefined;
+                //     });
 
-                    if (layerExtended.children.length > 0) {
-                        layerExtended = Object.assign(layerExtended, {typ: "GROUP", isChildLayer: false});
-                    }
-                }
+                //     layerExtended.children = layerExtended.children.filter(function (childLayer) {
+                //         return childLayer !== undefined;
+                //     });
+
+                //     if (layerExtended.children.length > 0) {
+                //         layerExtended = Object.assign(layerExtended, {typ: "GROUP", isChildLayer: false});
+                //     }
+                // }
 
                 // HVV :(
 
@@ -140,8 +139,7 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
                             name: layerExtended.name[index],
                             parentId: parentId,
                             styles: layerExtended.styles[index],
-                            type: "layer",
-                            singleBaseLayer
+                            type: "layer"
                         }, Radio.request("Util", "omit", layerExtended, ["id", "name", "styles", "legendURL"]));
 
                         subItem = this.controlsVisibilityInTree(subItem, treeType, level, layerExtended);
@@ -156,8 +154,7 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
                         level: level,
                         parentId: parentId,
                         type: "layer",
-                        styleId: "default",
-                        singleBaseLayer
+                        styleId: "default"
                     }, layerExtended);
 
                     item = this.controlsVisibilityInTree(item, treeType, level, layerExtended);
@@ -185,8 +182,8 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
                 this.addItem({
                     type: "folder",
                     parentId: parentId,
-                    name: folder.Titel,
-                    id: folder.id,
+                    // name: folder.Titel,
+                    // id: folder.id,
                     isFolderSelectable: isFolderSelectable,
                     level: level,
                     icon: "bi-plus-circle-fill",

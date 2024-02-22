@@ -1,487 +1,614 @@
 {
-  "Portalconfig": {
-    "portalTitle": {
-      "title": "Master",
-      "logo": "https://geodienste.hamburg.de/lgv-config/img/hh-logo.png",
-      "link": "https://geoinfo.hamburg.de",
-      "toolTip": "Landesbetrieb Geoinformation und Vermessung"
-    },
-    "tree": {
-      "highlightedFeatures": {
+  "portalConfig": {
+    "map": {
+      "baselayerSwitcher": {
         "active": true
-      }
-    },
-    "quickHelp": {
-      "configs": {
-        "search": true,
-        "tree": true
-      }
-    },
-    "searchBar": {
-      "gazetteer": {
-        "minchars": 3,
-        "serviceId": "8",
-        "searchAddress": true,
-        "searchStreets": true,
-        "searchHouseNumbers": true,
-        "searchDistricts": true,
-        "searchParcels": true,
-        "searchStreetKey": true,
-        "gfiOnClick": true
       },
-      "elasticSearch": {
-        "minChars": 3,
-        "serviceId": "elastic",
-        "type": "GET",
-        "triggerEvent": {
-          "channel": "Parser",
-          "event": "addGdiLayer"
+      "controls": {
+        "rotation": true,
+        "zoom": true,
+        "tiltView": true,
+        "startModule": {
+          "secondaryMenu": [
+            {
+              "type": "addWMS"
+            }
+          ]
         },
-        "payload": {
-          "id": "query",
-          "params": {
-            "query_string": "",
-            "typ": [
-              "sensorthings",
-              "wms"
-            ],
-            "size": 30
-          }
-        },
-        "searchStringAttribute": "query_string",
-        "responseEntryPath": "hits.hits",
-        "hitMap": {
-          "name": "_source.name",
-          "id": "_source.id",
-          "source": "_source"
-        },
-        "hitType": "common:modules.searchbar.type.subject",
-        "hitIcon": "bi-list-ul"
+        "totalView": true,
+        "button3d": true,
+        "expandable": {
+          "backForward": true,
+          "orientation": {
+            "zoomMode": "once",
+            "poiDistances": [
+              500,
+              1000,
+              2000
+            ]
+          },
+          "freeze": true,
+          "fullScreen": true
+        }
       },
-      "visibleVector": {
-        "gfiOnClick": true
-      },
-      "specialWFS": {
-        "minChars": 3,
-        "timeout": 10000,
-        "definitions": [
+      "featureViaURL": {
+        "zoomTo": "42",
+        "epsg": 4326,
+        "layers": [
           {
-            "url": "https://geodienste.hamburg.de/HH_WFS_Bebauungsplaene",
-            "typeName": "app:hh_hh_festgestellt",
-            "propertyNames": [
-              "app:geltendes_planrecht"
-            ],
-            "geometryName": "app:geom",
-            "name": "translate#common:modules.searchbar.specialWFS.terminated",
-            "namespaces": "xmlns:app='http://www.deegree.org/app'"
+            "id": "42",
+            "geometryType": "Point",
+            "name": "Punkt Feature",
+            "styleId": "location_eventlotse"
           },
           {
-            "url": "https://geodienste.hamburg.de/HH_WFS_Bebauungsplaene",
-            "typeName": "app:prosin_imverfahren",
-            "propertyNames": [
-              "app:plan"
-            ],
-            "geometryName": "app:the_geom",
-            "name": "translate#common:modules.searchbar.specialWFS.ongoing",
-            "namespaces": "xmlns:app='http://www.deegree.org/app'"
+            "id": "4200",
+            "geometryType": "LineString",
+            "name": "Übergebene Linien Feature",
+            "styleId": "mapMarkerPolygon_flaecheninfo"
           },
           {
-            "url": "https://geodienste.hamburg.de/HH_WFS_KitaEinrichtung",
-            "typeName": "app:KitaEinrichtungen",
-            "propertyNames": [
-              "app:Name"
-            ],
-            "name": "translate#common:modules.searchbar.specialWFS.childcare",
-            "namespaces": "xmlns:app='http://www.deegree.org/app'"
-          },
-          {
-            "url": "https://geodienste.hamburg.de/HH_WFS_Stoerfallbetriebe",
-            "typeName": "app:stoerfallbetrieb",
-            "propertyNames": [
-              "app:standort"
-            ],
-            "name": "translate#common:modules.searchbar.specialWFS.hazardous",
-            "namespaces": "xmlns:app='http://www.deegree.org/app'"
+            "id": "4020",
+            "geometryType": "Polygon",
+            "name": "Übergebene Polygon Feature",
+            "styleId": "mapMarkerPolygon_flaecheninfo"
           }
         ]
       },
-      "tree": {
-        "minChars": 3
+      "getFeatureInfo": {
+        "coloredHighlighting3D": {
+          "enabled": true,
+          "color": "PURPLE"
+        },
+        "highlightVectorRules": {
+          "fill": {
+            "color": [
+              215,
+              102,
+              41,
+              0.9
+            ]
+          },
+          "image": {
+            "scale": 1.5
+          },
+          "stroke": {
+            "width": 4,
+            "color": [
+              215,
+              102,
+              41,
+              0.9
+            ]
+          },
+          "text": {
+            "scale": 2
+          }
+        },
+        "hideMapMarkerOnVectorHighlight": false
       },
-      "zoomLevel": 9,
-      "placeholder": "translate#common:modules.searchbar.placeholder.addressHospitalBplan"
-    },
-    "mapView": {
-      "backgroundImage": "https://geodienste.hamburg.de/lgv-config/img/backgroundCanvas.jpeg",
-      "startCenter": [
-        565874,
-        5934140
-      ]
-    },
-    "menu": {
-      "tree": {
-        "name": "translate#common:menu.topics",
-        "icon": "bi-stack",
-        "isInitOpen": false
+      "layerPills": {
+        "active": true
       },
-      "ansichten": {
-        "name": "translate#common:menu.views.name",
-        "icon": "bi-binoculars-fill",
-        "children": {
-          "view1": {
-            "name": "translate#common:menu.views.view01",
-            "type": "viewpoint",
-            "icon": "bi-bullseye",
-            "heading": -0.30858728378862876,
-            "tilt": 0.9321791580603296,
-            "altitude": 272.3469798217454,
-            "center": [
-              564028.7954571751,
-              5934555.967867207
-            ],
-            "zoomLevel": 7.456437968949651
+      "map3dParameter": {
+        "fog": {
+          "enabled": true,
+          "density": 0.0002,
+          "screenSpaceErrorFactor": 2.0
+        },
+        "fxaa": true,
+        "globe": {
+          "enableLighting": true,
+          "maximumScreenSpaceError": 2,
+          "tileCacheSize": 20
+        }
+      },
+      "mapMarker": {
+        "pointStyleId": "mapMarker_geo-alt-fill"
+      },
+      "mapView": {
+        "backgroundImage": "https://geodienste.hamburg.de/lgv-config/img/backgroundCanvas.jpeg",
+        "startZoomLevel": 4,
+        "startCenter": [
+          565874,
+          5934140
+        ],
+        "mapInteractions": {
+          "interactionModes": {
+            "altShiftDragRotate": true
           }
         }
       },
-      "filter": {
-        "name": "translate#common:menu.filter",
-        "icon": "bi-funnel-fill",
-        "deactivateGFI": false,
-        "isGeneric": false,
-        "isInitOpen": false,
-        "layers": [
+      "mouseHover": {
+        "numFeaturesToShow": 2,
+        "infoText": "Exampletext"
+      },
+      "startingMapMode": "2D",
+      "zoomTo": [
+        {
+          "id": "zoomToGeometry",
+          "layerId": "1692",
+          "property": "bezirk_name",
+          "allowedValues": [
+            "ALTONA",
+            "HARBURG",
+            "HAMBURG-NORD",
+            "BERGEDORF",
+            "EIMSBÜTTEL",
+            "HAMBURG-MITTE",
+            "WANDSBEK"
+          ]
+        },
+        {
+          "id": "zoomToFeatureId",
+          "layerId": "4560",
+          "property": "flaechenid",
+          "styleId": "location_eventlotse"
+        }
+      ]
+    },
+    "mainMenu": {
+      "expanded": true,
+      "title": {
+        "text": "Master",
+        "logo": "https://geodienste.hamburg.de/lgv-config/img/hh-logo.png",
+        "link": "https://geoinfo.hamburg.de",
+        "toolTip": "Landesbetrieb Geoinformation und Vermessung"
+      },
+      "searchBar": {
+        "searchInterfaces": [
           {
-            "active": false,
-            "title": "Grundschulen",
-            "layerId": "8712",
-            "deactivateGFI": false,
-            "strategy": "active",
-            "snippets": [
-              {
-                "attrName": "kapitelbezeichnung",
-                "prechecked": [
-                  "Grundschulen",
-                  "Langformschulen"
+            "type": "elasticSearch",
+            "serviceId": "elastic_prod",
+            "requestType": "GET",
+            "hitTemplate": "layer",
+            "payload": {
+              "id": "query",
+              "params": {
+                "query_string": "",
+                "typ": [
+                  "sensorthings",
+                  "wms"
                 ],
-                "visible": false,
-                "type": "dropdown",
-                "matchingMode": "OR",
-                "operator": "EQ",
-                "multiselect": true
-              },
-              {
-                "attrName": "bezirk",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Bezirk"
-              },
-              {
-                "attrName": "stadtteil",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Stadtteil"
-              },
-              {
-                "attrName": "schulform",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schulform"
-              },
-              {
-                "attrName": "ganztagsform",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Ganztagsform"
-              },
-              {
-                "attrName": "anzahl_schueler",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Anzahl Schüler"
-              },
-              {
-                "attrName": "schwerpunktschule",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schwerpunktschule"
-              },
-              {
-                "attrName": "bilingual",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Bilingual"
+                "size": 30
               }
-            ],
-            "showHits": true,
-            "snippetTags": true
+            },
+            "searchStringAttribute": "query_string",
+            "responseEntryPath": "hits.hits",
+            "hitMap": {
+              "name": "_source.name",
+              "id": "_source.id",
+              "source": "_source",
+              "layerId": "_source.id",
+              "toolTip": [
+                "_source.name",
+                "_source.datasets.md_name"
+              ]
+            },
+            "resultEvents": {
+              "onClick": [
+                "addLayerToTopicTree"
+              ],
+              "buttons": [
+                "showInTree",
+                "showLayerInfo"
+              ]
+            }
           },
           {
-            "active": false,
-            "title": "Stadtteilschulen",
-            "layerId": "8712",
-            "deactivateGFI": false,
-            "strategy": "active",
-            "snippets": [
-              {
-                "attrName": "kapitelbezeichnung",
-                "prechecked": [
-                  "Stadtteilschulen",
-                  "Langformschulen"
-                ],
-                "visible": false,
-                "type": "dropdown",
-                "matchingMode": "OR",
-                "operator": "EQ",
-                "multiselect": true
-              },
-              {
-                "attrName": "bezirk",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Bezirk"
-              },
-              {
-                "attrName": "stadtteil",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Stadtteil"
-              },
-              {
-                "attrName": "schulform",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schulform"
-              },
-              {
-                "attrName": "ganztagsform",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Ganztagsform"
-              },
-              {
-                "attrName": "anzahl_schueler",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schülerzahl"
-              },
-              {
-                "attrName": "schwerpunktschule",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schwerpunktschule Inklusion"
-              },
-              {
-                "attrName": "fremdsprache",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Fremdsprachen"
-              },
-              {
-                "attrName": "fremdsprache_mit_klasse",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Fremdsprachen ab Klassenstufe"
-              },
-              {
-                "attrName": "schulische_ausrichtung",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schwerpunkte in den Angeboten"
+            "type": "elasticSearch",
+            "serviceId": "elastic_address",
+            "requestType": "POST",
+            "epsg": "EPSG:4326",
+            "searchStringAttribute": "query_str",
+            "hitType": "_source.properties.type",
+            "payload": {
+              "id": "addr_search",
+              "params": {
+                "query_str": ""
               }
-            ],
-            "showHits": true,
-            "snippetTags": true
+            },
+            "responseEntryPath": "hits.hits",
+            "hitMap": {
+              "name": "_source.properties.searchfield",
+              "id": "_source.id",
+              "coordinate": "_source.geometry.coordinates"
+            },
+            "resultEvents": {
+              "onClick": [
+                "setMarker",
+                "zoomToResult"
+              ],
+              "onHover": [
+                "setMarker"
+              ],
+              "buttons": [
+                "startRouting",
+                "setMarker",
+                "zoomToResult"
+              ]
+            }
           },
           {
-            "active": false,
-            "title": "Gymnasien",
-            "layerId": "8712",
-            "info": "Sie finden berufliche Gymnasien ab der Klassenstufe 11 bei den Beruflichen Schulen.",
-            "deactivateGFI": false,
-            "strategy": "active",
-            "snippets": [
-              {
-                "attrName": "kapitelbezeichnung",
-                "prechecked": [
-                  "Gymnasien"
-                ],
-                "visible": false,
-                "type": "dropdown",
-                "matchingMode": "OR",
-                "operator": "EQ",
-                "multiselect": true
-              },
-              {
-                "attrName": "bezirk",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Bezirk"
-              },
-              {
-                "attrName": "stadtteil",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Stadtteil"
-              },
-              {
-                "attrName": "schulform",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schulform"
-              },
-              {
-                "attrName": "ganztagsform",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Ganztagsform"
-              },
-              {
-                "attrName": "anzahl_schueler",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schülerzahl"
-              },
-              {
-                "attrName": "fremdsprache",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Fremdsprachen"
-              },
-              {
-                "attrName": "fremdsprache_mit_klasse",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Fremdsprachen ab Klassenstufe"
-              },
-              {
-                "attrName": "schulische_ausrichtung",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Schwerpunkte in den Angeboten"
-              }
-            ],
-            "showHits": true,
-            "snippetTags": true
+            "type": "gazetteer",
+            "serviceId": "6",
+            "searchAddress": true,
+            "searchStreets": true,
+            "searchHouseNumbers": true,
+            "searchDistricts": true,
+            "searchParcels": true,
+            "searchStreetKey": true,
+            "resultEvents": {
+              "onClick": [
+                "setMarker",
+                "zoomToResult"
+              ],
+              "onHover": [
+                "setMarker"
+              ],
+              "buttons": [
+                "startRouting"
+              ]
+            }
           },
           {
-            "active": false,
-            "title": "Sonderschulen",
-            "layerId": "8712",
-            "deactivateGFI": false,
-            "strategy": "active",
-            "snippets": [
+            "type": "locationFinder",
+            "serviceId": "locationFinder",
+            "classes": [
               {
-                "attrName": "kapitelbezeichnung",
-                "prechecked": [
-                  "Sonderschulen"
-                ],
-                "visible": false,
-                "type": "dropdown",
-                "matchingMode": "OR",
-                "operator": "EQ",
-                "multiselect": true
+                "name": "Haltestelle",
+                "icon": "bi-record-circle"
               },
               {
-                "attrName": "bezirk",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Bezirk"
-              },
-              {
-                "attrName": "stadtteil",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Stadtteil"
-              },
-              {
-                "attrName": "ganztagsform",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Ganztagsform"
-              },
-              {
-                "attrName": "foerderart",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Förderart"
-              },
-              {
-                "attrName": "abschluss",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Abschluss"
+                "name": "Straßenname"
               }
-            ],
-            "showHits": true,
-            "snippetTags": true
+            ]
           },
           {
-            "active": true,
-            "title": "Krankenhäuser",
-            "layerId": "1711",
-            "deactivateGFI": false,
-            "strategy": "active",
-            "snippets": [
+            "type": "komootPhoton",
+            "minChars": 3,
+            "serviceId": "11",
+            "limit": 10,
+            "lang": "de",
+            "lat": 53.6,
+            "lon": 10.0,
+            "bbox": "9.6,53.3,10.4,53.8"
+          },
+          {
+            "type": "osmNominatim",
+            "serviceId": "10",
+            "limit": 60,
+            "states": "Hamburg",
+            "classes": "place,highway,building,shop,historic,leisure,city,county"
+          },
+          {
+            "type": "topicTree",
+            "hitTemplate": "layer"
+          },
+          {
+            "type": "visibleVector",
+            "resultEvents": {
+              "onClick": [
+                "openGetFeatureInfo",
+                "setMarker",
+                "zoomToResult"
+              ],
+              "onHover": [
+                "setMarker"
+              ],
+              "buttons": [
+                "startRouting"
+              ]
+            }
+          },
+          {
+            "type": "exampleSearch"
+          },
+          {
+            "type": "specialWfs",
+            "definitions": [
               {
-                "attrName": "teilnahme_geburtsklinik",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Geburtshilfe"
+                "url": "https://geodienste.hamburg.de/HH_WFS_Krankenhaeuser",
+                "typeName": "de.hh.up:gesundheit_krankenhaeuser",
+                "propertyNames": ["de.hh.up:name"],
+                "geometryName": "de.hh.up:geom",
+                        "name": "Krankenhaus123",
+                        "namespaces": "xmlns:de.hh.up='https://registry.gdi-de.org/id/de.hh.up'"
               },
               {
-                "attrName": "teilnahme_notversorgung",
-                "operator": "IN",
-                "type": "dropdown",
-                "delimiter": "|",
-                "title": "Not- und Unfallversorgung"
+                "url": "https://geodienste.hamburg.de/HH_WFS_Bebauungsplaene",
+                "typeName": "app:hh_hh_festgestellt",
+                "propertyNames": [
+                  "app:geltendes_planrecht"
+                ],
+                "geometryName": "app:geom",
+                "name": "common:modules.searchBar.specialWFS.terminated",
+                "namespaces": "xmlns:app='http://www.deegree.org/app'"
+              },
+              {
+                "url": "https://geodienste.hamburg.de/HH_WFS_Bebauungsplaene",
+                "typeName": "app:prosin_imverfahren",
+                "propertyNames": [
+                  "app:plan"
+                ],
+                "geometryName": "app:the_geom",
+                "name": "common:modules.searchBar.specialWFS.ongoing",
+                "namespaces": "xmlns:app='http://www.deegree.org/app'"
+              },
+              {
+                "url": "https://geodienste.hamburg.de/HH_WFS_KitaEinrichtung",
+                "typeName": "app:KitaEinrichtungen",
+                "propertyNames": [
+                  "app:Name"
+                ],
+
+                "namespaces": "xmlns:app='http://www.deegree.org/app'"
+              },
+              {
+                "url": "https://geodienste.hamburg.de/HH_WFS_Stoerfallbetriebe",
+                "typeName": "app:stoerfallbetrieb",
+                "propertyNames": [
+                  "app:standort"
+                ],
+                "name": "common:modules.searchBar.specialWFS.hazardous",
+                "namespaces": "xmlns:app='http://www.deegree.org/app'"
               }
-            ],
-            "showHits": true,
-            "snippetTags": true
+            ]
           }
         ]
       },
-      "tools": {
-        "name": "translate#common:menu.tools.name",
-        "icon": "bi-tools",
-        "children": {
-          "wfsSearch": {
-            "name": "translate#common:menu.tools.parcelSearch",
-            "icon": "bi-search",
+      "sections": [
+        [
+          {
+            "type": "about",
+            "cswUrl": "https://metaver.de/csw",
+            "metaUrl": "https://metaver.de/trefferanzeige?docuuid=40D48B03-AD1D-407B-B04D-B5BC6855BE15",
+            "metaId": "40D48B03-AD1D-407B-B04D-B5BC6855BE15"
+          },
+          {
+            "type": "legend"
+          },
+          {
+            "type": "fileImport"
+          },
+          {
+            "type": "openConfig"
+          },
+          {
+            "type": "draw"
+          },
+          {
+            "type": "selectFeatures"
+          },
+          {
+            "type": "contact",
+            "serviceId": "80001",
+            "includeSystemInfo": true,
+            "fileUpload": true,
+            "from": [
+              {
+                "email": "lgvgeoportal-hilfe@gv.hamburg.de",
+                "name": "LGVGeoportalHilfe"
+              }
+            ],
+            "to": [
+              {
+                "email": "lgvgeoportal-hilfe@gv.hamburg.de",
+                "name": "LGVGeoportalHilfe"
+              }
+            ]
+          },
+          {
+            "type": "news"
+          },
+          {
+            "type": "language"
+          },
+          {
+            "name": "benutzerdefinierte Menüelemente",
+            "icon": "bi-folder-plus",
+            "type": "folder",
+            "elements": [
+              {
+                "type": "customMenuElement",
+                "name": "Url öffnen",
+                "openURL": "https://geoinfo.hamburg.de/"
+              },
+              {
+                "type": "customMenuElement",
+                "name": "Url öffnen und HTML anzeigen",
+                "openURL": "https://geoinfo.hamburg.de/",
+                "htmlContent": "<div><h1>This is a Heading</h1><p>Es wurde eine Url geöffnet.<p/></div>"
+              },
+              {
+                "type": "customMenuElement",
+                "name": "HTML aus config.json und Action",
+                "htmlContent": "<div><h1>This is a Heading</h1><p>This is a paragraph.</p></br><a href=\"https://www.w3schools.com/\" target=\"_blank\">Visit W3Schools.com!</a></div>",
+                "execute": {
+                  "action": "Alerting/addSingleAlert",
+                  "payload": {
+                    "title": "An alle Menschen",
+                    "content": "Hallo Welt"
+                  }
+                }
+              },
+              {
+                "type": "customMenuElement",
+                "name": "HTML aus externer Datei",
+                "icon": "bi-youtube",
+                "pathToContent": "./resources/customMenuElementContent.html"
+              }
+            ]
+          },
+          {
+            "name": "folder1",
+            "icon": "bi-folder-plus",
+            "type": "folder",
+            "elements": [
+              {
+                "name": "folder1_1",
+                "icon": "bi-folder-plus",
+                "type": "folder",
+                "elements": [
+                  {
+                    "name": "folder1_1_1",
+                    "icon": "bi-folder-plus",
+                    "type": "folder",
+                    "elements": [
+                      {
+                        "type": "bufferAnalysis"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "folder1_1_2",
+                    "icon": "bi-folder-plus",
+                    "type": "folder",
+                    "elements": []
+                  }
+                ]
+              },
+              {
+                "name": "folder1_2",
+                "icon": "bi-folder-plus",
+                "type": "folder",
+                "elements": []
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    "secondaryMenu": {
+      "expanded": true,
+      "sections": [
+        [
+          {
+            "type": "populationRequest"
+          },
+          {
+            "type": "print",
+            "printServiceId": "mapfish",
+            "printAppId": "master",
+            "filename": "Ausdruck",
+            "title": "Mein Titel",
+            "currentLayoutName": "A4 Hochformat"
+          },
+          {
+            "type": "featureLister",
+            "maxFeatures": 10,
+            "highlightVectorRulesPolygon": {
+              "fill": {
+                "color": [
+                  255,
+                  0,
+                  127,
+                  0.9
+                ]
+              },
+              "stroke": {
+                "width": 3,
+                "color": [
+                  0,
+                  204,
+                  204,
+                  0.9
+                ]
+              }
+            },
+            "highlightVectorRulesPointLine": {
+              "stroke": {
+                "width": 7,
+                "color": [
+                  0,
+                  153,
+                  0,
+                  0.9
+                ]
+              },
+              "image": {
+                "scale": 2
+              }
+            }
+          },
+          {
+            "type": "routing",
+            "icon": "bi-signpost-2",
+            "geosearch": {
+              "type": "BKG",
+              "serviceId": "5",
+              "bbox": {
+                "CYCLING": "9.6,53.40,10.4,53.84"
+              }
+            },
+            "geosearchReverse": {
+              "type": "BKG",
+              "serviceId": "5"
+            },
+            "directionsSettings": {
+              "type": "ORS",
+              "serviceId": "bkg_ors",
+              "speedProfile": "CAR",
+              "batchProcessing": {
+                "enabled": false,
+                "active": false
+              }
+            },
+            "isochronesSettings": {
+              "type": "ORS",
+              "serviceId": "bkg_ors",
+              "speedProfile": "CAR",
+              "batchProcessing": {
+                "enabled": false,
+                "active": false
+              }
+            }
+          },
+          {
+            "type": "scaleSwitcher"
+          },
+          {
+            "type": "shareView",
+            "facebookShare": true,
+            "qrShare": true
+          },
+          {
+            "type": "measure"
+          },
+          {
+            "type": "styleVT"
+          },
+          {
+            "type": "coordToolkit",
+            "heightLayerId": "19173",
+            "heightElementName": "value_0",
+            "heightValueWater": "-20",
+            "heightValueBuilding": "200",
+            "zoomLevel": 5,
+            "heightLayerInfo": "Grundlage der Höheninformation ist das \"Digitalge Höhenmodell Hamburg DGM 1\" mit Hohenangaben im Koordinatenrefenerzsystem für Höhenangaben DE_DHHN2016_NH in Metern über Normalhöhennull (NHN).",
+            "coordInfo": {
+              "title": "Koordinatenreferenzsystem für 2D-Lageangaben, Erläuterungen",
+              "explanations": [
+                "ETRS89_UTM32, EPSG 4647 (zE-N): Bezugssystem ETRS89, Abbildungsvorschrift UTM, Zone 32",
+                "EPSG 25832: Bezugssystem ETRS89, Abbildungsvorschrift UTM, Zone 32, ist identisch mit ETRS89_UTM32 jedoch ohne Angabe der Zonenkennung „32“ beim East-Wert",
+                "ETRS89_3GK3: Bezugssystem ETRS89, Abbildungsvorschrift Gauß-Krüger, 3. Meridianstreifen",
+                "EPSG 8395: Bezugssystem ETRS89, Abbildungsvorschrift Gauß-Krüger, 3. Meridianstreifen, ist identisch mit ETRS89_3GK3 jedoch ohne Angabe der Streifenkennung „3“ beim Rechtswert",
+                "DE_DHDN_3GK3, EPSG 31467: Bezugssystem DHDN, Abbildungsvorschrift Gauß-Krüger, 3. Meridianstreifen"
+              ]
+            }
+          },
+          {
+            "type": "draw_old",
+            "enableAttributesSelector": true,
+            "addIconsOfActiveLayers": true
+          },
+          {
+            "type": "wfsSearch",
+            "description": "common:modules.wfsSearch.description_parcel",
             "zoomLevel": 7,
             "instances": [
               {
-                "title": "translate#common:menu.tools.parcelSearch",
+                "title": "common:modules.wfsSearch.parcelSearch",
                 "userHelp": "hide",
                 "requestConfig": {
                   "gazetteer": {
@@ -502,8 +629,8 @@
                       "literals": [
                         {
                           "field": {
-                            "type": "equal",
-                            "inputLabel": "common:modules.tools.wfsSearch.district",
+                            "queryType": "equal",
+                            "inputLabel": "common:modules.wfsSearch.district",
                             "fieldName": "gemarkung",
                             "usesId": true,
                             "options": "",
@@ -512,8 +639,8 @@
                         },
                         {
                           "field": {
-                            "type": "equal",
-                            "inputLabel": "common:modules.tools.wfsSearch.parcelNumber",
+                            "queryType": "equal",
+                            "inputLabel": "common:modules.wfsSearch.parcelNumber",
                             "fieldName": "flurstuecksnummer",
                             "required": true
                           }
@@ -525,270 +652,89 @@
               }
             ]
           },
-          "populationRequest": {
-            "name": "translate#additional:modules.tools.populationRequest.title",
-            "icon": "bi-person-bounding-box",
-            "onlyDesktop": false
+          {
+            "type": "bufferAnalysis"
           },
-          "compareFeatures": {
-            "name": "translate#common:menu.tools.compareFeatures",
-            "icon": "bi-list-ul",
-            "numberOfFeaturesToShow": 3,
-            "numberOfAttributesToShow": 12
-          },
-          "parcelSearch": {
-            "name": "translate#common:menu.tools.parcelSearch",
-            "icon": "bi-search",
-            "serviceId": "6",
-            "storedQueryID": "Flurstueck",
-            "configJSON": "https://geodienste.hamburg.de/lgv-config/gemarkungen_hh.json",
-            "parcelDenominator": false
-          },
-          "measure": {
-            "name": "translate#common:menu.tools.measure",
-            "icon": "bi-rulers"
-          },
-          "supplyCoord": {
-            "name": "translate#common:menu.tools.supplyCoord",
-            "icon": "bi-bullseye"
-          },
-          "coordToolkit": {
-            "name": "translate#common:menu.tools.coordToolkit",
-            "icon": "bi-globe",
-            "heightLayerId": "19173",
-            "heightElementName": "value_0",
-            "heightValueWater": "-20",
-            "heightValueBuilding": "200",
-            "zoomLevel": 5
-          },
-          "shadow": {
-            "name": "translate#common:menu.tools.shadow",
-            "icon": "bi-lamp-fill",
-            "isShadowEnabled": true
-          },
-          "gfi": {
-            "name": "translate#common:menu.tools.getInfos",
-            "desktopType": "detached",
-            "icon": "bi-info-circle-fill",
-            "active": true
-          },
-          "bufferAnalysis": {
-            "name": "bufferAnalysis",
-            "icon": "bi-record-circle"
-          },
-          "searchByCoord": {
-            "name": "translate#common:menu.tools.searchByCoord",
-            "icon": "bi-search"
-          },
-          "selectFeatures": {
-            "name": "translate#common:menu.tools.selectFeatures",
-            "icon": "bi-hand-index-thumb-fill"
-          },
-          "fileImport": {
-            "name": "translate#common:menu.tools.fileImport",
-            "icon": "bi-box-arrow-in-down"
-          },
-          "modeler3D": {
-            "name": "translate#common:menu.tools.modeler3D",
-            "icon": "bi-bounding-box"
-          },
-          "extendedFilter": {
-            "name": "Erweiterter Filter",
-            "icon": "bi-funnel-fill",
-            "deactivateGFI": false
-          },
-          "draw": {
-            "name": "translate#common:menu.tools.draw",
-            "icon": "bi-pencil-fill",
-            "addIconsOfActiveLayers": true,
-            "iconList": [
-              {
-                "id": "iconPoint",
-                "type": "simple_point",
-                "value": "simple_point"
-              },
-              {
-                "id": "iconMeadow",
-                "type": "image",
-                "scale": 0.8,
-                "value": "wiese.png"
-              },
-              {
-                "id": "gelber Pin",
-                "type": "image",
-                "scale": 2,
-                "value": "geo-fill-ylw.svg"
-              }
-            ]
-          },
-          "featureLister": {
-            "name": "translate#common:menu.tools.featureLister",
-            "maxFeatures": 10,
-            "icon": "bi-list",
-            "highlightVectorRulesPolygon": {
-              "fill": {
-                "color": [
-                  255,
-                  255,
-                  255,
-                  0.9
-                ]
-              },
-              "stroke": {
-                "width": 4,
-                "color": [
-                  0,
-                  0,
-                  204,
-                  0.9
-                ]
-              }
-            },
-            "highlightVectorRulesPointLine": {
-              "stroke": {
-                "width": 8,
-                "color": [
-                  255,
-                  0,
-                  255,
-                  0.9
-                ]
-              },
-              "image": {
-                "scale": 1.5
-              }
-            }
-          },
-          "saveSelection": {
-            "name": "translate#common:menu.tools.saveSelection",
-            "icon": "bi-bookmark-check"
-          },
-          "layerSlider": {
-            "name": "translate#common:menu.tools.layerSlider",
-            "icon": "bi-hourglass-split",
-            "timeInterval": 1000,
+          {
+            "type": "layerSlider",
             "layerIds": [
               {
-                "title": "translate#common:modules.tools.layerSlider.serviceOne",
-                "layerId": "8730"
+                "title": "common:modules.layerSlider.serviceOne",
+                "layerId": "19173"
               },
               {
-                "title": "translate#common:modules.tools.layerSlider.serviceTwo",
+                "title": "common:modules.layerSlider.serviceTwo",
                 "layerId": "2426"
               },
               {
-                "title": "translate#common:modules.tools.layerSlider.serviceThree",
-                "layerId": "4561"
+                "title": "common:modules.layerSlider.serviceThree",
+                "layerId": "8712"
+              },
+              {
+                "title": "common:modules.layerSlider.serviceFour",
+                "layerId": "1711"
               }
             ]
           },
-          "print": {
-            "name": "translate#common:menu.tools.print",
-            "icon": "bi-printer-fill",
-            "printServiceId": "mapfish",
-            "printAppId": "master",
-            "filename": "Ausdruck",
-            "title": "Mein Titel",
-            "currentLayoutName": "A4 Hochformat",
-            "dpiForPdf": 120,
-            "printMapMarker": true
-          },
-          "scaleSwitcher": {
-            "name": "translate#common:menu.tools.scaleSwitcher",
-            "icon": "bi-arrows-angle-contract"
-          },
-          "vcOblique": {
-            "name": "translate#additional:modules.tools.vcOblique.title",
-            "icon": "bi-image",
-            "styleId": "obliqueViewer",
-            "isVisibleInMenu": false
+          {
+            "type": "shadow",
+            "isShadowEnabled": true
           }
+        ]
+      ]
+    },
+    "portalFooter": {
+      "urls": [
+        {
+          "bezeichnung": "common:modules.portalFooter.designation",
+          "url": "https://geoinfo.hamburg.de/",
+          "alias": "Landesbetrieb Geoinformation und Vermessung",
+          "alias_mobile": "LGV Hamburg"
+        },
+        {
+          "url": "mailto:LGVGeoPortal-Hilfe@gv.hamburg.de?subject=Kartenunstimmigkeiten%20melden&body=Zur%20weiteren%20Bearbeitung%20bitten%20wir%20Sie%20die%20nachstehenden%20Angaben%20zu%20machen.%20Bei%20Bedarf%20fügen%20Sie%20bitte%20noch%20einen%20Screenshot%20hinzu.%20Vielen%20Dank!%0A%0A1.%20Name:%0A2.%20Telefon:%0A3.%20Anliegen",
+          "alias": "common:modules.portalFooter.mapDiscrepancy"
+        }
+      ],
+      "scaleLine": true
+    },
+    "tree": {
+      "singleBaselayer": false,
+      "addLayerButton": {
+        "active": true,
+        "searchBar": {
+          "active": true,
+          "searchInterfaceInstanceId": "elasticSearch_0",
+          "searchCategory": "Thema (externe Fachdaten)"
         }
       },
-      "legend": {
-        "name": "common:modules.legend.name",
-        "icon": "bi-lightbulb",
-        "showCollapseAllButton": true
-      },
-      "contact": {
-        "name": "translate#common:menu.contact",
-        "icon": "bi-envelope-fill",
-        "serviceId": "80001",
-        "includeSystemInfo": true,
-        "from": [
-          {
-            "email": "lgvgeoportal-hilfe@gv.hamburg.de",
-            "name": "LGVGeoportalHilfe"
-          }
-        ],
-        "to": [
-          {
-            "email": "lgvgeoportal-hilfe@gv.hamburg.de",
-            "name": "LGVGeoportalHilfe"
-          }
-        ]
-      },
-      "info": {
-        "name": "translate#common:menu.info",
-        "icon": "bi-info-circle-fill",
-        "children": {
-          "staticlinks": [
-            {
-              "name": "translate#common:modules.tools.info.disclaimer",
-              "icon": "bi-globe",
-              "url": "https://preview.poc.hamburg.de/hhcae-cm7/servlet/segment/de/energiewende/waermekataster/8348242/waermekataster-haftungsausschuss"
-            },
-            {
-              "name": "translate#common:modules.tools.info.home.name",
-              "icon": "bi-globe",
-              "url": "https://www.hamburg.de/"
-            }
-          ]
-        }
+      "highlightedFeatures": {
+        "active": true
       }
-    },
-    "controls": {
-      "fullScreen": true,
-      "orientation3d": true,
-      "zoom": true,
-      "orientation": {
-        "zoomMode": "once",
-        "poiDistances": [
-          500,
-          1000,
-          2000
-        ]
-      },
-      "totalView": true,
-      "attributions": {
-        "isInitOpenDesktop": true,
-        "isInitOpenMobile": true
-      },
-      "overviewMap": {
-        "layerId": "452",
-        "isInitOpen": false
-      },
-      "mousePosition": true,
-      "freeze": true,
-      "backForward": true,
-      "button3d": true,
-      "startTool": {
-        "tools": [
-          "vcOblique"
-        ]
-      }
-    },
-    "layersRemovable": true
+    }
   },
-  "Themenconfig": {
-    "Hintergrundkarten": {
-      "Layer": [
+  "layerConfig": {
+    "baselayer": {
+      "elements": [
         {
           "id": "453",
+          "name": "Geobasiskarten (HamburgDE)",
+          "shortname": "Geobasiskarten",
+          "typ": "WMS",
           "visibility": true
         },
         {
-          "id": "452"
+          "id": "452",
+          "name": "Digitale Orthophotos (belaubt) Hamburg",
+          "shortname": "Orthophotos",
+          "typ": "WMS",
+          "visibility": false,
+          "transparency": 30,
+          "preview": {
+            "zoomLevel": 6,
+            "center": "566245.97,5938894.79",
+            "radius": 500
+          }
         },
         {
           "id": [
@@ -802,287 +748,314 @@
             "12059"
           ],
           "name": "Geobasiskarten (schwarz-grau)",
-          "gfiAttributes": "ignore"
+          "shortname": "Karte schwarz-grau",
+          "typ": "WMS",
+          "visibility": false
         },
         {
-          "id": "12883",
-          "name": "Gelände",
-          "visibility": true
-        },
-        {
-          "id": "12884",
-          "name": "Gebäude LoD2",
+          "id": "VectorTile",
+          "name": "ArcGIS VectorTile",
+          "shortname": "VectorTile",
+          "typ": "VectorTile",
+          "visibility": false,
+          "preview": {
+            "src": "./resources/vectorTile.png"
+          },
           "gfiAttributes": "showAll",
-          "visibility": true
-        },
-        {
-          "id": "13032",
-          "name": "Oblique",
-          "visibility": true
-        },
-        {
-          "id": "157",
-          "name": "3D-Entities Testlayer",
-          "visibility": true,
-          "typ": "Entities3D",
-          "entities": [
-            {
-              "url": "https://daten-hamburg.de/gdi3d/datasource-data/Simple_Building.glb",
-              "attributes": {
-                "name": "einfaches Haus in Planten und Blomen"
-              },
-              "latitude": 53.5631,
-              "longitude": 9.9800,
-              "height": 12,
-              "heading": 0,
-              "pitch": 0,
-              "roll": 0,
-              "scale": 5,
-              "allowPicking": true,
-              "show": true
-            }
+          "url": "https://test.geoportal-hamburg.de/vt/esri/tile/{z}/{y}/{x}.pbf",
+          "epsg": "EPSG:25832",
+          "extent": [
+            441336.2209999999,
+            5915995,
+            594002,
+            5986767.56699999981
           ],
-          "gfiAttributes": {
-            "name": "Name"
-          }
-        }
-      ]
-    },
-    "Fachdaten": {
-      "Layer": [
-        {
-          "id": "1132",
-          "styleId": "1132",
-          "name": "100 Jahre Stadtgruen POIs",
-          "transparency": 75
-        },
-        {
-          "id": "16100",
-          "name": "Hauptkirchen",
-          "visibility": true,
-          "isVisibleInTree": false,
-          "hiddenFeatures": [
-            "DEHHALKAJ00011uJ",
-            "DEHHALKAJ0000yd2",
-            "DEHHALKAJ0000ovW",
-            "DEHHALKAJ0000owm",
-            "DEHHALKAJ0000pO5"
+          "origin": [
+            -9497963.94293634221,
+            9997963.94293634221
+          ],
+          "resolutions": [
+            39054.5466520950868,
+            19527.2733260475434,
+            9763.63666302377169,
+            4881.81833151188584,
+            2440.90916575594292,
+            1220.45458287797146,
+            610.227291438985731,
+            305.113645719492865,
+            152.556822859746433,
+            76.2784114298732163,
+            38.1392057149366082,
+            19.0696028574683041,
+            9.534801428734152,
+            4.767400714367076,
+            2.383700357183538,
+            1.191850178591769
+          ],
+          "tileSize": 512,
+          "vtStyles": [
+            {
+              "id": "VectorTile_STYLE",
+              "name": "Test",
+              "url": "https://test.geoportal-hamburg.de/vt/esri/resources/styles/root.json",
+              "defaultStyle": true
+            }
           ]
         },
         {
-          "id": "8730"
-        },
-        {
-          "id": "2128",
-          "styleId": "2128",
-          "styleGeometryType": [
-            "Point"
+          "id": "VectorTile_basemap_de",
+          "name": "Web Vektor",
+          "typ": "VectorTile",
+          "visibility": false,
+          "preview": {
+            "src": "./resources/webVector.png"
+          },
+          "gfiAttributes": "showAll",
+          "legendURL": "https://geodienste.hamburg.de/HH_WMS_Geobasiskarten?language=ger&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=WMS_Geobasiskarten_Hamburg_N&format=image/png&STYLE=default",
+          "url": "https://dev.adv-smart.de/tiles/smarttiles_de_UTM32_dev/{z}/{x}/{y}.pbf",
+          "epsg": "EPSG:25832",
+          "extent": [
+            -46133.17,
+            5048875.26857567,
+            1206211.10142433,
+            6301219.54000000
           ],
-          "name": "translate#common:tree.trafficCameras"
+          "resolutions": [
+            4891.96981025128,
+            2445.98490512564,
+            1222.99245256282,
+            611.496226281410,
+            305.748113140705,
+            152.874056570353,
+            76.4370282851763,
+            38.2185141425881,
+            19.1092570712941,
+            9.55462853564703,
+            4.77731426782352,
+            2.38865713391176
+          ],
+          "tileSize": 256,
+          "zDirection": -1,
+          "vtStyles": [
+            {
+              "id": "farbe",
+              "name": "Farbe",
+              "url": "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_col.json",
+              "defaultStyle": true
+            },
+            {
+              "id": "grau",
+              "name": "Grau",
+              "url": "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_gry.json"
+            }
+          ]
         },
         {
-          "id": "10220"
+          "id": "WMTS",
+          "name": "EOC Basemap",
+          "typ": "WMTS",
+          "visibility": false,
+          "transparency": 20,
+          "capabilitiesUrl": "https://tiles.geoservice.dlr.de/service/wmts?SERVICE=WMTS&REQUEST=GetCapabilities",
+          "layers": "eoc:basemap",
+          "optionsFromCapabilities": true
+        }
+      ]
+    },
+    "subjectlayer": {
+      "elements": [
+        {
+          "id": "10220",
+          "name": "Dauerzählstellen (Rad) Hamburg",
+          "typ": "WMS",
+          "visibility": true
         },
         {
-          "id": "2426"
+          "id": "23555",
+          "name": "Satellitenbilder Sentinel-2 CIR",
+          "url": "https://geodienste.hamburg.de/HH_WMS-T_Satellitenbilder_Sentinel-2",
+          "typ": "WMS",
+          "visibility": false
+        },
+        {
+          "id": "4538",
+          "name": "ek pv",
+          "typ": "WMS",
+          "gfiTheme": "solaratlas",
+          "visibility": false
+        },
+        {
+          "id": "4905",
+          "name": "Schwermetallmessungen",
+          "typ": "WMS",
+          "visibility": false
+        },
+        {
+          "id": "1420",
+          "gfiTheme": "sturmflut",
+          "visibility": false
+        },
+        {
+          "id": "3302",
+          "name": "Trinkwasser",
+          "typ": "WMS",
+          "visibility": false
+        },
+        {
+          "id": "8730",
+          "name": "Durchschnittliche tägliche Verkehrsstärken (Mo-So)",
+          "typ": "WMS",
+          "gfiTheme": "verkehrsstaerken",
+          "visibility": false
+        },
+        {
+          "id": "2426",
+          "name": "Bezirke",
+          "typ": "WMS",
+          "visibility": true
+        },
+        {
+          "id": "2425",
+          "name": "Stadtteile",
+          "typ": "WMS",
+          "visibility": false
+        },
+        {
+          "id": "22078",
+          "name": "Bewohnerparkgebiete Hamburg",
+          "typ": "WFS",
+          "visibility": false,
+          "styleId": "22078",
+          "styleField": "bewirtschaftungsart",
+          "searchField": "bwp_name",
+          "mouseHoverField": [
+            "bwp_name",
+            "bewirtschaftungsart"
+          ]
+        },
+        {
+          "name": "Emissionen",
+          "type": "folder",
+          "elements": [
+            {
+              "name": "Lärmschutzbereiche Flughafen Hamburg (FluLärmHmbV)",
+              "type": "folder",
+              "elements": [
+                {
+                  "id": "2431",
+                  "visibility": false
+                },
+                {
+                  "id": "2430",
+                  "visibility": false
+                },
+                {
+                  "id": "2429"
+                },
+                {
+                  "name": "Überschwemmungsgebiete",
+                  "type": "folder",
+                  "elements": [
+                    {
+                      "id": "1103",
+                      "visibility": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "1933",
-          "infoFormat": "application/vnd.ogc.gml",
+          "typ": "WMS",
+          "visibility": false,
+          "showInLayerTree": true,
           "styles": [
             "geofox_stations"
           ],
           "name": [
             "HVV Haltestellen"
-          ],
-          "legendURL": [
-            "https://geoportal.metropolregion.hamburg.de/legende_mrh/hvv-bus.png"
           ]
-        },
-        {
-          "id": "4561",
-          "visibility": false,
-          "urlIsVisible": false
-        },
-        {
-          "id": "9726"
-        },
-        {
-          "id": "1562",
-          "layerAttribution": "<span>Attributierung für Fachlayer Test Test Test Test Test Test Test Test</span>"
-        },
-        {
-          "id": "3302",
-          "gfiTheme": "trinkwasser",
-          "featureCount": 5
-        },
-        {
-          "id": "2059",
-          "styleId": "2059",
-          "clusterDistance": 30
-        },
-        {
-          "id": "5708",
-          "visibility": false,
-          "styleable": true,
-          "geomType": "Polygon",
-          "attributesToStyle": [
-            "Pkw_AP30"
-          ]
-        },
-        {
-          "id": "13765",
-          "name": "Err. Arbeitsplätze deegree",
-          "visibility": false,
-          "styleable": true,
-          "geomType": "Polygon",
-          "attributesToStyle": [
-            "mit_dem_pwk_in_30_min_erreichbare_arbeitsplaetze"
-          ]
-        },
-        {
-          "id": "2003",
-          "styleId": "2003",
-          "mouseHoverField": "gebietsname",
-          "legend": true,
-          "featurePrefix": "de.hh.up:",
-          "wildCard": "%",
-          "singleChar": "#",
-          "escapeChar": "!"
-        },
-        {
-          "id": "47",
-          "styleId": "47",
-          "styleGeometryType": "Point",
-          "mouseHoverField": [
-            "baubeginn",
-            "bauende"
-          ],
-          "autoRefresh": 6000,
-          "clusterDistance": 50
-        },
-        {
-          "id": "4905",
-          "gfiTheme": "DataTable",
-          "featureCount": 20
-        },
-        {
-          "id": "10882",
-          "styleId": "10882",
-          "clusterDistance": 40,
-          "searchField": "haltestelle",
-          "styleGeometryType": "Point"
-        },
-        {
-          "id": [
-            "4537",
-            "4538"
-          ],
-          "name": "Eignungsflächen",
-          "legendURL": [
-            "https://geoportal-hamburg.de/legende/legende_solar.png"
-          ],
-          "gfiTheme": "solaratlas",
-          "attributions": "<span>Darstellung der Eignungsflächen ab Maßstab 1: 5000 </span>"
-        },
-        {
-          "id": "2407",
-          "infoFormat": "text/html",
-          "gfiAsNewWindow": {
-            "name": "_blank",
-            "specs": "toolbar=yes,scrollbars=yes,resizable=yes,top=0,left=500,width=800,height=700"
-          }
         },
         {
           "id": "1711",
           "styleId": "1711",
+          "name": "Krankenhäuser",
+          "typ": "WFS",
           "visibility": false,
-          "layerAttribution": "<span>Attributierung für Fachlayer</span>",
+          "loadingStrategy": "all",
+          "searchField": "name",
           "mouseHoverField": [
             "name",
-            "strasse"
+            "adresse"
           ],
-          "searchField": "name",
-          "extendedFilter": true,
-          "loadingStrategy": "all",
-          "legend": true,
-          "featurePrefix": "",
+          "featurePrefix": "de.hh.up:",
+          "wildCard": "%",
+          "singleChar": "#",
+          "escapeChar": "!",
+          "layerAttribution": "<span>Test: LayerAttribution für Krankenhäuser</span>"
+        },
+        {
+          "id": "2003",
+          "styleId": "2003",
+          "name": "de.hh.up:nr_f_naturschutzgebiet",
+          "typ": "WFS",
+          "visibility": false,
+          "featurePrefix": "de.hh.up:",
           "wildCard": "%",
           "singleChar": "#",
           "escapeChar": "!"
         },
         {
-          "id": "8712",
+          "id": "52",
+          "styleId": "52",
+          "name": "Parkhäuser",
+          "typ": "WFS",
           "visibility": false,
-          "name": "Schulinfosystem",
+          "autoRefresh": 5000
+        },
+        {
+          "id": "8712",
           "styleId": "8712",
-          "searchField": "schulname",
-          "featurePrefix": "de.hh.up:",
-          "wildCard": "%",
-          "singleChar": "#",
-          "escapeChar": "!",
+          "loadingStrategy": "bbox",
+          "typ": "WFS",
+          "visibility": false,
+          "gfiTheme": "schulinfo",
+          "showInLayerTree": true,
           "mouseHoverField": [
             "schulname",
             "kapitelbezeichnung"
           ],
-          "gfiTheme": "schulinfo",
+          "searchField": "schulname",
           "additionalInfoField": "adresse_strasse_hausnr",
-          "loadingStrategy": "all"
+          "featurePrefix": "de.hh.up:",
+          "wildCard": "%",
+          "singleChar": "#",
+          "escapeChar": "!",
+          "layerAttribution": "<span>Test: LayerAttribution für Schulen</span>"
         },
         {
-          "id": "753",
-          "styleId": "753",
-          "visibility": false,
-          "mouseHoverField": "Name",
-          "extendedFilter": true
+          "id": "19173",
+          "name": "Digitales Höhenmodell Hamburg (DGM1)",
+          "typ": "WMS",
+          "visibility": false
         },
         {
-          "id": "8145",
-          "visibility": false,
-          "gfiTheme": {
-            "name": "default",
-            "params": {
-              "showFavoriteIcons": false
-            }
-          },
-          "styleId": "8145",
-          "hitTolerance": 25,
-          "mouseHoverField": "kategorie",
-          "extendedFilter": true
-        },
-        {
-          "id": "myId",
-          "children": [
-            {
-              "id": "946"
-            },
-            {
-              "id": "947"
-            }
-          ],
-          "name": "Verkehrslage auf Autobahnen",
-          "layerAttribution": {
-            "text": "",
-            "channel": "Verkehrsfunctions",
-            "eventname": "aktualisiereverkehrsnetz",
-            "timeout": 60000
-          }
-        },
-        {
-          "id": "myId2",
-          "children": [
-            {
-              "id": "682"
-            },
-            {
-              "id": "1731"
-            }
-          ],
-          "name": "Kita und KH"
+          "id": "18104",
+          "styleId": "18104",
+          "name": "Anzahl frei verfügbarer E-Lastenräder je StadtRad-Station",
+          "typ": "SensorThings",
+          "visibility": false
         },
         {
           "id": "18106",
           "styleId": "18106",
+          "name": "Elektro Ladestandorte Hamburg",
+          "typ": "SensorThings",
+          "clusterDistance": 50,
+          "visibility": false,
+          "showInLayerTree": true,
           "loadThingsOnlyInCurrentExtent": true,
           "gfiTheme": {
             "name": "sensor",
@@ -1095,43 +1068,85 @@
                 "barPercentage": 1.1,
                 "values": {
                   "available": {
-                    "title": "common:modules.tools.gfi.themes.sensor.chargingStations.available",
+                    "title": "common:modules.getFeatureInfo.themes.sensor.chargingStations.available",
                     "color": "rgba(0, 220, 0, 1)",
-                    "noticeText": "common:modules.tools.gfi.themes.sensor.sensorBarChart.noticeTextAvailable"
+                    "noticeText": "common:modules.getFeatureInfo.themes.sensor.sensorBarChart.noticeTextAvailable"
                   },
                   "charging": {
-                    "title": "common:modules.tools.gfi.themes.sensor.chargingStations.charging",
+                    "title": "common:modules.getFeatureInfo.themes.sensor.chargingStations.charging",
                     "color": "rgba(220, 0, 0, 1)",
-                    "noticeText": "common:modules.tools.gfi.themes.sensor.sensorBarChart.noticeTextCharging"
+                    "noticeText": "common:modules.getFeatureInfo.themes.sensor.sensorBarChart.noticeTextCharging"
                   },
                   "faulted": {
-                    "title": "common:modules.tools.gfi.themes.sensor.chargingStations.faulted",
+                    "title": "common:modules.getFeatureInfo.themes.sensor.chargingStations.faulted",
                     "color": "rgba(175, 175, 175, 1)",
-                    "noticeText": "common:modules.tools.gfi.themes.sensor.sensorBarChart.noticeTextFaulted"
+                    "noticeText": "common:modules.getFeatureInfo.themes.sensor.sensorBarChart.noticeTextFaulted"
                   }
                 }
               }
             }
-          },
-          "gfiAttributes": {
-            "dataStreamPhenomenonTime": "Letze Zustandsänderung",
-            "dataStreamValue": "Zustand",
-            "connector": "Stecker",
-            "steckerTyp": "SteckerTyp",
-            "authMeth2": "Authentifizierungsmethode",
-            "dataStreamId": "DataStreamIds"
           }
         },
         {
-          "id": "13023"
+          "id": "27926",
+          "styleId": "8712",
+          "name": "Schulen (Layertyp OAF)",
+          "typ": "OAF",
+          "visibility": true,
+          "gfiTheme": "schulinfo"
         },
         {
-          "id": "19173"
+          "id": "20625.90024",
+          "styleId": "200_300_400_600_anzahl_sus_primarstufe",
+          "name": "Schüler*innen nach Sozialräumen (1 bis 4)",
+          "typ": "WFS",
+          "visibility": false,
+          "gfiAttributes": "showAll",
+          "propertyNames": [
+            "bezirk_id",
+            "bezirk_name",
+            "stadtteil_id",
+            "stadtteil_name",
+            "sozialraum_id",
+            "sozialraum_name",
+            "anzahl_sus_primarstufe",
+            "geom"
+          ],
+          "gfiTheme": {
+            "name": "bildungsatlas",
+            "params": {
+              "subTheme": "BildungsatlasThemeBalkendiagramm",
+              "chartOptions": {
+                "anzahl_sus_primarstufe": {
+                  "suggestedMin": 0,
+                  "suggestedMax": 3000,
+                  "stepSize": 500
+                }
+              }
+            }
+          }
         },
         {
-          "id": "46",
-          "typ": "StaticImage",
-          "url": "https://geodienste.hamburg.de/lgv-config/img/Laerm-Test_300dpi.png",
+          "id": "753",
+          "styleId": "753",
+          "typ": "WFS",
+          "visibility": false,
+          "mouseHoverField": "Name",
+          "loadingStrategy": "bbox"
+        },
+        {
+          "id": "GeoJSON",
+          "name": "Beiträge (GeoJSON)",
+          "typ": "GeoJSON",
+          "visibility": false,
+          "url": "./resources/example_geojson.json",
+          "styleId": "contributions",
+          "legend": true,
+          "gfiAttributes": "showAll",
+          "gfiTheme": "dipas"
+        },
+        {
+          "id": "StaticImage",
           "name": "Lärmberechnung",
           "extent": [
             568426.27,
@@ -1139,6 +1154,9 @@
             569614.86,
             5933174.11
           ],
+          "typ": "StaticImage",
+          "visibility": false,
+          "url": "https://geodienste.hamburg.de/lgv-config/img/Laerm-Test_300dpi.png",
           "legend": [
             "https://geodienste.hamburg.de/lgv-config/img/Legende_Laermberechnung_Tag.png",
             "https://geodienste.hamburg.de/lgv-config/img/Legende_Laermberechnung_Nacht.png"
@@ -1146,6 +1164,7 @@
         },
         {
           "id": "2928",
+          "styleId": "4515",
           "name": "Linienhafte Biotope",
           "legend": true,
           "featurePrefix": "de.hh.up:",
@@ -1154,11 +1173,158 @@
           "escapeChar": "!"
         },
         {
-          "id": "18104",
-          "styleId": "18104",
-          "name": "Anzahl frei verfügbarer E-Lastenräder je StadtRad-Station",
-          "typ": "SensorThings",
-          "visibility": false
+          "id": "1534",
+          "name": "Grünflächen (WebGL)",
+          "renderer": "webgl",
+          "typ": "WFS",
+          "styleId": "1534",
+          "isPointLayer": false,
+          "gfiAttributes": "showAll",
+          "legendURL": "",
+          "loadingStrategy": "all",
+          "mouseHoverField": [
+            "belegenheit",
+            "nutzung"
+          ]
+        },
+        {
+          "id": "webgl_dipas",
+          "name": "DIPAS Data GeoJSON (WebGL)",
+          "renderer": "webgl",
+          "typ": "GeoJSON",
+          "url": "./webgl_assets/dipas.test.geojson",
+          "format": "text/html; charset=utf-8",
+          "minScale": "0",
+          "maxScale": "2500000",
+          "gfiAttributes": "showAll",
+          "layerAttribution": "nicht vorhanden",
+          "legendURL": "",
+          "loadingStrategy": "all",
+          "hitTolerance": 20,
+          "isPointLayer": true,
+          "bboxGeometry": [
+            568426.27,
+            5931985.58,
+            569614.86,
+            5933174.11
+          ],
+          "mouseHoverField": [
+            "Category",
+            "Value"
+          ],
+          "style": {
+            "circle-rotate-with-view": false,
+            "circle-radius": [
+              "interpolate",
+              ["linear"],
+              ["get", "Total_votes"],
+              0,
+              6,
+              18,
+              24
+            ],
+            "circle-fill-color": [
+              "interpolate",
+              ["linear"],
+              ["get", "compound"],
+              -1,
+              [
+                240,
+                40,
+                30
+              ],
+              1,
+              [
+                0,
+                200,
+                60
+              ]
+            ],
+            "circle-displacement": [
+              0,
+              0
+            ],
+            "circle-opacity": [
+              "interpolate",
+              ["linear"],
+              ["get", "Total_votes"],
+              40000,
+              0.6,
+              2000000,
+              0.92
+            ]
+          }
+        },
+        {
+          "name": "3D Daten",
+          "type": "folder",
+          "elements": [
+            {
+              "name": "3D Basisdaten",
+              "type": "folder",
+              "elements": [
+                {
+                  "id": "12883",
+                  "name": "Gelände",
+                  "typ": "Terrain3D",
+                  "visibility": true
+                }
+              ]
+            },
+            {
+              "name": "3D Gebäudedaten",
+              "type": "folder",
+              "elements": [
+                {
+                  "id": "16101",
+                  "name": "Brückenflächen HH",
+                  "typ": "TileSet3D",
+                  "visibility": true
+                },
+                {
+                  "id": "12884",
+                  "name": "Gebäude LoD2",
+                  "typ": "TileSet3D",
+                  "visibility": true
+                },
+                {
+                  "id": "16100",
+                  "name": "Hauptkirchen",
+                  "visibility": true,
+                  "hiddenFeatures": [
+                    "DEHHALKAJ00011uJ",
+                    "DEHHALKAJ0000yd2",
+                    "DEHHALKAJ0000ovW",
+                    "DEHHALKAJ0000owm",
+                    "DEHHALKAJ0000pO5"
+                  ]
+                },
+                {
+                  "id": "Entities3D",
+                  "name": "3D-Entities Testlayer",
+                  "typ": "Entities3D",
+                  "visibility": false,
+                  "entities": [
+                    {
+                      "url": "https://daten-hamburg.de/gdi3d/datasource-data/Simple_Building.glb",
+                      "attributes": {
+                        "name": "Einfaches Haus in Planten und Blomen"
+                      },
+                      "latitude": 53.5631,
+                      "longitude": 9.9800,
+                      "height": 12,
+                      "heading": 0,
+                      "pitch": 0,
+                      "roll": 0,
+                      "scale": 5,
+                      "allowPicking": true,
+                      "show": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
     }

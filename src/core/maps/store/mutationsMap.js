@@ -1,11 +1,11 @@
-import {generateSimpleMutations} from "../../../app-store/utils/generators";
-import initialState from "./stateMap";
+// import {generateSimpleMutations} from "../../../app-store/utils/generators";
+// import initialState from "./stateMap";
 import getters from "./gettersMap";
 import BaseLayer from "ol/layer/Base";
 import findWhereJs from "../../../utils/findWhereJs";
 
 const mutations = {
-    ...generateSimpleMutations(initialState),
+    // ...generateSimpleMutations(initialState),
 
     /**
      * Adds the given feature to highlightedFeatures.
@@ -121,15 +121,6 @@ const mutations = {
         state.scales = scales;
     },
 
-    /**
-     * Set map size to state.
-     * @param {Object} state The state.
-     * @param {Event} evt The change size event of the map.
-     * @returns {void}
-     */
-    setSize (state, evt) {
-        state.size = evt.target.getSize();
-    },
     /**
      * Set status of the two fingers pan event.
      * @param {Object} state The state.

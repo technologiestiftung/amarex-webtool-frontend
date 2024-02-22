@@ -103,22 +103,4 @@ describe("src/core/layers/wms.js", () => {
         expect(wmsLayer.get("layer").getSource().getParams().SESSIONID).not.to.be.equals(sessionId);
     });
 
-    it("createLegend shall dispatch an array of legends", function () {
-        const dispatchCalls = {};
-        let wmsLayer = null;
-
-        attributes.legendURL = "";
-        attributes.legend = true;
-        attributes.version = "1.2.3";
-        attributes.url = "http://url";
-        wmsLayer = new WMSLayer(attributes);
-        store.dispatch = (arg1, arg2) => {
-            dispatchCalls[arg1] = arg2 !== undefined ? arg2 : "called";
-        };
-
-        wmsLayer.createLegend();
-        expect(Array.isArray(dispatchCalls["Legend/setLegendOnChanged"])).to.be.true;
-        expect(dispatchCalls["Legend/setLegendOnChanged"].length).to.be.equals(2);
-
-    });
 });

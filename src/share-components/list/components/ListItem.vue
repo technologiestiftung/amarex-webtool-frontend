@@ -155,7 +155,7 @@ export default {
         },
         /**
          * Takes the selected coordinates and centers the map to the new position.
-         * @param {Array.<String[]>} features clicked feature to zoom to
+         * @param {Array<String[]>} features clicked feature to zoom to
          * @returns {void}
          */
         setCenter (features) {
@@ -190,10 +190,10 @@ export default {
         replaceBoolean (value) {
             if (typeof value === "string") {
                 if (value === "true") {
-                    return value.replace("true", i18next.t("common:share-components.list.replace.true"));
+                    return value.replace("true", this.$t("common:share-components.list.replace.true"));
                 }
                 if (value === "No") {
-                    return value.replace("No", i18next.t("common:share-components.list.replace.No"));
+                    return value.replace("No", this.$t("common:share-components.list.replace.No"));
                 }
             }
             return "";

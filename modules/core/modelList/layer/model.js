@@ -21,7 +21,7 @@ const Layer = Item.extend(
             styleable: false,
             supported: ["2D"],
             transparency: 0,
-            isOutOfRange: undefined,
+            // isOutOfRange: undefined,
             currentLng: "",
             selectedTopicsText: "",
             infosAndLegendText: "",
@@ -62,7 +62,6 @@ const Layer = Item.extend(
          * @property {Number} hitTolerance=0 Hit tolerance used by layer for map interaction
          * @property {Boolean} isNeverVisibleInTree=false Flag if layer is never visible in layertree
          * @property {String} currentLng="" contains the current language
-         * @property {String} isOutOfRange="" will be translated
          * @property {String} selectedTopicsText="" will be translated
          * @property {String} infosAndLegendText="" will be translated
          * @property {String} removeTopicText="" will be translated
@@ -197,24 +196,6 @@ const Layer = Item.extend(
                 isDataLayer = true;
             }
             return isDataLayer;
-        },
-        /**
-         * Prüft anhand der Scale ob der Layer sichtbar ist oder nicht
-         * @param {object} options -
-         * @returns {void}
-         **/
-        checkForScale: function (options) {
-            if (
-                options &&
-                parseFloat(options.scale, 10) <=
-                    parseInt(this.get("maxScale"), 10) &&
-                parseFloat(options.scale, 10) >=
-                    parseInt(this.get("minScale"), 10)
-            ) {
-                this.setIsOutOfRange(false);
-            } else {
-                this.setIsOutOfRange(true);
-            }
         },
 
         /**
@@ -853,33 +834,6 @@ const Layer = Item.extend(
          */
         setTransparency: function (value) {
             this.set("transparency", value);
-        },
-
-        /**
-         * Setter for isOutOfRange
-         * @param {Boolean} value Flag if map Scale is out of defined layer minScale and maxScale
-         * @returns {void}
-         */
-        setIsOutOfRange: function (value) {
-            this.set("isOutOfRange", value);
-        },
-
-        /**
-         * Setter for ol/layer.setMaxResolution
-         * @param {Number} value Maximum resolution of layer
-         * @returns {void}
-         */
-        setMaxResolution: function (value) {
-            this.get("layer").setMaxResolution(value);
-        },
-
-        /**
-         * Setter for ol/layer.setMinResolution
-         * @param {Number} value Minimum resolution of layer
-         * @returns {void}
-         */
-        setMinResolution: function (value) {
-            this.get("layer").setMinResolution(value);
         },
 
         /**

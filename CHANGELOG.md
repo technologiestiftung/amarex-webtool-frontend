@@ -5,61 +5,31 @@
 
 ## Unreleased - in development
 ### __Breaking Changes__
-- Tree Search: the searchType (name or metadata) needs to be specified in the config.json and is not defaulted to "metadata" anymore.
 
 ### Added
-- StatisticDashboard module in core tool modules
+- New parameter `filterOnOpen` has been added to filterLayer in Filter. If set to true, the filter is triggered when the accordeon is clicked.
+- Issue #1116: New alert for batchprocessing in routing tool informs the user when all requests to the service failed.
 
 ### Changed
+- Added translations for Sensor Theme.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-- Issue #1103: fixed error on tool wfsSearch with `active`=`true`.
-- Fix: Change env to cross-env so windows powershell can run build script
-- The following packages have been added:
-    - devDependencies:
-        - cross-env: 7.0.3
-
----
-
-## v2.42.0 - 2024-02-07
-
-### Added
-- Issue #1116: New alert for batchprocessing in routing tool informs the user when all requests to the service failed.
-- Filter: A new parameter `filterOnOpen` has been added to filterLayer in Filter. If set to true, the filter is triggered when the accordeon is clicked.
-- Print: An option "Improve scaling resolution" is implemented for 3d Layers to supply an improved and better resolution.
-
-### Changed
-- The following packages have been updated:
-    - dependencies:
-        - @masterportal/masterportalapi: 2.31.0 to 2.33.0 (This also raised ol to version 8.2.0 and @cesium/engine to version 6.2.0)
-- Added translations for Sensor Theme.
-
-
-### Fixed
-- Issue #1110: Elastic Search: icons can be assigned via the search result.
 - Issue #1115: Legend is shown for all WFS-Layers.
 - Issue #1122: GFI-Window with desktopType "attached" is shown at clicked feature, if another feature is clicked.
+- Fixed error "singleBaseLayer not defined" on opening 3D folders or on adding a layer by searchbar.
 - GFI: if config Parameter `centerMapToClickPoint` is set to true, map is centered to feature on click, even if the mapmarker is not shown.
-- GroupLayer: deselection of Group Layer corrected when singleBaseLayer is set to true
-- ParametricUrl: Search queries by url parameter with more than one result: if one result matches exactly, the map view is zoomed to result.
 
 ---
-
 ## v2.41.1 - 2024-01-09
 ### Fixed
 - Fixed error "singleBaseLayer not defined" on opening 3D folders or on adding a layer by searchbar.
 
 ---
-
 ## v2.41.0 - 2024-01-08
-### Added
-- Issue #1038: Tooltips to display area of drawn polygons/squares and length of drawn lines
-- Added square as geometryType for drawingTool.
-
 ### Changed
 - The version of node was updated to `^16.13.2 || ^18.16.0 || ^20.9.0`.
 - The version of npm was updated to `^8.1.2 || ^9.5.1 || ^10.1.0`
@@ -76,9 +46,6 @@
 - Issue #1081: the geometry display when importing more than one KML file is complete, despite identical ids at the element `Placemark` .
 - Issue #1098: fixed all urls used in routing tool and in wfsSearch tool to not use more than one questionmark.
 - Issue #1117: The tool addWMS now works again.
-- Issue #1084: fix wrong pointMarker placement when featureType is MultiPolygon.
-- Fixed HighlightFeature for MultiPolygons: In certain WFS layers, when polygon selection is enabled,
-    clicking on a polygon would highlight it, but multiPolygons wouldn't. This has now been corrected.
 ---
 
 ## v2.40.1 - 2023-12-07
@@ -94,15 +61,15 @@
         - webpack-bundle-analyzer: 4.9.1
 - To manage dependencies of dependencies "overrides" for cesium are added to package.json and create dummy packages for it.
 - New Parameter sldVersion for legend configuration to define a Styled Layer Descriptor for the GetLegendGraphic requests.
+- Issue #1038: Tooltips to display area of drawn polygons/squares and length of drawn lines
 - Issue #1105: Added easting and nothing labels for utm projections in CoordToolkit
 - possibility to keep more than one tool open at the same time
 - Added parameter minChars to the locationFinder configuration of the searchBar.
 - utils/convertColor: added an option to convert an rgba array into a hex color with alpha value
-- Searchbar tree:
-  - New 'config' parameter: searchType added. If set to "name", the field 'name' of the layer is searched for, else the field 'md_name' in the dataset is compared.
-  - Add a layertree path to the search result. Add a typename for background layer.
+- Searchbar tree: add a layertree path to the search result. Add a typename for background layer.
 - Added opacity to configurable parameters of styleRoute
 - Added checkbox to determine if routes stay visible after closing the routing tool
+- Added square as geometryType for drawingTool.
 
 ### Changed
 - The script "npm run build" has been extended. The user can now specify the name of an addon that is excluded from bundle.

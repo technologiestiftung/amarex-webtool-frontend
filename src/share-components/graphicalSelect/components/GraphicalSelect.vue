@@ -136,19 +136,19 @@ export default {
         checkOptions: function () {
             if (!this.geographicValues.every(key => Object.keys(this.optionsValue).includes(key))) {
                 this.addSingleAlert({
-                    "content": i18next.t("common:snippets.graphicalSelect.alert.notSupportedOption") + this.geographicValues
+                    "content": this.$t("common:snippets.graphicalSelect.alert.notSupportedOption") + this.geographicValues
                 });
             }
 
             if (!this.geographicValues.includes(this.selectedOption)) {
                 this.addSingleAlert({
-                    "content": i18next.t("common:snippets.graphicalSelect.alert.notSupportedSelection") + this.geographicValues
+                    "content": this.$t("common:snippets.graphicalSelect.alert.notSupportedSelection") + this.geographicValues
                 });
             }
 
             if (!this.selectionElements.includes(this.selectElement)) {
                 this.addSingleAlert({
-                    "content": i18next.t("common:snippets.graphicalSelect.alert.notSupportedElement") + this.selectionElements
+                    "content": this.$t("common:snippets.graphicalSelect.alert.notSupportedElement") + this.selectionElements
                 });
             }
         },

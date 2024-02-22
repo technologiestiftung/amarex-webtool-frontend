@@ -46,7 +46,7 @@ export default {
         this.updateAttributions();
         this.setOpen(this.mobile ? this.isInitOpenMobile : this.isInitOpenDesktop);
     },
-    beforeDestroy () {
+    beforeUnmount () {
         Radio.channel("Attributions").off("createAttribution", this.addAttribution);
         Radio.channel("Attributions").off("removeAttribution", this.removeAttribution);
         Radio.channel("ModelList").off("updateVisibleInMapList", this.updateAttributions);

@@ -1,31 +1,9 @@
-import api from "@masterportal/masterportalapi/src/maps/api";
-import rawLayerList from "@masterportal/masterportalapi/src/rawLayerList";
-
 import "./2DMapRadioBridge";
 import "./2DMapViewRadioBridge";
 import "./3DMapRadioBridge";
 
 import ObliqueMap from "../../../modules/core/obliqueMap";
 import store from "../../app-store";
-
-/**
- * Create the 2D map and mapview
- * @param {Object} mapViewSettings The mapViewSettings of config.json file.
- * @returns {void}
- */
-function create2DMap (mapViewSettings) {
-    const map = api.map.createMap(
-        {
-            ...Config,
-            ...mapViewSettings,
-            layerConf: rawLayerList.getLayerList()
-        }, "2D", {});
-
-    mapCollection.addMap(map, "2D");
-    store.dispatch("Maps/initView");
-    store.dispatch("Maps/setMapAttributes", {map: map});
-    Radio.trigger("ModelList", "addInitiallyNeededModels");
-}
 
 /**
  * Create the 3D map.
@@ -54,11 +32,9 @@ function createObliqueMap (configJs) {
 /**
  * Create the map in different modes (2D, 3D and oblique)
  * @param {Object} configJs The config.js file.
- * @param {Object} mapViewSettings The mapViewSettings of config.json file.
  * @returns {void}
  */
-export function createMaps (configJs, mapViewSettings) {
-    create2DMap(mapViewSettings);
+export function createMaps (configJs) {
     create3DMap(configJs);
     createObliqueMap(configJs);
 }

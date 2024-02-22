@@ -60,9 +60,6 @@ export default {
         </div>
 
         <div id="map-wrapper">
-            <div
-                id="map"
-            />
             <LegendWindow />
             <ToolManager
                 v-if="configJson"
@@ -117,13 +114,6 @@ export default {
             order:2;
             flex-grow:0;
             height:100%;
-        }
-
-        /* map itself should fill the whole region as "background" */
-        #map {
-            position: absolute;
-            height: 100%;
-            width: 100%;
         }
 
         .elements-positioned-over-map {

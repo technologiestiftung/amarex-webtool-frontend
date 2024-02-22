@@ -2,13 +2,22 @@
 
 [TOC]
 
+
 # System requirements
+
+If you are behind a proxy there are several things to do. In Linux/macOS several settings
+are required (e.g: wget, curl, git, npm, /etc/enviroment....). Mostly in Windows you can
+set it once at the 'Enviroment Variables'. But the Linux tools (e.g Git Bash) you are
+using on Windows don't know them. So check where to set proxy setting for the program
+you are using. Here are also some hints:
+
 
 ## git
 
 Install **[git](http://git-scm.com/)**.
 
 The git installation path (`C:\Program Files\Git\bin\` by default) must be added to the system-wide PATH environment variable.
+
 
 ### Firewall issues (optional)
 
@@ -18,6 +27,7 @@ The git protocol may be blocked by firewalls. Should this be an issue, configure
 $ git config --global url.https://.insteadof git://
 ```
 
+
 ### Git proxy (optional)
 
 If you're working from behind a corporate proxy, you may need to configure a proxy for both the normal **and** admin shell that is started with administrative rights.
@@ -26,6 +36,7 @@ If you're working from behind a corporate proxy, you may need to configure a pro
 $ git config --global http.proxy <proxy-url:port>
 $ git config --global https.proxy <proxy-url:port>
 ```
+
 
 ## Node.js
 
@@ -48,6 +59,7 @@ $ npm config list
 $ npm config ls -l
 ```
 
+
 ### Cache configuration (optional)
 
 Npm will use a package cache to avoid overly reloading packages. By default, this cache is in `C:\Users\<user>\AppData\Roaming\npm-cache`. Depending on your system, this folder may be synchronized within a roaming profile and slow down the process of logging in/out. In such circumstances it is advised to change the cache path by either editing the `.npmrc` file, or via `cmd` **and** `cmd` with administrator rights with e.g. this line:
@@ -56,21 +68,29 @@ Npm will use a package cache to avoid overly reloading packages. By default, thi
 npm config set cache D:\npm-cache
 ```
 
+
 ### Proxy configuration (optional)
 
 Only relevant when a proxy is in use.
 
-Run in `cmd` **and** `cmd` with administrative rights these lines:
 
+Run in `cmd`:
+Windows and *nix platforms (incl. e.g Git-Bash, WSL) for YOUR User. Saves in
+`~/.npmrc` by default:
 ```console
-$ npm config set proxy <proxy-url:port>
-$ npm config set https-proxy <proxy-url:port>
-$ setx http_proxy <proxy-url:port>
-$ setx https_proxy <proxy-url:port>
+npm config set proxy <proxy-url:port>
+npm config set https-proxy <proxy-url:port>
+```
+
+Windows `cmd` with administrative rights these lines
+```console
+setx http_proxy <proxy-url:port>
+setx https_proxy <proxy-url:port>
 $ setx proxy <proxy-url:port>
 ```
 
 For changes to take effect, close and reopen all your command lines. The `setx` lines will also add the proxies to your system variables. Please mind that other tools reading these variables may be affected.
+
 
 ### Globally install npm packages with administrative rights (optional)
 
@@ -82,6 +102,8 @@ $ npm config set prefix C:\Programme\nodejs\
 ```
 
 Globally installed packages will be stored in that path. For more information refer to the **[npm folder documentation](https://docs.npmjs.com/files/folders)**.
+
+
 
 ## Masterportal installation
 
@@ -104,6 +126,7 @@ With this, all dependencies are installed.
 
 In case add-ons are to be used, please refer to the **[add-ons documentation](addOnsVue.md)** for further assistance.
 
+
 ### `npm start`
 
 This command starts a local development server.
@@ -115,8 +138,8 @@ $ npm start
 - After compilation, you may open the following links for comprehensive demo applications:
     - https://localhost:9001/portal/basic A portal with a simple configuration
     - https://localhost:9001/portal/master Simple topic tree
-    - https://localhost:9001/portal/masterCustom Complex topic tree with folder structure
-    - https://localhost:9001/portal/masterDefault Default topic tree loading all WMS layers from the `services.json` file
+    - https://localhost:9001/portal/auto Default topic tree loading all WMS layers from the `services.json` file
+
 
 ### `npm run test`
 
@@ -132,6 +155,7 @@ $ npm run test
 - logs unit test results to the console
 - after changing tested code or unit tests, the command `npm run test` must be re-run
 
+
 ### `npm run build`
 
 Creates the distributable source folder for all portals, ready for publication.
@@ -141,6 +165,7 @@ $ npm run build
 ```
 
 The created files are stored in the *dist* folder. The folder will be created automatically in the Masterportal folder root. The source code is bundled within the **Mastercode** folder with the current version.
+
 
 ### `npm run buildExamples`
 
@@ -152,7 +177,11 @@ $ npm run buildExamples
 
 The produced `examples.zip` and `examples-x.x.x.zip` (versioned) both contain runnable Masterportal instances (*Basic*) including a *resources* folder.
 
+
+
 ## Updating dependencies
+
+This task belongs to the owner/ package maintainers. If you don't know: Dont call the command.
 
 To update all NPM packages, run
 
@@ -161,6 +190,8 @@ $ npm update
 ```
 
 Please refer to the [npm update documentation](https://docs.npmjs.com/cli/v6/commands/npm-update) on how caret and tilde prefixes to versions in the `package.json` are handled by this step.
+
+
 
 ## Set up debugging in Visual Studio Code
 

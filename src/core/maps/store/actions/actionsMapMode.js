@@ -75,12 +75,10 @@ export default {
             // only zoom,if no altitude is given by url params or config, else altitude has no effect
             dispatch("controlZoomLevel", {currentMapMode: mapMode, targetMapMode: "3D"});
         }
-        map3D.setEnabled(true);
-        commit("setMode", "3D");
+        // map3D.setEnabled(true);
+        // commit("setMode", "3D");
         Radio.trigger("Map", "change", "3D");
         dispatch("MapMarker/removePointMarker", null, {root: true});
-        eventHandler = new Cesium.ScreenSpaceEventHandler(map3D.getCesiumScene().canvas);
-        eventHandler.setInputAction((evt) => dispatch("updatePointer", evt), Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     },
 
     /**
@@ -134,15 +132,15 @@ export default {
             dispatch("registerListener", {type: "pointermove", listener: "updatePointer", listenerType: "dispatch"});
             dispatch("registerListener", {type: "click", listener: "updateClick", listenerType: "dispatch"});
             Radio.trigger("Map", "beforeChange", "2D");
-            view.animate({rotation: 0}, () => {
-                map3D.setEnabled(false);
-                view.setRotation(0);
-                Radio.trigger("Map", "change", "2D");
-                dispatch("controlZoomLevel", {currentMapMode: getters.mode, targetMapMode: "2D"});
-                commit("setInitialZoomLevel", state.changeZoomLevel["2D"]);
-                commit("setZoom", state.initialZoomLevel);
-                commit("setMode", "2D");
-            });
+            // view.animate({rotation: 0}, () => {
+            // map3D.setEnabled(false);
+            view.setRotation(0);
+            Radio.trigger("Map", "change", "2D");
+            dispatch("controlZoomLevel", {currentMapMode: getters.mode, targetMapMode: "2D"});
+            commit("setInitialZoomLevel", state.changeZoomLevel["2D"]);
+            commit("setZoom", state.initialZoomLevel);
+            // commit("setMode", "2D");
+            // });
         }
     }
 };

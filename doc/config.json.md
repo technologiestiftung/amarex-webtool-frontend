@@ -28,34 +28,149 @@ The configuration is separated into two sections, **[Portalconfig](#markdown-hea
 The section *Portalconfig* controls the following properties:
 
 1. Title & logo (*portalTitle*)
-2. Type of topic selection (*treeType*)
+2. Type of topic selection (*tree*)
 3. Initial map view settings (*mapView*)
 4. Map view buttons and interactions (*controls*)
 5. Menu entries and availability as well as order of tools (*menu*)
 6. Type and properties of used search services (*searchBar*)
 7. Deletability of topics (*layersRemovable*)
-8. Maximum loading time (*loaderOverlayMaxWait*)
+8. Display of a tooltip of features (*mouseHover*)
 
 The configuration options listed in the following table exist:
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
 |portalTitle|no|**[portalTitle](#markdown-header-portalconfigportaltitle)**||The portal's title and further elements to be shown in the menu bar.|false|
-|treeType|no|enum["light","default","custom"]|"light"|Decides the type of topic selection tree. You may choose between `"light"` (simple list), `"default"` (FHH-Atlas), and `"custom"` (layer list defined via JSON file).|false|
-|singleBaselayer|no|Boolean|false|Specifies whether only one base layer may be active at any time. Only usable in combination with treeType `"custom"`.|false|
-|Baumtyp|no|enum["light","default","custom"]|"light"|_Deprecated in 3.0.0. Please use `"treeType"` instead._|false|
+|singleBaselayer|no|Boolean|false|Specifies whether only one base layer may be active at any time. Only usable in combination with tree.type `"custom"`.|false|
 |mapView|no|**[mapView](#markdown-header-portalconfigmapview)**||Defines the initial map view and a background shown when no layer is selected.|false|
 |controls|no|**[controls](#markdown-header-portalconfigcontrols)**||Allows setting which interactions are active in the map.|false|
 |menu|no|**[menu](#markdown-header-portalconfigmenu)**||Menu entries and their order are configured in this entry. The order of tools corresponds to the order in the object specifying them; see **[Tools](#markdown-header-portalconfigmenutools)**.|false|
+|tree|no|**[tree](#markdown-header-portalconfigtree)**||Configuration of the topic selection tree|false|
 |searchBar|no|**[searchBar](#markdown-header-portalconfigsearchbar)**||The search bar allows requesting information from various search services at once.|false|
 |layersRemovable|no|Boolean|false|Defines whether layers may be removed from a portal during its run-time.|false|
 |quickHelp|no|**[quickHelp](#markdown-header-portalconfigquickHelp)**||Configuration of new and manipulation of existing QuickHelp windows.|false|
 |tree|no|**[tree](#markdown-header-portalconfigtree)**||Configuration of menu tree.|false|
 |layerInformation|no|**[layerInformation](#markdown-header-portalconfiglayerInformation)**||Decides if to show individual attribute in Meta data of layer information|false|
-|loaderOverlayMaxWait|no|Integer|25000|Defines the maximum loading time for showing Loader Overlays.|false|
+|mouseHover|no|**[mouseHover](#markdown-header-portalconfigmousehover)**||Activates the MouseHover feature for vector layers, both WFS and GeoJSON. For per-layer configuration, see the **[Vector](#markdown-header-themenconfiglayervector)**.|false|
 
 ***
 
+### Portalconfig.tree
+Configuration of the topic selection tree
+
+|Name|Required|Type|Default|Description|Expert|
+|----|--------|----|-------|-----------|------|
+|type|no|enum["auto"]||The topic tree is build in same structure as the [Themenconfig](#markdown-header-Themenconfig). If type `auto` is configured, all layers from the [services.json](services.json.md) are provided in tree, structured by metadata (FHH-Atlas).|false|
+|validLayerTypesAutoTree|no|enum|["WMS", "SENSORTHINGS", "TERRAIN3D", "TILESET3D", "OBLIQUE"]|Layer types to be used with the type `auto`.|false|
+|layerIDsToIgnore|no|String[]||Array of `services.json` layer ids not to be shown in the layer tree. Only for tree-type `auto`.|false|
+|metaIDsToIgnore|no|String[]||All `services.json` layers listed will not be shown in the layer tree. Only for tree-type `auto`.|false|
+|metaIDsToMerge|no|String[]||All layers found in the `services.json` regarding these meta IDs are merged to a single layer of the layer tree. Only for tree-type `auto`.|true|
+|layerIDsToStyle|no|**[layerIDsToStyle](#markdown-header-portalconfigtreelayeridstostyle)**[]||Special implementation for a HVV (Hamburg public transportation) service. Contains objects to request various styles of a layer id. Only for tree-type `auto`.|true|
+|highlightedFeatures|no|**[highlightedFeatures](#markdown-header-portalconfigtreehighlightedfeatures)**||Configuration in addition to feature highlighting.|false|
+|layerPills|no|**[layerPills](#markdown-header-portalconfigtreelayerpills)**||Configuration of LayerPills.|false|
+
+**Example**
+```json
+{
+    "tree": {
+        "type": "auto",
+        "validLayerTypesAutoTree": ["WMS", "WFS"],
+        "layerIDsToIgnore": ["1912", "1913"],
+         "metaIDsToIgnore": [
+            "09DE39AB-A965-45F4-B8F9-0C339A45B154"
+        ],
+         "metaIDsToMerge": [
+            "FE4DAF57-2AF6-434D-85E3-220A20B8C0F1"
+        ],
+         "layerIDsToStyle": [
+            {
+                "id": "1935",
+                "styles": ["geofox_Faehre", "geofox-bahn", "geofox-bus", "geofox_BusName"],
+                "name": ["Fährverbindungen", "Bahnlinien", "Buslinien", "Busliniennummern"],
+                "legendURL": ["http://geoportal.metropolregion.hamburg.de/legende_mrh/hvv-faehre.png", "http://geoportal.metropolregion.hamburg.de/legende_mrh/hvv-bahn.png", "http://geoportal.metropolregion.hamburg.de/legende_mrh/hvv-bus.png", "http://87.106.16.168/legende_mrh/hvv-bus.png"]
+            }
+        ]
+    }
+}
+```
+
+**Example Highlighting**
+```
+#!json
+"tree":{
+    "highlightedFeatures": {
+        "active": true,
+        "layerName": "common:tree.selectedFeatures"
+    }
+},
+```
+
+***
+
+#### Portalconfig.tree.highlightedFeatures
+Configuration in addition to highlighting features. If features are highlighted with the "List" or "Select Features" tool with "Zoom to this Feature" or via url parameter, then a layer with these features is selectable in the menu tree.
+
+|Name|Required|Type|Default|Description|Expert|
+|----|--------|----|-------|-----------|------|
+|active|no|Boolean|false|Indicates whether this feature is active.|false|
+|layerName|no|String|"common:tree.selectedFeatures"|Name of the created layer with the highlighted features. The name also contains the name of the tool that was used.|true|
+
+**Example**
+```
+#!json
+"highlightedFeatures": {
+    "active": false,
+    "layerName": "common:tree.selectedFeatures"
+},
+```
+
+***
+
+
+#### Portalconfig.tree.layerPills
+Configuration of LayerPills.
+
+|Name|Required|Type|Default|Description|Expert|
+|----|--------|----|-------|-----------|------|
+|active|no|Boolean|false|Indicates whether this feature is active.|false|
+|mobileOnly|no|Boolean|false|Indicates whether this feature is active on small Screens only.|false|
+
+**Example**
+```
+#!json
+layerPills": {
+    "active": true,
+    "mobileOnly": true
+    }
+```
+
+***
+### Portalconfig.tree.layerIDsToStyle
+
+|Name|Required|Type|Default|Description|
+|----|--------|----|-------|-----------|
+|id|no|String||a `services.json` layer's id|
+|styles|no|String/String[]||Style to be used as string; if multiple styles are to be used, they are listed in an array.|
+|name|no|String/String[]||Name to be used as string; if multiple names are to be used, they are listed in an array.|
+|legendUrl|no|String/String[]||Legend image URL to be used as string; if multiple legend images are to be used, their URLs are listed in an array.|
+
+**Example:**
+
+```json
+{
+    "layerIDsToStyle": [
+        {
+            "id": "1935",
+            "styles": ["geofox_Faehre", "geofox-bahn", "geofox-bus", "geofox_BusName"],
+            "name": ["Fährverbindungen", "Bahnlinien", "Buslinien", "Busliniennummern"],
+            "legendURL": ["http://geoportal.metropolregion.hamburg.de/legende_mrh/hvv-faehre.png", "http://geoportal.metropolregion.hamburg.de/legende_mrh/hvv-bahn.png", "http://geoportal.metropolregion.hamburg.de/legende_mrh/hvv-bus.png", "http://87.106.16.168/legende_mrh/hvv-bus.png"]
+        }
+    ],
+}
+
+```
+
+***
 ### Portalconfig.searchBar
 
 Search bar configuration.
@@ -67,8 +182,8 @@ Search bar configuration.
 |gazetteer|no|**[gazetteer](#markdown-header-portalconfigsearchbargazetteer)**||Gazetteer search service configuration.|false|
 |gdi|no|**[gdi](#markdown-header-portalconfigsearchbargdi)**||GDI (elastic) search service configuration. _Deprecated in 3.0.0. Please use **[elasticSearch](#markdown-header-portalconfigsearchbarelasticsearch)** instead.|false|
 |elasticSearch|no|**[elasticSearch](#markdown-header-portalconfigsearchbarelasticsearch)**||Elastic search service configuration.|false|
-|osm|no|**[osm](#markdown-header-portalconfigsearchbarosm)**||OpenStreetMap (OSM) search service configuration.|false|
-|komoot|no|**[komoot](#markdown-header-portalconfigsearchbarkomoot)**||Komoot Photon search service configuration.|false|
+|komootPhoton|no|**[komootPhoton](#markdown-header-portalconfigsearchbarkomootphoton)**||Komoot Photon search service configuration.|false|
+|osmNominatim|no|**[osmNominatim](#markdown-header-portalconfigsearchbarosmnominatim)**||OpenStreetMap (OSM) search service configuration.|false|
 |locationFinder|no|**[locationFinder](#markdown-header-portalconfigsearchbarlocationfinder)**||LocationFinder search service configuration.|false|
 |placeholder|no|String|"Suche"|Input text field placeholder shown when no input has been given yet.|false|
 |recommendedListLength|no|Integer|5|Maximum amount of entries in the suggestion list.|false|
@@ -111,46 +226,31 @@ ProxyPass /bkg_suggest http://sg.geodatenzentrum.de/gdz_geokodierung__[UUID]/sug
 |----|--------|----|-------|-----------|------|
 |epsg|no|String|"EPSG:25832"|EPSG code of the coordinate reference system to use.|false|
 |extent|no|**[Extent](#markdown-header-datatypesextent)**|[454591, 5809000, 700000, 6075769]|Coordinate extent in which search algorithms should return.|false|
-|filter|no|String|"filter=(typ:*)"|Filter string sent to the BKG interface.|false|
-|geosearchServiceId|yes|String||Search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
-|minChars|no|Integer|3|_Deprecated in 3.0.0. Please use "minCharacters"._|false|
-|minCharacters|no|Integer|3|Minimum amount of characters required to start a search.|false|
-|score|no|Number|0.6|Score defining the minimum quality of search results.|false|
-|suggestCount|no|Integer|20|Suggestion amount.|false|
-|suggestServiceId|yes|String||Suggestion service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
-|zoomToResult|no|Boolean|false|_Deprecated in 3.0.0. Please use "zoomToResultOnHover" or "zoomToResultOnClick"._ Defines whether a feature is zoomed to when hovering a result list entry.|false|
-|zoomToResultOnHover|no|Boolean|false|Defines whether an address is zoomed to when hovering a result list entry.|false|
-|zoomToResultOnClick|no|Boolean|true|Defines whether an address is zoomed to when clicking a result list entry.|false|
-|zoomLevel|no|Number|7|Defines the zoom level to use on zooming to a result.|false|
+|geoSearchServiceId|yes|String||Search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
+|minScore|no|Number|0.6|Score defining the minimum quality of search results.|false|
+|resultCount|no|Integer|20|Maximum number of search hits returned by the service.|false|
 
 **Example**
 ```json
 {
     "bkg": {
-        "minCharacters": 3,
-        "suggestServiceId": "4",
-        "geosearchServiceId": "5",
+        "geoSearchServiceId": "5",
         "extent": [454591, 5809000, 700000, 6075769],
-        "suggestCount": 10,
+        "resultCount": 10,
         "epsg": "EPSG:25832",
-        "filter": "filter=(typ:*)",
-        "score": 0.6,
-        "zoomToResultOnHover": false,
-        "zoomToResultOnClick": true,
-        "zoomLevel": 10
+        "minScore": 0.6
     }
 }
 ```
 
 ***
 
-#### Portalconfig.searchBar.osm
+#### Portalconfig.searchBar.osmNominatim
 
 OpenStreetMap search for city, street, and house number. Only executed on clicking the search icon or pressing enter since the amount of requests to the OSM search service is limited.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|minChars|no|Number|3|Minimum amount of characters required to start a search.|false|
 |serviceId|yes|String||OSM search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
 |limit|no|Number|50|Maximum amount of requested unfiltered results.|false|
 |states|no|string|""|May contain federal state names with arbitrary separators. Names may also be used in English depending on whether the data has been added to the free open source project **[OpenStreetMap](https://www.openstreetmap.org)**.|false|
@@ -172,34 +272,29 @@ OpenStreetMap search for city, street, and house number. Only executed on clicki
 
 ***
 
-#### Portalconfig.searchBar.komoot
+#### Portalconfig.searchBar.komootPhoton
 Search with **[Komoot Photon](https://photon.komoot.io/)**.
 
 |Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
 |----|-------------|---|-------|------------|------|
-|minChars|no|Number|3|Minimum amount of characters required to start a search.|false|
 |serviceId|yes|String||Komoot search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
-|limit|no|Number|10|Maximum amount of requested unfiltered results.|false|
+|limit|no|Number||Maximum amount of requested unfiltered results.|false|
 |lang|no|string|"de"|Language of the Komoot Search. Effects language specific locationnames (e.g. Countrynames) aus.|false|
 |lat|no|Number||Latitude of the center for the search.|false|
 |lon|no|Number||Longtitude of the center for the search.|false|
 |bbox|no|string||Boundingbox of the search.|false|
 |osm_tag|no|string||Filtering of OSM Tags (see https://github.com/komoot/photon#filter-results-by-tags-and-values).|false|
-|searchOnEnter|no|Boolean|false|If `searchOnEnter` is set to `true`, searches will only start on clicking the search icon or pressing enter.|false|
 
 **Example**
 
-```
-#!json
-
-"komoot": {
-    "minChars": 3,
+```json
+"komootPhoton": {
     "serviceId": "10",
     "limit": 20,
     "lang": "de",
     "lat": 52.5,
     "lon": 13.4,
-    "bbox": "12.5,52.05,14.05,52.75",
+    "bbox": "12.5,52.05,14.05,52.75"
 }
 ```
 
@@ -211,12 +306,10 @@ Search configuration to use a *ESRI CH LocationFinder*.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|minChars|no|Number|3|Minimum amount of characters required to start a search.|false|
-|incrementalSearch|no|Boolean|true|Defines whether autocomplete is enabled. If `incrementalSearch` is set to `false`, searches will only start on clicking the search icon or pressing enter, since there's a quota on requests.|false|
 |serviceId|yes|String||Service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
 |classes|no|**[LocationFinderClass](#markdown-header-portalconfigsearchbarlocationfinderLocationFinderClass)**||May contain classes (with properties) to use in searches. If nothing is specified, all classes are considered valid.|false|
 |useProxy|no|Boolean|false|_Deprecated in the next major release. [GDI-DE](https://www.gdi-de.org/en) recommends setting CORS headers on the required services instead of using proxies._ Defines whether a service URL should be requested via proxy. For this, dots in the URL are replaced with underscores.|false|
-|spatialReference|no|String||Coordinate reference system to use for requests. By default, the value in `Portalconfig.mapView.epsg` is used.|false|
+|epsg|no|String||Coordinate reference system (EPSG-Code) to use for requests. By default, the value in `Portalconfig.mapView.epsg` is used.|false|
 
 ##### Portalconfig.searchBar.locationFinder.LocationFinderClass
 
@@ -227,7 +320,6 @@ Definition of classes to be taken into account for results.
 |name|yes|String||Class name|false|
 |icon|no|String|"bi-signpost-2-fill"|Class visualization by a icon|false|
 |zoom|no|String|"center"|Defines how to zoom to a hit on selection. If `center` is chosen, the center coordinate (`cx`, `cy`) is zoomed to and a marker is placed. If `bbox` is chosen, the LocationFinder's given BoundingBox (`xmin`, `ymin`, `xmax`, `ymax`) is zoomed to, and no marker is shown.|false|
-|zoomLevel|no|Integer||Zoom level which is applied to the result view|false|
 
 **Example**
 
@@ -242,8 +334,7 @@ Definition of classes to be taken into account for results.
             },
             {
                 "name": "address",
-                "icon": "bi-house-door-fill",
-                "zoomLevel": 5
+                "icon": "bi-house-door-fill"
             },
             {
                 "name": "streetname",
@@ -467,14 +558,14 @@ The WFS 2.0 query is dynamically created by the Masterportal. No stored query co
         "timeout": 10000,
         "definitions": [
             {
-                "url": "https://geodienste.hamburg.de/MRH_WFS_Rotenburg",
+                "url": "https://geodienste_hamburg_de/MRH_WFS_Rotenburg",
                 "typeName": "app:mrh_row_bplan",
                 "propertyNames": ["app:name"],
                 "name": "B-Plan",
                 "namespaces": "xmlns:app='http://www.deegree.org/app'"
             },
             {
-                "url": "https://geodienste.hamburg.de/HH_WFS_Bebauungsplaene",
+                "url": "https://geodienste_hamburg_de/HH_WFS_Bebauungsplaene",
                 "typeName": "app:prosin_imverfahren",
                 "propertyNames": ["app:plan"],
                 "geometryName": "app:the_geom",
@@ -509,7 +600,7 @@ SpecialWFS search definition configuration.
 
 ```json
 {
-    "url": "https://geodienste.hamburg.de/HH_WFS_Bebauungsplaene",
+    "url": "https://geodienste_hamburg_de/HH_WFS_Bebauungsplaene",
     "typeName": "app:prosin_imverfahren",
     "propertyNames": ["app:plan"],
     "geometryName": "app:the_geom",
@@ -526,15 +617,13 @@ Searching all topic selection tree layers.
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
 |minChars|no|Integer|3|Minimum amount of characters required to start a search.|false|
-|searchType|no|String|"metadata"|Decides whether the metadata or the name of a layer should be searched. Possible values: "metadata" and "name"|false|
 
 **Example**
 
 ```json
 {
     "tree": {
-        "minChars": 5,
-        "searchType": "name"
+        "minChars": 5
     }
 }
 ```
@@ -567,59 +656,17 @@ Visible vector layer search configuration. For all vector layers supposed to be 
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|minChars|no|Integer|3|Minimum amount of characters required to start a search.|false|
-|layerTypes|no|enum["WFS", "GeoJSON"]|["WFS"]|Vector layer types to be used.|true|
-|gfiOnClick|no|Boolean|false|Opens the GetFeatureInfo (gfi) window on clicking a search result.|false|
 
 **Example**
 
 ```json
 {
     "visibleVector": {
-        "minChars": 3,
-        "layerTypes": ["WFS", "GeoJSON"]
     }
 }
 ```
+
 ***
-#### Portalconfig.tree
-Configuration of the menu tree.
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|highlightedFeatures|no|**[highlightedFeatures](#markdown-header-portalconfigtreehighlightedfeatures)**||Configuration in addition to feature highlighting.|false|
-|showScaleTooltip|no|Boolean|false|Flag whether the scale range is displayed in the layer tooltip in addition to the name of the corresponding layer.|false|
-
-**Example**
-```
-#!json
-"tree":{
-    "highlightedFeatures": {
-        "active": true,
-        "layerName": "common:tree.selectedFeatures"
-    },
-    "showScaleTooltip": true
-},
-```
-***
-#### Portalconfig.tree.highlightedFeatures
-Configuration in addition to highlighting features. If features are highlighted with the "List" or "Select Features" tool with "Zoom to this Feature" or via url parameter, then a layer with these features is selectable in the menu tree.
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|active|no|Boolean|false|Indicates whether this feature is active.|false|
-|layerName|no|String|"common:tree.selectedFeatures"|Name of the created layer with the highlighted features. The name also contains the name of the tool that was used.|true|
-
-**Example**
-```
-#!json
-"highlightedFeatures": {
-    "active": false,
-    "layerName": "common:tree.selectedFeatures"
-},
-```
-***
-
 
 #### Portalconfig.layerInformation
 Configuration of layerInformation.
@@ -635,6 +682,14 @@ Configuration of layerInformation.
     "showMetaDataRevision": true
 },
 ```
+***
+
+## Portalconfig.mouseHover
+
+|Name|Required|Type|Default|Description|Expert|
+|----|--------|----|-------|-----------|------|
+|numFeaturesToShow|no|Integer|2|Maximum amount of element information per tooltip; when exceeded, an information text informs the user of cut content.|false|
+
 ***
 
 ### Portalconfig.controls
@@ -656,7 +711,20 @@ Configuration of layerInformation.
 |freeze|no|Boolean|false|Whether a "lock view" button is shown. Within the `TABLE` style, this element is part of the tool window.|false|
 |backforward|no|**[backForward](#markdown-header-portalconfigcontrolsbackforward)**|false|_Deprecated in 3.0.0. Please use "backForward" instead._|false|
 |backForward|no|**[backForward](#markdown-header-portalconfigcontrolsbackforward)**|false|Shows buttons to jump to previous and next map views.|false|
-|startTool|no|**[startTool](#markdown-header-portalconfigcontrolsbackforward)**|false|Displays buttons for the configured tools. These can be used to open and close the respective tools.|false|
+|startModule|no|**[startModule](#markdown-header-portalconfigcontrolsbackforward)**|false|Displays buttons for the configured tools. These can be used to open and close the respective tools.|false|
+
+Controls can be configured to be expandable so they will not initially show up in the sidebar but if you click the button with the three dots. You need to add the object "expandable" to the controls configuration.
+
+**Example**
+```json
+"controls": {
+      "fullScreen": true,
+      "backForward": true,
+      "expandable": {
+        "button3d": true
+      }
+    }
+```
 
 ***
 
@@ -840,23 +908,44 @@ The attribute backForward may be of type boolean or object. If of type boolean, 
 
 ***
 
-#### Portalconfig.controls.startTool
+#### Portalconfig.controls.startModule
 
-The startTool attribute must be of type Object. A button is displayed for each configured tool, which can be used to open and close the respective tool. The requirement is that the tools are also configured under **[Tools](Portalconfig.menu.tools)**.
+The startModule attribute must be of type Object. A button is displayed for each configured module, which can be used to open and close the respective module. The requirement is that the modules are also configured under **[Tools](Portalconfig.menu.tools)**.
 
 |Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
 |----|-------------|---|-------|------------|------|
-|tools|yes|String[]||Here you can configure the tools to which a button is to be attached..|false|
+|mainMenu|no|**[mainMenu](#markdown-header-portalconfigcontrolsstartmodulemainMenu)**||Here you can configure the modules for which a button should be displayed. These will be displayed in the `mainMenu` when opened.|false|
+|secondaryMenu|no|**[secondaryMenu](#markdown-header-portalconfigcontrolsstartmodulesecondaryMenu)**||Here you can configure the modules for which a button should be displayed. These will be displayed in the `secondaryMenu` when opened.|false|
 
-**Example startTool:**
+**Example startModule:**
 ```
 #!json
-"startTool": {
-    "tools": ["selectFeatures", "draw"]
+"startModule": {
+    "mainMenu": [
+        {
+            "type": "scaleSwitcher"
+        }
+    ],
+    "secondaryMenu": [
+        {
+            "type": "myModule"
+        }
+    ]
 }
 ```
 
 ***
+
+##### Portalconfig.controls.startModule.mainMenu
+Here you can configure the modules for which a button is to be displayed. These are displayed in the `mainMenu` when opened.
+
+***
+
+##### Portalconfig.controls.startModule.secondaryMenu
+Here you can configure the modules for which a button is to be displayed. These are displayed in the `secondaryMenu` when opened.
+
+***
+
 
 ### Portalconfig.portalTitle
 
@@ -1294,10 +1383,10 @@ This field allows creating and ordering menu entries. The order of tools corresp
 |----|--------|----|-------|-----------|------|
 |ansichten|no|**[ansichten](#markdown-header-portalconfigmenuansichten)**||Preconfigured map view in 2D and 3D mode|false|
 |info|no|**[info](#markdown-header-portalconfigmenuinfo)**||Menu folder containing **[tools](#markdown-header-portalconfigmenutools)** or **[staticlinks](#markdown-header-portalconfigmenustaticlinks)**.|false|
-|legend|no|**[legend](#markdown-header-portalconfigmenulegend)**||The legend for all visible layers is displayed here.|false|
-|login|no|**[login](#markdown-header-portalconfigmenulogin)**||Configuration of login with an OIDC server.|false|
+|legend|nein|**[legend](#markdown-header-portalconfigmenulegend)**||In der Legende werden alle sichtbaren Layer dargestellt.|false|
 |tools|no|**[tools](#markdown-header-portalconfigmenutools)**||Menu folder containing tools.|false|
 |tree|no|**[tree](#markdown-header-portalconfigmenutree)**||Representation and position of the topic selection tree.|false|
+|login|no|**[login](#markdown-header-portalconfigmenulogin)**||Configuration of login with an OIDC server.|false|
 
 ***
 
@@ -1374,7 +1463,6 @@ Legend configuration options.
 |icon|no|String|"bi-lightbulb"|Legend icon.|false|
 |showCollapseAllButton|no|Boolean|false|Option to en-/disable all legends.|false|
 |showLegend|no|Boolean|false|Option to display the legend when starting the portal|false|
-|sldVersion|no|String|""|Defines the Styled Layer Descriptor version for the GetLegendGraphic requests, e.g.: "1.1.0"|false|
 
 ***
 
@@ -1488,6 +1576,7 @@ A folder object defined by a name, icon, and its children.
 [type:contact]: # (Portalconfig.menu.tool.contact)
 [type:coord]: # (Portalconfig.menu.tool.coord)
 [type:coordToolkit]: # (Portalconfig.menu.tool.coordToolkit)
+[type:customMenuElement]: # (Portalconfig.menu.tool.customMenuElement)
 [type:draw]: # (Portalconfig.menu.tool.draw)
 [type:extendedFilter]: # (Portalconfig.menu.tool.extendedFilter)
 [type:featureLister]: # (Portalconfig.menu.tool.featureLister)
@@ -1499,6 +1588,8 @@ A folder object defined by a name, icon, and its children.
 [type:layerSlider]: # (Portalconfig.menu.tool.layerSlider)
 [type:measure]: # (Portalconfig.menu.tool.measure)
 [type:modeler3D]: # (Portalconfig.menu.tool.modeler3D)
+[type:openConfig]: # (Portalconfig.menu.tool.openConfig)
+[type:news]: # (Portalconfig.menu.tool.news)
 [type:parcelSearch]: # (Portalconfig.menu.tool.parcelSearch)
 [type:print]: # (Portalconfig.menu.tool.print)
 [type:routing]: # (Portalconfig.menu.tool.routing)
@@ -1507,7 +1598,6 @@ A folder object defined by a name, icon, and its children.
 [type:searchByCoord]: # (Portalconfig.menu.tool.searchByCoord)
 [type:selectFeatures]: # (Portalconfig.menu.tool.selectFeatures)
 [type:shadow]: # (Portalconfig.menu.tool.shadow)
-[type:statisticDashboard]: # (Portalconfig.menu.tool.statisticDashboard)
 [type:styleVT]: # (Portalconfig.menu.tool.styleVT)
 [type:supplyCoord]: # (Portalconfig.menu.tool.supplyCoord)
 [type:resetTree]: # (Portalconfig.menu.tool.resetTree)
@@ -1522,7 +1612,7 @@ Alternatively, also the paths **Portalconfig.menu.info**, **Portalconfig.menu.si
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
 |addWMS|no|**[addWMS](#markdown-header-portalconfigmenutooladdWMS)**||This tool allows loading specific WMS layers. This is done by providing a URL. All the service's layers are retrieved and offered in the layer tree in section "External technical data". Using this tool is only compatible with the `treeType` "custom" or "default".|true|
-|bufferAnalysis|no|**[bufferAnalysis](#markdown-header-bufferAnalysis)**||This buffer analysis allows the selection of a source layer, a buffer radius and a target layer. The chosen buffer radius will then be shown around features of the selected source layer. At the moment a target layer is selected, only the features of this layer will be shown, if they are outside the buffer radii. It is also possible to invert the result. In this case the resulting features will only be show if they are inside the radii. If the portal's treeType is configured to be "custom", only layers active at tool opening time are available for comparison.|false|
+|bufferAnalysis|no|**[bufferAnalysis](#markdown-header-bufferAnalysis)**||This buffer analysis allows the selection of a source layer, a buffer radius and a target layer. The chosen buffer radius will then be shown around features of the selected source layer. At the moment a target layer is selected, only the features of this layer will be shown, if they are outside the buffer radii. It is also possible to invert the result. In this case the resulting features will only be show if they are inside the radii. If the portal's tree.type is configured to be "custom", only layers active at tool opening time are available for comparison.|false|
 |compareFeatures|no|**[compareFeatures](#markdown-header-portalconfigmenutoolcomparefeatures)**||Offers a comparison option for vector features. The getFeatureInfo (GFI) window will offer a clickable star symbol to put elements on the comparison list. Works when used together with the GFI theme **Default**.|false|
 |contact|no|**[contact](#markdown-header-portalconfigmenutoolcontact)**||The contact form allows users to send messages to a configured mail address. For example, this may be used to allow users to submit errors and suggestions.|false|
 |coord|no|**[coord](#markdown-header-portalconfigmenutoolcoord)**||_Deprecated in 3.0.0. Please use `supplyCoord` instead._ Tool to read coordinates on mouse click. When clicking once, the coordinates in the view are frozen and can be copied on clicking the displaying input elements to the clipboard, i.e. you can use them in another document/chat/mail/... with `Strg+V`.|false|
@@ -1546,14 +1636,15 @@ Alternatively, also the paths **Portalconfig.menu.info**, **Portalconfig.menu.si
 |searchByCoord|no|**[searchByCoord](#markdown-header-portalconfigmenutoolsearchbycoord)**||_Deprecated in 3.0.0. Please use "coordToolkit" instead._ Coordinate search with switchable coordinate reference system. The tool will zoom to any given coordinate and set a marker on it.|false|
 |selectFeatures|no|**[selectFeatures](#markdown-header-portalconfigmenutoolselectfeatures)**||Allows selecting a set of vector features by letting the user draw a box on the map. Features in that box will be displayed with GFI information.|false|
 |shadow|no|**[shadow](#markdown-header-portalconfigmenutoolshadow)**||Configuration object for the 3D mode shadow time.|false|
-|statisticDashboard|no|**[statisticDashboard](#markdown-header-portalconfigmenutoolstatisticDashboard)**||Tool for displaying statistical data.|false|
 |styleVT|no|**[styleVT](#markdown-header-portalconfigmenutoolstyleVT)**||Style selection for VT services. Allows switching between styles of a Vector Tile Layer that provides multiple stylings via the `services.json` file.|false|
 |supplyCoord|no|**[supplyCoord](#markdown-header-portalconfigmenutoolsupplyCoord)**||_Deprecated in 3.0.0. Please use "coordToolkit" instead._ Tool to read coordinates on mouse click. When clicking once, the coordinates in the view are frozen and can be copied on clicking the displaying input elements to the clipboard, i.e. you can use them in another document/chat/mail/... with `Strg+V`.|false|
 |resetTree|no|**[resetTree](#markdown-header-portalconfigmenutoolresetTree)**||Tool to reset tree. Clicking on Tool name in the menu under Tools resets the tree.|false|
 |wfsFeatureFilter|no|**[wfsFeatureFilter](#markdown-header-portalconfigmenutoolwfsFeatureFilter)**||_Deprecated in 3.0.0. Please use `filter` instead._ Filters WFS features. This required configuring `"filterOptions"` on the WFS layer object.|false|
 |wfsSearch|no|**[wfsSearch](#markdown-header-portalconfigmenutoolwfssearch)**||Makes it possible to create a form to query WFS layers using filters. It is possible to either use a stored query (WFS@2.0.0) or define the query using the defined parameters (WFS@1.1.0).|false|
 |wfst|no|**[wfst](#markdown-header-portalconfigmenutoolwfst)**||WFS-T module to visualize, create, update and delete features.|false|
-
+|openConfig|no|**[openConfig](#markdown-header-portalconfigmenutoolopenConfig)**||With this module a configuration file (config.json) can be reloaded at runtime. The modules and map are adapted to the new configuration.|false|
+|news|no|**[news](#markdown-header-portalconfigmenutoolnews)**||This module shows all messages from the newsFeedPortalAlerts.json of the current portal regardless of the "read" status.|false|
+|customMenuElement|no|**[customMenuElement](#markdown-header-portalconfigmenutoolcustommenuelement)**||This module can open a link, display HTML from config.json or an external file, or perform an action. This module can be configured several times in config.json.|false|
 ***
 
 #### Portalconfig.menu.tool
@@ -1896,7 +1987,7 @@ An object to define a layer to filter with.
 |filterOnMove|no|Boolean||If it is `true`, the layer will be filtered dynamically after the map moves. Only works with `multiLayerSelector`: `false`. With this combination the filter is triggerd when the accordeon will be opened.|false|
 |minZoom|no|Number||The minimum zoom level for current filter, if current zoom level is smaller than the minimum zoom level, the current filter will be deactivated.|false|
 |maxZoom|no|Number||The maximum zoom level for current filter, if current zoom level is bigger than the maximum zoom level, the current filter will be deactivated.|false|
-|filterOnOpen|no|Boolean||If set to `true`, the filter is triggered when the accorden is clicked.|false|
+|collection|no|String||ONLY VectorTiles: The collection to filter. If it is set, the layer needs a `baseOAFUrl` to start the api requests|false|
 
 **Example**
 
@@ -2541,7 +2632,6 @@ Print module, configurable for 2 print services: *High Resolution PlotService* a
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|mapfishServiceId|yes|String||_Deprecated in 3.0.0._ Print service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
 |printServiceId|yes|String||Print service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
 |printService|no|String|"mapfish"|Flag determining which print service is in use. `plotservice` activates the *High Resolution PlotService*, if the parameter is not set, *Mapfish 3* is used.|false|
 |printAppCapabilities|no|String|"capabilities.json"|path for the configuration of the print service|false|
@@ -2560,7 +2650,6 @@ Print module, configurable for 2 print services: *High Resolution PlotService* a
 |overviewmapLayerId|no|String||Allows using a different layer for the overview map element. If no Id is specified, the first layer of the selected baselayer maps is used.|false|
 |layoutOrder|no|String[]||Defines the order in which the layouts should be shown in the dropdown. Only to be used in combination with the print service 'plotservice'.|false|
 |isPrintDrawnGeoms|no|Boolean|false|Flag if it's possible to print geometries created by the Draw or Measure tool. Only to be used in combination with the print service 'plotservice'.|false|
-|showInvisibleLayerInfo|no|Boolean|true|Defines whether an infobox is shown when layers will not be printed because they are invisible due to scale.|false|
 
 **High Resolution PlotService example configuration**
 
@@ -2568,8 +2657,8 @@ Print module, configurable for 2 print services: *High Resolution PlotService* a
 {
     "print": {
         "name": "Karte drucken",
-        "icon": "bi-printer-fill",
-        "mapfishServiceId": "123456",
+        "icon": "bi-printer",
+        "printServiceId": "123456",
         "filename": "Print",
         "title": "My Title",
         "printService": "plotservice",
@@ -2591,8 +2680,8 @@ Print module, configurable for 2 print services: *High Resolution PlotService* a
 {
     "print": {
         "name": "Karte drucken",
-        "icon": "bi-printer-fill",
-        "mapfishServiceId": "mapfish_printservice_id",
+        "icon": "bi-printer",
+        "printServiceId": "mapfish_printservice_id",
         "printAppId": "mrh",
         "filename": "Print",
         "title": "Mein Titel"
@@ -3306,7 +3395,7 @@ The contact form allows users to send messages to a configured mail address.
 {
     "contact": {
         "name": "common:menu.contact",
-        "icon": "bi-envelope-fill",
+        "icon": "bi-envelope",
         "serviceId": "123",
         "from": [
             {
@@ -3380,7 +3469,7 @@ The layer cluster toggler tool allows to activate and deactivate cluster layers 
 |----|--------|----|-------|-----------|------|
 |name|yes|String|"additional:addons.menu.tools.layerClusterToggler.name"|Name displayed in the tool.|false|
 |icon|yes|String|"bi-easel3"|icon displayed in the tool menu|false|
-|clusterList|yes|**[clusterList](#markdown-header-portalconfigmenutoollayerClusterTogglerclusterList)**[]|[]|Array of layer id objects or layer id string.|false|
+|layerIdList|yes|String[]|[]|Array of layer ids.|false|
 
 **Example**
 
@@ -3389,50 +3478,11 @@ The layer cluster toggler tool allows to activate and deactivate cluster layers 
     "layerClusterToggler": {
         "name": "translate#additional:addons.menu.tools.layerClusterToggler.name",
         "icon": "bi-easel3",
-        "clusterList": ["8712", "21067"]
-    }
-}
-```
-
-***
-
-#### Portalconfig.menu.tool.layerClusterToggler.clusterList
-
-[inherits]: # (Portalconfig.menu.tool)
-
-Defines a cluster of layer
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|layerId|yes|String||ID of the service to be shown in the portal. This layer ID *MUST* be configured as part of the *Themenconfig*!|false|
-|suffix|yes|String||Suffix of layer. This Suffix *MUST* be configured as part of the *Themenconfig*|false|
-
-**Example**
-
-```json
-{
-    "layerClusterToggler": {
-        "name": "translate#additional:addons.menu.tools.layerClusterToggler.name",
-        "icon": "bi-easel3",
-        "clusterList": [
+        "layerIdList": [
             "8712",
-            "8713",
-            {
-                "layerId": "21067",
-                "suffix": "90012"
-            },
-            {
-                "layerId": "21067",
-                "suffix": "90013"
-            },
-            {
-                "layerId": "21067",
-                "suffix": "90014"
-            },
-            {
-                "layerId": "21067",
-                "suffix": "90015"
-            }
+            "8713.1",
+            "8713.2",
+            "8713.3"
         ]
     }
 }
@@ -3531,313 +3581,6 @@ The shadow tool provides a UI element to define a point in time by using sliders
 
 ***
 
-#### Portalconfig.menu.tool.statisticDashboard
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|name|yes|String|"translate#common:menu.tools.statisticDashboard"|The Name of the Tool.|false|
-|icon|no|String|"bi-speedometer"|The icon of the Tool|false|
-|colorScheme|yes|**[colorScheme](#markdown-header-portalconfigmenutoolstatisticDashboardcolorScheme)**|""|Defines the colours of the features in statisticdashboard.|false|
-|active|no|Boolean|false|If `true`, the tool is open after initializing the portal.|false|
-|data|yes|**[data](#markdown-header-portalconfigmenutoolstatisticDashboarddata)**|""|data for statistic dashboard.|false|
-
-**Example**
-
-```json
-{
-    "name": "translate#common:menu.tools.statisticDashboard",
-    "icon": "bi-speedometer",
-    "colorScheme": {
-        "referenceRegion": [155, 155, 155, 0.7],
-        "comparisonMap": [[198, 219, 239, 0.9], [158, 202, 225, 0.9], [107, 174, 214, 0.9], [49, 130, 189, 0.9], [8, 81, 156, 0.9]],
-        "differenceMap": [[210, 226, 27, 0.9], [122, 209, 81, 0.9], [84, 197, 104, 0.9], [34, 168, 132, 0.9], [35, 136, 142, 0.9]],
-        "lineCharts": [[74, 0, 30, 1], [117, 18, 50, 1], [189, 47, 83, 1], [198, 81, 84, 1], [228, 121, 97, 1], [240, 168, 130, 1], [250, 212, 172, 1], [157, 185, 171, 1], [137, 192, 196, 1], [87, 158, 185, 1],
-            [57, 122, 168, 1], [28, 87, 150, 1], [22, 55, 113, 1], [16, 25, 77, 1], [118, 199, 190, 1], [62, 168, 166, 1], [32, 130, 136, 1], [0, 73, 75, 1], [224, 110, 133, 1], [204, 65, 90, 1]]
-    },
-    "active": true,
-    "data": {
-        "layerId": "28992",
-        "geometryAttribute": "geom",
-        "chartDirectionValue": 10,
-        "timeStepsFilter": {
-            "5": "Die letzten 5 Jahre",
-            "10": "Die letzten 10 Jahre",
-            "all": "Alle Jahre"
-        },
-        "mappingFilter": {
-            "timeAttribute": {
-                "attrName": "zeitpunkt",
-                "name": "Zeitpunkt",
-                "inputFormat": "YYYY-MM-DD",
-                "outputFormat": "YYYY"
-            },
-            "regionNameAttribute": {
-                "attrName": "statistisches_gebiet",
-                "name": "Statistisches Gebiet"
-            },
-            "statisticsAttributes": {
-                "arbeitnehmer_inland_tausend": {
-                    "name": "Arbeitnehmer (Inland) in 1.000",
-                    "category": "Beschäftigte"
-                },
-                "arbeitslose_jahresdurchschnitt": {
-                    "name": "Arbeitslose",
-                    "category": "Beschäftigte"
-                },
-                "arbeitslose_15_bis_u25_jahresdurchschnitt": {
-                    "name": "Arbeitslose 15 bis unter 25 Jahre",
-                    "category": "Beschäftigte"
-                },
-                "einwohner_ab_65": {
-                    "name": "Einwohner 65 Jahre und älter",
-                    "category": "Bevölkerung"
-                },
-                "einwohner_ab_65_prozent_aller_einwohner": {
-                    "name": "Einwohner 65 Jahre und älter in % aller Einwohner",
-                    "category": "Bevölkerung"
-                },
-                "einwohner_auslaender": {
-                    "name": "Einwohner Ausländer",
-                    "category": "Bevölkerung"
-                }
-            }
-        }
-    }
-}
-```
-
-***
-
-#### Portalconfig.menu.tool.statisticDashboard.colorScheme
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|referenceRegion|yes|Float[]|[]|The RGBA color of the Reference region.|false|
-|comparisonMap|yes|Float[]|[]|The list of the RGBA colors of the comparison map.|false|
-|differenceMap|yes|Float[]|[]|The list of the RGBA colors of the difference map.|false|
-|lineCharts|yes|Float[]|[]|The list of the RGBA colors of the linecharts.|false|
-
-**Example**
-
-```json
-{
-        "referenceRegion": [155, 155, 155, 0.7],
-        "comparisonMap": [[198, 219, 239, 0.9], [158, 202, 225, 0.9], [107, 174, 214, 0.9], [49, 130, 189, 0.9], [8, 81, 156, 0.9]],
-        "differenceMap": [[210, 226, 27, 0.9], [122, 209, 81, 0.9], [84, 197, 104, 0.9], [34, 168, 132, 0.9], [35, 136, 142, 0.9]],
-        "lineCharts": [[74, 0, 30, 1], [117, 18, 50, 1], [189, 47, 83, 1], [198, 81, 84, 1], [228, 121, 97, 1], [240, 168, 130, 1], [250, 212, 172, 1], [157, 185, 171, 1], [137, 192, 196, 1], [87, 158, 185, 1],
-            [57, 122, 168, 1], [28, 87, 150, 1], [22, 55, 113, 1], [16, 25, 77, 1], [118, 199, 190, 1], [62, 168, 166, 1], [32, 130, 136, 1], [0, 73, 75, 1], [224, 110, 133, 1], [204, 65, 90, 1]]
-}
-```
-
-***
-
-#### Portalconfig.menu.tool.statisticDashboard.data
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|----|-----------|------|
-|layerId|yes|String|""|The id of the Layer.|false|
-|geometryAttribute|yes|String|""|Type of the geometry attribute.|false|
-|chartDirectionValue|no|String|""|Specifies the number above which the bars in the chart will be switched from vertical to horizontal.|false|
-|timeStepsFilter|yes|**[timeStepsFilter](#markdown-header-portalconfigmenutoolstatisticDashboarddatatimeStepsFilter)**|""|An object consisting of keys and values where the key contains the number of time groupings and the value contains the description for the grouping.|false|
-|mappingFilter|yes|**[mappingFilter](#markdown-header-portalconfigmenutoolstatisticDashboarddatamappingFilter)**|""|This object contains attributes used to filter the map by its values.|false|
-
-**Example**
-
-```json
-{
-    "layerId": "28992",
-    "geometryAttribute": "geom",
-    "chartDirectionValue": 10,
-    "timeStepsFilter": {
-        "5": "Die letzten 5 Jahre",
-        "10": "Die letzten 10 Jahre",
-        "all": "Alle Jahre"
-    },
-    "mappingFilter": {
-        "timeAttribute": {
-            "attrName": "zeitpunkt",
-            "name": "Zeitpunkt",
-            "inputFormat": "YYYY-MM-DD",
-            "outputFormat": "YYYY"
-        },
-        "regionNameAttribute": {
-            "attrName": "statistisches_gebiet",
-            "name": "Statistisches Gebiet"
-        },
-        "statisticsAttributes": {
-            "arbeitnehmer_inland_tausend": {
-                "name": "Arbeitnehmer (Inland) in 1.000",
-                "category": "Beschäftigte"
-            },
-            "arbeitslose_jahresdurchschnitt": {
-                "name": "Arbeitslose",
-                "category": "Beschäftigte"
-            },
-            "arbeitslose_15_bis_u25_jahresdurchschnitt": {
-                "name": "Arbeitslose 15 bis unter 25 Jahre",
-                "category": "Beschäftigte"
-            },
-            "einwohner_ab_65": {
-                "name": "Einwohner 65 Jahre und älter",
-                "category": "Bevölkerung"
-            },
-            "einwohner_ab_65_prozent_aller_einwohner": {
-                "name": "Einwohner 65 Jahre und älter in % aller Einwohner",
-                "category": "Bevölkerung"
-            },
-            "einwohner_auslaender": {
-                "name": "Einwohner Ausländer",
-                "category": "Bevölkerung"
-            }
-        }
-    }
-}
-```
-
-***
-
-#### Portalconfig.menu.tool.statisticDashboard.data.timeStepsFilter
-
-|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
-|----|-------------|---|-------|------------|------|
-|key:value|ja|String|""|Key: The key is the number of the last "key" entry for dropdown options. Value: The description for the grouping.|false|
-|all:value|ja|String|""|Key: The keyword for selecting all entries for dropdown options. Value: The description for the grouping.|false|
-
-**Example**
-
-```json
-{
-	"5": "Die letzten 5 Jahre",
-	"10": "Die letzten 10 Jahre",
-	"all": "Alle Jahre"
-}
-```
-
-***
-
-#### Portalconfig.menu.tool.statisticDashboard.data.mappingFilter
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|timeAttribute|yes|**[timeAttribute](#markdown-header-portalconfigmenutoolstatisticDashboardmappingFiltertimeAttribute)**|""|The attribute for the time filter.|false|
-|regionNameAttribute|yes|**[regionNameAttribute](#markdown-header-portalconfigmenutoolstatisticDashboardmappingFilterregionNameAttribute)**|""|The attribute for the name of the region.|false|
-|statisticsAttributes|yes|**[statisticsAttributes](#markdown-header-portalconfigmenutoolstatisticDashboardmappingFilterstatisticsAttributes)**|""|Attributes used to filter the map by its values.|false|
-
-**Example**
-
-```json
-{
-	"timeAttribute": {
-		"attrName": "zeitpunkt",
-		"name": "Zeitpunkt",
-		"inputFormat": "YYYY-MM-DD",
-		"outputFormat": "YYYY"
-	},
-	"regionNameAttribute": {
-		"attrName": "statistisches_gebiet",
-		"name": "Statistisches Gebiet"
-	},
-	"statisticsAttributes": {
-		"arbeitnehmer_inland_tausend": {
-			"name": "Arbeitnehmer (Inland) in 1.000",
-			"category": "Beschäftigte"
-		},
-		"arbeitslose_jahresdurchschnitt": {
-			"name": "Arbeitslose",
-			"category": "Beschäftigte"
-		},
-		"arbeitslose_15_bis_u25_jahresdurchschnitt": {
-			"name": "Arbeitslose 15 bis unter 25 Jahre",
-			"category": "Beschäftigte"
-		},
-		"einwohner_ab_65": {
-			"name": "Einwohner 65 Jahre und älter",
-			"category": "Bevölkerung"
-		},
-		"einwohner_ab_65_prozent_aller_einwohner": {
-			"name": "Einwohner 65 Jahre und älter in % aller Einwohner",
-			"category": "Bevölkerung"
-		},
-		"einwohner_auslaender": {
-			"name": "Einwohner Ausländer",
-			"category": "Bevölkerung"
-		}
-	}
-}
-```
-
-***
-
-#### Portalconfig.menu.tool.statisticDashboard.data.mappingFilter.timeAttribute
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|attrName|yes|String|""|The attribute for the time filters.|false|
-|name|no|String|""|The name of the attribute.|false|
-|inputFormat|no|String|""|Input Format|false|
-|outputFormat|no|String|""|Output Format|false|
-
-**Example**
-
-```json
-{
-    "attrName": "zeitpunkt",
-    "name": "Zeitpunkt",
-    "inputFormat": "YYYY-MM-DD",
-    "outputFormat": "YYYY"
-}
-```
-
-***
-
-#### Portalconfig.menu.tool.statisticDashboard.data.mappingFilter.regionNameAttribute
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|attrName|yes|String|""|The attribute of the region.|false|
-|name|no|String|""|The name of the region attribute.|false|
-
-**Example**
-
-```json
-{
-    "attrName": "statistisches_gebiet",
-    "name": "Statistisches Gebiet"
-}
-```
-
-***
-
-#### Portalconfig.menu.tool.statisticDashboard.data.mappingFilter.statisticsAttributes
-
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|key|yes|String|""|The key of the Statistic attributes.|false|
-|name|yes|String|""|The name of the statisticsAttributes.|false|
-|Category|yes|String|""|The category of the statisticsAttributes. If the category is set, it will be grouped under this category in the category selection.|false|
-
-**Example**
-
-```json
-{
-    "arbeitnehmer_inland_tausend": {
-        "name": "Arbeitnehmer (Inland) in 1.000",
-        "category": "Beschäftigte"
-    },
-    "arbeitslose_jahresdurchschnitt": {
-        "name": "Arbeitslose",
-        "category": "Beschäftigte"
-    },
-    "arbeitslose_15_bis_u25_jahresdurchschnitt": {
-        "name": "Arbeitslose 15 bis unter 25 Jahre",
-        "category": "Beschäftigte"
-    }
-}
-```
-
-***
-
-
 #### Portalconfig.menu.tool.shadow.shadowTime
 
 Todo.
@@ -3895,7 +3638,7 @@ Multiple formulars (**[SearchInstances](#markdown-header-portalconfigmenutoolwfs
                             "literals": [
                                 {
                                     "field": {
-                                        "type": "equal",
+                                        "queryType": "equal",
                                         "fieldName": "gemarkung",
                                         "inputLabel": "District",
                                         "options": ""
@@ -3903,7 +3646,7 @@ Multiple formulars (**[SearchInstances](#markdown-header-portalconfigmenutoolwfs
                                 },
                                 {
                                     "field": {
-                                        "type": "equal",
+                                        "queryType": "equal",
                                         "fieldName": "flur",
                                         "inputLabel": "Cadastral District",
                                         "options": "flur"
@@ -3956,7 +3699,7 @@ A singular instance of the WFS Search which will be selectable through a dropdow
                 "literals": [
                     {
                         "field": {
-                            "type": "equal",
+                            "queryType": "equal",
                             "fieldName": "gemarkung",
                             "inputLabel": "District",
                             "options": ""
@@ -3964,7 +3707,7 @@ A singular instance of the WFS Search which will be selectable through a dropdow
                     },
                     {
                         "field": {
-                            "type": "equal",
+                            "queryType": "equal",
                             "fieldName": "flur",
                             "inputLabel": "Cadastral District",
                             "options": "flur"
@@ -3998,7 +3741,7 @@ However, a `field` needs to be wrapped inside a `clause` (as seen in most exampl
         "literals": [
             {
                 "field": {
-                    "type": "equal",
+                    "queryType": "equal",
                     "fieldName": "gemarkung",
                     "inputLabel": "District",
                     "options": ""
@@ -4006,7 +3749,7 @@ However, a `field` needs to be wrapped inside a `clause` (as seen in most exampl
             },
             {
                 "field": {
-                    "type": "equal",
+                    "queryType": "equal",
                     "fieldName": "flur",
                     "inputLabel": "Cadastral District",
                     "options": "flur"
@@ -4020,7 +3763,7 @@ However, a `field` needs to be wrapped inside a `clause` (as seen in most exampl
 ```json
 {
     "field": {
-        "type": "equal",
+        "queryType": "equal",
         "fieldName": "rivers",
         "inputLabel": "Rivers",
         "options": [
@@ -4063,7 +3806,7 @@ A `clause` defines the way multiple `literals` should be queried together.
         "literals": [
             {
                 "field": {
-                    "type": "equal",
+                    "queryType": "equal",
                     "fieldName": "gemarkung",
                     "inputLabel": "District",
                     "options": ""
@@ -4071,7 +3814,7 @@ A `clause` defines the way multiple `literals` should be queried together.
             },
             {
                 "field": {
-                    "type": "equal",
+                    "queryType": "equal",
                     "fieldName": "flur",
                     "inputLabel": "Cadastral District",
                     "options": "flur"
@@ -4094,7 +3837,7 @@ A configuration like
 ```json
 {
     "field": {
-        "type": ["equal", "like"],
+        "queryType": ["equal", "like"],
         "fieldName": ["flst", "gmkr"],
         "inputLabel": ["Parcel", "Communal district number"]
     }
@@ -4134,7 +3877,7 @@ Then the order of the config should look like this:
         "literals": [
             {
                 "field": {
-                    "type": "equal",
+                    "queryType": "equal",
                     "fieldName": "objects",
                     "inputLabel": "Objects",
                     "options": ""
@@ -4142,7 +3885,7 @@ Then the order of the config should look like this:
             },
             {
                 "field": {
-                    "type": "equal",
+                    "queryType": "equal",
                     "fieldName": "foo",
                     "inputLabel": "Foo",
                     "options": "foo"
@@ -4150,7 +3893,7 @@ Then the order of the config should look like this:
             },
             {
                 "field": {
-                    "type": "equal",
+                    "queryType": "equal",
                     "fieldName": "bar",
                     "inputLabel": "Bar",
                     "options": "foo.bar"
@@ -4170,7 +3913,7 @@ Then the order of the config should look like this:
 |inputTitle|no|String/String[]||Value to be shown when hovering the UI element. May be a locale key.|false|
 |required|no|Boolean/Boolean[]|false|Whether the field has to be filled.|false|
 |options|no|String/**[option](#markdown-header-portalconfigmenutoolwfssearchsearchinstanceliteralfieldoption)**[]/String[]||If `options` is an array (irrelevant if of strings or **[options](#markdown-header-portalconfigmenutoolwfssearchsearchinstanceliteralfieldoption)**), the given values are used for selection. These options may either match **[option](#markdown-header-portalconfigmenutoolwfssearchsearchinstanceliteralfieldoption)** or are plain values (`String` / `Number`). In the latter case, the plain value is used as both id and `displayName`. <br /> If it is a String, there are different possibilities: <ul><li>If the String is empty, the keys of **[selectSource](#markdown-header-portalconfigmenutoolwfssearchsearchinstance)** are used.</li><li>If the String is not empty, it is assumed that another field with `options=""` exists; otherwise the field is disabled. It is also assumed that the String represents an array in **[selectSource](#markdown-header-portalconfigmenutoolwfssearchsearchinstance)** providing further options.</li></ul> **Note**: It is also possible to declare the `options` as a multidimensional array **[option](#markdown-header-portalconfigmenutoolwfssearchsearchinstanceliteralfieldoption)**[][]. However, this can't be used as a parameter for Masterportal Admin. This should be used if an **[option](#markdown-header-portalconfigmenutoolwfssearchsearchinstanceliteralfieldoption)**[] is wanted for a `field` that uses multiples parameters.|true|
-|type|no|enum["equal", "like"]/enum["equal", "like"][]||Required for usage with WFS@1.1.0. The `type` declared how the field should be compared to the value in the service.|false|
+|queryType|no|enum["equal", "like"]/enum["equal", "like"][]||Required for usage with WFS@1.1.0. The `queryType` declared how the field should be compared to the value in the service.|false|
 |usesId|no|Boolean/Boolean[]|false|Only relevant if the Parameters `options` is set and an empty String (root element). Determines whether the key of the object of the external source should be used as a value for the query or if the object has an Id which should be used.|false|
 
 **Example**
@@ -4178,7 +3921,7 @@ Then the order of the config should look like this:
 ```json
 {
     "field": {
-        "type": "equal",
+        "queryType": "equal",
         "fieldName": "rivers",
         "inputLabel": "Rivers",
         "options": [
@@ -4356,12 +4099,9 @@ When editing properties of a feature / adding properties to a new features, the 
 |layerIds|yes|String[]||Array of ids of layer defined in **[services.json](services.json.md)**.|false|
 |icon|no|String|"bi-globe"|Icon displayed for the tool.|false|
 |name|no|String|"WfsTransaction"|Tool name shown in the portal.|false|
-|layerSelectLabel|no|String|"common:modules.tools.wfsTransaction.layerSelectLabel"|_Deprecated in 3.0.0. Please set the value directly in the language files._ If given, overrides the value set for the label of the layer select box. May be a locale key.|false|
+|layerSelectLabel|no|String|"common:modules.tools.wfsTransaction.layerSelectLabel"| Please set the value directly in the language files._ If given, overrides the value set for the label of the layer select box. May be a locale key.|false|
 |toggleLayer|no|Boolean|false|Whether the features of the currently selected layer should stay visible when adding a new feature.|false|
-|useProxy|no|Boolean|false|_Deprecated in 3.0.0. [GDI-DE](https://www.gdi-de.org/en) recommends setting CORS headers on the required services instead of using proxies._ Defines whether a service URL should be requested via proxy. For this, dots in the URL are replaced with underscores.|false|
-|areaButton|no|[TransactionConfig](#markdown-header-portalconfigmenutoolwfstransactiontransactionconfig)[]/Boolean|[]|_Deprecated in 3.0.0. Please use `polygonButton` instead. If both are present, `areaButton` is used for now._ Defines which layers of `layerIds` allow insert transactions of polygon geometries.|false|
 |delete|no|[TransactionConfig](#markdown-header-portalconfigmenutoolwfstransactiontransactionconfig)/Boolean|false|Defines which layers of `layerIds` allow delete transactions.|false|
-|edit|no|String/Boolean|false|_Deprecated in 3.0.0. Please use `update` instead. If both are present, `edit` is used for now._ If present as a Boolean, it is decided whether features can generally be updated and if it is present as a string, features can be updated and the String defined the value presented inside the button.|false|
 |lineButton|no|[TransactionConfig](#markdown-header-portalconfigmenutoolwfstransactiontransactionconfig)[]/Boolean|[]|Defines which layers of `layerIds` allow insert transactions of line geometries.|false|
 |pointButton|no|[TransactionConfig](#markdown-header-portalconfigmenutoolwfstransactiontransactionconfig)[]/Boolean|[]|Defines which layers of `layerIds` allow insert transactions of point geometries.|false|
 |polygonButton|no|[TransactionConfig](#markdown-header-portalconfigmenutoolwfstransactiontransactionconfig)[]/Boolean|[]|Defines which layers of `layerIds` allow insert transactions of polygon geometries.|false|
@@ -4416,10 +4156,8 @@ Specific configuration for transaction methods of given layers.
 
 |available|yes|Boolean|true|Availability of the transaction method for the layer with the given id.|false|
 |layerId|yes|String||Layer the transaction method is being configured for.|false|
-|caption|no|String|"common:modules.tools.wfsTransaction.interactionSelect.*"|_Deprecated in 3.0.0. Please use `text` instead. If both are present, `cpation` is used for now._ Button text. If no value is given, `*` will be replaced with a standard value depending on the configured button. May be a locale key.|false|
 |icon|no|String||Bootstrap icon displayed inside the button. If no value is specified, it defaults to the default value configured for the transaction method.|false|
-|multi|no|Boolean|false|Whether the drawn geometries of this layer should be Multi-X.  This parameter does not have any use for `update` / `edit` and `delete`.|false|
-|show|no|Boolean|true|_Deprecated in 3.0.0. Please use `available` instead. If both are present, `show` is used for now._ Availability of the button for the layer with the given id.|false|
+|multi|no|Boolean|false|Whether the drawn geometries of this layer should be Multi-X.  This parameter does not have any use for `update` and `delete`.|false|
 |text|no|String|"common:modules.tools.wfsTransaction.interactionSelect.*"|Button text. If no value is given, `*` will be replaced with a standard value depending on the configured button. May be a locale key.|false|
 
 **Examples**
@@ -4427,15 +4165,15 @@ Specific configuration for transaction methods of given layers.
 ```json
 {
     "layerId": "1234",
-    "show": true,
-    "caption": "Point test"
+    "available": true,
+    "text": "Point test"
 }
 ```
 
 ```json
 {
     "layerId": "5678",
-    "show": true
+    "available": true
 }
 ```
 
@@ -4605,6 +4343,99 @@ Tool to read coordinates on mouse click.
 
 ***
 
+#### Portalconfig.menu.tool.openConfig
+
+[inherits]: # (Portalconfig.menu.tool)
+
+With this module a configuration file (config.json) can be reloaded at runtime. The modules and map are adapted to the new configuration.
+
+***
+#### Portalconfig.menu.tool.news
+
+[inherits]: # (Portalconfig.menu.tool)
+
+This module shows all messages from the newsFeedPortalAlerts.json of the current portal regardless of the "read" status.
+
+***
+
+#### Portalconfig.menu.tool.customMenuElement
+
+[inherits]: # (Portalconfig.menu.tool)
+
+This module can open a link, display HTML from config.json or an external file, or perform an action. This module can be configured multiple times in config.json. If `htmlContent` is specified, then `pathToContent` is not executed and vice versa.
+
+|Name|Required|Type|Default|Description|Expert|
+|----|--------|----|-------|-----------|------|
+|type|yes|String|"customMenuElement"|Type of the module.|false|
+|name|no|String||Name of the module displayed in the menu.|false|
+|openURL|no|String||Url that is to be opened in a new tab by clicking on the menu item.|false|
+|htmlContent|no|String||HTML displayed in the module. The HTML is not validated, the responsibility for the security of the HTML lies with the operator of the portal.|false|
+|pathToContent|no|String||Path to a file containing HTML displayed in the module. The HTML is not validated, the responsibility for the security of the HTML lies with the operator of the portal.|false|
+|execute|no|[execute](#markdown-header-portalconfigmenutoolcustomMenuElementexecute)||Action to be executed by clicking on the menu item.|true|
+
+**Example**
+```
+#!json
+ {
+    "type": "customMenuElement",
+    "name": "Open url",
+    "openURL": "https://geoinfo.hamburg.de/"
+ },
+{
+    "type": "customMenuElement",
+    "name": "Open url and show HTML",
+    "openURL": "https://geoinfo.hamburg.de/",
+    "htmlContent": "<div><h1>This is a Heading</h1><p>url was opened!<p/></div>"
+},
+{
+    "type": "customMenuElement",
+    "name": "HTML from config.json und action",
+    "htmlContent": "<div><p>This is a paragraph.</p></br><a href=\"https://www.w3schools.com/\" target=\"_blank\">Visit W3Schools.com!</a></div>",
+    "execute":{
+        "action": "Alerting/addSingleAlert",
+        "payload":  {"title":"to all people", "content": "Hallo world"}
+    }
+}
+```
+
+***
+#### Portalconfig.menu.tool.customMenuElement.execute
+
+CustomMenuElement Module `execute` options.
+
+|Name|Required|Type|Default|Description|Expert|
+|----|--------|----|-------|-----------|------|
+|action|yes|String||Name and, if applicable, path of the action to be executed.|true|
+|payload|no|[payload](#markdown-header-portalconfigmenutoolcustomMenuElementexecutepayload)||Payload that is transferred to the action.|true|
+
+**Example**
+```
+#!json
+{
+    "action": "Alerting/addSingleAlert",
+    "payload":  {"title":"to all people", "content": "Hallo world"}
+}
+```
+***
+#### Portalconfig.menu.tool.customMenuElement.execute.payload
+
+CustomMenuElement Module `execute` from `payload`. The appropriate payload for the action must be specified. Here is the example of the `Alerting/addSingleAlert`.
+
+|Name|Required|Type|Default|Description|Expert|
+|----|--------|----|-------|-----------|------|
+|title|no|String||Title of the message.|true|
+|content|yes|String||Content of the message.|true|
+
+**Example**
+```
+#!json
+{
+    "title":"to all people",
+    "content": "Hallo world"
+}
+```
+***
+
 #### Portalconfig.menu.tool.resetTree
 
 [inherits]: # (Portalconfig.menu.tool)
@@ -4671,11 +4502,11 @@ Routing-tool. Enables user to plan routes between multiple points with multiple 
             "speedProfile": "CAR",
             "preference": "RECOMMENDED",
             "styleRoute": {
-                "fillColor": [255, 44, 0, 1],
+                "fillColor": [255, 44, 0],
                 "width": 6,
-                "highlightColor": [255, 255, 255, 1],
+                "highlightColor": [255, 255, 255],
                 "highlightWidth": 9,
-                "partHighlightColor": [255, 255, 255, 1],
+                "partHighlightColor": [255, 255, 255],
                 "partHighlightWidth": 3
             },
             "styleWaypoint": {
@@ -4905,11 +4736,11 @@ Routing-tool directions options.
                 "CYCLING": ["STEPS", "FERRIES", "UNPAVEDROADS"]
         },
         "styleRoute": {
-            "fillColor": [255, 44, 0, 1],
+            "fillColor": [255, 44, 0],
             "width": 6,
-            "highlightColor": [255, 255, 255, 1],
+            "highlightColor": [255, 255, 255],
             "highlightWidth": 9,
-            "partHighlightColor": [255, 255, 255, 1],
+            "partHighlightColor": [255, 255, 255],
             "partHighlightWidth": 3
         },
         "styleWaypoint": {
@@ -4988,11 +4819,11 @@ Routing-tool directions route style options.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|fillColor|no|Number[]|[255, 44, 0, 1]|Which color should be used to fill.|false|
+|fillColor|no|Number[]|[255, 44, 0]|Which color should be used to fill.|false|
 |width|no|Number|6|How thick should the line be displayed.|false|
-|highlightColor|no|Number[]|[255, 255, 255, 1]|Which color should be used to highlight the route.|false|
+|highlightColor|no|Number[]|[255, 255, 255]|Which color should be used to highlight the route.|false|
 |highlightWidth|no|Number|9|How thick should the highlighting line be displayed.|false|
-|partHighlightColor|no|Number[]|[255, 255, 255, 1]|Which color should be used when highlighting part of the route.|false|
+|partHighlightColor|no|Number[]|[255, 255, 255]|Which color should be used when highlighting part of the route.|false|
 |highlightWidth|no|Number|9|How thick should the highlighting part of the route be displayed.|false|
 
 **Example**
@@ -5000,11 +4831,11 @@ Routing-tool directions route style options.
 #!json
 {
     "styleRoute": {
-        "fillColor": [255, 44, 0, 1],
+        "fillColor": [255, 44, 0],
         "width": 6,
-        "highlightColor": [255, 255, 255, 1],
+        "highlightColor": [255, 255, 255],
         "highlightWidth": 9,
-        "partHighlightColor": [255, 255, 255, 1],
+        "partHighlightColor": [255, 255, 255],
         "partHighlightWidth": 3
     }
 }
@@ -5341,11 +5172,11 @@ Defines an event trigger, possibly containing a payload.
 
 ## Themenconfig
 
-The `Themenconfig` entry defines the contents and their order in the topic selection. Depending on your `treeType` configuration, the [Fachdaten](#markdown-header-themenconfigfachdaten) section may also contain folder structures.
+The `Themenconfig` entry defines the contents and their order in the topic selection. Depending on your `tree.type` configuration, the [Fachdaten](#markdown-header-themenconfigfachdaten) section may also contain folder structures.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|Hintergrundkarten|yes|**[Hintergrundkarten](#markdown-header-themenconfighintergrundkarten)**||Background map definition.|false|
+|Baselayer|yes|**[Baselayer](#markdown-header-themenconfigbaselayer)**||Baselayer definition.|false|
 |Fachdaten|no|**[Fachdaten](#markdown-header-themenconfigfachdaten)**||Technical data definition.|false|
 |Fachdaten_3D|no|**[Fachdaten_3D](#markdown-header-themenconfigfachdaten_3d)**||Technical data definition used in 3D mode.|false|
 |Fachdaten_Zeit|no|**[Fachdaten_Zeit](#markdown-header-themenconfigfachdaten_zeit)**||Definition of WMS-T layers in their own folder.|false|
@@ -5355,7 +5186,7 @@ The `Themenconfig` entry defines the contents and their order in the topic selec
 ```json
 {
     "Themenconfig": {
-        "Hintergrundkarten": {},
+        "Baselayer": {},
         "Fachdaten": {},
         "Fachdaten_3D": {},
         "Fachdaten_Zeit": {}
@@ -5365,17 +5196,17 @@ The `Themenconfig` entry defines the contents and their order in the topic selec
 
 ***
 
-### Themenconfig.Hintergrundkarten
+### Themenconfig.Baselayer
 
 [type:Layer]: # (Themenconfig.Layer)
 [type:GroupLayer]: # (Themenconfig.GroupLayer)
 [type:Ordner]: # (Themenconfig.Ordner)
 
-Background map definition.
+Baselayer definition.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|name|no|String|"Hintergrundkarten"|For `treeType` `default` and `custom`, name of the background map button area.|false|
+|name|no|String|"Baselayer"|For `tree.type` `default` and `custom`, name of the baselayer button area.|false|
 |Layer|yes|**[Layer](#markdown-header-themenconfiglayer)**/**[GroupLayer](#markdown-header-themenconfiggrouplayer)**[]||Layer definition.|false|
 |Ordner|no|**[Ordner](#markdown-header-themenconfigordner)**[]||Folder definition.|false|
 
@@ -5383,8 +5214,8 @@ Background map definition.
 
 ```json
 {
-    "Hintergrundkarten": {
-        "name": "My background maps",
+    "Baselayer": {
+        "name": "My baselayers",
         "Layer": [
             {
                 "id": "123"
@@ -5406,7 +5237,7 @@ Technical data definition.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|name|no|String|"Fachdaten"|For `treeType` `default` and `custom`, name of the technical data button area.|false|
+|name|no|String|"Fachdaten"|For `tree.type` `default` and `custom`, name of the technical data button area.|false|
 |Layer|yes|**[Layer](#markdown-header-themenconfiglayer)**/**[GroupLayer](#markdown-header-themenconfiggrouplayer)**[]||Layer definition.|false|
 |Ordner|no|**[Ordner](#markdown-header-themenconfigordner)**[]||Folder definition.|false|
 
@@ -5431,7 +5262,7 @@ Technical data definition.
 
 [type:Layer]: # (Themenconfig.Layer)
 
-3D data definition for the 3D mode in `treeType` `custom` and `default`. Only shown when 3D mode is active.
+3D data definition for the 3D mode in `tree.type` `custom` and `default`. Only shown when 3D mode is active.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
@@ -5459,7 +5290,7 @@ Technical data definition.
 
 [type:Layer]: # (Themenconfig.Layer)
 
-Definition for WMS-T layers `treeType` `custom` and `default`. The layers can also be defined under **[Fachdaten](#markdown-header-themenconfigfachdaten)**.
+Definition for WMS-T layers `tree.type` `custom` and `default`. The layers can also be defined under **[Fachdaten](#markdown-header-themenconfigfachdaten)**.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
@@ -5489,14 +5320,14 @@ Definition for WMS-T layers `treeType` `custom` and `default`. The layers can al
 [type:GroupLayer]: # (Themenconfig.GroupLayer)
 [type:Ordner]: # (Themenconfig.Ordner)
 
-Folder definition. Folders may also be nested. Folders can be configured below the "Fachdaten" and "Hintergrundkarten". With treeType 'default' the 3D data can also be configured as a folder under 'Fachdaten_3D'.
+Folder definition. Folders may also be nested. Folders can be configured below the "Fachdaten" and "Baselayer". With treeType 'default' the 3D data can also be configured as a folder under 'Fachdaten_3D'.
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
 |Titel|yes|String||Folder title.|false|
 |Layer|yes|**[Layer](#markdown-header-themenconfiglayer)**/**[GroupLayer](#markdown-header-themenconfiggrouplayer)**[]||Layer definition.|false|
 |Ordner|no|**[Ordner](#markdown-header-themenconfigordner)**[]||Folder definition.|false|
-|isFolderSelectable|no|Boolean|false|Defines whether all layers of a folder can be de-/activated at once by using a checkbox. Only works if treetype="custom". If no flag is set, the global flag in  `config.js` parameter `tree.isFolderSelectable` is used.|false|
+|isFolderSelectable|no|Boolean|false|Defines whether all layers of a folder can be de-/activated at once by using a checkbox. Only works if tree.type="custom". If no flag is set, the global flag in  `config.js` parameter `tree.isFolderSelectable` is used.|false|
 |invertLayerOrder|no|Boolean|false|Defines wheather the order of layers added to the map should be invert when clicking the folder.|false|
 
 **Example Fachdaten-folder with one layer**
@@ -5517,11 +5348,11 @@ Folder definition. Folders may also be nested. Folders can be configured below t
     }
 }
 ```
-**Example Hintergrundkarten-folder with 2 layers**
+**Example Baselayer-folder with 2 layers**
 
 ```json
 {
-    "Hintergrundkarten":{
+    "Baselayer":{
         "Ordner": [{
             "Titel": "Maps",
             "isFolderSelectable": false,
@@ -5541,11 +5372,11 @@ Folder definition. Folders may also be nested. Folders can be configured below t
 }
 ```
 
-**Example Hintergrundkarten-folder, next to it are configured layers**
+**Example Baselayer-folder, next to it are configured layers**
 
 ```json
 {
-    "Hintergrundkarten":{
+    "Baselayer":{
         "Ordner": [{
             "Titel": "Maps",
             "isFolderSelectable": false,
@@ -5698,7 +5529,7 @@ Group layer definition to de-/activate multiple layers in one click.
 |visibility|no|Boolean|false|Layer visibility.|false|
 |supported|no|String[]|["2D", "3D"]|List of modes the layer may be used in.|false|
 |layerAttribution|no|String||**[services.json](services.json.md)** value. HTML string shown when the layer is active.|false|
-|legendURL|no|String||**[services.json](services.json.md)** value. URL used to request the legend graphic. _Deprecated, please use "legend" instead._|false|
+|legendURL|no|String||**[services.json](services.json.md)** value. URL used to request the legend graphic.|false|
 |legend|no|Boolean/String||**[services.json](services.json.md)** value. URL used to request the legend graphic. Use `true` to dynamically generate the legend from a WMS request or the styling. If of type string, it's expected to be a path to an image or a PDF file.|false|
 |maxScale|no|String||**[services.json](services.json.md)** value. Maximum scale in which the layer is still shown.|false|
 |minScale|no|String||**[services.json](services.json.md)** value. Minimum scale in which the layer is still shown.|false|
@@ -5737,14 +5568,14 @@ Layer definition. Multiple ways to define layers exist. Most attributes are defi
 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
-|id|yes|String/String[]||Layer ID(s). Resolved using the **[services.json](services.json.md)** file. Please mind that the given IDs **MUST** refer to the same URL, that is, use the same service. When configuring an array of IDs, setting `minScale` and `maxScale` of each layer is required to be in the `services.json`.|false|
+|id|yes|String/String[]||Layer ID(s). Resolved using the **[services.json](services.json.md)** file. Please mind that the given IDs **MUST** refer to the same URL, that is, use the same service. When configuring an array of IDs, setting `minScale` and `maxScale` of each layer is required to be in the `services.json`. With the special character `.` as suffix, a LayerId can be used multiple times. Each LayerId marked with a suffix creates its own entry in the topic tree.|false|
 |name|no|String||Layer name.|false|
 |entities|yes|**[Entity3D](#markdown-header-themenconfiglayerentity3d)**[]||Models to be shown.|false|
 |transparency|no|Integer|0|Layer transparency.|false|
 |visibility|no|Boolean|false|Layer visibility.|false|
 |supported|no|String[]|["2D", "3D"]|List of modes the layer may be used in.|false|
 |layerAttribution|no|String||**[services.json](services.json.md)** value. HTML string shown when the layer is active.|false|
-|legendURL|no|String||**[services.json](services.json.md)** value. URL used to request the legend graphic. _Deprecated, please use "legend" instead._|false|
+|legendURL|no|String||**[services.json](services.json.md)** value. URL used to request the legend graphic.|false|
 |legend|no|Boolean/String||**[services.json](services.json.md)** value. URL used to request the legend graphic. Use `true` to dynamically generate the legend from a WMS request or the styling. If of type string, it's expected to be a path to an image or a PDF file.|false|
 |maxScale|no|String||**[services.json](services.json.md)** value. Maximum scale in which the layer is still shown.|false|
 |minScale|no|String||**[services.json](services.json.md)** value. Minimum scale in which the layer is still shown.|false|
@@ -5769,6 +5600,19 @@ Layer definition. Multiple ways to define layers exist. Most attributes are defi
 {
     "id": ["123", "456", "789"],
     "name": "my test layer"
+}
+```
+
+**Example with an array of IDs**
+
+```json
+{
+    "id": "123.1",
+    "name": "First part of the test layer"
+},
+{
+    "id": "123.2",
+    "name": "Second part of the test layer"
 }
 ```
 
@@ -5889,6 +5733,8 @@ Example invocations:
     "singleChar": "#",
     "escapeChar": "!"
 }
+
+***
 
 #### Themenconfig.Layer.Tileset
 

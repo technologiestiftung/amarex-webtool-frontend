@@ -22,15 +22,14 @@
  */
 const state = {
     showFooter: false,
-    urls: [],
+    // urls: [],
     showVersion: false,
     footerInfo: [],
     infoTitles: [],
     infoSubtexts: [],
     infoShownDiv: -1,
-    isShortMenuOpen: false,
-    seperator: "&nbsp;|&nbsp;",
-    mobileFooterInfoToggler: false
+    isShortMenuOpen: false
+    // seperator: "&nbsp;|&nbsp;"
 };
 
 export default state;

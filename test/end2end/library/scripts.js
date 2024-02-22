@@ -367,7 +367,7 @@ function getMeasureLayersTexts () {
 /**
  * @param {number} x number of feature to return coordinates of
  * @param {string} name name of layer to retrieve feature of
- * @returns {(Array.<number[]> | null)} coordinates or null if layer or feature not found
+ * @returns {(Array<number[]> | null)} coordinates or null if layer or feature not found
  */
 function getCoordinatesOfXthFeatureInLayer () {
     const layer = Backbone.Radio.request("Map", "getMap")

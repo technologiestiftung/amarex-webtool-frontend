@@ -3,7 +3,6 @@ import View from "ol/View";
 import {Style} from "ol/style.js";
 import VectorSource from "ol/source/Vector.js";
 import VectorLayer from "ol/layer/Vector.js";
-import Cluster from "ol/source/Cluster.js";
 import {expect} from "chai";
 import sinon from "sinon";
 import OAFLayer from "../../oaf";
@@ -85,27 +84,6 @@ describe("src/core/layers/oaf.js", () => {
     });
 
     describe("createLayer", () => {
-        it("createLayer shall create an ol.VectorLayer with source and style and OAF-format", function () {
-            const oafLayer = new OAFLayer(attributes),
-                layer = oafLayer.get("layer");
-
-            expect(layer).to.be.an.instanceof(VectorLayer);
-            expect(layer.getSource()).to.be.an.instanceof(VectorSource);
-            expect(typeof layer.getStyleFunction()).to.be.equals("function");
-            expect(layer.get("id")).to.be.equals(attributes.id);
-            expect(layer.get("name")).to.be.equals(attributes.name);
-            expect(layer.get("gfiTheme")).to.be.equals(attributes.gfiTheme);
-        });
-        it("createLayer shall create an ol.VectorLayer with cluster-source", function () {
-            attributes.clusterDistance = 60;
-            const oafLayer = new OAFLayer(attributes),
-                layer = oafLayer.get("layer");
-
-            expect(layer).to.be.an.instanceof(VectorLayer);
-            expect(layer.getSource()).to.be.an.instanceof(Cluster);
-            expect(layer.getSource().getDistance()).to.be.equals(attributes.clusterDistance);
-            expect(typeof layer.getStyleFunction()).to.be.equals("function");
-        });
         it("createLayer with isSelected=true shall set layer visible", function () {
             attributes.isSelected = true;
             const oafLayer = new OAFLayer(attributes),
@@ -127,81 +105,7 @@ describe("src/core/layers/oaf.js", () => {
             expect(oafLayer.get("layer").getVisible()).to.be.false;
         });
     });
-    describe("getFeaturesFilterFunction", () => {
-        it("getFeaturesFilterFunction shall filter getGeometry", function () {
-            const oafLayer = new OAFLayer(attributes),
-                featuresFilterFunction = oafLayer.getFeaturesFilterFunction(attributes),
-                features = [{
-                    id: "1",
-                    getGeometry: () => sinon.stub()
-                },
-                {
-                    id: "2",
-                    getGeometry: () => undefined
-                }];
 
-            expect(typeof featuresFilterFunction).to.be.equals("function");
-            expect(featuresFilterFunction(features).length).to.be.equals(1);
-
-        });
-        it("getFeaturesFilterFunction shall filter bboxGeometry", function () {
-            attributes.bboxGeometry = {
-                intersectsCoordinate: (coord) => {
-                    if (coord[0] === 0.5 && coord[1] === 0.5) {
-                        return true;
-                    }
-                    return false;
-                },
-                getExtent: () => [0, 0, 1, 1]
-            };
-            const oafLayer = new OAFLayer(attributes),
-                featuresFilterFunction = oafLayer.getFeaturesFilterFunction(attributes),
-                features = [{
-                    id: "1",
-                    getGeometry: () => {
-                        return {
-                            getExtent: () => [0, 0, 1, 1]
-                        };
-
-                    }
-                },
-                {
-                    id: "2",
-                    getGeometry: () => undefined
-                },
-                {
-                    id: "3",
-                    getGeometry: () => {
-                        return {
-                            getExtent: () => [2, 2, 3, 3]
-                        };
-                    }
-                }];
-
-            expect(typeof featuresFilterFunction).to.be.equals("function");
-            expect(featuresFilterFunction(features).length).to.be.equals(1);
-            expect(featuresFilterFunction(features)[0].id).to.be.equals("1");
-        });
-    });
-    describe("getPropertyname", () => {
-        it("getPropertyname shall return joined proertyNames or empty string", function () {
-            attributes.propertyNames = ["app:plan", "app:name"];
-            const oafLayer = new OAFLayer(attributes);
-            let propertyname = oafLayer.getPropertyname(attributes);
-
-            expect(propertyname).to.be.equals("app:plan,app:name");
-
-            attributes.propertyNames = [];
-            propertyname = oafLayer.getPropertyname(attributes);
-            expect(propertyname).to.be.equals("");
-            attributes.propertyNames = undefined;
-            propertyname = oafLayer.getPropertyname(attributes);
-            expect(propertyname).to.be.equals("");
-            attributes.propertyNames = undefined;
-            propertyname = oafLayer.getPropertyname(attributes);
-            expect(propertyname).to.be.equals("");
-        });
-    });
     describe("getStyleFunction", () => {
         it("initStyle shall be called on creation and call createStyle if styleListLoaded=true", function () {
             const createStyleSpy = sinon.spy(OAFLayer.prototype, "createStyle");

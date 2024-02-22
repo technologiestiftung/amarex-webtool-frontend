@@ -11,7 +11,6 @@ export default {
     uiStyle: state => (state?.urlParams?.uiStyle || state?.configJs?.uiStyle || "DEFAULT")?.toUpperCase(),
     // gfiWindow is deprecated in the next major-release
     gfiWindow: state => state?.configJs.gfiWindow,
-    ignoredKeys: state => state?.configJs.ignoredKeys || [],
     // metadata is deprecated in the next major-relase, because it is only used for proxyUrl
     metadata: state => state?.configJs.metadata || {},
     metaDataCatalogueId: state => state?.configJs?.metaDataCatalogueId || "",
@@ -24,8 +23,6 @@ export default {
     menuConfig: state => state?.configJson?.Portalconfig?.menu || null,
     portalConfig: state => state?.configJson?.Portalconfig || null,
     imagePath: state => state?.configJs.wfsImgPath || null,
-    namedProjections: state => state?.configJs.namedProjections || null,
-    treeHighlightedFeatures: state => state?.configJson?.Portalconfig?.tree?.highlightedFeatures || false,
 
     /**
      * Returns the treeType from config.json. If not defined treeType 'light' is returned.
@@ -88,13 +85,6 @@ export default {
             }
         }
         return tool;
-    },
-
-    /**
-     * Returns a rest service from restConf by ID
-     * @param {Object} state the store state
-     * @returns {Object} the rest service config object
-     */
-    getRestServiceById: state => id => state?.restConf?.find(service => service.id === id)
+    }
 };
 

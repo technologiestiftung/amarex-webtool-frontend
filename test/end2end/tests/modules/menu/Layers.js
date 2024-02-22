@@ -12,7 +12,7 @@ const webdriver = require("selenium-webdriver"),
     {By, until, Key} = webdriver;
 
 /**
- * @param {Array.<(string|string[])>} arrayWithOptions array to compare, but each index may also hold an array of
+ * @param {Array<(string|string[])>} arrayWithOptions array to compare, but each index may also hold an array of
  *                                                     options where it suffices if one equals the compareArray entry
  * @param {string[]} compareArray array to compare with
  * @returns {boolean} whether arrays match

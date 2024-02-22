@@ -7,10 +7,6 @@ describe("modules/searchbar", function () {
         triggered = false;
 
     before(function () {
-        i18next.init({
-            lng: "cimode",
-            debug: false
-        });
         model = new Model();
         sinon.stub(Radio, "trigger").callsFake(function (channel, topic) {
             if (topic === "alert") {
@@ -188,71 +184,62 @@ describe("modules/searchbar", function () {
     });
 
     describe("recommendedList", () => {
-        let typeList;
-
-        beforeEach(() => {
-            typeList = [
-                {
-                    list: [
-                        {
-                            name: "ABC-Straße 1",
-                            type: "Adresse"
-                        },
-                        {
-                            name: "ABC-Straße 2",
-                            type: "Adresse"
-                        },
-                        {
-                            name: "ABC-Straße 3",
-                            type: "Adresse"
-                        },
-                        {
-                            name: "ABC-Straße 4",
-                            type: "Adresse"
-                        }
-                    ],
-                    type: "Adresse"
-                },
-                {
-                    list: [
-                        {
-                            name: "XYZ-Straße",
-                            type: "Straße"
-                        },
-                        {
-                            name: "ABC-Straße",
-                            type: "Straße"
-                        }
-                    ],
-                    type: "Straße"
-                },
-                {
-                    list: [
-                        {
-                            name: "Strategisches Straßennetz",
-                            type: "modules.searchbar.type.topic"
-                        },
-                        {
-                            name: "Straßenverkehr Tag Abend Nacht 2017",
-                            type: "modules.searchbar.type.topic"
-                        },
-                        {
-                            name: "Straßenname",
-                            type: "modules.searchbar.type.topic"
-                        },
-                        {
-                            name: "Strassenprojekte",
-                            type: "modules.searchbar.type.topic"
-                        }
-                    ],
-                    type: "modules.searchbar.type.topic"
-                }
-            ];
-        });
+        const typeList = [
+            {
+                list: [
+                    {
+                        name: "ABC-Straße 1",
+                        type: "Adresse"
+                    },
+                    {
+                        name: "ABC-Straße 2",
+                        type: "Adresse"
+                    },
+                    {
+                        name: "ABC-Straße 3",
+                        type: "Adresse"
+                    },
+                    {
+                        name: "ABC-Straße 4",
+                        type: "Adresse"
+                    }
+                ],
+                type: "Adresse"
+            },
+            {
+                list: [
+                    {
+                        name: "ABC-Straße",
+                        type: "Straße"
+                    }
+                ],
+                type: "Straße"
+            },
+            {
+                list: [
+                    {
+                        name: "Strategisches Straßennetz",
+                        type: "Fachdaten"
+                    },
+                    {
+                        name: "Straßenverkehr Tag Abend Nacht 2017",
+                        type: "Fachdaten"
+                    },
+                    {
+                        name: "Straßenname",
+                        type: "Fachdaten"
+                    },
+                    {
+                        name: "Strassenprojekte",
+                        type: "Fachdaten"
+                    }
+                ],
+                type: "Fachdaten"
+            }
+        ];
 
         describe("chooseRecommendedHits", () => {
             it("should choose 3 hits from typeList", () => {
-                model.set("searchString", "ABC-Stra");
                 expect(model.chooseRecommendedHits(typeList, 3)).to.deep.equals([
                     {
                         name: "ABC-Straße 1",
@@ -264,13 +251,12 @@ describe("modules/searchbar", function () {
                     },
                     {
                         name: "Strategisches Straßennetz",
-                        type: "modules.searchbar.type.topic"
+                        type: "Fachdaten"
                     }
                 ]);
             });
 
             it("should choose 5 hits from typeList", () => {
-                model.set("searchString", "ABC-Stra");
                 expect(model.chooseRecommendedHits(typeList, 5)).to.deep.equals([
                     {
                         name: "ABC-Straße 1",
@@ -282,21 +268,20 @@ describe("modules/searchbar", function () {
                     },
                     {
                         name: "Strategisches Straßennetz",
-                        type: "modules.searchbar.type.topic"
+                        type: "Fachdaten"
                     },
                     {
                         name: "ABC-Straße 2",
                         type: "Adresse"
                     },
                     {
-                        name: "XYZ-Straße",
-                        type: "Straße"
+                        name: "Straßenverkehr Tag Abend Nacht 2017",
+                        type: "Fachdaten"
                     }
                 ]);
             });
 
             it("should choose 7 hits from typeList", () => {
-                model.set("searchString", "ABC-Stra");
                 expect(model.chooseRecommendedHits(typeList, 7)).to.deep.equals([
                     {
                         name: "ABC-Straße 1",
@@ -308,23 +293,23 @@ describe("modules/searchbar", function () {
                     },
                     {
                         name: "Strategisches Straßennetz",
-                        type: "modules.searchbar.type.topic"
+                        type: "Fachdaten"
                     },
                     {
                         name: "ABC-Straße 2",
                         type: "Adresse"
                     },
                     {
-                        name: "XYZ-Straße",
-                        type: "Straße"
-                    },
-                    {
                         name: "Straßenverkehr Tag Abend Nacht 2017",
-                        type: "modules.searchbar.type.topic"
+                        type: "Fachdaten"
                     },
                     {
                         name: "ABC-Straße 3",
                         type: "Adresse"
+                    },
+                    {
+                        name: "Straßenname",
+                        type: "Fachdaten"
                     }
                 ]);
             });
@@ -343,7 +328,7 @@ describe("modules/searchbar", function () {
                     },
                     {
                         name: "Strategisches Straßennetz",
-                        type: "modules.searchbar.type.topic"
+                        type: "Fachdaten"
                     },
                     {
                         name: "ABC-Straße 2",
@@ -351,11 +336,10 @@ describe("modules/searchbar", function () {
                     },
                     {
                         name: "Straßenverkehr Tag Abend Nacht 2017",
-                        type: "modules.searchbar.type.topic"
+                        type: "Fachdaten"
                     }
                 ];
 
-                model.set("searchString", "ABC-Stra");
                 expect(model.sortRecommendedList(typeList, recommendedList)).to.deep.equals([
                     {
                         name: "ABC-Straße 1",
@@ -371,11 +355,11 @@ describe("modules/searchbar", function () {
                     },
                     {
                         name: "Strategisches Straßennetz",
-                        type: "modules.searchbar.type.topic"
+                        type: "Fachdaten"
                     },
                     {
                         name: "Straßenverkehr Tag Abend Nacht 2017",
-                        type: "modules.searchbar.type.topic"
+                        type: "Fachdaten"
                     }
                 ]);
             });

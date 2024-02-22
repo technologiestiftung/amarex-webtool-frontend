@@ -12,7 +12,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
         finalHitList: [],
         isInitialSearch: true,
         isInitialRecommendedListCreated: false,
-        knownInitialSearchTasks: ["gazetteer", "specialWFS", "bkg", "tree", "osm", "locationFinder", "elasticSearch", "komoot"],
+        knownInitialSearchTasks: ["specialWFS"],
         activeInitialSearchTasks: [],
         // translations
         i18nextTranslate: null,
@@ -48,7 +48,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @property {Object[]} finalHitList=[] an array of object{id, name, type} with optional values: coordinate, icon, geom, adress, locationFinder, metaName, osm, marker, geometryType, interiorGeometry, komoot
      * @property {Boolean} isInitialSearch=true Flag that is set to false at the end of the initial search (ParametricURL).
      * @property {Boolean} isInitialRecommendedListCreated=false Has the recommended list already been generated after the initial search?
-     * @property {String[]} knownInitialSearchTasks=["gazetteer", "specialWFS", "bkg", "tree", "osm", "locationFinder", "komoot"] Search algorithms for which an initial search is possible
+     * @property {String[]} knownInitialSearchTasks=["specialWFS"] Search algorithms for which an initial search is possible
      * @property {Array} activeInitialSearchTasks=[] Search algorithms for which an initial search is activated
      * @property {function} i18nextTranslate=null translation function named i18nextTranslate := function(setter), set during parsing the file "config.json"
      * @property {String} buttonSearchTitle="", filled with "Suchen"- translated
@@ -82,13 +82,11 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
         if (store.state.urlParams && store.state.urlParams["Search/query"]) {
             // Speichere den Such-Parameter für die initiale Suche zur späteren Verwendung in der View
             this.setInitSearchString(store.state.urlParams["Search/query"]);
-            this.set("isSearchQuery", true);
         }
         else {
             // Es wird keine initiale Suche durchgeführt
             this.set("isInitialSearch", false);
             this.set("isInitialRecommendedListCreated", true);
-            this.set("isSearchQuery", false);
         }
 
         this.changeLang();
@@ -356,31 +354,13 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
     },
 
     /**
-     * Reduces the results for recommended list to configured max results and prefers results, that start with first char of searchstring.
+     * Choose the results for recommenden List
      * @param {Object[]} typeList Sorted Hits by Type.
      * @param {Number} max Length of recommended list.
-     * @returns {Object[]} the recommended list to show
+     * @returns {Object[]} Hits for recommended list.
      */
     chooseRecommendedHits: function (typeList, max) {
-        const recommendedList = [],
-            searchString = this.get("searchString").toLowerCase();
-
-        typeList.forEach(typeItem => {
-            if (typeItem.type !== i18next.t("common:modules.searchbar.type.topic") && typeItem.type !== i18next.t("common:modules.searchbar.type.subject")) {
-                typeItem.list = typeItem.list.sort((a, b) => {
-                    if (searchString.startsWith(a.name.at(0).toLowerCase())) {
-                        if (searchString.startsWith(b.name.at(0).toLowerCase())) {
-                            return a.name.localeCompare(b.name);
-                        }
-                        return -1;
-                    }
-                    else if (searchString.startsWith(b.name.at(0).toLowerCase())) {
-                        return 1;
-                    }
-                    return a.name.localeCompare(b.name);
-                });
-            }
-        });
+        const recommendedList = [];
 
         for (let i = 0; i < max; i++) {
             typeList.forEach(typeItem => {

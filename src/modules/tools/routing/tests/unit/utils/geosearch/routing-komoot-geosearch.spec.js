@@ -5,14 +5,10 @@ import sinon from "sinon";
 import {RoutingGeosearchResult} from "../../../../utils/classes/routing-geosearch-result";
 import {
     fetchRoutingKomootGeosearch,
-    fetchRoutingKomootGeosearchReverse,
-    getRoutingKomootGeosearchUrl,
-    getRoutingKomootGeosearchReverseUrl
+    fetchRoutingKomootGeosearchReverse
 } from "../../../../utils/geosearch/routing-komoot-geosearch";
 
 describe("src/modules/tools/routing/utils/geosearch/routing-komoot-geosearch.js", () => {
-    let service;
-
     beforeEach(() => {
         const map = {
             id: "ol",
@@ -30,23 +26,11 @@ describe("src/modules/tools/routing/utils/geosearch/routing-komoot-geosearch.js"
 
         mapCollection.clear();
         mapCollection.addMap(map, "2D");
-        service = "https://service";
         sinon.stub(i18next, "t").callsFake((...args) => args);
-        store.getters = {
-            getRestServiceById: () => ({url: service}),
-            "Maps/boundingBox": [10.0233599, 53.5686992, 10.0235412, 53.5685187]
-        };
-        store.state.Tools.Routing.geosearch = {
-            serviceId: {
-                url: "http://serviceId.url"
-            },
-            limit: 1000
-        };
-        store.state.Tools.Routing.geosearchReverse = {
-            serviceId: {
-                url: "http://serviceId.url"
-            }
-        };
+        store.getters.getRestServiceById = () => ({url: "tmp"});
+        store.getters["Maps/boundingBox"] = [
+            10.0233599, 53.5686992, 10.0235412, 53.5685187
+        ];
     });
 
     afterEach(() => {
@@ -223,74 +207,6 @@ describe("src/modules/tools/routing/utils/geosearch/routing-komoot-geosearch.js"
             catch (error) {
                 expect(error.message).equal("testerror");
             }
-        });
-    });
-
-    describe("getRoutingKomootGeosearchUrl", () => {
-        it("test params", () => {
-            const mapBbox = [
-                    4.511345914707728,
-                    0.00048315628956933926,
-                    4.51134591633199,
-                    0.00048315466157288633
-                ],
-                search = "search",
-                createdUrl = getRoutingKomootGeosearchUrl(mapBbox, search);
-
-            expect(createdUrl.origin).to.eql(service);
-            expect(createdUrl.searchParams.get("lang")).to.eql("de");
-            expect(createdUrl.searchParams.get("lon")).to.eql("10");
-            expect(createdUrl.searchParams.get("lat")).to.eql("53.6");
-            expect(createdUrl.searchParams.get("bbox")).to.deep.eql(mapBbox.join(","));
-            expect(createdUrl.searchParams.get("limit")).to.eql("1000");
-            expect(createdUrl.searchParams.get("q")).to.eql(search);
-        });
-
-        it("createUrl should respect questionmark in serviceUrl", () => {
-            const mapBbox = [
-                    4.511345914707728,
-                    0.00048315628956933926,
-                    4.51134591633199,
-                    0.00048315466157288633
-                ],
-                search = "search";
-            let createdUrl = null;
-
-            service = "https://mapservice.regensburg.de/cgi-bin/mapserv?map=wfs.map";
-            createdUrl = getRoutingKomootGeosearchUrl(mapBbox, search);
-
-            expect(createdUrl.origin).to.eql("https://mapservice.regensburg.de");
-            expect(decodeURI(createdUrl)).to.eql(service + "&lang=de&lon=10&lat=53.6&bbox=4.511345914707728%2C0.00048315628956933926%2C4.51134591633199%2C0.00048315466157288633&limit=1000&q=search");
-            expect(createdUrl.searchParams.get("lang")).to.eql("de");
-            expect(createdUrl.searchParams.get("lon")).to.eql("10");
-            expect(createdUrl.searchParams.get("lat")).to.eql("53.6");
-            expect(createdUrl.searchParams.get("bbox")).to.deep.eql(mapBbox.join(","));
-            expect(createdUrl.searchParams.get("limit")).to.eql("1000");
-            expect(createdUrl.searchParams.get("q")).to.eql(search);
-        });
-    });
-
-    describe("getRoutingKomootGeosearchReverseUrl", () => {
-        it("test params", () => {
-            const coordinates = [1, 2],
-                createdUrl = getRoutingKomootGeosearchReverseUrl(coordinates);
-
-            expect(createdUrl.origin).to.eql(service);
-            expect(createdUrl.searchParams.get("lon")).to.eql(String(coordinates[0]));
-            expect(createdUrl.searchParams.get("lat")).to.eql(String(coordinates[1]));
-        });
-
-        it("createUrl should respect questionmark in serviceUrl", () => {
-            const coordinates = [1, 2];
-            let createdUrl = null;
-
-            service = "https://mapservice.regensburg.de/cgi-bin/mapserv?map=wfs.map";
-            createdUrl = getRoutingKomootGeosearchReverseUrl(coordinates);
-
-            expect(createdUrl.origin).to.eql("https://mapservice.regensburg.de");
-            expect(decodeURI(createdUrl)).to.eql(service + "&lon=1&lat=2");
-            expect(createdUrl.searchParams.get("lon")).to.eql(String(coordinates[0]));
-            expect(createdUrl.searchParams.get("lat")).to.eql(String(coordinates[1]));
         });
     });
 });

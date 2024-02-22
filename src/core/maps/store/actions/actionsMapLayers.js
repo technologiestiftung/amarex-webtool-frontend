@@ -12,7 +12,8 @@ export default {
      * @returns {void}
      */
     addLayer ({dispatch}, layer) {
-        mapCollection.getMap("2D").addLayer(layer);
+        layer.setZIndex(mapCollection.getMap("2D").getLayers().getLength());
+        // mapCollection.getMap("2D").addLayer(layer);
 
         dispatch("setLayersAlwaysOnTop", mapCollection.getMap("2D").getLayers());
     },

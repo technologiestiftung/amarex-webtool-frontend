@@ -98,7 +98,7 @@ const Preparser = Backbone.Model.extend(/** @lends Preparser.prototype */{
 
         attributes = {
             portalConfig: response.Portalconfig,
-            baselayer: response.Themenconfig.Hintergrundkarten,
+            baselayer: response.Themenconfig.Baselayer,
             overlayer: response.Themenconfig.Fachdaten,
             overlayer_3d: response.Themenconfig.Fachdaten_3D,
             overlayer_time: response.Themenconfig.Fachdaten_Zeit,

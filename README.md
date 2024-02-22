@@ -30,9 +30,9 @@ cd amarex-webtool-frontend
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:9000/portal/amarex
+# serve with hot reload at localhost:9001/portal/amarex
 
-npm run dev
+npm start
 
 # build for production with minification
 npm run build

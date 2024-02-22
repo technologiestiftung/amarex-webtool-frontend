@@ -90,7 +90,7 @@
         "showAllTopics": "Mostra tutti i livelli",
         "securedAllTopics": "Livelli protetti",
         "category": "Categorie",
-        "backgroundMaps": "Mappe di sfondo",
+        "baselayers": "Mappe di sfondo",
         "subjectData": "Dati specialistici",
         "subjectData3D": "Dati 3D",
         "subjectDataTime": "Serie temporale",
@@ -825,7 +825,6 @@
                 "undefinedInnerCircle": "Si prega di definire anche il cerchio interno.",
                 "undefinedRadius": "Specificare un raggio.",
                 "undefinedOuterCircle": "Si prega di definire anche il cerchio esterno.",
-                "undefinedSquareArea": "Definire l'area del quadrato",
                 "limitReached_one": "Avete già disegnato {{{count}}} oggetti, per favore cancellatelo prima di continuare!",
                 "limitReached_other": "Avete già disegnato {{{count}}} oggetti, per favore cancellatene uno prima di continuare!",
                 "drawSymbol": "Simbolo",
@@ -833,7 +832,6 @@
                 "drawLine": "Linea",
                 "drawCurve": "Linea a mano",
                 "drawArea": "Area",
-                "drawSquare": "Quadrato",
                 "drawCircle": "Cerchio",
                 "drawDoubleCircle": "Cerchio doppio",
                 "doubleCirclePlaceholder": "Inserire un diametro",
@@ -884,11 +882,7 @@
                         "key": "Nuova chiave",
                         "value": "Nuovo valore"
                     }
-                },
-                "squareDefinedInfo": " (senza tenere conto della curvatura della terra)",
-                "areaLabel": "Area",
-                "squareSideLengthLabel": "Lunghezza del lato",
-                "lineLengthLabel": "lunghezza totale"
+                }
             },
             "measure": {
                 "geometry": "Geometria",
@@ -1031,7 +1025,7 @@
                     "FERRIES": "Traghetti",
                     "STEPS": "Scale",
                     "UNPAVEDROADS": "Strade sterrate",
-                    "MIXEDTRAFFIC": "Traffico misto Speed 50",
+                    "MIXEDTRAFFIC": "Traffico misto",
                     "COBBLESTONE": "Ciottolo",
                     "NARROWWAYS": "Collo di bottiglia"
                 },
@@ -1048,10 +1042,8 @@
                     "restrictedAreas": "Superfici di barriera",
                     "editRestrictedAreas": "Disegnare/modificare le aree di mantenimento",
                     "deleteRestrictedAreas": "Eliminare le aree di interdizione",
-                    "keepRoutesAfterClose": "Conserva il percorso dopo la chiusura dello strumento",
                     "batchProcessing": {
                         "structure": "ID;lon(punto iniziale);lat(punto iniziale);lon(punto finale);lat(punto finale)",
-                        "errorAllFailed": "Tutte le richieste sono fallite. La richiesta potrebbe essere bloccata dal servizio. Il file non contiene risultati.",
                         "errorSomeFailed": "Non è stato possibile calcolare il {{countFailed}} Non è stato possibile calcolare correttamente i risultati. Il file dei risultati contiene celle vuote in questi punti.",
                         "errorNoEntries": "Nessuna voce nel CSV",
                         "errorToManyEntriesInFile": "Numero massimo di righe superato ({{limit}})",
@@ -1084,7 +1076,6 @@
                     "legend": "Leggenda",
                     "batchProcessing": {
                         "structure": "ID;lon(punto di partenza);lat(punto di partenza)",
-                        "errorAllFailed": "Tutte le richieste sono fallite. La richiesta potrebbe essere bloccata dal servizio. Il file non contiene risultati.",
                         "errorSomeFailed": "Non è stato possibile calcolare il {{countFailed}} Non è stato possibile calcolare correttamente i risultati. Il file dei risultati contiene celle vuote in questi punti.",
                         "errorNoEntries": "Nessuna voce nel CSV",
                         "errorToManyEntriesInFile": "Numero massimo di righe superato ({{limit}})",
@@ -1238,22 +1229,6 @@
                 "getGeometryTypeFromWFSFetchfailedMessage": "Dettagli: Un servizio richiesto non risponde.",
                 "getGeometryTypeFromOAFFetchfailed": "Non è stato possibile creare la legenda nelle informazioni del livello!",
                 "getGeometryTypeFromOAFFetchfailedMessage": "Dettagli: L'API non risponde."
-            }
-        },
-        "wmsTime": {
-            "layerSwiper": {
-                "description": "Lo swiper può essere spostato con il mouse o con i tasti freccia della tastiera. Quando si utilizzano i tasti freccia, il cursore viene spostato di {{amount}}px nella direzione corrispondente.",
-                "title": "Stratificatore"
-            },
-            "timeSlider": {
-                "buttons": {
-                    "backward": "Una volta indietro",
-                    "deactivateLayerSwiper": "Rimuovere layer",
-                    "forward": "Un punto di vantaggio",
-                    "layerSwiper": "Confronta i tempi",
-                    "play": "Riproduzione automatica di tutti i punti temporali, a partire dal punto temporale attualmente selezionato"
-                },
-                "inputRangeLabel": "Selezionare un orario"
             }
         },
         "legend": {

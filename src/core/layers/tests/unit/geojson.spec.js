@@ -1,7 +1,5 @@
 import VectorSource from "ol/source/Vector.js";
 import VectorLayer from "ol/layer/Vector.js";
-import Cluster from "ol/source/Cluster.js";
-import {GeoJSON} from "ol/format.js";
 import {expect} from "chai";
 import sinon from "sinon";
 import Map from "ol/Map";
@@ -61,32 +59,6 @@ describe("src/core/layers/geojson.js", () => {
     });
 
     describe("createLayer", () => {
-        it("createLayer shall create an ol.VectorLayer with source and style and GeoJSON-format", function () {
-            const geojsonLayer = new GeoJSONLayer(attributes),
-                layer = geojsonLayer.get("layer");
-
-            expect(layer).to.be.an.instanceof(VectorLayer);
-            expect(layer.getSource()).to.be.an.instanceof(VectorSource);
-            expect(layer.getSource().getFormat()).to.be.an.instanceof(GeoJSON);
-            expect(layer.get("id")).to.be.equals(attributes.id);
-            expect(layer.get("name")).to.be.equals(attributes.name);
-            expect(layer.get("gfiTheme")).to.be.equals(attributes.gfiTheme);
-        });
-        it("createLayer shall create an ol.VectorLayer with cluster-source", function () {
-            sinon.stub(styleList, "returnStyleObject").returns(true);
-            attributes.clusterDistance = 60;
-            const geojsonLayer = new GeoJSONLayer(attributes),
-                layer = geojsonLayer.get("layer");
-
-            geojsonLayer.createStyle(attributes);
-
-            expect(layer).to.be.an.instanceof(VectorLayer);
-            expect(layer.getSource()).to.be.an.instanceof(Cluster);
-            expect(layer.getSource().getDistance()).to.be.equals(attributes.clusterDistance);
-            expect(layer.getSource().getSource().getFormat()).to.be.an.instanceof(GeoJSON);
-            expect(typeof layer.getStyleFunction()).to.be.equals("function");
-            expect(typeof geojsonLayer.get("style")).to.be.equals("function");
-        });
         it("createLayer with isSelected=true shall set layer visible", function () {
             attributes.isSelected = true;
             const geojsonLayer = new GeoJSONLayer(attributes),
@@ -118,108 +90,7 @@ describe("src/core/layers/geojson.js", () => {
             expect(console.error.called).to.be.true;
         });
     });
-    describe("getFeaturesFilterFunction", () => {
-        it("getFeaturesFilterFunction shall filter getGeometry", function () {
-            const geojsonLayer = new GeoJSONLayer(attributes),
-                featuresFilterFunction = geojsonLayer.getFeaturesFilterFunction(attributes),
-                features = [{
-                    id: "1",
-                    getGeometry: () => sinon.stub()
-                },
-                {
-                    id: "2",
-                    getGeometry: () => undefined
-                }];
 
-            expect(typeof featuresFilterFunction).to.be.equals("function");
-            expect(featuresFilterFunction(features).length).to.be.equals(1);
-
-        });
-        it("getFeaturesFilterFunction shall filter bboxGeometry", function () {
-            attributes.bboxGeometry = {
-                intersectsCoordinate: (coord) => {
-                    if (coord[0] === 0.5 && coord[1] === 0.5) {
-                        return true;
-                    }
-                    return false;
-                }
-            };
-            const geojsonLayer = new GeoJSONLayer(attributes),
-                featuresFilterFunction = geojsonLayer.getFeaturesFilterFunction(attributes),
-                features = [{
-                    id: "1",
-                    getGeometry: () => {
-                        return {
-                            getExtent: () => [0, 0, 1, 1]
-                        };
-
-                    }
-                },
-                {
-                    id: "2",
-                    getGeometry: () => undefined
-                },
-                {
-                    id: "3",
-                    getGeometry: () => {
-                        return {
-                            getExtent: () => [2, 2, 3, 3]
-                        };
-                    }
-                }];
-
-            expect(typeof featuresFilterFunction).to.be.equals("function");
-            expect(featuresFilterFunction(features).length).to.be.equals(1);
-            expect(featuresFilterFunction(features)[0].id).to.be.equals("1");
-        });
-    });
-    describe("getStyleFunction", () => {
-        it("initStyle shall be called on creation and call createStyle if styleListLoaded=true", function () {
-            const createStyleSpy = sinon.spy(GeoJSONLayer.prototype, "createStyle");
-
-            store.getters = {
-                styleListLoaded: true
-            };
-            attributes.styleId = "styleId";
-            new GeoJSONLayer(attributes);
-
-            expect(createStyleSpy.calledOnce).to.be.true;
-        });
-        it("initStyle shall be called on creation and not call createStyle if styleListLoaded=false", function () {
-            const createStyleSpy = sinon.spy(GeoJSONLayer.prototype, "createStyle");
-
-            store.getters = {
-                styleListLoaded: false
-            };
-            attributes.styleId = "styleId";
-            new GeoJSONLayer(attributes);
-
-            expect(createStyleSpy.notCalled).to.be.true;
-        });
-
-        it("createStyle shall return a function", function () {
-            let geoJSONLayer = null,
-                styleFunction = null;
-
-            sinon.stub(styleList, "returnStyleObject").returns(true);
-            attributes.styleId = "styleId";
-            geoJSONLayer = new GeoJSONLayer(attributes);
-            geoJSONLayer.createStyle(attributes);
-            styleFunction = geoJSONLayer.getStyleFunction();
-
-            expect(styleFunction).not.to.be.null;
-            expect(typeof styleFunction).to.be.equals("function");
-        });
-    });
-    describe("createLegend", () => {
-        it("createLegend shall set legend", function () {
-            attributes.legendURL = "https://legendUrl";
-            const geojsonLayer = new GeoJSONLayer(attributes);
-
-            geojsonLayer.createLegend(attributes);
-            expect(geojsonLayer.get("legend")).to.be.deep.equals([attributes.legendURL]);
-        });
-    });
     describe("functions for features", () => {
         let style1 = null,
             style2 = null,

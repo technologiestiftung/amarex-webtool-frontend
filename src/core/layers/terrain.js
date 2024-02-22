@@ -17,7 +17,6 @@ export default function TerrainLayer(attrs) {
         selectionIDX: -1,
         useProxy: false,
         legend: false,
-        isOutOfRange: false,
     };
 
     /**
@@ -47,18 +46,6 @@ export default function TerrainLayer(attrs) {
         }
     );
 }
-// Link prototypes and add prototype methods, means TerrainLayer uses all methods and properties of Layer
-TerrainLayer.prototype = Object.create(Layer.prototype);
-
-/**
- * Creates the layer by using masterportalAPI's terrain-layer.
- * If attribute isSelected is true, setIsSelected is called.
- * @param {Object} attr the attributes for the layer
- * @returns {void}
- */
-TerrainLayer.prototype.createLayer = function (attr) {
-    this.layer = terrain.createLayer(attr);
-};
 
 /**
  * Calls the function setIsSelected.
@@ -87,17 +74,13 @@ TerrainLayer.prototype.setIsSelected = function (newValue, attr) {
         if (!this.attributes && attr) {
             isVisibleInMap = attr.isVisibleInMap;
             attr.isSelected = newValue;
-            terrain.setVisible(
-                newValue,
-                this.attributes ? this.attributes : attr,
-                map
-            );
+            // terrain.setVisible(newValue, this.attributes ? this.attributes : attr, map);
         } else {
             this.attributes.isSelected = newValue;
             this.setIsVisibleInMap(newValue);
         }
         if (isVisibleInMap) {
-            this.createLegend();
+            // this.createLegend();
         }
         if (treeType !== "light" || store.state.mobile) {
             bridge.updateLayerView(this);
@@ -125,60 +108,6 @@ TerrainLayer.prototype.setIsVisibleInMap = function (newValue) {
     }
 };
 
-/**
- * Creates the legend.
- * @returns {void}
- */
-TerrainLayer.prototype.createLegend = function () {
-    const styleObject = styleList.returnStyleObject(this.get("styleId"));
-    let legend = this.get("legend");
-
-    /**
-     * @deprecated in 3.0.0
-     */
-    if (this.get("legendURL")) {
-        if (this.get("legendURL") === "") {
-            legend = true;
-        } else if (this.get("legendURL") === "ignore") {
-            legend = false;
-        } else {
-            legend = this.get("legendURL");
-        }
-    }
-    if (Array.isArray(legend)) {
-        this.setLegend(legend);
-    } else if (styleObject && legend === true) {
-        createStyle
-            .returnLegendByStyleId(styleObject.styleId)
-            .then((legendInfos) => {
-                const type = this.layer
-                        .getSource()
-                        .getFeatures()[0]
-                        .getGeometry()
-                        .getType(),
-                    typeSpecificLegends = [];
-
-                if (type === "MultiLineString") {
-                    typeSpecificLegends.push(
-                        legendInfos.legendInformation.find(
-                            (element) => element.geometryType === "LineString"
-                        )
-                    );
-                    this.setLegend(typeSpecificLegends);
-                } else {
-                    typeSpecificLegends.push(
-                        legendInfos.legendInformation.find(
-                            (element) => element.geometryType === type
-                        )
-                    );
-                    this.setLegend(typeSpecificLegends);
-                }
-                this.setLegend(legendInfos.legendInformation);
-            });
-    } else if (typeof legend === "string") {
-        this.setLegend([legend]);
-    }
-};
 /**
  * Register interaction with map view. Listens to change of scale.
  * @returns {void}

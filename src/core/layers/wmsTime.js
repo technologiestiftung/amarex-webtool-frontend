@@ -13,7 +13,8 @@ dayjs.extend(utc);
  * Creates a layer of type WMSTime.
  * @param {Object} attrs Attributes of the layer.
  * @returns {void}
- */export default function WMSTimeLayer (attrs) {
+ */
+export default function WMSTimeLayer (attrs) {
 
     const defaults = {
         keyboardMovement: 5,

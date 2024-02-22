@@ -6,7 +6,6 @@ const webdriver = require("selenium-webdriver"),
     {isBasic, isCustom, isMobile, isMaster} = require("../../../../../../test/end2end/settings"),
     namedProjectionsBasic = require("../../../../../../portal/basic/config").namedProjections,
     namedProjectionsMaster = require("../../../../../../portal/master/config").namedProjections,
-    namedProjectionsCustom = require("../../../../../../portal/masterCustom/config").namedProjections,
     namedProjectionsDefault = require("../../../../../../portal/masterDefault/config").namedProjections,
     {isMarkerPointVisible, getMarkerPointCoord} = require("../../../../../../test/end2end/library/scripts"),
     {By, until, Key} = webdriver;
@@ -239,8 +238,7 @@ async function CoordToolkitTests ({builder, url, resolution, config, capability}
             const namedProjections = {
                     basic: namedProjectionsBasic,
                     master: namedProjectionsMaster,
-                    default: namedProjectionsDefault,
-                    custom: namedProjectionsCustom
+                    default: namedProjectionsDefault
                 }[config],
                 epsgCodes = namedProjections.map(a => a[0]),
                 // if EPSG:4326 is available add same projection in decimal-system to options

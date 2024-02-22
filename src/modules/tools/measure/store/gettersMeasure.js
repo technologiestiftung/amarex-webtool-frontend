@@ -1,10 +1,10 @@
 import stateMeasure from "./stateMeasure";
-import {calculateLineLengths, calculatePolygonAreas} from "../utils/measureCalculation";
 
-import {generateSimpleGetters} from "../../../../app-store/utils/generators";
+import {generateSimpleGetters} from "../../../shared/js/utils/generators";
 
 const getters = {
     ...generateSimpleGetters(stateMeasure),
+
     /**
      * @param {object} state measure store state
      * @param {object} _ measure store getters
@@ -28,57 +28,8 @@ const getters = {
         return rootGetters["Maps/is3D"]
             ? geometryValues3d[0] // 3D mode only has one option
             : selectedGeometry;
-    },
-    /**
-     * @param {object} state measure store state
-     * @param {object} _ measure store getters
-     * @param {object} __ root state
-     * @param {object} rootGetters root getters
-     * @returns {String[]} options for measurement units
-     */
-    currentUnits ({selectedGeometry, lineStringUnits, polygonUnits}, _, __, rootGetters) {
-        return rootGetters["Maps/is3D"] || selectedGeometry === "LineString"
-            ? lineStringUnits
-            : polygonUnits;
-    },
-    /**
-     * Calculates the length of lines.
-     * @param {object} state measure store state
-     * @param {object} _ measure store getters
-     * @param {object} __ root state
-     * @param {object} rootGetters root getters
-     * @return {String[]} calculated display values
-     */
-    lineLengths ({lines, earthRadius, measurementAccuracy, selectedLineStringUnit, selectedGeometry, lineStringUnits}, _, __, rootGetters) {
-        return calculateLineLengths(
-            rootGetters["Maps/projection"].getCode(),
-            lines,
-            earthRadius,
-            measurementAccuracy,
-            selectedLineStringUnit,
-            selectedGeometry,
-            lineStringUnits
-        );
-    },
-    /**
-     * Calculates the area of a polygon.
-     * @param {object} state measure store state
-     * @param {object} _ measure store getters
-     * @param {object} __ root state
-     * @param {object} rootGetters root getters
-     * @return {String[]} calculated display values
-     */
-    polygonAreas ({polygons, earthRadius, measurementAccuracy, selectedPolygonUnit, selectedGeometry, polygonUnits}, _, __, rootGetters) {
-        return calculatePolygonAreas(
-            rootGetters["Maps/projection"].getCode(),
-            polygons,
-            earthRadius,
-            measurementAccuracy,
-            selectedPolygonUnit,
-            selectedGeometry,
-            polygonUnits
-        );
     }
+
 };
 
 export default getters;

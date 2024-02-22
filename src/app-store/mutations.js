@@ -17,9 +17,6 @@ const deprecatedParamsConfigJson = {
             "Portalconfig.portalTitle.tooltip",
             "Portalconfig.LogoToolTip",
         ],
-        "Portalconfig.searchBar.bkg.zoomToResultOnHover": [
-            "Portalconfig.searchBar.bkg.zoomToResult",
-        ],
         "Portalconfig.treeType": ["Portalconfig.Baumtyp"],
         "Portalconfig.controls.overviewMap.layerId": [
             "Portalconfig.controls.overviewMap.baselayer",

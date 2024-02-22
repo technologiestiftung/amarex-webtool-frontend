@@ -69,12 +69,7 @@ function updateText (lengthText, heightText, distance, heightDiff) {
  * @returns {object} styles
  */
 function generate3dTextStyles (distance, heightDiff, addUnlistener) {
-    if (store.getters["Tools/Measure/selectedGeometry"] === "LineString") {
-        currentUnit = store.getters["Tools/Measure/selectedLineStringUnit"];
-    }
-    else {
-        currentUnit = store.getters["Tools/Measure/selectedPolygonUnit"];
-    }
+    currentUnit = store.getters["Tools/Measure/selectedUnit"];
 
     const lengthText = new Text({...textStyleBase}),
         heightText = new Text({...textStyleBase, offsetY: -30}),

@@ -38,7 +38,8 @@ async function fetchRoutingElasticGeosearch (search) {
             },
             size: state.geosearch.limit
         },
-        requestUrl = getRoutingElasticUrl(payload),
+        serviceUrl = store.getters.getRestServiceById(state.geosearch.serviceId).url,
+        requestUrl = `${serviceUrl}?source_content_type=application/json&source=${JSON.stringify(payload)}`,
         response = await axios.get(requestUrl);
 
     if (response.status !== 200 && !response.data.success) {
@@ -51,20 +52,6 @@ async function fetchRoutingElasticGeosearch (search) {
         d.epsg = state.geosearch.epsg.toString();
         return parseRoutingElasticGeosearchResult(d);
     });
-}
-
-/**
- * Creates the url with the given params.
- * @param {Object} payload the payload
- * @returns {String} the url
- */
-function getRoutingElasticUrl (payload) {
-    const serviceUrl = store.getters.getRestServiceById(state.geosearch.serviceId).url,
-        url = new URL(serviceUrl);
-
-    url.searchParams.set("source_content_type", "application/json");
-    url.searchParams.set("source", JSON.stringify(payload));
-    return url;
 }
 
 /**
@@ -85,4 +72,4 @@ function parseRoutingElasticGeosearchResult (geosearchResult) {
     );
 }
 
-export {fetchRoutingElasticGeosearch, getRoutingElasticUrl};
+export {fetchRoutingElasticGeosearch};

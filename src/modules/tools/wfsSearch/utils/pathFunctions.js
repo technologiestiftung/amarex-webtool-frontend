@@ -49,7 +49,7 @@ function buildPath (optionsObject, currentOption, parsedSource) {
  *
  * @param {array} path The path to the values.
  * @param {object} source The source from which the values should be retrieved.
- * @returns {[]} If found, return the values as an array, otherwise return an empty array.
+ * @returns {Array} If found, return the values as an array, otherwise return an empty array.
  */
 function getOptions (path, source) {
     const selectableOptions = idx(source, path);

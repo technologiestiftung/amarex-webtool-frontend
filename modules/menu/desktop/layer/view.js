@@ -83,7 +83,6 @@ const LayerView = LayerBaseView.extend(
             channel.on({
                 rerender: this.rerender,
                 renderSetting: this.renderTransparency,
-                "change:isOutOfRange": this.toggleColor,
                 "change:isVisibleInTree": this.removeIfNotVisible
             }, this);
 
@@ -91,8 +90,7 @@ const LayerView = LayerBaseView.extend(
                 "change:isSelected": this.rerender,
                 "change:isVisibleInTree": this.removeIfNotVisible,
                 "change:isSettingVisible": this.renderSetting,
-                "change:transparency": this.rerender,
-                "change:isOutOfRange": this.toggleColor
+                "change:transparency": this.rerender
             });
             this.listenTo(Radio.channel("Map"), {
                 "change": function (mode) {
@@ -106,7 +104,6 @@ const LayerView = LayerBaseView.extend(
             // Translates the i18n-props into current user-language. is done this way, because model's listener to languageChange reacts too late (after render, which ist riggered by creating new Menu)
             this.model.changeLang();
             this.render();
-            this.toggleColor(this.model, this.model.get("isOutOfRange"));
         },
         tagName: "li",
         className: "layer dropdown-item",

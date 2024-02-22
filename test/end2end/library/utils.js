@@ -197,7 +197,7 @@ function getOrderedTitlesFromConfig (configJson, services) {
             .map(converter)
             .filter(x => x) // filter out false entries
             .map(x => Array.isArray(x) ? x[0] : x), // flatten arrayed names,
-        ...configJson.Themenconfig.Hintergrundkarten.Layer.map(converter)
+        ...configJson.Themenconfig.baselayer.Layer.map(converter)
     ]
         // remove initially inactive layers
         .filter(name => !["Gelände", "Gebäude LoD2", "Oblique"].includes(name))
@@ -214,7 +214,7 @@ function getOrderedTitlesFromConfig (configJson, services) {
 function getOrderedIdsFromConfig (configJson) {
     return [
         ...configJson.Themenconfig.Fachdaten.Layer,
-        ...configJson.Themenconfig.Hintergrundkarten.Layer
+        ...configJson.Themenconfig.baselayer.Layer
     ]
         .filter(layer => !["12883", "12884", "13032", "5708", "157", "46"].includes(layer.id)) // remove initially inactive and non-tree layers
         .map(layer => {

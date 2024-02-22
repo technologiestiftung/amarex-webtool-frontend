@@ -105,21 +105,6 @@ describe("src/core/layers/entities.js", () => {
         expect(entitiesLayer.get("typ")).to.be.equals(attrs.typ);
     }
 
-    it("createLayer shall create an entities layer", function () {
-        const entitiesLayer = new EntitiesLayer(attributes),
-            layer = entitiesLayer.get("layer");
-
-        checkLayer(layer, entitiesLayer, attributes);
-        expect(entitiesLayer.get("isVisibleInMap")).to.equal(false);
-    });
-    it("createLayer shall create a visible entities layer", function () {
-        attributes.isSelected = true;
-        const entitiesLayer = new EntitiesLayer(attributes),
-            layer = entitiesLayer.get("layer");
-
-        checkLayer(layer, entitiesLayer, attributes);
-        expect(entitiesLayer.get("isVisibleInMap")).to.equal(true);
-    });
     it("setVisible shall call setIsSelected", function () {
         const entitiesLayer = new EntitiesLayer(attributes),
             layer = entitiesLayer.get("layer"),

@@ -1,8 +1,9 @@
 import Layer from "./layer.js";
-import styleList from "@masterportal/masterportalapi/src/vectorStyle/styleList";
-import createStyle from "@masterportal/masterportalapi/src/vectorStyle/createStyle";
-import getGeometryTypeFromService from "@masterportal/masterportalapi/src/vectorStyle/lib/getGeometryTypeFromService";
-import store from "../../app-store/index.js";
+import { vectorBase } from "@masterportal/masterportalapi/src";
+// import styleList from "@masterportal/masterportalapi/src/vectorStyle/styleList";
+// import createStyle from "@masterportal/masterportalapi/src/vectorStyle/createStyle";
+// import getGeometryTypeFromService from "@masterportal/masterportalapi/src/vectorStyle/lib/getGeometryTypeFromService";
+// import store from "../../app-store";
 import * as bridge from "./RadioBridge.js";
 import Cluster from "ol/source/Cluster";
 import VectorLayer from "ol/layer/Vector.js";
@@ -17,9 +18,7 @@ export default function VectorBaseLayer(attrs) {
     const defaults = {
         supported: ["2D", "3D"],
         isClustered: false,
-        altitudeMode: "clampToGround",
         useProxy: false,
-        sourceUpdated: false,
     };
 
     this.createLayer(Object.assign(defaults, attrs));
@@ -30,40 +29,10 @@ export default function VectorBaseLayer(attrs) {
         this.layer,
         !attrs.isChildLayer
     );
-    this.createLegend();
+    // this.createLegend();
 }
 
 VectorBaseLayer.prototype = Object.create(Layer.prototype);
-
-/**
- * Creates an vector Base
- * @param {Object} attrs  attributes of the layer
- * @returns {Object} layer
- */
-VectorBaseLayer.prototype.createVectorLayer = function (attrs) {
-    const source = new VectorSource({
-        features: attrs.features,
-    });
-
-    return new VectorLayer({
-        source: source,
-        name: attrs.name,
-        typ: attrs.typ,
-        gfiAttributes: attrs.gfiAttributes,
-        id: attrs.id,
-    });
-};
-
-/**
- * creates the layer
- * @param {Object} attr the attributes for the layer
- * @returns {void}
- */
-VectorBaseLayer.prototype.createLayer = function (attr) {
-    this.layer = this.createVectorLayer(attr);
-
-    this.features = attr.features;
-};
 
 /**
  * Updates the layers source
@@ -73,71 +42,6 @@ VectorBaseLayer.prototype.updateSource = function () {
     if (this.get("sourceUpdated") === false) {
         this.set("sourceUpdated", true);
         this.layer.getSource().refresh();
-    }
-};
-
-/**
- * Creates the legend
- * @returns {void}
- */
-VectorBaseLayer.prototype.createLegend = function () {
-    const styleObject = styleList.returnStyleObject(this.get("styleId")),
-        rules = styleObject?.rules;
-    let legend = this.get("legend");
-
-    /**
-     * @deprecated in 3.0.0
-     */
-    if (this.get("legendURL")) {
-        if (
-            this.get("legendURL") === "" ||
-            this.get("legendURL") === "ignore"
-        ) {
-            legend = false;
-        } else {
-            legend = this.get("legendURL");
-        }
-    }
-
-    if (styleObject && legend === true) {
-        createStyle
-            .returnLegendByStyleId(styleObject.styleId)
-            .then((legendInfos) => {
-                if (styleObject.styleId === "default") {
-                    this.setLegend(legendInfos.legendInformation);
-                } else {
-                    getGeometryTypeFromService.getGeometryTypeFromWFS(
-                        rules,
-                        this.get("url"),
-                        this.get("version"),
-                        this.get("featureType"),
-                        this.get("styleGeometryType"),
-                        false,
-                        Config.wfsImgPath,
-                        (geometryTypes, error) => {
-                            if (error) {
-                                store.dispatch(
-                                    "Alerting/addSingleAlert",
-                                    "<strong>" +
-                                        i18next.t(
-                                            "common:modules.vectorStyle.styleObject.getGeometryTypeFromWFSFetchfailed"
-                                        ) +
-                                        "</strong> <br>" +
-                                        "<small>" +
-                                        i18next.t(
-                                            "common:modules.vectorStyle.styleObject.getGeometryTypeFromWFSFetchfailedMessage"
-                                        ) +
-                                        "</small>"
-                                );
-                            }
-                            return geometryTypes;
-                        }
-                    );
-                }
-                this.setLegend(legendInfos.legendInformation);
-            });
-    } else if (typeof legend === "string") {
-        this.setLegend([legend]);
     }
 };
 

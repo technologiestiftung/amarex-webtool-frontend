@@ -56,7 +56,7 @@ By following these steps you can modify the example application to become your c
 
 2. Please subsequently duplicate the folder *Basic* and rename it to your portal name, e.g. *my_portal*.
 
-3. You may now modify the configuration files **[config.js](config.js.md)** and **[config.json](config.json.md)** within this new folder *my_portal*. For example, you may define which layers are to appear in the layer tree, configure the tools required, customize the background layers, change the display name of the portal, and so on. For all options, please refer to the full documentation of the **[config.js](config.js.md)** and **[config.json](config.json.md)** files.
+3. You may now modify the configuration files **[config.js](config.js.md)** and **[config.json](config.json.md)** within this new folder *my_portal*. For example, you may define which layers are to appear in the layer tree, configure the tools required, customize the baselayers, change the display name of the portal, and so on. For all options, please refer to the full documentation of the **[config.js](config.js.md)** and **[config.json](config.json.md)** files.
 
 4. Your new portal may now be opened by navigating to the URL:
     - https://[web-server-name]/examples/my_portal/index.html

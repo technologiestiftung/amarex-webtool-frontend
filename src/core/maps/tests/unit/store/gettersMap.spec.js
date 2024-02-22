@@ -1,7 +1,6 @@
 import {expect} from "chai";
 import Map from "ol/Map.js";
 import gettersMap from "../../../store/gettersMap";
-import stateMap from "../../../store/stateMap";
 import mutationsMap from "../../../store/mutationsMap";
 import View from "ol/View";
 import VectorLayer from "ol/layer/Vector.js";
@@ -12,26 +11,6 @@ const {addLayerToMap} = mutationsMap;
 describe("src/core/maps/store/gettersMap.js", () => {
 
     describe("Map simple getters", async () => {
-
-        it("returns false for maximumZoomLevelActive from state", () => {
-            const state = {
-                zoom: 0,
-                maxZoomLevel: 10
-            };
-
-            expect(gettersMap.maximumZoomLevelActive(stateMap)).to.be.true;
-            expect(gettersMap.maximumZoomLevelActive(state)).to.be.false;
-        });
-
-        it("returns false for minimumZoomLevelActive from state", () => {
-            const state = {
-                zoom: 5,
-                minZoomLevel: 0
-            };
-
-            expect(gettersMap.minimumZoomLevelActive(stateMap)).to.be.true;
-            expect(gettersMap.minimumZoomLevelActive(state)).to.be.false;
-        });
         it("returns the 2D map", () => {
             const map = {
                 id: "ol",
@@ -94,39 +73,6 @@ describe("src/core/maps/store/gettersMap.js", () => {
         });
     });
 
-    describe("scaleToOne", () => {
-        it("should return \"1 : scale must be a positive number\" if anything but a number is given", () => {
-            expect(gettersMap.scaleToOne(false, {scale: undefined})).to.equal("1 : scale must be a positive number");
-            expect(gettersMap.scaleToOne(false, {scale: null})).to.equal("1 : scale must be a positive number");
-            expect(gettersMap.scaleToOne(false, {scale: "string"})).to.equal("1 : scale must be a positive number");
-            expect(gettersMap.scaleToOne(false, {scale: true})).to.equal("1 : scale must be a positive number");
-            expect(gettersMap.scaleToOne(false, {scale: false})).to.equal("1 : scale must be a positive number");
-            expect(gettersMap.scaleToOne(false, {scale: {}})).to.equal("1 : scale must be a positive number");
-            expect(gettersMap.scaleToOne(false, {scale: []})).to.equal("1 : scale must be a positive number");
-        });
-        it("should return \"1 : scale must be a positive number\" if zero is given", () => {
-            expect(gettersMap.scaleToOne(false, {scale: 0})).to.equal("1 : scale must be a positive number");
-        });
-        it("should return \"1 : scale must be a positive number\" if a negative scale is given", () => {
-            expect(gettersMap.scaleToOne(false, {scale: -1})).to.equal("1 : scale must be a positive number");
-        });
-        it("should keep the given scale as scaleToOne untouched if scale is 1.000 or less", () => {
-            expect(gettersMap.scaleToOne(false, {scale: 1})).to.equal("1 : 1");
-            expect(gettersMap.scaleToOne(false, {scale: 123})).to.equal("1 : 123");
-            expect(gettersMap.scaleToOne(false, {scale: 999})).to.equal("1 : 999");
-            expect(gettersMap.scaleToOne(false, {scale: 1000})).to.equal("1 : 1.000");
-        });
-        it("should return the given scale as scaleToOne down to the fifties if scale is 10.000 or less", () => {
-            expect(gettersMap.scaleToOne(false, {scale: 1001})).to.equal("1 : 1.000");
-            expect(gettersMap.scaleToOne(false, {scale: 1024})).to.equal("1 : 1.000");
-            expect(gettersMap.scaleToOne(false, {scale: 1025})).to.equal("1 : 1.050");
-            expect(gettersMap.scaleToOne(false, {scale: 10000})).to.equal("1 : 10.000");
-        });
-        it("should return the given scale as scaleToOne down to five hundreds if scale is greater than 10.000", () => {
-            expect(gettersMap.scaleToOne(false, {scale: 10249})).to.equal("1 : 10.000");
-            expect(gettersMap.scaleToOne(false, {scale: 10250})).to.equal("1 : 10.500");
-        });
-    });
     describe("test getters from mapView", () => {
         /**
          * Is needed to run the tests.

@@ -107,7 +107,7 @@ async function ElasticSearch ({builder, url, resolution, capability}) {
                 await driver.wait(async () => driver.executeScript(isLayerVisible, layerId), 10000, "Layer was not shown.");
             });
 
-            it("selects and shows the layer in 'Fachdaten'", async function () {
+            it("selects and shows the layer in 'subjectlayer'", async function () {
                 await driver.wait(until.elementIsVisible(await driver.findElement(treeSelector)));
                 await driver.wait(until.elementIsVisible(await driver.findElement(checkboxSelector)));
             });

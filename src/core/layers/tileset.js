@@ -49,12 +49,10 @@ export default function TileSetLayer(attrs) {
     if (attrs.hiddenFeatures && attrs.isSelected === true) {
         this.hideObjects(attrs.hiddenFeatures);
     }
-    this.layer.tileset?.then((tileset) =>
-        tileset.tileVisible?.addEventListener(this.applyStyle.bind(this))
+    this.layer.tileset?.tileVisible?.addEventListener(
+        this.applyStyle.bind(this)
     );
 }
-// Link prototypes and add prototype methods, means TileSetLayer uses all methods and properties of Layer
-TileSetLayer.prototype = Object.create(Layer.prototype);
 
 /**
  * Creates the layer and if attr.isSelected = true, the layer is set visible.
@@ -166,13 +164,13 @@ TileSetLayer.prototype.setIsSelected = function (newValue, attr) {
             isVisibleInMap = attr.isVisibleInMap;
             attr.isVisibleInMap = newValue;
             attr.isSelected = newValue;
-            this.layer.setVisible(newValue, map);
+            // this.layer.setVisible(newValue, map);
         } else {
             this.setIsVisibleInMap(newValue);
             this.attributes.isSelected = newValue;
         }
         if (isVisibleInMap) {
-            this.createLegend();
+            // this.createLegend();
         }
         if (treeType !== "light" || store.state.mobile) {
             bridge.updateLayerView(this);
@@ -266,60 +264,6 @@ TileSetLayer.prototype.setIsVisibleInMap = function (newValue) {
     }
 };
 
-/**
- * Creates the legend.
- * @returns {void}
- */
-TileSetLayer.prototype.createLegend = function () {
-    const styleObject = styleList.returnStyleObject(this.get("styleId"));
-    let legend = this.get("legend");
-
-    /**
-     * @deprecated in 3.0.0
-     */
-    if (this.get("legendURL")) {
-        if (this.get("legendURL") === "") {
-            legend = true;
-        } else if (this.get("legendURL") === "ignore") {
-            legend = false;
-        } else {
-            legend = this.get("legendURL");
-        }
-    }
-    if (Array.isArray(legend)) {
-        this.setLegend(legend);
-    } else if (styleObject && legend === true) {
-        createStyle
-            .returnLegendByStyleId(styleObject.styleId)
-            .then((legendInfos) => {
-                const type = this.layer
-                        .getSource()
-                        .getFeatures()[0]
-                        .getGeometry()
-                        .getType(),
-                    typeSpecificLegends = [];
-
-                if (type === "MultiLineString") {
-                    typeSpecificLegends.push(
-                        legendInfos.legendInformation.find(
-                            (element) => element.geometryType === "LineString"
-                        )
-                    );
-                    this.setLegend(typeSpecificLegends);
-                } else {
-                    typeSpecificLegends.push(
-                        legendInfos.legendInformation.find(
-                            (element) => element.geometryType === type
-                        )
-                    );
-                    this.setLegend(typeSpecificLegends);
-                }
-                this.setLegend(legendInfos.legendInformation);
-            });
-    } else if (typeof legend === "string") {
-        this.setLegend([legend]);
-    }
-};
 /**
  * Register interaction with map view. Listens to change of scale.
  * @returns {void}

@@ -6,11 +6,6 @@ module.exports = function (destination, stableVersionNumber) {
 
     replacements.push({
         "files": destination + "/index.html",
-        "from": /\/*(\.+\/)*img\/ajax-loader\.gif/g,
-        "to": "../Mastercode/" + stableVersionNumber + "/img/ajax-loader.gif"
-    });
-    replacements.push({
-        "files": destination + "/index.html",
         "from": /\/*(\.+\/)*build\/css\/style\.css/g,
         "to": "../Mastercode/" + stableVersionNumber + "/css/style.css"
     });

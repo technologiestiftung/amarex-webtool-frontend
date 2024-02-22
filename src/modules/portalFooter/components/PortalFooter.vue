@@ -168,7 +168,7 @@ export default {
         <MousePosition class="portal-footer-mouse-position" />
         <!-- keep div#footer as anchor for mouse position even if no footer is to be rendered -->
         <template v-if="showFooter">
-            <template v-for="(url, index) in urls">
+            <!-- <template v-for="(url, index) in urls">
                 <span
                     v-if="supportedIn3D(url.toolModelId)"
                     :key="`portal-footer-url-${index}`"
@@ -190,7 +190,7 @@ export default {
                         />
                     </span>
                 </span>
-            </template>
+            </template> -->
             <template v-if="showVersion">
                 <span class="d-none d-md-block">
                     {{ $t("masterPortalVersion", {masterPortalVersionNumber}) }}
@@ -244,7 +244,7 @@ export default {
             </template>
 
             <span class="spacer" />
-            <ScaleLine />
+            <!-- <ScaleLine /> -->
             <LanguageItem v-if="showLanguageSwitcher" />
         </template>
         <ScaleLine

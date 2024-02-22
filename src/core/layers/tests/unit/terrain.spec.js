@@ -75,24 +75,6 @@ describe("src/core/layers/terrain.js", () => {
         expect(terrainLayer.get("typ")).to.be.equals(attrs.typ);
     }
 
-    it("createLayer shall create a terrain layer", function () {
-        const terrainLayer = new TerrainLayer(attributes),
-            layer = terrainLayer.get("layer");
-
-        checkLayer(layer, terrainLayer, attributes);
-        expect(cesiumTerrainProviderSpy.notCalled).to.equal(true);
-        expect(cesiumEllipsoidTerrainProviderSpy.notCalled).to.equal(true);
-    });
-    it("createLayer shall create a visible terrain layer", function () {
-        attributes.isSelected = true;
-        const terrainLayer = new TerrainLayer(attributes),
-            layer = terrainLayer.get("layer");
-
-        checkLayer(layer, terrainLayer, attributes);
-        expect(fromUrlSpy.calledTwice).to.equal(true);
-        expect(fromUrlSpy.calledWithMatch("https://example.com", {})).to.equal(true);
-        expect(cesiumEllipsoidTerrainProviderSpy.notCalled).to.equal(true);
-    });
     it("setVisible shall call setIsSelected", function () {
         const terrainLayer = new TerrainLayer(attributes),
             layer = terrainLayer.get("layer"),
@@ -121,20 +103,6 @@ describe("src/core/layers/terrain.js", () => {
         checkLayer(layer, terrainLayer, attributes);
         expect(cesiumEllipsoidTerrainProviderSpy.calledOnce).to.equal(true);
         expect(fromUrlSpy.notCalled).to.equal(true);
-    });
-    it("createLegend shall set legend", function () {
-        attributes.legendURL = "https://legendUrl";
-        const terrainLayer = new TerrainLayer(attributes);
-
-        terrainLayer.createLegend();
-        expect(terrainLayer.get("legend")).to.be.deep.equals([attributes.legendURL]);
-    });
-    it("createLegend shall not set legend (ignore)", function () {
-        attributes.legendURL = "ignore";
-        const terrainLayer = new TerrainLayer(attributes);
-
-        terrainLayer.createLegend();
-        expect(terrainLayer.get("legend")).to.equal(false);
     });
     it("setIsVisibleInMap to true shall set isVisibleInMap", function () {
         const terrainLayer = new TerrainLayer(attributes),
