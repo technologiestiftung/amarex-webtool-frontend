@@ -1,394 +1,207 @@
-[
-  {
-    "styleId": "1711",
-    "rules": [
-      {
-        "style": {
-          "type": "icon",
-          "clusterType": "icon",
-          "imageName": "krankenhaus.png",
-          "imageScale": 0.7,
-          "clusterImageName": "krankenhaus.png",
-          "clusterTextOffsetX": 30,
-          "clusterTextOffsetY": 0,
-          "clusterTextFillColor": [
-            0,
-            0,
-            255,
-            1
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "styleId": "2003",
-    "rules": [
-      {
-        "style": {
-          "polygonStrokeColor": [
-            0,
-            0,
-            0,
-            1
-          ],
-          "polygonStrokeWidth": 1,
-          "polygonFillColor": [
-            10,
-            200,
-            0,
-            0.2
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "styleId": "8712",
-    "rules": [
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Grundschulen"
+ [
+    {
+      "styleId": "wasserhaushalt_2017",
+      "rules": [
+        {
+          "conditions": {
+            "properties": {
+              "R": [0, 30]
+            }
+          },
+          "style": {
+            "polygonFillColor": [108, 245, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "grundschulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Gymnasien"
+        {
+          "conditions": {
+            "properties": {
+              "R": [31, 60]
+            }
+          },
+          "style": {
+            "polygonFillColor": [115, 237, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "gymnasien.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Stadtteilschulen"
+        {
+          "conditions": {
+            "properties": {
+              "R": [61, 90]
+            }
+          },
+          "style": {
+            "polygonFillColor": [122, 230, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "stadtteilschulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Sonderschulen"
+        {
+          "conditions": {
+            "properties": {
+              "R": [91, 120]
+            }
+          },
+          "style": {
+            "polygonFillColor": [129, 222, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "sonderschulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Berufliche Schulen"
+        {
+          "conditions": {
+            "properties": {
+              "R": [121, 150]
+            }
+          },
+          "style": {
+            "polygonFillColor": [135, 215, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "berufliche_schulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Langformschulen"
+        {
+          "conditions": {
+            "properties": {
+              "R": [151, 180]
+            }
+          },
+          "style": {
+            "polygonFillColor": [142, 207, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "langformschulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      }
-    ]
-  },
-  {
-    "styleId": "8712.1",
-    "rules": [
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Grundschulen"
+        {
+          "conditions": {
+            "properties": {
+              "R": [181, 210]
+            }
+          },
+          "style": {
+            "polygonFillColor": [149, 199, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "grundschulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      }
-    ]
-  },
-  {
-    "styleId": "8712.2",
-    "rules": [
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Stadtteilschulen"
+        {
+          "conditions": {
+            "properties": {
+              "R": [211, 240]
+            }
+          },
+          "style": {
+            "polygonFillColor": [156, 192, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "stadtteilschulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Langformschulen"
+        {
+          "conditions": {
+            "properties": {
+              "R": [241, 270]
+            }
+          },
+          "style": {
+            "polygonFillColor": [163, 184, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "langformschulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      }
-    ]
-  },
-  {
-    "styleId": "8712.3",
-    "rules": [
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Gymnasien"
+        {
+          "conditions": {
+            "properties": {
+              "R": [271, 300]
+            }
+          },
+          "style": {
+            "polygonFillColor": [170, 177, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "gymnasien.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      }
-    ]
-  },
-  {
-    "styleId": "8712.4",
-    "rules": [
-      {
-        "conditions": {
-          "properties": {
-            "kapitelbezeichnung": "Sonderschulen"
+        {
+          "conditions": {
+            "properties": {
+              "R": [301, 330]
+            }
+          },
+          "style": {
+            "polygonFillColor": [177, 169, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "imageName": "sonderschulen.svg",
-          "imageWidth": 40,
-          "imageHeight": 40,
-          "imageScale": 0.6
-        }
-      }
-    ]
-  },
-  {
-    "styleId": "10882",
-    "rules": [
-      {
-        "conditions": {
-          "properties": {
-            "symbol": "SFA"
+        {
+          "conditions": {
+            "properties": {
+              "R": [331, 360]
+            }
+          },
+          "style": {
+            "polygonFillColor": [183, 161, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "clusterType": "icon",
-          "imageName": "sfa.png",
-          "imageScale": 0.7,
-          "clusterImageName": "br.png",
-          "clusterImageScale": 0.7,
-          "clusterImageOffsetX": 0.9,
-          "clusterImageOffsetY": 0.1,
-          "clusterTextFillColor": [
-            69,
-            96,
-            166,
-            1
-          ],
-          "clusterTextStrokeColor": [
-            240,
-            240,
-            240,
-            1
-          ],
-          "clusterTextType": "none"
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "symbol": "FSSA"
+        {
+          "conditions": {
+            "properties": {
+              "R": [361, 390]
+            }
+          },
+          "style": {
+            "polygonFillColor": [190, 154, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "clusterType": "icon",
-          "imageName": "fssa.png",
-          "imageScale": 0.7,
-          "clusterImageName": "br.png",
-          "clusterImageScale": 0.7,
-          "clusterImageOffsetX": 0.9,
-          "clusterImageOffsetY": 0.1,
-          "clusterTextFillColor": [
-            69,
-            96,
-            166,
-            1
-          ],
-          "clusterTextStrokeColor": [
-            240,
-            240,
-            240,
-            1
-          ],
-          "clusterTextType": "none"
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "symbol": "Stpd"
+        {
+          "conditions": {
+            "properties": {
+              "R": [391, 420]
+            }
+          },
+          "style": {
+            "polygonFillColor": [197, 146, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "clusterType": "icon",
-          "imageName": "stpd.png",
-          "imageScale": 0.7,
-          "clusterImageName": "br.png",
-          "clusterImageScale": 0.7,
-          "clusterImageOffsetX": 0.9,
-          "clusterImageOffsetY": 0.1,
-          "clusterTextFillColor": [
-            69,
-            96,
-            166,
-            1
-          ],
-          "clusterTextStrokeColor": [
-            240,
-            240,
-            240,
-            1
-          ],
-          "clusterTextType": "none"
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "symbol": "Stp"
+        {
+          "conditions": {
+            "properties": {
+              "R": [421, 450]
+            }
+          },
+          "style": {
+            "polygonFillColor": [204, 139, 66, 0.5]
           }
         },
-        "style": {
-          "type": "icon",
-          "clusterType": "icon",
-          "imageName": "stp.png",
-          "imageScale": 0.7,
-          "clusterImageName": "br.png",
-          "clusterImageScale": 0.7,
-          "clusterImageOffsetX": 0.9,
-          "clusterImageOffsetY": 0.1,
-          "clusterTextFillColor": [
-            69,
-            96,
-            166,
-            1
-          ],
-          "clusterTextStrokeColor": [
-            240,
-            240,
-            240,
-            1
-          ],
-          "clusterTextType": "none"
-        }
-      }
-    ]
-  },
-  {
-    "styleId": "18105",
-    "rules": [
-      {
-        "conditions": {
-          "properties": {
-            "@Datastreams.0.Observations.0.result": [
-              1,
-              1000
-            ]
+        {
+          "conditions": {
+            "properties": {
+              "R": [451, 480]
+            }
+          },
+          "style": {
+            "polygonFillColor": [211, 131, 66, 0.5]
           }
         },
-        "style": {
-          "legendValue": "StadtRäder verfügbar",
-          "type": "icon",
-          "imageName": "stadtrad.png",
-          "clusterImageName": "stadtrad.png",
-          "imageScale": 0.8,
-          "imageOffsetY": 12,
-          "imageOffsetYUnit": "pixel",
-          "clusterImageScale": 0.4,
-          "clusterImageOffsetY": 0.48
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "@Datastreams.0.Observations.0.result": 0
+        {
+          "conditions": {
+            "properties": {
+              "R": [481, 510]
+            }
+          },
+          "style": {
+            "polygonFillColor": [218, 123, 66, 0.5]
           }
         },
-        "style": {
-          "legendValue": "kein StadtRad verfügbar",
-          "type": "icon",
-          "imageName": "stadtrad_grau.png",
-          "clusterImageName": "stadtrad_grau.png",
-          "imageScale": 0.8,
-          "imageOffsetY": 12,
-          "imageOffsetYUnit": "pixel",
-          "clusterImageScale": 0.4,
-          "clusterImageOffsetY": 0.48
+        {
+          "conditions": {
+            "properties": {
+              "R": [511, 540]
+            }
+          },
+          "style": {
+            "polygonFillColor": [224, 116, 66, 0.5]
+          }
+        },
+        {
+          "conditions": {
+            "properties": {
+              "R": [541, 570]
+            }
+          },
+          "style": {
+            "polygonFillColor": [231, 108, 66, 0.5]
+          }
+        },
+        {
+          "conditions": {
+            "properties": {
+              "R": [571, 600]
+            }
+          },
+          "style": {
+            "polygonFillColor": [238, 101, 66, 0.5]
+          }
         }
-      }
-    ]
-  }
-]
+      ]
+    }
+  ]

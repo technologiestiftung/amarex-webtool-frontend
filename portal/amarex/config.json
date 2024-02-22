@@ -8,28 +8,71 @@
         }
       },
       "mapView": {
-        "backgroundImage": "./resources/img/backgroundCanvas.jpeg",
+        "backgroundImage": "",
         "startCenter": [
-          561210,
-          5932600
+            389920,
+            5819697
         ],
         "extent": [
-          510000.0,
-          5850000.0,
-          625000.4,
-          6000000.0
+            310000,
+            5760000,
+            440000,
+            5865000
         ],
-        "startZoomLevel": 1
-      }
+        "epsg": "EPSG:25833",
+        "startZoomLevel": 1,
+        "options": [
+            {
+                "resolution": 52.9,
+                "scale": 200000,
+                "zoomLevel": 0
+            },
+            {
+                "resolution": 28,
+                "scale": 100000,
+                "zoomLevel": 1
+            },
+            {
+                "resolution": 14,
+                "scale": 50000,
+                "zoomLevel": 2
+            },
+            {
+                "resolution": 7,
+                "scale": 25000,
+                "zoomLevel": 3
+            },
+            {
+                "resolution": 2.8,
+                "scale": 10000,
+                "zoomLevel": 4
+            },
+            {
+                "resolution": 1.4,
+                "scale": 5000,
+                "zoomLevel": 5
+            },
+            {
+                "resolution": 0.7,
+                "scale": 2500,
+                "zoomLevel": 6
+            },
+            {
+                "resolution": 0.28,
+                "scale": 1000,
+                "zoomLevel": 7
+            },
+            {
+                "resolution": 0.14,
+                "scale": 500,
+                "zoomLevel": 8
+            }
+        ]
+    }
     },
     "portalFooter": {
       "urls": [
-        {
-          "bezeichnung": "common:modules.portalFooter.designation",
-          "url": "https://geoinfo.hamburg.de/",
-          "alias": "Landesbetrieb Geoinformation und Vermessung",
-          "alias_mobil": "LGV"
-        }
+    
       ]
     },
     "tree": {
@@ -48,10 +91,10 @@
     "mainMenu": {
       "expanded": true,
       "title": {
-        "text": "Basic",
-        "logo": "./resources/img/mp_logo.png",
-        "link": "https://masterportal.org",
-        "toolTip": "Masterportal"
+        "text": "",
+        "logo": "./resources/img/amarex_logo.png",
+        "link": "https://www.amarex-projekt.de/de",
+        "toolTip": "Anpassung des Managements von Regenwasser an Extremereignisse"
       },
       "searchBar": {
         "searchInterfaces": [
@@ -61,9 +104,9 @@
             "serviceId": "11",
             "limit": 10,
             "lang": "de",
-            "lat": 53.6,
-            "lon": 10.0,
-            "bbox": "9.6,53.3,10.4,53.8"
+            "lat": 52.52,
+            "lon": 13.405,
+            "bbox": "13.0883,52.3382,13.7611,52.6755"
           },
           {
             "type": "visibleVector",
@@ -86,32 +129,7 @@
       },
       "sections": [
         [
-          {
-            "type": "fileImport"
-          },
-          {
-            "type": "openConfig"
-          },
-          {
-            "type": "contact",
-            "serviceId": "80001",
-            "includeSystemInfo": true,
-            "from": [
-              {
-                "email": "lgvgeoportal-hilfe@gv.hamburg.de",
-                "name": "LGVGeoportalHilfe"
-              }
-            ],
-            "to": [
-              {
-                "email": "lgvgeoportal-hilfe@gv.hamburg.de",
-                "name": "LGVGeoportalHilfe"
-              }
-            ]
-          },
-          {
-            "type": "language"
-          }
+    
         ]
       ]
     },
@@ -210,174 +228,18 @@
     "baselayer": {
       "elements": [
         {
-          "id": "453",
+          "id": "hintergrund_default_grau",
           "visibility": true
-        },
-        {
-          "id": "452"
-        },
-        {
-          "id": [
-            "717",
-            "718",
-            "719",
-            "720",
-            "13712",
-            "13709",
-            "13714",
-            "13716"
-          ],
-          "name": "Geobasiskarten (farbig)"
-        },
-        {
-          "id": "topplus_wmts",
-          "name": "TopPlusOpen (WMTS)",
-          "typ": "WMTS",
-          "visibility": false,
-          "showInLayerTree": true
-        }
+      }
       ]
     },
     "subjectlayer": {
       "elements": [
-        {
-          "id": "lgvline",
-          "name": "wfst_linie_test",
-          "visibility": false,
-          "typ": "WFS"
-        },
-        {
-          "id": "lgvpoint",
-          "name": "wfst_punkt_test",
-          "visibility": false,
-          "typ": "WFS"
-        },
-        {
-          "id": "lgvpolygon",
-          "name": "wfst_polygon_test",
-          "visibility": false,
-          "typ": "WFS"
-        },
-        {
-          "id": "2426",
-          "name": "WMS Bezirke",
-          "layerAttribution": "<span>Hier Text angeben, der angezeigt wird sobald der Layer sichtbar ist.</span>"
-        },
-        {
-          "id": "4561",
-          "name": "WMS Eventflächen",
-          "maxScale": "100000",
-          "minScale": "40000"
-        },
-        {
-          "id": "3302",
-          "name": "WMS Trinkwasser"
-        },
-        {
-          "id": "2003",
-          "name": "WFS Schutzgebiete",
-          "styleId": "2003",
-          "mouseHoverField": "gebietsname"
-        },
-        {
-          "id": "10882",
-          "name": "WFS Bike and Ride Parkplätze",
-          "styleId": "10882",
-          "clusterDistance": 40,
-          "styleGeometryType": [
-            "Point"
-          ]
-        },
-        {
-          "id": "1711",
-          "name": "WFS Krankenhäuser",
-          "styleId": "1711",
-          "mouseHoverField": "name",
-          "searchField": "name"
-        },
-        {
-          "id": "8712",
-          "name": "WFS Schulen",
-          "styleId": "8712",
-          "mouseHoverField": [
-            "schulname",
-            "kapitelbezeichnung"
-          ],
-          "searchField": [
-            "schulname",
-            "fremdsprache"
-          ]
-        },
-        {
-          "id": "4560",
-          "name": "WFS Polygon (Default Style)"
-        },
-        {
-          "id": "1132",
-          "name": "WFS Point (Default Style)"
-        },
-        {
-          "id": "1133",
-          "name": "WFS Line (Default Style)"
-        },
-        {
-          "id": "18105",
-          "name": "STA Anzahl frei verfügbarer Fahrräder je StadtRad-Station"
-        },
-        {
-          "id": "8712.1",
-          "styleId": "8712.1",
-          "name": "Grundschulen",
-          "wfsFilter": "resources/xml/schulstandort.staatlich.5.grundschulen.xml",
-          "typ": "WFS",
-          "visibility": false,
-          "clusterDistance": 60,
-          "mouseHoverField": [
-            "schulname",
-            "kapitelbezeichnung"
-          ],
-          "showInLayerTree": true
-        },
-        {
-          "id": "8712.2",
-          "styleId": "8712.2",
-          "name": "Stadtteilschulen",
-          "wfsFilter": "resources/xml/schulstandort.staatlich.5.stadtteilschulen.xml",
-          "typ": "WFS",
-          "visibility": false,
-          "clusterDistance": 60,
-          "mouseHoverField": [
-            "schulname",
-            "kapitelbezeichnung"
-          ],
-          "showInLayerTree": true
-        },
-        {
-          "id": "8712.3",
-          "styleId": "8712.3",
-          "name": "Gymnasien",
-          "wfsFilter": "resources/xml/schulstandort.staatlich.5.gymnasien.xml",
-          "typ": "WFS",
-          "visibility": false,
-          "clusterDistance": 60,
-          "mouseHoverField": [
-            "schulname",
-            "kapitelbezeichnung"
-          ]
-        },
-        {
-          "id": "8712.4",
-          "styleId": "8712.4",
-          "name": "Sonderschulen",
-          "wfsFilter": "resources/xml/schulstandort.staatlich.5.sonderschulen.xml",
-          "typ": "WFS",
-          "visibility": false,
-          "clusterDistance": 60,
-          "mouseHoverField": [
-            "schulname",
-            "kapitelbezeichnung"
-          ]
-        }
+  
+      {
+        "id": "wasserhaushalt_2017",
+        "visibility": false
+      }
       ]
     }
   }
