@@ -1,0 +1,7 @@
+[build]
+  command = 'echo "" | npm run build'
+  publish = "dist"
+
+[build.environment]
+  # You can add environment variables here if needed
+
