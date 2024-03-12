@@ -1,3 +1,4 @@
+import AbimoMeasure from "../abimo/components/AbimoMeasure.vue";
 import About from "../about/components/AboutModule.vue";
 import AddWMS from "../addWMS/components/AddWMS.vue";
 import BaselayerSwitcher from "../baselayerSwitcher/components/BaselayerSwitcher.vue";
@@ -44,6 +45,7 @@ import WmsTime from "../wmsTime/components/WmsTime.vue";
 const getters = {
     componentMap: () => {
         const coreModules = {
+            abimo: AbimoMeasure,
             about: About,
             addWMS: AddWMS,
             baselayerSwitcher: BaselayerSwitcher,

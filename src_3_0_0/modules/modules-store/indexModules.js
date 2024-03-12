@@ -1,5 +1,6 @@
 import getters from "./gettersModules";
 
+import Abimo from "../abimo/store/indexAbimo";
 import About from "../about/store/indexAbout";
 import AddWMS from "../addWMS/store/indexAddWMS";
 import BaselayerSwitcher from "../baselayerSwitcher/store/indexBaselayerSwitcher";
@@ -44,6 +45,7 @@ export default {
     getters,
     modules: {
         // modules must be copied, else tests fail in watch mode
+        Abimo: {...Abimo},
         About: {...About},
         AddWMS: {...AddWMS},
         BaselayerSwitcher: {...BaselayerSwitcher},
