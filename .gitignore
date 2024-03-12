@@ -15,11 +15,6 @@
 styleguide
 .history
 
-addons/*
-!addons/readme.txt
-addons/addons_3_0_0/*
-!addons/addons_3_0_0/readme.txt
-
 bowerupdate.log
 build
 coverage
