@@ -111,11 +111,6 @@
           {
             "type": "visibleVector",
             "resultEvents": {
-              "onClick": [
-                "openGetFeatureInfo",
-                "setMarker",
-                "zoomToResult"
-              ],
               "onHover": [
                 "setMarker"
               ]

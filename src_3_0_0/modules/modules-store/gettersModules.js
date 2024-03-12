@@ -11,7 +11,6 @@ import FeatureLister from "../featureLister/components/FeatureLister.vue";
 import FileImport from "../fileImport/components/FileImport.vue";
 import FilterGeneral from "../filter/components/FilterGeneral.vue";
 import Folder from "../menu/components/MenuFolder.vue";
-import GetFeatureInfo from "../getFeatureInfo/components/GetFeatureInfo.vue";
 import GraphicalSelect from "../../shared/modules/graphicalSelect/components/GraphicalSelect.vue";
 import Language from "../language/components/LanguageItem.vue";
 import LayerClusterToggler from "../layerClusterToggler/components/LayerClusterToggler.vue";
@@ -58,7 +57,6 @@ const getters = {
             fileImport: FileImport,
             filter: FilterGeneral,
             folder: Folder,
-            getFeatureInfo: GetFeatureInfo,
             graphicalSelect: GraphicalSelect,
             language: Language,
             layerClusterToggler: LayerClusterToggler,
