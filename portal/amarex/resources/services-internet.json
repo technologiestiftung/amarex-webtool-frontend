@@ -1,5 +1,4 @@
 [
-  
   {
     "id": "hintergrund_default_grau",
     "name": "Hintergrund Berlin",
@@ -12,89 +11,42 @@
     "optionsFromCapabilities": true,
     "crs": "http://www.opengis.net/def/crs/EPSG/0/25833",
     "legend": [
-        "https://sgx.geodatenzentrum.de/wms_basemapde?format=image/png&layer=de_basemapde_web_raster_grau&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles="
+      "https://sgx.geodatenzentrum.de/wms_basemapde?format=image/png&layer=de_basemapde_web_raster_grau&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles="
     ],
     "layerAttribution": "© basemap.de / BKG (Monat) (Jahr)",
     "datasets": [
-        {
-            "md_id": "FE1D2837-ABE0-46B5-9821-BB11BAF22531",
-            "rs_id": "https://registry.gdi-de.org/id/de.bund.bkg.csw/68f48957-a20f-3d93-bd62-e59ce6bd99fa",
-            "csw_url": "https://gdk.gdi-de.org/gdi-de/srv/ger/csw",
-            "show_doc_url": "https://gdz.bkg.bund.de/index.php/default/wmts-basemapde-webraster-wmts-basemapde-webraster.html#"
-        }
-    ]
-},
-{
-  "id": "lades_standorte",
-  "name": "Standorte der E-Ladesäulen",
-  "crs": "urn:ogc:def:crs:EPSG::25833",
-  "url": "https://gdi.berlin.de/services/wfs/eladesaeulen",
-  "typ": "WFS",
-  "featureType": "eladesaeulen:lades_standorte",
-  "featureNS": "eladesaeulen",
-  "datasets": [
       {
-          "md_id": "daa71694-25c5-451f-adeb-8d1c3c0ec305",
-          "rs_id": "https://registry.gdi-de.org/id/de.be.csw/eeebbc13-75dd-3122-965f-2efeabbfc358",
-          "csw_url": "https://gdi.berlin.de/geonetwork/srv/ger/csw"
+        "md_id": "FE1D2837-ABE0-46B5-9821-BB11BAF22531",
+        "rs_id": "https://registry.gdi-de.org/id/de.bund.bkg.csw/68f48957-a20f-3d93-bd62-e59ce6bd99fa",
+        "csw_url": "https://gdk.gdi-de.org/gdi-de/srv/ger/csw",
+        "show_doc_url": "https://gdz.bkg.bund.de/index.php/default/wmts-basemapde-webraster-wmts-basemapde-webraster.html#"
       }
-  ],
-  "gfiAttributes": "showAll"
-},
-{
-  "id": "wasserhaushalt_2017",
-  "styleId": "wasserhaushalt_2017",
-  "name": "Wasserhaushalt 2017",
-  "crs": "urn:ogc:def:crs:EPSG::25833",
-  "url": "https://fbinter.stadt-berlin.de/fb/wfs/data/senstadt/s02_13whaus2017",
-  "typ": "WFS",
-  "featureType": "fis:s02_13whaus2017",
-  "featureNS": "http://www.berlin.de/broker",
-  "datasets": [
-    {
-      "md_id": "9730cd74-bde2-3c74-8145-1b8c6fec9242",
-      "rs_id": "https://registry.gdi-de.org/id/de.be.csw/0d008b8b-84b3-327a-9aa6-8c1ce425e937",
-      "csw_url": "https://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&SERVICE=CSW&VERSION=2.0.2&ID=9730cd74-bde2-3c74-8145-1b8c6fec9242&ELEMENTSETNAME=FULL"
-    }
-  ],
-  "gfiAttributes": "showAll"
-},
-{
-  "id": "lgvline",
-  "name": "de.hh.up:deetest linie",
-  "url": "https://qs-geodienste.hamburg.de/HH_WFS_deetest",
-  "typ": "WFS",
-  "featureType": "deetest_linie",
-  "featurePrefix": "de.hh.up",
-  "outputFormat" : "image/png",
-  "version": "1.1.0",
-  "featureNS": "https://registry.gdi-de.org/id/de.hh.up",
-  "gfiAttributes": "showAll",
-  "gfiTheme": "default",
-  "layerAttribution":"nicht vorhanden",
-"legendURL":"",
-"hitTolerance":"",
-"datasets":[],
-"urlIsVisible":true
-},
-{
-  "id": "lgvpolygon",
-  "name": "de.hh.up:deetest polygon",
-  "url": "https://qs-geodienste.hamburg.de/HH_WFS_deetest",
-  "typ": "WFS",
-  "featureType": "deetest_polygon",
-  "featurePrefix": "de.hh.up",
-  "outputFormat": "image/png",
-  "version": "1.1.0",
-  "featureNS": "https://registry.gdi-de.org/id/de.hh.up",
-  "gfiAttributes": "showAll",
-  "gfiTheme": "default",
-  "layerAttribution":"nicht vorhanden",
-"legendURL":"",
-"hitTolerance":"",
-"datasets":[],
-"urlIsVisible":true
-}
-
-
+    ]
+  },
+  {
+    "id": "basis_abimo",
+    "styleId": "abimo",
+    "name": "Wasserhaushalt 2017",
+    "crs": "urn:ogc:def:crs:EPSG::25833",
+    "url": "https://fbinter.stadt-berlin.de/fb/wfs/data/senstadt/s02_13whaus2017",
+    "typ": "WFS",
+    "featureType": "fis:s02_13whaus2017",
+    "featureNS": "http://www.berlin.de/broker",
+    "datasets": [
+      {
+        "md_id": "9730cd74-bde2-3c74-8145-1b8c6fec9242",
+        "rs_id": "https://registry.gdi-de.org/id/de.be.csw/0d008b8b-84b3-327a-9aa6-8c1ce425e937",
+        "csw_url": "https://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&SERVICE=CSW&VERSION=2.0.2&ID=9730cd74-bde2-3c74-8145-1b8c6fec9242&ELEMENTSETNAME=FULL"
+      }
+    ],
+    "gfiAttributes": "showAll"
+  },
+  {
+    "id": "planung_abimo",
+    "styleId": "abimo",
+    "name": "Planung Abimo",
+    "crs": "urn:ogc:def:crs:EPSG::25833",
+    "typ": "GEOJSON",
+    "gfiAttributes": "showAll"
+  }
 ]

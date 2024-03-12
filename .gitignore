@@ -47,9 +47,3 @@ devtools/proxyconf.json
 devtools/securedServices.js
 lintfixed.html
 npm-debug.log
-
-# ignore all dev portals except the four standard portals
-/portal/*
-!/portal/basic
-!/portal/master
-!/portal/auto
