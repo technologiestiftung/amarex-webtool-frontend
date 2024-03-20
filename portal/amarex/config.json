@@ -10,8 +10,8 @@
       "mapView": {
         "backgroundImage": "",
         "startCenter": [
-            389920,
-            5819697
+          387481,
+          5816672
         ],
         "extent": [
             310000,
@@ -20,7 +20,7 @@
             5865000
         ],
         "epsg": "EPSG:25833",
-        "startZoomLevel": 1,
+        "startZoomLevel": 6,
         "options": [
             {
                 "resolution": 52.9,
@@ -111,11 +111,6 @@
           {
             "type": "visibleVector",
             "resultEvents": {
-              "onClick": [
-                "openGetFeatureInfo",
-                "setMarker",
-                "zoomToResult"
-              ],
               "onHover": [
                 "setMarker"
               ]
@@ -137,88 +132,11 @@
       "expanded": false,
       "sections": [
         [
-          {
-            "type": "wfst",
-            "name": "WFS-T Tool",
-            "layerIds": [
-              "lgvline",
-              "lgvpoint",
-              "lgvpolygon"
-            ],
-            "toggleLayer": false,
-            "lineButton": [
-              {
-                "layerId": "lgvline",
-                "available": true
-              }
-            ],
-            "pointButton": [
-              {
-                "layerId": "lgvpoint",
-                "available": true
-              }
-            ],
-            "polygonButton": [
-              {
-                "layerId": "lgvpolygon",
-                "available": true
-              }
-            ],
-            "update": "Bearbeiten!",
-            "delete": true
+          { 
+            "type": "abimo"
           },
           {
-            "type": "legend"
-          },
-          {
-            "type": "scaleSwitcher"
-          },
-          {
-            "type": "shareView"
-          },
-          {
-            "type": "measure"
-          },
-          {
-            "type": "coordToolkit",
-            "heightLayerId": "19173",
-            "heightElementName": "value_0",
-            "heightValueWater": "-20",
-            "heightValueBuilding": "200",
-            "zoomLevel": 5
-          },
-          {
-            "type": "bufferAnalysis"
-          },
-          {
-            "type": "layerSlider",
-            "layerIds": [
-              {
-                "title": "common:modules.layerSlider.serviceOne",
-                "layerId": "19173"
-              },
-              {
-                "title": "common:modules.layerSlider.serviceTwo",
-                "layerId": "2426"
-              },
-              {
-                "title": "common:modules.layerSlider.serviceThree",
-                "layerId": "8712.2"
-              },
-              {
-                "title": "common:modules.layerSlider.serviceFour",
-                "layerId": "1711"
-              }
-            ]
-          },
-          {
-            "type": "layerClusterToggler",
-            "layerIdList": [
-              "8712.1",
-              "8712.2",
-              "8712.3",
-              "8712.4"
-            ]
+            "type": "selectFeatures"
           }
         ]
       ]
@@ -235,10 +153,13 @@
     },
     "subjectlayer": {
       "elements": [
-  
+        {
+          "id": "planung_abimo",
+          "visibility": true
+        },
       {
-        "id": "wasserhaushalt_2017",
-        "visibility": false
+        "id": "basis_abimo",
+        "visibility": true
       }
       ]
     }

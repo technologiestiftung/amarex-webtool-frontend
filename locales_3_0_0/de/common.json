@@ -35,6 +35,10 @@
     }
   },
   "modules": {
+    "abimo": {
+      "description": "Berechne die Auswirkungen verschiedener RWB Maßnahmen auf die Stadt.",
+      "name": "Abimo - RWB Maßnahmen "
+    },
     "about": {
       "additionalMetadata": "weitere Informationen...",
       "contact": "Ansprechpartner:",

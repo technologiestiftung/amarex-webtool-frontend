@@ -1,5 +1,6 @@
 import getters from "./gettersModules";
 
+import Abimo from "../abimo/store/indexAbimo";
 import About from "../about/store/indexAbout";
 import AddWMS from "../addWMS/store/indexAddWMS";
 import BaselayerSwitcher from "../baselayerSwitcher/store/indexBaselayerSwitcher";
@@ -11,7 +12,6 @@ import Draw_old from "../draw_old/store/indexDraw";
 import FeatureLister from "../featureLister/store/indexFeatureLister";
 import FileImport from "../fileImport/store/indexFileImport";
 import Filter from "../filter/store/indexFilter";
-import GetFeatureInfo from "../getFeatureInfo/store/indexGetFeatureInfo";
 import GraphicalSelect from "../../shared/modules/graphicalSelect/store/indexGraphicalSelect";
 import Language from "../language/store/indexLanguage";
 import LayerClusterToggler from "../layerClusterToggler/store/indexLayerClusterToggler";
@@ -45,6 +45,7 @@ export default {
     getters,
     modules: {
         // modules must be copied, else tests fail in watch mode
+        Abimo: {...Abimo},
         About: {...About},
         AddWMS: {...AddWMS},
         BaselayerSwitcher: {...BaselayerSwitcher},
@@ -56,7 +57,6 @@ export default {
         FeatureLister: {...FeatureLister},
         FileImport: {...FileImport},
         Filter: {...Filter},
-        GetFeatureInfo: {...GetFeatureInfo},
         GraphicalSelect: {...GraphicalSelect},
         Language: {...Language},
         LayerClusterToggler: {...LayerClusterToggler},

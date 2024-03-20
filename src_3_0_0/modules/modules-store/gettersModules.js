@@ -1,3 +1,4 @@
+import AbimoMeasure from "../abimo/components/AbimoMeasure.vue";
 import About from "../about/components/AboutModule.vue";
 import AddWMS from "../addWMS/components/AddWMS.vue";
 import BaselayerSwitcher from "../baselayerSwitcher/components/BaselayerSwitcher.vue";
@@ -11,7 +12,6 @@ import FeatureLister from "../featureLister/components/FeatureLister.vue";
 import FileImport from "../fileImport/components/FileImport.vue";
 import FilterGeneral from "../filter/components/FilterGeneral.vue";
 import Folder from "../menu/components/MenuFolder.vue";
-import GetFeatureInfo from "../getFeatureInfo/components/GetFeatureInfo.vue";
 import GraphicalSelect from "../../shared/modules/graphicalSelect/components/GraphicalSelect.vue";
 import Language from "../language/components/LanguageItem.vue";
 import LayerClusterToggler from "../layerClusterToggler/components/LayerClusterToggler.vue";
@@ -45,6 +45,7 @@ import WmsTime from "../wmsTime/components/WmsTime.vue";
 const getters = {
     componentMap: () => {
         const coreModules = {
+            abimo: AbimoMeasure,
             about: About,
             addWMS: AddWMS,
             baselayerSwitcher: BaselayerSwitcher,
@@ -58,7 +59,6 @@ const getters = {
             fileImport: FileImport,
             filter: FilterGeneral,
             folder: Folder,
-            getFeatureInfo: GetFeatureInfo,
             graphicalSelect: GraphicalSelect,
             language: Language,
             layerClusterToggler: LayerClusterToggler,
