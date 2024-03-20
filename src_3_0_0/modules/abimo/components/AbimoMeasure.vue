@@ -57,6 +57,7 @@ export default {
          * @returns {void}
          */
         createInteractions: function () {
+            // From open layers we imported the Select class. This adds the possibility to add "blocks" to our feature layer. For further info check OpenLayers Docs
             const selectInteraction = new Select({
                 condition: dblclick,
                 removeCondition: never,
@@ -66,8 +67,10 @@ export default {
                 },
             });
 
+            // Add the interaction to the components methods
             this.selectInteraction = selectInteraction;
 
+            // Checks for condition "is selected" and adds/removes the feature accordingly
             selectInteraction.on("select", (event) => {
                 event.selected.forEach((feature) => {
                     this.features.push(feature);
@@ -78,6 +81,7 @@ export default {
                     );
                 });
             });
+            // registers interaction in module - check masterportal docu
             this.addInteractionToMap(selectInteraction);
         },
         measuresToRGB(measure1, measure2, measure3) {
@@ -88,6 +92,8 @@ export default {
             return `rgb(${red},${green},${blue})`;
         },
         createStyle(properties) {
+            // This function transform importet geodata, in this case our ROW to a hard coded colour code.
+
             const rules = [
                     { min: 0, max: 1, color: [108, 245, 66, 1] },
                     { min: 1, max: 50, color: [115, 237, 66, 1] },
@@ -97,7 +103,7 @@ export default {
                     { min: 200, max: 250, color: [142, 207, 66, 1] },
                     { min: 250, max: 300, color: [149, 199, 66, 1] },
                     { min: 300, max: 350, color: [156, 192, 66, 1] },
-                    { min: 350, max: 400, color: [163, 184, 66, 1] }
+                    { min: 350, max: 400, color: [163, 184, 66, 1] },
                 ],
                 matchingRule = rules.find(
                     (rule) =>
@@ -121,10 +127,11 @@ export default {
                 }),
             });
         },
-        mapToOlFeatures(featuresArray) {
+        mapToolFeatures(featuresArray) {
             const sliderValues = this.sliders.map((slider) => slider.value);
 
             return featuresArray.map((featureData) => {
+                //copies the equivalent feature from the selection (data.features), creates a new Feature object from the OpenLayers class and adds further properties within the object
                 const olFeature = new Feature({
                     geometry: featureData.getGeometry(),
                     schl5: featureData.values_.schl5,
@@ -143,9 +150,7 @@ export default {
             });
         },
         addToLayer(features) {
-            const layerSource = this.layer.values_.source;
-
-            layerSource.addFeatures(features);
+            this.layer.values_.source.addFeatures(features);
         },
         logFunctionsAndProperties(obj) {
             const methods = Object.getOwnPropertyNames(obj).filter(
@@ -160,37 +165,16 @@ export default {
             console.warn(JSON.stringify(obj));
         },
         async applyMeasures() {
-            const olFeatures = this.mapToOlFeatures(this.features);
+            // adds the former created OL-Features to the "Planung Abimo" layer
+            const olFeatures = this.mapToolFeatures(this.features);
 
             for (const feature of olFeatures) {
-                const properties = feature.getProperties(),
-                    {
-                        schl5,
-                        r,
-                        verdunstun,
-                        sonstigeWerte,
-                        row,
-                        ri,
-                        regenja,
-                        measure1,
-                        measure2,
-                        measure3,
-                    } = properties,
-                    payload = {
-                        schl5,
-                        r,
-                        verdunstun,
-                        sonstigeWerte,
-                        row,
-                        ri,
-                        regenja,
-                        measure1,
-                        measure2,
-                        measure3,
-                    };
+                const properties = feature.getProperties();
+                const payload = { ...properties };
 
                 try {
                     const response = await fetch(
+                        //TODO: This is a dummy server. Is this running within this repo or is it hosted seperately?
                         "http://localhost:3000/calculate",
                         {
                             method: "POST",
