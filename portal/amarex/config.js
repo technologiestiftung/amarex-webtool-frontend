@@ -1,10 +1,17 @@
 // eslint-disable-next-line no-unused-vars
 const Config = {
     alerting: {
-        fetchBroadcastUrl: "./resources/newsFeedPortalAlerts.json"
+        fetchBroadcastUrl: "./resources/newsFeedPortalAlerts.json",
     },
     namedProjections: [
-        ["EPSG:25833", "+title=ETRS89/UTM 33N +proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"]
+        [
+            "EPSG:25833",
+            "+title=ETRS89/UTM 33N +proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+        ],
+        [
+            "WGS84",
+            "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees",
+        ],
     ],
     layerConf: "./resources/services-internet.json",
     restConf: "./resources/rest-services-internet.json",
@@ -22,9 +29,10 @@ const Config = {
             pt: "Português",
             ru: "Русский",
             tr: "Türkçe",
-            ua: "Українська"
+            ua: "Українська",
         },
         fallbackLanguage: "de",
-        changeLanguageOnStartWhen: ["querystring", "localStorage", "htmlTag"]
-    }
+        changeLanguageOnStartWhen: ["querystring", "localStorage", "htmlTag"],
+    },
 };
+

@@ -48,5 +48,16 @@
     "crs": "urn:ogc:def:crs:EPSG::25833",
     "typ": "GEOJSON",
     "gfiAttributes": "showAll"
+  },
+  {
+    "id": "abimo_pre_calc",
+    "name": "Wasserhaushalt 2020",
+    "typ": "GeoJSON",
+    "visibility": false,
+    "url": "./resources/berlin_2020_abimo.json",
+    "styleId": "abimo_2020",
+    "legend": true,
+    "gfiAttributes": "showAll",
+    "gfiTheme": "default"
   }
 ]

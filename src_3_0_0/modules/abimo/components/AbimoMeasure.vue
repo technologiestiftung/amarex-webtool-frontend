@@ -63,7 +63,7 @@ export default {
                 removeCondition: never,
                 multi: true,
                 layers: function (layer) {
-                    return layer.get("id") === "basis_abimo";
+                    return layer.get("id") === "abimo_pre_calc";
                 },
             });
 
@@ -145,6 +145,7 @@ export default {
                     measure2: sliderValues[1],
                     measure3: sliderValues[2],
                 });
+                console.log(olFeature);
 
                 return olFeature;
             });

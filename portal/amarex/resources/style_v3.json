@@ -5,100 +5,352 @@
       {
         "conditions": {
           "properties": {
-            "Row": [0, 1]
+            "Row": [
+              0,
+              1
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [30, 255, 0, 1]
+          "polygonFillColor": [
+            30,
+            255,
+            0,
+            1
+          ]
         }
       },
       {
         "conditions": {
           "properties": {
-            "Row": [1, 50]
+            "Row": [
+              1,
+              50
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [84, 255, 2, 1]
+          "polygonFillColor": [
+            84,
+            255,
+            2,
+            1
+          ]
         }
       },
       {
         "conditions": {
           "properties": {
-            "Row": [51, 100]
+            "Row": [
+              51,
+              100
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [138, 255, 3, 1]
+          "polygonFillColor": [
+            138,
+            255,
+            3,
+            1
+          ]
         }
       },
       {
         "conditions": {
           "properties": {
-            "Row": [100, 150]
+            "Row": [
+              100,
+              150
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [191, 255, 5, 1]
+          "polygonFillColor": [
+            191,
+            255,
+            5,
+            1
+          ]
         }
       },
       {
         "conditions": {
           "properties": {
-            "Row": [150, 200]
+            "Row": [
+              150,
+              200
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [244, 255, 6, 1]
+          "polygonFillColor": [
+            244,
+            255,
+            6,
+            1
+          ]
         }
       },
       {
         "conditions": {
           "properties": {
-            "Row": [200, 250]
+            "Row": [
+              200,
+              250
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [255, 215, 8, 1]
+          "polygonFillColor": [
+            255,
+            215,
+            8,
+            1
+          ]
         }
       },
       {
         "conditions": {
           "properties": {
-            "Row": [250, 300]
+            "Row": [
+              250,
+              300
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [255, 163, 9, 1]
+          "polygonFillColor": [
+            255,
+            163,
+            9,
+            1
+          ]
         }
       },
       {
         "conditions": {
           "properties": {
-            "Row": [300, 350]
+            "Row": [
+              300,
+              350
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [255, 113, 11, 1]
+          "polygonFillColor": [
+            255,
+            113,
+            11,
+            1
+          ]
         }
       },
       {
         "conditions": {
           "properties": {
-            "Row": [350, 400]
+            "Row": [
+              350,
+              400
+            ]
           }
         },
         "style": {
-          "polygonFillColor": [255, 63, 12, 1]
+          "polygonFillColor": [
+            255,
+            63,
+            12,
+            1
+          ]
         }
       },
-
       {
         "style": {
-          "polygonFillColor": [255, 14, 14, 1]
+          "polygonFillColor": [
+            255,
+            14,
+            14,
+            1
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "abimo_2020",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              0,
+              1
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            30,
+            255,
+            0,
+            1
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              1,
+              50
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            84,
+            255,
+            2,
+            1
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              51,
+              100
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            138,
+            255,
+            3,
+            1
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              100,
+              150
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            191,
+            255,
+            5,
+            1
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              150,
+              200
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            244,
+            255,
+            6,
+            1
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              200,
+              250
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            255,
+            215,
+            8,
+            1
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              250,
+              300
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            255,
+            163,
+            9,
+            1
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              300,
+              350
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            255,
+            113,
+            11,
+            1
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "ROW": [
+              350,
+              400
+            ]
+          }
+        },
+        "style": {
+          "polygonFillColor": [
+            255,
+            63,
+            12,
+            1
+          ]
+        }
+      },
+      {
+        "style": {
+          "polygonFillColor": [
+            255,
+            14,
+            14,
+            1
+          ]
         }
       }
     ]
   }
 ]
-

@@ -14,66 +14,64 @@
           5816672
         ],
         "extent": [
-            310000,
-            5760000,
-            440000,
-            5865000
+          310000,
+          5760000,
+          440000,
+          5865000
         ],
         "epsg": "EPSG:25833",
         "startZoomLevel": 6,
         "options": [
-            {
-                "resolution": 52.9,
-                "scale": 200000,
-                "zoomLevel": 0
-            },
-            {
-                "resolution": 28,
-                "scale": 100000,
-                "zoomLevel": 1
-            },
-            {
-                "resolution": 14,
-                "scale": 50000,
-                "zoomLevel": 2
-            },
-            {
-                "resolution": 7,
-                "scale": 25000,
-                "zoomLevel": 3
-            },
-            {
-                "resolution": 2.8,
-                "scale": 10000,
-                "zoomLevel": 4
-            },
-            {
-                "resolution": 1.4,
-                "scale": 5000,
-                "zoomLevel": 5
-            },
-            {
-                "resolution": 0.7,
-                "scale": 2500,
-                "zoomLevel": 6
-            },
-            {
-                "resolution": 0.28,
-                "scale": 1000,
-                "zoomLevel": 7
-            },
-            {
-                "resolution": 0.14,
-                "scale": 500,
-                "zoomLevel": 8
-            }
+          {
+            "resolution": 52.9,
+            "scale": 200000,
+            "zoomLevel": 0
+          },
+          {
+            "resolution": 28,
+            "scale": 100000,
+            "zoomLevel": 1
+          },
+          {
+            "resolution": 14,
+            "scale": 50000,
+            "zoomLevel": 2
+          },
+          {
+            "resolution": 7,
+            "scale": 25000,
+            "zoomLevel": 3
+          },
+          {
+            "resolution": 2.8,
+            "scale": 10000,
+            "zoomLevel": 4
+          },
+          {
+            "resolution": 1.4,
+            "scale": 5000,
+            "zoomLevel": 5
+          },
+          {
+            "resolution": 0.7,
+            "scale": 2500,
+            "zoomLevel": 6
+          },
+          {
+            "resolution": 0.28,
+            "scale": 1000,
+            "zoomLevel": 7
+          },
+          {
+            "resolution": 0.14,
+            "scale": 500,
+            "zoomLevel": 8
+          }
         ]
-    }
+      }
     },
     "portalFooter": {
-      "urls": [
-    
-      ]
+      "urls": []
     },
     "tree": {
       "addLayerButton": {
@@ -123,16 +121,14 @@
         ]
       },
       "sections": [
-        [
-    
-        ]
+        []
       ]
     },
     "secondaryMenu": {
       "expanded": false,
       "sections": [
         [
-          { 
+          {
             "type": "abimo"
           },
           {
@@ -148,7 +144,7 @@
         {
           "id": "hintergrund_default_grau",
           "visibility": true
-      }
+        }
       ]
     },
     "subjectlayer": {
@@ -157,10 +153,14 @@
           "id": "planung_abimo",
           "visibility": true
         },
-      {
-        "id": "basis_abimo",
-        "visibility": true
-      }
+        {
+          "id": "abimo_pre_calc",
+          "visibility": true
+        },
+        {
+          "id": "basis_abimo",
+          "visibility": false
+        }
       ]
     }
   }
