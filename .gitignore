@@ -8,6 +8,7 @@
 .idea
 .vscode
 .history
+/_extra-files
 /img/*.db
 /jsdoc
 /docHtml

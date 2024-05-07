@@ -9,7 +9,7 @@ const Config = {
             "+title=ETRS89/UTM 33N +proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
         ],
         [
-            "WGS84",
+            "EPSG:4326",
             "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees",
         ],
     ],
