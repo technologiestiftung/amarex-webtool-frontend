@@ -42,6 +42,16 @@
     "gfiAttributes": "showAll"
   },
   {
+    "id": "abimo_geoserver",
+    "styleId": "abimo",
+    "isSecured": true,
+    "name": "Wasserhaushalt 2020 GS",
+    "crs": "EPSG:26918",
+    "url": "https://technologiestiftung-berlin.webgis1.com/geoserver/SmartWater",
+    "typ": "WMS",
+    "gfiAttributes": "showAll"
+  },
+  {
     "id": "planung_abimo",
     "styleId": "abimo",
     "name": "Planung Abimo",
