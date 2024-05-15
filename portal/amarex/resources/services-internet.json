@@ -42,13 +42,15 @@
     "gfiAttributes": "showAll"
   },
   {
-    "id": "abimo_geoserver",
+    "id": "abimo_2020_wfs",
     "styleId": "abimo",
-    "isSecured": true,
-    "name": "Wasserhaushalt 2020 GS",
-    "crs": "EPSG:26918",
-    "url": "https://technologiestiftung-berlin.webgis1.com/geoserver/SmartWater",
-    "typ": "WMS",
+    "name": "Abimo 2020",
+    "crs": "EPSG:25833",
+    "url": "https://technologiestiftung-berlin.webgis1.com/geoserver/SmartWater/wfs",
+    "typ": "WFS",
+    "featureType": "SmartWater:abimo_2020",
+    "featureNS": "http://geoserver.org",
+    "datasets": false,
     "gfiAttributes": "showAll"
   },
   {

@@ -155,10 +155,10 @@
         },
         {
           "id": "basis_abimo",
-          "visibility": true
+          "visibility": false
         },
         {
-          "id": "abimo_geoserver",
+          "id": "abimo_2020_wfs",
           "visibility": true
         }
       ]
