@@ -5,7 +5,7 @@ const Config = {
     },
     namedProjections: [
         [
-            "EPSG:25832",
+            "EPSG:25833",
             "+title=ETRS89/UTM 32N +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
         ],
     ],

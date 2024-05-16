@@ -154,10 +154,6 @@
           "visibility": true
         },
         {
-          "id": "basis_abimo",
-          "visibility": false
-        },
-        {
           "id": "abimo_2020_wfs",
           "visibility": true
         }
