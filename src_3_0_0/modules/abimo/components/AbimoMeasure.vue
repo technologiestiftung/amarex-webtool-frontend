@@ -63,7 +63,7 @@ export default {
                 removeCondition: never,
                 multi: true,
                 layers: function (layer) {
-                    return layer.get("id") === "basis_abimo";
+                    return layer.get("id") === "abimo_2020_wfs";
                 },
             });
 
@@ -77,7 +77,7 @@ export default {
                 });
                 event.deselected.forEach((feature) => {
                     this.features = this.features.filter(
-                        (f) => f.ol_uid !== feature.ol_uid
+                        (f) => f.ol_uid !== feature.ol_uid,
                     );
                 });
             });
@@ -107,7 +107,8 @@ export default {
                 ],
                 matchingRule = rules.find(
                     (rule) =>
-                        properties.row >= rule.min && properties.row <= rule.max
+                        properties.row >= rule.min &&
+                        properties.row <= rule.max,
                 ),
                 fillColor = matchingRule
                     ? matchingRule.color
@@ -118,7 +119,7 @@ export default {
                     color: this.measuresToRGB(
                         properties.measure1,
                         properties.measure2,
-                        properties.measure3
+                        properties.measure3,
                     ),
                     width: 2,
                 }),
@@ -154,10 +155,10 @@ export default {
         },
         logFunctionsAndProperties(obj) {
             const methods = Object.getOwnPropertyNames(obj).filter(
-                    (key) => typeof obj[key] === "function"
+                    (key) => typeof obj[key] === "function",
                 ),
                 properties = Object.getOwnPropertyNames(obj).filter(
-                    (key) => typeof obj[key] !== "function"
+                    (key) => typeof obj[key] !== "function",
                 );
 
             console.warn(methods);
@@ -182,7 +183,7 @@ export default {
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify(payload),
-                        }
+                        },
                     );
 
                     if (!response.ok) {
