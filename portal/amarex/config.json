@@ -155,6 +155,10 @@
         },
         {
           "id": "abimo_2020_wfs",
+          "visibility": false
+        },
+        {
+          "id": "delta_w_wfs",
           "visibility": true
         }
       ]
