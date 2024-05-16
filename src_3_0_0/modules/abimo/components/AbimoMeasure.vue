@@ -165,6 +165,25 @@ export default {
             console.warn(properties);
             console.warn(JSON.stringify(obj));
         },
+        calculatePercentages(feature) {
+            const verdunstun = Math.floor(
+                parseFloat(feature.values_.verdunstun),
+            );
+            const ri = Math.floor(parseFloat(feature.values_.ri));
+            const row = Math.floor(parseFloat(feature.values_.row));
+
+            const total = verdunstun + ri + row;
+
+            const verdunstunPercentage = (verdunstun / total) * 100 - 0.5;
+            const riPercentage = (ri / total) * 100 - 0.5;
+            const rowPercentage = (row / total) * 100 - 0.5;
+
+            return {
+                verdunstunPercentage,
+                riPercentage,
+                rowPercentage,
+            };
+        },
         async applyMeasures() {
             // adds the former created OL-Features to the "Planung Abimo" layer
             const olFeatures = this.mapToolFeatures(this.features);
@@ -223,14 +242,68 @@ export default {
             Maßnahmen anwenden
         </button>
         <ul>
-            <li v-for="feature in features" :key="feature.code">
-                Code: {{ feature.values_.schl5 }}, R: {{ feature.values_.r }}
+            <li
+                v-for="feature in features"
+                :key="feature.code"
+                class="feature-details"
+            >
+                <ul>
+                    <li>
+                        <strong>CODE: {{ feature.values_.code }}</strong>
+                    </li>
+                    <li>
+                        Fläche:
+                        {{ Number(feature.values_.flaeche).toFixed(2) }}m2
+                    </li>
+                    <li style="display: flex">
+                        <div class="bar-1 label" />
+                        Verdunstung:
+                        {{ Number(feature.values_.verdunstun).toFixed(2) }}mm
+                    </li>
+                    <li style="display: flex">
+                        <div class="bar-2 label" />
+                        Versickerung:
+                        {{ Number(feature.values_.ri).toFixed(2) }}mm
+                    </li>
+                    <li style="display: flex">
+                        <div class="bar-3 label" />
+                        Oberflächenabfluss:
+                        {{ Number(feature.values_.row).toFixed(2) }}mm
+                    </li>
+                    <div class="bar-scale">
+                        <div
+                            class="bar bar-1"
+                            :style="{
+                                width:
+                                    calculatePercentages(feature)
+                                        .verdunstunPercentage + '%',
+                            }"
+                        />
+                        <div
+                            class="bar bar-2"
+                            :style="{
+                                width:
+                                    calculatePercentages(feature).riPercentage +
+                                    '%',
+                            }"
+                        />
+
+                        <div
+                            class="bar bar-3"
+                            :style="{
+                                width:
+                                    calculatePercentages(feature)
+                                        .rowPercentage + '%',
+                            }"
+                        />
+                    </div>
+                </ul>
             </li>
         </ul>
     </div>
 </template>
 
-<style type="scss" scoped>
+<style lang="scss" scoped>
 input[type="range"],
 button {
     margin: 5px;
@@ -249,6 +322,39 @@ ul {
 
 li {
     margin-bottom: 10px;
+}
+.feature-details {
+    margin-top: 16px;
+    border-top: 1px solid rgb(125, 210, 214);
+    padding-top: 16px;
+}
+
+.bar-scale {
+    min-width: 290px;
+    height: 16px;
+    display: flex;
+}
+.bar {
+    position: relative;
+    height: 100%;
+}
+
+.bar-1 {
+    background-color: #ff0000;
+}
+
+.bar-2 {
+    background-color: #00ff00;
+}
+
+.bar-3 {
+    background-color: #0000ff;
+}
+
+.label {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
 }
 </style>
 
