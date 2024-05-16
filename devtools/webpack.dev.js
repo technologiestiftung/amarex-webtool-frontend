@@ -9,14 +9,15 @@ const merge = require("webpack-merge"),
     /* eslint-disable no-process-env */
     proxyServer = process.env.HTTPS_PROXY || process.env.HTTP_PROXY,
     /* eslint-disable no-process-env */
-    proxyAgent =
-        proxyServer !== undefined ? new HttpsProxyAgent(proxyServer) : "";
+    proxyAgent = proxyServer !== undefined ? new HttpsProxyAgent(proxyServer) : "";
+
 
 let proxies;
 
 if (fse.existsSync("./devtools/proxyconf.json")) {
     proxies = require("./proxyconf.json");
-} else {
+}
+else {
     proxies = require("./proxyconf_example.json");
 }
 if (fse.existsSync("./devtools/securedServices.js")) {
@@ -28,59 +29,53 @@ if (fse.existsSync("./devtools/securedServices.js")) {
     proxies["/secure_"] = securedServices.pathRewrite(securedProxy);
 }
 
-Object.keys(proxies).forEach((proxy) => {
+Object.keys(proxies).forEach(proxy => {
     if (proxies[proxy].agent !== undefined) {
         proxies[proxy].agent = proxyAgent;
     }
 });
 
 module.exports = function () {
-    return merge.smart(
-        {
-            mode: "development",
-            devtool: "cheap-module-eval-source-map",
-            devServer: {
-                headers: {
-                    "Access-Control-Allow-Origin":
-                        "https://technologiestiftung-berlin.webgis1.com",
-                },
-                https: true,
-                open: false,
-                openPage: "portal/amarex",
-                overlay: true,
-                port: 9001,
-                proxy: proxies,
-                publicPath: "/build/",
+    return merge.smart({
+        mode: "development",
+        devtool: "cheap-module-eval-source-map",
+        devServer: {
+            headers: {
+                "Access-Control-Allow-Origin": "*"
             },
-            module: {
-                rules: [
-                    // Bootstrap Icons werden von bootstrap gelesen
-                    {
-                        test: /bootstrap-icons\.(eot|svg|ttf|woff|woff2)$/,
-                        loader: "file-loader",
-                        options: {
-                            name: "[name].[ext]",
-                            publicPath:
-                                "../../node_modules/bootstrap-icons/font/fonts",
-                        },
-                    },
-                    // alle anderen Schriftarten
-                    {
-                        test: /\.(eot|svg|ttf|woff|woff2)$/,
-                        loader: "file-loader",
-                        options: {
-                            name: "[name].[ext]",
-                            publicPath: "../../src_3_0_0/assets/css/fonts",
-                        },
-                    },
-                ],
-            },
-            // comment in to create a graphical representation of the bundle as html that is automatically displayed in the browser at 'npm run start'
-            // ,plugins: [
-            //     new BundleAnalyzerPlugin()
-            // ]
+            https: true,
+            open: false,
+            openPage: "portal/master",
+            overlay: true,
+            port: 9001,
+            proxy: proxies,
+            publicPath: "/build/"
         },
-        new Common()
-    );
+        module: {
+            rules: [
+                // Bootstrap Icons werden von bootstrap gelesen
+                {
+                    test: /bootstrap-icons\.(eot|svg|ttf|woff|woff2)$/,
+                    loader: "file-loader",
+                    options: {
+                        name: "[name].[ext]",
+                        publicPath: "../../node_modules/bootstrap-icons/font/fonts"
+                    }
+                },
+                // alle anderen Schriftarten
+                {
+                    test: /\.(eot|svg|ttf|woff|woff2)$/,
+                    loader: "file-loader",
+                    options: {
+                        name: "[name].[ext]",
+                        publicPath: "../../src_3_0_0/assets/css/fonts"
+                    }
+                }
+            ]
+        }
+        // comment in to create a graphical representation of the bundle as html that is automatically displayed in the browser at 'npm run start'
+        // ,plugins: [
+        //     new BundleAnalyzerPlugin()
+        // ]
+    }, new Common());
 };
-
