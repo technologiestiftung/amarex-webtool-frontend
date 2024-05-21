@@ -58,118 +58,73 @@
             "resolution": 0.14,
             "scale": 500,
             "zoomLevel": 8
-          },
-          {
-            "resolution": 52.9,
-            "scale": 200000,
-            "zoomLevel": 0
-          },
-          {
-            "resolution": 28,
-            "scale": 100000,
-            "zoomLevel": 1
-          },
-          {
-            "resolution": 14,
-            "scale": 50000,
-            "zoomLevel": 2
-          },
-          {
-            "resolution": 7,
-            "scale": 25000,
-            "zoomLevel": 3
-          },
-          {
-            "resolution": 2.8,
-            "scale": 10000,
-            "zoomLevel": 4
-          },
-          {
-            "resolution": 1.4,
-            "scale": 5000,
-            "zoomLevel": 5
-          },
-          {
-            "resolution": 0.7,
-            "scale": 2500,
-            "zoomLevel": 6
-          },
-          {
-            "resolution": 0.28,
-            "scale": 1000,
-            "zoomLevel": 7
-          },
-          {
-            "resolution": 0.14,
-            "scale": 500,
-            "zoomLevel": 8
           }
         ]
       }
-    }
-  },
-  "portalFooter": {
-    "urls": []
-  },
-  "tree": {
-    "addLayerButton": {
-      "active": false,
-      "searchBar": {
-        "active": true,
-        "searchInterfaceInstanceId": "elasticSearch_0",
-        "searchCategory": "Thema (externe Fachdaten)"
+    },
+    "portalFooter": {
+      "urls": []
+    },
+    "tree": {
+      "addLayerButton": {
+        "active": false,
+        "searchBar": {
+          "active": true,
+          "searchInterfaceInstanceId": "elasticSearch_0",
+          "searchCategory": "Thema (externe Fachdaten)"
+        }
+      },
+      "highlightedFeatures": {
+        "active": true
       }
     },
-    "highlightedFeatures": {
-      "active": true
-    }
-  },
-  "mainMenu": {
-    "expanded": true,
-    "title": {
-      "text": "",
-      "logo": "./resources/img/amarex_logo.png",
-      "link": "https://www.amarex-projekt.de/de",
-      "toolTip": "Anpassung des Managements von Regenwasser an Extremereignisse"
-    },
-    "searchBar": {
-      "searchInterfaces": [
-        {
-          "type": "komootPhoton",
-          "minChars": 3,
-          "serviceId": "11",
-          "limit": 10,
-          "lang": "de",
-          "lat": 52.52,
-          "lon": 13.405,
-          "bbox": "13.0883,52.3382,13.7611,52.6755"
-        },
-        {
-          "type": "visibleVector",
-          "resultEvents": {
-            "onHover": ["setMarker"]
+    "mainMenu": {
+      "expanded": true,
+      "title": {
+        "text": "",
+        "logo": "./resources/img/amarex_logo.png",
+        "link": "https://www.amarex-projekt.de/de",
+        "toolTip": "Anpassung des Managements von Regenwasser an Extremereignisse"
+      },
+      "searchBar": {
+        "searchInterfaces": [
+          {
+            "type": "komootPhoton",
+            "minChars": 3,
+            "serviceId": "11",
+            "limit": 10,
+            "lang": "de",
+            "lat": 52.52,
+            "lon": 13.405,
+            "bbox": "13.0883,52.3382,13.7611,52.6755"
+          },
+          {
+            "type": "visibleVector",
+            "resultEvents": {
+              "onHover": ["setMarker"]
+            }
+          },
+          {
+            "type": "topicTree",
+            "hitTemplate": "layer"
           }
-        },
-        {
-          "type": "topicTree",
-          "hitTemplate": "layer"
-        }
-      ]
+        ]
+      },
+      "sections": [[]]
     },
-    "sections": [[]]
-  },
-  "secondaryMenu": {
-    "expanded": false,
-    "sections": [
-      [
-        {
-          "type": "abimo"
-        },
-        {
-          "type": "selectFeatures"
-        }
+    "secondaryMenu": {
+      "expanded": false,
+      "sections": [
+        [
+          {
+            "type": "abimo"
+          },
+          {
+            "type": "selectFeatures"
+          }
+        ]
       ]
-    ]
+    }
   },
   "layerConfig": {
     "baselayer": {
