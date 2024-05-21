@@ -4,9 +4,9 @@ import actions from "./actionsGraphicalSelect";
 import state from "./stateGraphicalSelect";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    mutations,
-    getters,
-    actions
+  namespaced: true,
+  state: { ...state },
+  mutations,
+  getters,
+  actions,
 };

@@ -6,9 +6,9 @@
  * @property {String[]} supportedMapModes Map mode in which this module can be used.
  */
 const state = {
-    icon: "skip-backward-fill",
-    supportedDevices: ["Desktop"],
-    supportedMapModes: ["2D", "3D"]
+  icon: "skip-backward-fill",
+  supportedDevices: ["Desktop"],
+  supportedMapModes: ["2D", "3D"],
 };
 
 export default state;

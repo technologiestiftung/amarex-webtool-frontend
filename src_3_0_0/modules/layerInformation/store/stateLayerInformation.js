@@ -1,5 +1,5 @@
 /**
-* The state of the layerInformation.
+ * The state of the layerInformation.
  * @module modules/layerInformation/store/stateLayerInformation
  *
  * @property {String} [abstractText=""] the abstract Info text
@@ -19,19 +19,19 @@
  * @property {String} [type="layerInformation"] the type of layer information
  */
 export default {
-    abstractText: "",
-    customText: null,
-    datePublication: "",
-    downloadLinks: null,
-    icon: "bi-info-circle",
-    layerInfo: {},
-    menuSide: "mainMenu",
-    metaDataCatalogueId: "2",
-    metaURLs: [],
-    name: "common:modules.layerInformation.name",
-    noMetadataLoaded: "",
-    periodicityKey: "",
-    showUrlGlobal: null,
-    title: "",
-    type: "layerInformation"
+  abstractText: "",
+  customText: null,
+  datePublication: "",
+  downloadLinks: null,
+  icon: "bi-info-circle",
+  layerInfo: {},
+  menuSide: "mainMenu",
+  metaDataCatalogueId: "2",
+  metaURLs: [],
+  name: "common:modules.layerInformation.name",
+  noMetadataLoaded: "",
+  periodicityKey: "",
+  showUrlGlobal: null,
+  title: "",
+  type: "layerInformation",
 };

@@ -18,20 +18,20 @@
 
 // for the general buttons
 .btn-icon {
-    padding-right: 1.5rem;
-    padding-left: 1rem;
-   i {
-        font-size: 1.125rem;
-        padding-right: .5rem;
-   }
+  padding-right: 1.5rem;
+  padding-left: 1rem;
+  i {
+    font-size: 1.125rem;
+    padding-right: 0.5rem;
+  }
 }
 
 // important for control-buttons
 .bootstrap-icon {
-    position: relative;
-    line-height: 1;
-    display: inline-block;
-    vertical-align: middle;
+  position: relative;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 // 4. Include any optional Bootstrap CSS as needed
@@ -74,22 +74,25 @@
 // 6. Add additional custom code here
 // we need to overwrite the bootstrap nav styles to be conform with accessibility (contrast ratio)
 
-.form-select-sm, .form-control-sm, .form-select, .form-control {
-    font-size: inherit;
+.form-select-sm,
+.form-control-sm,
+.form-select,
+.form-control {
+  font-size: inherit;
 }
 
 .form-floating > label {
-    padding: .75rem;
+  padding: 0.75rem;
 }
 
 .form-floating > .form-select:focus ~ label {
-    color: $secondary;
+  color: $secondary;
 }
 
 .bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .accordion-button:not(.collapsed) {
-    color: $dark_blue;
+  color: $dark_blue;
 }

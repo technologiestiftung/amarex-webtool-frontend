@@ -14,16 +14,21 @@ import layerFactory from "../../../core/layers/js/layerFactory";
  * @param {String} [searchInterfaceId="topicTree"] The id of the service interface.
  * @returns {void}
  */
-export default function SearchInterfaceTopicTree ({hitTemplate, resultEvents, searchInterfaceId} = {}) {
-    SearchInterface.call(this,
-        "client",
-        searchInterfaceId || "topicTree",
-        resultEvents || {
-            onClick: ["activateLayerInTopicTree"],
-            buttons: ["showInTree", "showLayerInfo"]
-        },
-        hitTemplate
-    );
+export default function SearchInterfaceTopicTree({
+  hitTemplate,
+  resultEvents,
+  searchInterfaceId,
+} = {}) {
+  SearchInterface.call(
+    this,
+    "client",
+    searchInterfaceId || "topicTree",
+    resultEvents || {
+      onClick: ["activateLayerInTopicTree"],
+      buttons: ["showInTree", "showLayerInfo"],
+    },
+    hitTemplate,
+  );
 }
 
 SearchInterfaceTopicTree.prototype = Object.create(SearchInterface.prototype);
@@ -35,15 +40,21 @@ SearchInterfaceTopicTree.prototype = Object.create(SearchInterface.prototype);
  * @returns {void}
  */
 SearchInterfaceTopicTree.prototype.search = async function (searchInput) {
-    this.searchState = "running";
-    const searchInputRegExp = this.createRegExp(searchInput),
-        foundLayers = this.searchInLayers(store.getters.allLayerConfigs, searchInputRegExp),
-        foundFolders = this.searchInFolders(store.getters.layerConfig, searchInputRegExp);
+  this.searchState = "running";
+  const searchInputRegExp = this.createRegExp(searchInput),
+    foundLayers = this.searchInLayers(
+      store.getters.allLayerConfigs,
+      searchInputRegExp,
+    ),
+    foundFolders = this.searchInFolders(
+      store.getters.layerConfig,
+      searchInputRegExp,
+    );
 
-    this.pushHitsToSearchResults(foundLayers.concat(foundFolders));
+  this.pushHitsToSearchResults(foundLayers.concat(foundFolders));
 
-    this.searchState = "finished";
-    return this.searchResults;
+  this.searchState = "finished";
+  return this.searchResults;
 };
 
 /**
@@ -52,10 +63,13 @@ SearchInterfaceTopicTree.prototype.search = async function (searchInput) {
  * @return {String} The search input as regExp String.
  */
 SearchInterfaceTopicTree.prototype.createRegExp = function (searchInput) {
-    const string = searchInput.replace(/ /g, ""),
-        searchInputRegExp = new RegExp(string.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"), "i");
+  const string = searchInput.replace(/ /g, ""),
+    searchInputRegExp = new RegExp(
+      string.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
+      "i",
+    );
 
-    return searchInputRegExp;
+  return searchInputRegExp;
 };
 
 /**
@@ -65,31 +79,40 @@ SearchInterfaceTopicTree.prototype.createRegExp = function (searchInput) {
  * @param {String} searchInputRegExp The search input as regExp String.
  * @returns {Object[]} The found layers.
  */
-SearchInterfaceTopicTree.prototype.searchInLayers = function (layerConfigs, searchInputRegExp) {
-    const foundLayers = [];
+SearchInterfaceTopicTree.prototype.searchInLayers = function (
+  layerConfigs,
+  searchInputRegExp,
+) {
+  const foundLayers = [];
 
-    layerConfigs.forEach(layer => {
+  layerConfigs.forEach((layer) => {
+    if (
+      store.getters["Maps/mode"] === "3D" ||
+      !layerFactory.getLayerTypes3d().includes(layer?.typ?.toUpperCase())
+    ) {
+      const datasets = layer.datasets;
+      let searchString = "",
+        datasetsExist = false;
 
-        if (store.getters["Maps/mode"] === "3D" || !layerFactory.getLayerTypes3d().includes(layer?.typ?.toUpperCase())) {
-            const datasets = layer.datasets;
-            let searchString = "",
-                datasetsExist = false;
+      if (
+        Array.isArray(datasets) &&
+        datasets.length > 0 &&
+        typeof datasets[0].md_name === "string"
+      ) {
+        searchString = layer.datasets[0].md_name.replace(/ /g, "");
+        datasetsExist = true;
+      }
+      if (typeof layer.name === "string") {
+        searchString = layer.name.replace(/ /g, "");
+      }
 
-            if (Array.isArray(datasets) && datasets.length > 0 && typeof datasets[0].md_name === "string") {
-                searchString = layer.datasets[0].md_name.replace(/ /g, "");
-                datasetsExist = true;
-            }
-            if (typeof layer.name === "string") {
-                searchString = layer.name.replace(/ /g, "");
-            }
+      if (searchString.search(searchInputRegExp) !== -1) {
+        foundLayers.push(this.normalizeLayerResult(layer, datasetsExist));
+      }
+    }
+  });
 
-            if (searchString.search(searchInputRegExp) !== -1) {
-                foundLayers.push(this.normalizeLayerResult(layer, datasetsExist));
-            }
-        }
-    });
-
-    return foundLayers;
+  return foundLayers;
 };
 
 /**
@@ -98,15 +121,18 @@ SearchInterfaceTopicTree.prototype.searchInLayers = function (layerConfigs, sear
  * @param {Boolean} datasetsExist Is true, if layer has datasets.
  * @returns {Object} The normalized layer search result.
  */
-SearchInterfaceTopicTree.prototype.normalizeLayerResult = function (layer, datasetsExist) {
-    return {
-        events: this.normalizeResultEvents(this.resultEvents, layer),
-        category: i18next.t("common:modules.searchBar.type.topic"),
-        icon: "bi-stack",
-        id: layer.id,
-        name: layer.name,
-        toolTip: datasetsExist ? layer.datasets[0].md_name : ""
-    };
+SearchInterfaceTopicTree.prototype.normalizeLayerResult = function (
+  layer,
+  datasetsExist,
+) {
+  return {
+    events: this.normalizeResultEvents(this.resultEvents, layer),
+    category: i18next.t("common:modules.searchBar.type.topic"),
+    icon: "bi-stack",
+    id: layer.id,
+    name: layer.name,
+    toolTip: datasetsExist ? layer.datasets[0].md_name : "",
+  };
 };
 
 /**
@@ -115,21 +141,24 @@ SearchInterfaceTopicTree.prototype.normalizeLayerResult = function (layer, datas
  * @param {String} searchInputRegExp The search input as regExp String.
  * @returns {Object[]} The found folders.
  */
-SearchInterfaceTopicTree.prototype.searchInFolders = function (layerConfig, searchInputRegExp) {
-    const folders = [],
-        foundFolders = [];
+SearchInterfaceTopicTree.prototype.searchInFolders = function (
+  layerConfig,
+  searchInputRegExp,
+) {
+  const folders = [],
+    foundFolders = [];
 
-    Object.keys(layerConfig).forEach(parentKeys => {
-        this.searchInFolder(layerConfig[parentKeys], folders);
-    });
+  Object.keys(layerConfig).forEach((parentKeys) => {
+    this.searchInFolder(layerConfig[parentKeys], folders);
+  });
 
-    folders.forEach(folder => {
-        if (folder.name.search(searchInputRegExp) !== -1) {
-            foundFolders.push(this.normalizeFolderResult(folder));
-        }
-    });
+  folders.forEach((folder) => {
+    if (folder.name.search(searchInputRegExp) !== -1) {
+      foundFolders.push(this.normalizeFolderResult(folder));
+    }
+  });
 
-    return foundFolders;
+  return foundFolders;
 };
 
 /**
@@ -139,12 +168,12 @@ SearchInterfaceTopicTree.prototype.searchInFolders = function (layerConfig, sear
  * @returns {void}
  */
 SearchInterfaceTopicTree.prototype.searchInFolder = function (folder, folders) {
-    folder?.elements?.forEach(element => {
-        if (element?.type === "folder") {
-            this.searchInFolder(element, folders);
-            folders.push(element);
-        }
-    });
+  folder?.elements?.forEach((element) => {
+    if (element?.type === "folder") {
+      this.searchInFolder(element, folders);
+      folders.push(element);
+    }
+  });
 };
 
 /**
@@ -153,22 +182,24 @@ SearchInterfaceTopicTree.prototype.searchInFolder = function (folder, folders) {
  * @returns {Object} The normalized folder search result.
  */
 SearchInterfaceTopicTree.prototype.normalizeFolderResult = function (folder) {
-    const folderResultEvents = {...this.resultEvents},
-        activateLayerIndex = folderResultEvents.onClick.indexOf("activateLayerInTopicTree"),
-        showInTreeIndex = folderResultEvents.buttons.indexOf("showInTree"),
-        showLayerInfoIndex = folderResultEvents.buttons.indexOf("showLayerInfo");
+  const folderResultEvents = { ...this.resultEvents },
+    activateLayerIndex = folderResultEvents.onClick.indexOf(
+      "activateLayerInTopicTree",
+    ),
+    showInTreeIndex = folderResultEvents.buttons.indexOf("showInTree"),
+    showLayerInfoIndex = folderResultEvents.buttons.indexOf("showLayerInfo");
 
-    delete folderResultEvents.onClick[activateLayerIndex];
-    delete folderResultEvents.buttons[showInTreeIndex];
-    delete folderResultEvents.buttons[showLayerInfoIndex];
+  delete folderResultEvents.onClick[activateLayerIndex];
+  delete folderResultEvents.buttons[showInTreeIndex];
+  delete folderResultEvents.buttons[showLayerInfoIndex];
 
-    return {
-        events: this.normalizeResultEvents(folderResultEvents, folder),
-        category: i18next.t("common:modules.searchBar.type.folder"),
-        icon: "bi-folder",
-        id: `${folder.type}_${folder.name}`,
-        name: folder.name
-    };
+  return {
+    events: this.normalizeResultEvents(folderResultEvents, folder),
+    category: i18next.t("common:modules.searchBar.type.folder"),
+    icon: "bi-folder",
+    id: `${folder.type}_${folder.name}`,
+    name: folder.name,
+  };
 };
 
 /**
@@ -178,22 +209,24 @@ SearchInterfaceTopicTree.prototype.normalizeFolderResult = function (folder) {
  * @param {Object} searchResult The search result of topic tree.
  * @returns {Object} The possible actions.
  */
-SearchInterfaceTopicTree.prototype.createPossibleActions = function (searchResult) {
-    const possibleActions = {};
+SearchInterfaceTopicTree.prototype.createPossibleActions = function (
+  searchResult,
+) {
+  const possibleActions = {};
 
-    if (searchResult.type !== "folder") {
-        Object.assign(possibleActions, {
-            activateLayerInTopicTree: {
-                layerId: searchResult.id
-            },
-            showInTree: {
-                layerId: searchResult.id
-            },
-            showLayerInfo: {
-                layerId: searchResult.id
-            }
-        });
-    }
+  if (searchResult.type !== "folder") {
+    Object.assign(possibleActions, {
+      activateLayerInTopicTree: {
+        layerId: searchResult.id,
+      },
+      showInTree: {
+        layerId: searchResult.id,
+      },
+      showLayerInfo: {
+        layerId: searchResult.id,
+      },
+    });
+  }
 
-    return possibleActions;
+  return possibleActions;
 };

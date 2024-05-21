@@ -21,21 +21,21 @@ import Zoom from "../zoom/store/indexZoom";
  * addons to register themselves via mutation.
  */
 export default {
-    namespaced: true,
-    modules: {
-        BackForward,
-        Button3d,
-        Freeze,
-        FullScreen,
-        Orientation,
-        Rotation,
-        StartModule,
-        TiltView,
-        TotalView,
-        Zoom
-    },
-    actions,
-    getters,
-    mutations,
-    state
+  namespaced: true,
+  modules: {
+    BackForward,
+    Button3d,
+    Freeze,
+    FullScreen,
+    Orientation,
+    Rotation,
+    StartModule,
+    TiltView,
+    TotalView,
+    Zoom,
+  },
+  actions,
+  getters,
+  mutations,
+  state,
 };

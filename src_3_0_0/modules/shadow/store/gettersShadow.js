@@ -1,8 +1,8 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateShadow from "./stateShadow";
 
 const getters = {
-    ...generateSimpleGetters(stateShadow)
+  ...generateSimpleGetters(stateShadow),
 };
 
 export default getters;

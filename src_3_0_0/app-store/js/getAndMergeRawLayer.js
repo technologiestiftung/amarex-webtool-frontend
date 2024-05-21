@@ -1,6 +1,6 @@
-import {rawLayerList} from "@masterportal/masterportalapi/src";
+import { rawLayerList } from "@masterportal/masterportalapi/src";
 import omit from "../../shared/js/utils/omit";
-import {updateProxyUrl} from "./getProxyUrl";
+import { updateProxyUrl } from "./getProxyUrl";
 import layerFactory from "../../core/layers/js/layerFactory";
 
 let zIndex = 1;
@@ -14,11 +14,14 @@ let zIndex = 1;
  * @param {Object} [showAllLayerInTree="false"] if true, all layers get the attribute showInLayerTree=true
  * @returns {Object} the extended and merged raw layer
  */
-export function getAndMergeRawLayer (layerConf, showAllLayerInTree = false) {
-    const rawLayer = mergeRawLayer(layerConf, rawLayerList.getLayerWhere({id: splitId(layerConf?.id)}));
+export function getAndMergeRawLayer(layerConf, showAllLayerInTree = false) {
+  const rawLayer = mergeRawLayer(
+    layerConf,
+    rawLayerList.getLayerWhere({ id: splitId(layerConf?.id) }),
+  );
 
-    // use layerConf, if layer is not available in rawLayerList (services.json)
-    return addAdditional(rawLayer || layerConf, showAllLayerInTree);
+  // use layerConf, if layer is not available in rawLayerList (services.json)
+  return addAdditional(rawLayer || layerConf, showAllLayerInTree);
 }
 
 /**
@@ -27,12 +30,12 @@ export function getAndMergeRawLayer (layerConf, showAllLayerInTree = false) {
  * @param {String} [seperator=#] The seperator to split by.
  * @returns {String} The first part of the id.
  */
-function splitId (id, seperator = ".") {
-    if (typeof id === "string") {
-        return id.split(seperator)[0];
-    }
+function splitId(id, seperator = ".") {
+  if (typeof id === "string") {
+    return id.split(seperator)[0];
+  }
 
-    return id;
+  return id;
 }
 
 /**
@@ -46,24 +49,25 @@ function splitId (id, seperator = ".") {
  * @param {Object} [showAllLayerInTree="false"] if true, all layers get the attribute showInLayerTree=true
  * @returns {Object} The raw layer
  */
-export function addAdditional (rawLayer, showAllLayerInTree = false) {
-    if (rawLayer) {
-        const layerTypes3d = layerFactory.getLayerTypes3d();
+export function addAdditional(rawLayer, showAllLayerInTree = false) {
+  if (rawLayer) {
+    const layerTypes3d = layerFactory.getLayerTypes3d();
 
-        rawLayer.type = "layer";
-        if (showAllLayerInTree || rawLayer.visibility) {
-            rawLayer.showInLayerTree = true;
-        }
-        else if (!Object.prototype.hasOwnProperty.call(rawLayer, "showInLayerTree")) {
-            rawLayer.showInLayerTree = false;
-        }
-        if (rawLayer.showInLayerTree === true) {
-            rawLayer.zIndex = zIndex++;
-        }
-        rawLayer.is3DLayer = layerTypes3d.includes(rawLayer.typ?.toUpperCase());
+    rawLayer.type = "layer";
+    if (showAllLayerInTree || rawLayer.visibility) {
+      rawLayer.showInLayerTree = true;
+    } else if (
+      !Object.prototype.hasOwnProperty.call(rawLayer, "showInLayerTree")
+    ) {
+      rawLayer.showInLayerTree = false;
     }
+    if (rawLayer.showInLayerTree === true) {
+      rawLayer.zIndex = zIndex++;
+    }
+    rawLayer.is3DLayer = layerTypes3d.includes(rawLayer.typ?.toUpperCase());
+  }
 
-    return rawLayer;
+  return rawLayer;
 }
 
 /**
@@ -74,26 +78,24 @@ export function addAdditional (rawLayer, showAllLayerInTree = false) {
  * @param {Object} rawLayer raw layer from services.json
  * @returns {Object} the extended and merged raw layer
  */
-function mergeRawLayer (layerConf, rawLayer) {
-    let mergedLayer;
+function mergeRawLayer(layerConf, rawLayer) {
+  let mergedLayer;
 
-    if (layerConf) {
-        if (Array.isArray(layerConf.id)) {
-            mergedLayer = mergeLayerWithSeveralIds(layerConf);
-        }
-        else if (layerConf.children) {
-            mergedLayer = fillGroupLayer(layerConf);
-        }
-        else if (rawLayer !== undefined && rawLayer !== null) {
-            mergedLayer = {...rawLayer, ...layerConf};
-        }
+  if (layerConf) {
+    if (Array.isArray(layerConf.id)) {
+      mergedLayer = mergeLayerWithSeveralIds(layerConf);
+    } else if (layerConf.children) {
+      mergedLayer = fillGroupLayer(layerConf);
+    } else if (rawLayer !== undefined && rawLayer !== null) {
+      mergedLayer = { ...rawLayer, ...layerConf };
     }
+  }
 
-    if (mergedLayer?.useProxy === true) {
-        updateProxyUrl(mergedLayer);
-    }
+  if (mergedLayer?.useProxy === true) {
+    updateProxyUrl(mergedLayer);
+  }
 
-    return mergedLayer;
+  return mergedLayer;
 }
 
 /**
@@ -101,37 +103,45 @@ function mergeRawLayer (layerConf, rawLayer) {
  * @param {Object} layerConf configuartion of layer like in the config.json
  * @returns {Object} the grouped layers children are filled with the rawlayers.
  */
-function fillGroupLayer (layerConf) {
-    // refactored from parserCustomTree.js, parseTree
-    let rawLayer = {...layerConf};
+function fillGroupLayer(layerConf) {
+  // refactored from parserCustomTree.js, parseTree
+  let rawLayer = { ...layerConf };
 
-    if (rawLayer?.children && typeof rawLayer.id === "string") {
-        rawLayer.children = rawLayer.children.map(childLayer => {
-            let objFromRawList = null;
+  if (rawLayer?.children && typeof rawLayer.id === "string") {
+    rawLayer.children = rawLayer.children.map((childLayer) => {
+      let objFromRawList = null;
 
-            if (childLayer.styles && childLayer.styles[0]) {
-                objFromRawList = rawLayerList.getLayerWhere({id: childLayer.id + childLayer.styles[0]});
-            }
-            if (objFromRawList === null || objFromRawList === undefined) {
-                objFromRawList = rawLayerList.getLayerWhere({id: childLayer.id});
-            }
-            if (objFromRawList !== null && objFromRawList !== undefined) {
-                return Object.assign(objFromRawList, childLayer);
-            }
-            console.error("A layer of the group \"" + rawLayer.name + "\" with id: " + childLayer.id + " was not created. Id not contained in services.json.");
-            return undefined;
+      if (childLayer.styles && childLayer.styles[0]) {
+        objFromRawList = rawLayerList.getLayerWhere({
+          id: childLayer.id + childLayer.styles[0],
         });
+      }
+      if (objFromRawList === null || objFromRawList === undefined) {
+        objFromRawList = rawLayerList.getLayerWhere({ id: childLayer.id });
+      }
+      if (objFromRawList !== null && objFromRawList !== undefined) {
+        return Object.assign(objFromRawList, childLayer);
+      }
+      console.error(
+        'A layer of the group "' +
+          rawLayer.name +
+          '" with id: ' +
+          childLayer.id +
+          " was not created. Id not contained in services.json.",
+      );
+      return undefined;
+    });
 
-        rawLayer.children = rawLayer.children.filter(function (childLayer) {
-            return childLayer !== undefined;
-        });
+    rawLayer.children = rawLayer.children.filter(function (childLayer) {
+      return childLayer !== undefined;
+    });
 
-        if (rawLayer.children.length > 0) {
-            rawLayer = Object.assign(rawLayer, {typ: "GROUP"});
-        }
-        return rawLayer;
+    if (rawLayer.children.length > 0) {
+      rawLayer = Object.assign(rawLayer, { typ: "GROUP" });
     }
-    return undefined;
+    return rawLayer;
+  }
+  return undefined;
 }
 
 /**
@@ -139,39 +149,42 @@ function fillGroupLayer (layerConf) {
  * @param {Object} layerConf configuartion of layer like in the config.json with ids in an array
  * @returns {Object|undefined} the merged raw layer or undefined if layer cannot be merged
  */
-function mergeLayerWithSeveralIds (layerConf) {
-    // refactored from parser.js, mergeexistingLayers and parserCustomTree.js, parseTree
-    const ids = layerConf.id,
-        existingLayers = [],
-        maxScales = [],
-        minScales = [];
-    let mergedLayer = {};
+function mergeLayerWithSeveralIds(layerConf) {
+  // refactored from parser.js, mergeexistingLayers and parserCustomTree.js, parseTree
+  const ids = layerConf.id,
+    existingLayers = [],
+    maxScales = [],
+    minScales = [];
+  let mergedLayer = {};
 
-    ids?.forEach(id => {
-        const layer = rawLayerList.getLayerWhere({id: splitId(id)});
+  ids?.forEach((id) => {
+    const layer = rawLayerList.getLayerWhere({ id: splitId(id) });
 
-        if (layer) {
-            existingLayers.push(layer);
-        }
-        else {
-            console.warn("Layer with id ", id, " not found in services.json. Layers will no be merged!");
-        }
-    });
-    if (existingLayers.length !== ids.length || ids.length === 0) {
-        return undefined;
+    if (layer) {
+      existingLayers.push(layer);
+    } else {
+      console.warn(
+        "Layer with id ",
+        id,
+        " not found in services.json. Layers will no be merged!",
+      );
     }
-    mergedLayer = {...existingLayers[0]};
-    mergedLayer.layers = existingLayers.map(value => value.layers).toString();
-    existingLayers.forEach(object => {
-        maxScales.push(parseInt(object.maxScale, 10));
-        minScales.push(parseInt(object.minScale, 10));
-    });
-    mergedLayer.maxScale = Math.max(...maxScales);
-    mergedLayer.minScale = Math.min(...minScales);
-    // sets all attributes from config at merged layer besides id-array
-    mergedLayer = Object.assign(mergedLayer, omit(layerConf, ["id"], false));
+  });
+  if (existingLayers.length !== ids.length || ids.length === 0) {
+    return undefined;
+  }
+  mergedLayer = { ...existingLayers[0] };
+  mergedLayer.layers = existingLayers.map((value) => value.layers).toString();
+  existingLayers.forEach((object) => {
+    maxScales.push(parseInt(object.maxScale, 10));
+    minScales.push(parseInt(object.minScale, 10));
+  });
+  mergedLayer.maxScale = Math.max(...maxScales);
+  mergedLayer.minScale = Math.min(...minScales);
+  // sets all attributes from config at merged layer besides id-array
+  mergedLayer = Object.assign(mergedLayer, omit(layerConf, ["id"], false));
 
-    return mergedLayer;
+  return mergedLayer;
 }
 
 /**
@@ -189,57 +202,76 @@ function mergeLayerWithSeveralIds (layerConf) {
  * @param {Boolean} [showLayerAddButton=false] if true, a button to add layer is shown
  * @returns {Array} the filtered layer configurations
  */
-export function getAndMergeAllRawLayers (treeConfig = {}, showLayerAddButton = false) {
-    // refactored from parserDefaultTree.js and layerList.js
-    const layerList = rawLayerList.getLayerList(),
-        rawLayers = [],
-        validLayerTypes = treeConfig.validLayerTypesAutoTree || ["WMS", "SENSORTHINGS", "TERRAIN3D", "TILESET3D", "OBLIQUE"],
-        layerIDsToIgnore = treeConfig.layerIDsToIgnore || [],
-        metaIDsToIgnore = treeConfig.metaIDsToIgnore || [],
-        metaIDsToMerge = treeConfig.metaIDsToMerge || [],
-        layerIDsToStyle = treeConfig.layerIDsToStyle || [],
-        idsOfLayersToStyle = layerIDsToStyle.map(entry => entry.id),
-        toMergeByMdId = {};
-    let relatedWMSLayerIds = [];
+export function getAndMergeAllRawLayers(
+  treeConfig = {},
+  showLayerAddButton = false,
+) {
+  // refactored from parserDefaultTree.js and layerList.js
+  const layerList = rawLayerList.getLayerList(),
+    rawLayers = [],
+    validLayerTypes = treeConfig.validLayerTypesAutoTree || [
+      "WMS",
+      "SENSORTHINGS",
+      "TERRAIN3D",
+      "TILESET3D",
+      "OBLIQUE",
+    ],
+    layerIDsToIgnore = treeConfig.layerIDsToIgnore || [],
+    metaIDsToIgnore = treeConfig.metaIDsToIgnore || [],
+    metaIDsToMerge = treeConfig.metaIDsToMerge || [],
+    layerIDsToStyle = treeConfig.layerIDsToStyle || [],
+    idsOfLayersToStyle = layerIDsToStyle.map((entry) => entry.id),
+    toMergeByMdId = {};
+  let relatedWMSLayerIds = [];
 
-    for (let i = 0; i < layerList.length; i++) {
-        const rawLayer = addAdditional(layerList[i], !showLayerAddButton),
-            layerType = rawLayer.typ?.toUpperCase();
+  for (let i = 0; i < layerList.length; i++) {
+    const rawLayer = addAdditional(layerList[i], !showLayerAddButton),
+      layerType = rawLayer.typ?.toUpperCase();
 
-        if (!validLayerTypes.includes(layerType) ||
-            !rawLayer.datasets ||
-            rawLayer.datasets.length === 0 ||
-            layerIDsToIgnore.includes(rawLayer.id) ||
-            metaIDsToIgnore.includes(rawLayer.datasets[0].md_id)) {
-            continue;
-        }
-        if (metaIDsToMerge.includes(rawLayer.datasets[0].md_id)) {
-            collectLayersToMergeByMetaId(toMergeByMdId, rawLayer.datasets[0].md_id, rawLayer);
-            continue;
-        }
-        if (idsOfLayersToStyle.includes(rawLayer.id)) {
-            styleAndMergeLayers(layerIDsToStyle, rawLayer, rawLayers);
-            continue;
-        }
-        if (layerType === "SENSORTHINGS" && rawLayer.related_wms_layers !== undefined) {
-            relatedWMSLayerIds = relatedWMSLayerIds.concat(rawLayer.related_wms_layers);
-        }
-        if (rawLayer.datasets.length > 1) {
-            rawLayer.datasets.forEach((ds, index) => {
-                const newLayer = {...rawLayer};
-
-                newLayer.id = rawLayer.id + "_" + index;
-                newLayer.datasets = [ds];
-                rawLayers.push(newLayer);
-            });
-        }
-        else {
-            rawLayers.push(rawLayer);
-        }
+    if (
+      !validLayerTypes.includes(layerType) ||
+      !rawLayer.datasets ||
+      rawLayer.datasets.length === 0 ||
+      layerIDsToIgnore.includes(rawLayer.id) ||
+      metaIDsToIgnore.includes(rawLayer.datasets[0].md_id)
+    ) {
+      continue;
     }
-    mergeByMetaIds(toMergeByMdId, rawLayers);
-    removeFromLayerList(relatedWMSLayerIds, rawLayers);
-    return rawLayers;
+    if (metaIDsToMerge.includes(rawLayer.datasets[0].md_id)) {
+      collectLayersToMergeByMetaId(
+        toMergeByMdId,
+        rawLayer.datasets[0].md_id,
+        rawLayer,
+      );
+      continue;
+    }
+    if (idsOfLayersToStyle.includes(rawLayer.id)) {
+      styleAndMergeLayers(layerIDsToStyle, rawLayer, rawLayers);
+      continue;
+    }
+    if (
+      layerType === "SENSORTHINGS" &&
+      rawLayer.related_wms_layers !== undefined
+    ) {
+      relatedWMSLayerIds = relatedWMSLayerIds.concat(
+        rawLayer.related_wms_layers,
+      );
+    }
+    if (rawLayer.datasets.length > 1) {
+      rawLayer.datasets.forEach((ds, index) => {
+        const newLayer = { ...rawLayer };
+
+        newLayer.id = rawLayer.id + "_" + index;
+        newLayer.datasets = [ds];
+        rawLayers.push(newLayer);
+      });
+    } else {
+      rawLayers.push(rawLayer);
+    }
+  }
+  mergeByMetaIds(toMergeByMdId, rawLayers);
+  removeFromLayerList(relatedWMSLayerIds, rawLayers);
+  return rawLayers;
 }
 
 /**
@@ -248,14 +280,14 @@ export function getAndMergeAllRawLayers (treeConfig = {}, showLayerAddButton = f
  * @param  {Object[]} [layerList=[]] The layers from services.json
  * @returns {Object[]} LayerList without layers with the given ids
  */
-function removeFromLayerList (ids = [], layerList = []) {
-    ids.forEach(id => {
-        const index = layerList.findIndex((layer) => layer.id === id);
+function removeFromLayerList(ids = [], layerList = []) {
+  ids.forEach((id) => {
+    const index = layerList.findIndex((layer) => layer.id === id);
 
-        if (index > -1) {
-            layerList.splice(index, 1);
-        }
-    });
+    if (index > -1) {
+      layerList.splice(index, 1);
+    }
+  });
 }
 /**
  * Properties in 'layerIDsToStyle'are are assigned to dedicated layers. If an entry has more than one style, new layers are created for each style.
@@ -265,25 +297,28 @@ function removeFromLayerList (ids = [], layerList = []) {
  * @param  {Object[]} [layerList=[]] The layers from services.json
  * @returns {void}
  */
-function styleAndMergeLayers (layerIDsToStyle, layer, layerList) {
-    const styleConfig = layerIDsToStyle.find(item => item.id === layer.id),
-        rawLayer = Object.assign(layer, styleConfig);
+function styleAndMergeLayers(layerIDsToStyle, layer, layerList) {
+  const styleConfig = layerIDsToStyle.find((item) => item.id === layer.id),
+    rawLayer = Object.assign(layer, styleConfig);
 
-    if (rawLayer.typ === "WMS" && Array.isArray(rawLayer.styles) && rawLayer.styles.length > 1) {
-        rawLayer.styles.forEach(function (style, index) {
-            const cloneObj = Object.assign({}, rawLayer);
+  if (
+    rawLayer.typ === "WMS" &&
+    Array.isArray(rawLayer.styles) &&
+    rawLayer.styles.length > 1
+  ) {
+    rawLayer.styles.forEach(function (style, index) {
+      const cloneObj = Object.assign({}, rawLayer);
 
-            cloneObj.style = style;
-            cloneObj.legendURL = rawLayer.legendURL[index];
-            cloneObj.name = rawLayer.name[index];
-            cloneObj.id = rawLayer.id + rawLayer.styles[index];
-            cloneObj.styles = rawLayer.styles[index];
-            layerList.push(cloneObj);
-        });
-    }
-    else {
-        layerList.push(rawLayer);
-    }
+      cloneObj.style = style;
+      cloneObj.legendURL = rawLayer.legendURL[index];
+      cloneObj.name = rawLayer.name[index];
+      cloneObj.id = rawLayer.id + rawLayer.styles[index];
+      cloneObj.styles = rawLayer.styles[index];
+      layerList.push(cloneObj);
+    });
+  } else {
+    layerList.push(rawLayer);
+  }
 }
 /**
  * Collects layers to merge by metaId.
@@ -292,11 +327,11 @@ function styleAndMergeLayers (layerIDsToStyle, layer, layerList) {
  * @param {Object} rawLayer raw layer from services.json
  * @returns {void}
  */
-function collectLayersToMergeByMetaId (toMergeByMdId, mdId, rawLayer) {
-    if (!Array.isArray(toMergeByMdId[mdId])) {
-        toMergeByMdId[mdId] = [];
-    }
-    toMergeByMdId[mdId].push(rawLayer);
+function collectLayersToMergeByMetaId(toMergeByMdId, mdId, rawLayer) {
+  if (!Array.isArray(toMergeByMdId[mdId])) {
+    toMergeByMdId[mdId] = [];
+  }
+  toMergeByMdId[mdId].push(rawLayer);
 }
 
 /**
@@ -306,40 +341,40 @@ function collectLayersToMergeByMetaId (toMergeByMdId, mdId, rawLayer) {
  * @param  {Object[]} [layerList=[]] The layers from services.json
  * @returns {void}
  */
-function mergeByMetaIds (toMergeByMdId, layerList) {
-    Object.values(toMergeByMdId).forEach(layers => {
-        const layersContent = [];
-        let gfiAttributesSet = false,
-            maxScale,
-            minScale,
-            mergedLayer = null;
+function mergeByMetaIds(toMergeByMdId, layerList) {
+  Object.values(toMergeByMdId).forEach((layers) => {
+    const layersContent = [];
+    let gfiAttributesSet = false,
+      maxScale,
+      minScale,
+      mergedLayer = null;
 
-        layers.forEach((layer, index) => {
-            if (index === 0) {
-                mergedLayer = Object.assign({}, layer);
-                mergedLayer.name = layer.datasets[0].md_name;
-                maxScale = layer.maxScale;
-                minScale = layer.minScale;
-            }
-            if (layer.gfiAttributes !== "ignore" && !gfiAttributesSet) {
-                mergedLayer.gfiAttributes = layer.gfiAttributes;
-                gfiAttributesSet = true;
-            }
-            layersContent.push(layer.layers);
-            maxScale = Math.max(maxScale, layer.maxScale);
-            minScale = Math.min(minScale, layer.minScale);
-        });
-        mergedLayer.layers = layersContent.join(",");
-        mergedLayer.maxScale = maxScale;
-        mergedLayer.minScale = minScale;
-        layerList.push(mergedLayer);
+    layers.forEach((layer, index) => {
+      if (index === 0) {
+        mergedLayer = Object.assign({}, layer);
+        mergedLayer.name = layer.datasets[0].md_name;
+        maxScale = layer.maxScale;
+        minScale = layer.minScale;
+      }
+      if (layer.gfiAttributes !== "ignore" && !gfiAttributesSet) {
+        mergedLayer.gfiAttributes = layer.gfiAttributes;
+        gfiAttributesSet = true;
+      }
+      layersContent.push(layer.layers);
+      maxScale = Math.max(maxScale, layer.maxScale);
+      minScale = Math.min(minScale, layer.minScale);
     });
+    mergedLayer.layers = layersContent.join(",");
+    mergedLayer.maxScale = maxScale;
+    mergedLayer.minScale = minScale;
+    layerList.push(mergedLayer);
+  });
 }
 
 /**
  * Resets the zIndex to 0.
  * @returns {void}
  */
-export function resetZIndex () {
-    zIndex = 1;
+export function resetZIndex() {
+  zIndex = 1;
 }

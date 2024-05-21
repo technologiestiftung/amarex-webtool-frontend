@@ -6,18 +6,18 @@ import isObject from "./isObject";
  * @param {Object} properties An object to match with all key value pairs.
  * @returns {Object} Returns the first object in list which matches all given properties.
  */
-function findWhereJs (list, properties) {
-    if (!Array.isArray(list) || !isObject(properties)) {
-        return undefined;
+function findWhereJs(list, properties) {
+  if (!Array.isArray(list) || !isObject(properties)) {
+    return undefined;
+  }
+  return list.find((item) => {
+    if (!isObject(item)) {
+      return undefined;
     }
-    return list.find(item => {
-        if (!isObject(item)) {
-            return undefined;
-        }
-        return Object.keys(properties).every(key => {
-            return item[key] === properties[key];
-        });
+    return Object.keys(properties).every((key) => {
+      return item[key] === properties[key];
     });
+  });
 }
 
 export default findWhereJs;

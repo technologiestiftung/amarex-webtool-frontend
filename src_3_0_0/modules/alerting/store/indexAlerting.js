@@ -4,9 +4,9 @@ import getters from "./gettersAlerting";
 import actions from "./actionsAlerting";
 
 export default {
-    namespaced: true,
-    state,
-    actions,
-    mutations,
-    getters
+  namespaced: true,
+  state,
+  actions,
+  mutations,
+  getters,
 };

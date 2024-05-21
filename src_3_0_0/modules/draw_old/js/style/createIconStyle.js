@@ -1,4 +1,4 @@
-import {Icon, Style} from "ol/style.js";
+import { Icon, Style } from "ol/style.js";
 
 /**
  * Creates and returns a feature style for points with an icon.
@@ -12,22 +12,26 @@ import {Icon, Style} from "ol/style.js";
  * @returns {module:ol/style/Style} style for points with an icon.
  * @throws Error if the type of the symbol is not supported.
  */
-export function createIconStyle (color, imgPath, pointSize, symbol, zIndex) {
-    let style;
+export function createIconStyle(color, imgPath, pointSize, symbol, zIndex) {
+  let style;
 
-    if (symbol?.type === "image") {
-        style = new Style({
-            image: new Icon({
-                crossOrigin: "anonymous",
-                src: symbol.value.indexOf("/") === -1 && imgPath ? imgPath + symbol.value : symbol.value,
-                scale: symbol?.scale ? symbol.scale : 1 / (96 / pointSize),
-                opacity: symbol?.opacity ? symbol?.opacity : color[3]
-            }),
-            zIndex: zIndex
-        });
-    }
-    else {
-        throw new Error(`Draw: The given type ${symbol.type} of the symbol is not supported!`);
-    }
-    return style;
+  if (symbol?.type === "image") {
+    style = new Style({
+      image: new Icon({
+        crossOrigin: "anonymous",
+        src:
+          symbol.value.indexOf("/") === -1 && imgPath
+            ? imgPath + symbol.value
+            : symbol.value,
+        scale: symbol?.scale ? symbol.scale : 1 / (96 / pointSize),
+        opacity: symbol?.opacity ? symbol?.opacity : color[3],
+      }),
+      zIndex: zIndex,
+    });
+  } else {
+    throw new Error(
+      `Draw: The given type ${symbol.type} of the symbol is not supported!`,
+    );
+  }
+  return style;
 }

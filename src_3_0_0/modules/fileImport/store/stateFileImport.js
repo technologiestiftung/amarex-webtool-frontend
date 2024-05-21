@@ -17,34 +17,34 @@
  */
 
 export default {
-    description: "common:modules.fileImport.description",
-    enableZoomToExtend: false,
-    featureExtents: {},
-    icon: "bi-box-arrow-in-down",
-    importedFileNames: [],
-    layer: undefined,
-    layerId: "importDrawLayer",
-    name: "common:modules.fileImport.name",
-    selectedFiletype: "auto",
+  description: "common:modules.fileImport.description",
+  enableZoomToExtend: false,
+  featureExtents: {},
+  icon: "bi-box-arrow-in-down",
+  importedFileNames: [],
+  layer: undefined,
+  layerId: "importDrawLayer",
+  name: "common:modules.fileImport.name",
+  selectedFiletype: "auto",
 
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedFiletypes: {
-        auto: {
-            caption: "common:modules.fileImport.captions.supportedFiletypes.auto"
-        },
-        kml: {
-            caption: "common:modules.fileImport.captions.supportedFiletypes.kml",
-            rgx: /\.kml$/i
-        },
-        gpx: {
-            caption: "common:modules.fileImport.captions.supportedFiletypes.gpx",
-            rgx: /\.gpx$/i
-        },
-        geojson: {
-            caption: "common:modules.fileImport.captions.supportedFiletypes.geojson",
-            rgx: /\.(geo)?json$/i
-        }
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedFiletypes: {
+    auto: {
+      caption: "common:modules.fileImport.captions.supportedFiletypes.auto",
     },
-    supportedMapModes: ["2D", "3D"],
-    type: "fileImport"
+    kml: {
+      caption: "common:modules.fileImport.captions.supportedFiletypes.kml",
+      rgx: /\.kml$/i,
+    },
+    gpx: {
+      caption: "common:modules.fileImport.captions.supportedFiletypes.gpx",
+      rgx: /\.gpx$/i,
+    },
+    geojson: {
+      caption: "common:modules.fileImport.captions.supportedFiletypes.geojson",
+      rgx: /\.(geo)?json$/i,
+    },
+  },
+  supportedMapModes: ["2D", "3D"],
+  type: "fileImport",
 };

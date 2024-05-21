@@ -37,48 +37,48 @@ import processUrlParams from "../../../shared/js/utils/processUrlParams";
  */
 
 const mapUrlParams = {
-        FEATUREVIAURL: featureViaUrl,
-        HIGHLIGHTFEATURE: highlightFeature,
-        HIGHLIGHTFEATURESBYATTRIBUTE: highlightFeaturesByAttributes,
-        MAPS: setMapAttributes,
-        MARKER: setMapMarker,
-        ZOOMTOEXTENT: zoomToProjExtent,
-        ZOOMTOFEATUREID: zoomToFeatures,
-        ZOOMTOGEOMETRY: zoomToFeatures
-    },
-    legacyMapUrlParams = {
-        ALTITUDE: setCamera,
-        "API/HIGHLIGHTFEATURESBYATTRIBUTE": highlightFeaturesByAttributes,
-        ATTRIBUTENAME: highlightFeaturesByAttributes,
-        ATTRIBUTEQUERY: highlightFeaturesByAttributes,
-        ATTRIBUTEVALUE: highlightFeaturesByAttributes,
-        BEZIRK: zoomToFeatures,
-        CENTER: zoomToCoordinates,
-        FEATUREID: zoomToFeatures,
-        HEADING: setCamera,
-        MAP: setMode,
-        MAPMARKER: setMapMarker,
-        MAPMODE: setMode,
-        "MAP/CENTER": zoomToCoordinates,
-        "MAP/HIGHLIGHTFEATURE": highlightFeature,
-        "MAP/MAPMODE": setMode,
-        "MAP/PROJECTION": processProjection,
-        "MAP/ZOOMLEVEL": zoomToCoordinates,
-        "MAP/ZOOMTOEXTENT": zoomToProjExtent,
-        "MAP/ZOOMTOFEATUREID": zoomToFeatures,
-        "MAP/ZOOMTOGEOMETRY": zoomToFeatures,
-        PROJECTION: processProjection,
-        TILT: setCamera,
-        WFSID: highlightFeaturesByAttributes,
-        ZOOMLEVEL: zoomToCoordinates
-    };
+    FEATUREVIAURL: featureViaUrl,
+    HIGHLIGHTFEATURE: highlightFeature,
+    HIGHLIGHTFEATURESBYATTRIBUTE: highlightFeaturesByAttributes,
+    MAPS: setMapAttributes,
+    MARKER: setMapMarker,
+    ZOOMTOEXTENT: zoomToProjExtent,
+    ZOOMTOFEATUREID: zoomToFeatures,
+    ZOOMTOGEOMETRY: zoomToFeatures,
+  },
+  legacyMapUrlParams = {
+    ALTITUDE: setCamera,
+    "API/HIGHLIGHTFEATURESBYATTRIBUTE": highlightFeaturesByAttributes,
+    ATTRIBUTENAME: highlightFeaturesByAttributes,
+    ATTRIBUTEQUERY: highlightFeaturesByAttributes,
+    ATTRIBUTEVALUE: highlightFeaturesByAttributes,
+    BEZIRK: zoomToFeatures,
+    CENTER: zoomToCoordinates,
+    FEATUREID: zoomToFeatures,
+    HEADING: setCamera,
+    MAP: setMode,
+    MAPMARKER: setMapMarker,
+    MAPMODE: setMode,
+    "MAP/CENTER": zoomToCoordinates,
+    "MAP/HIGHLIGHTFEATURE": highlightFeature,
+    "MAP/MAPMODE": setMode,
+    "MAP/PROJECTION": processProjection,
+    "MAP/ZOOMLEVEL": zoomToCoordinates,
+    "MAP/ZOOMTOEXTENT": zoomToProjExtent,
+    "MAP/ZOOMTOFEATUREID": zoomToFeatures,
+    "MAP/ZOOMTOGEOMETRY": zoomToFeatures,
+    PROJECTION: processProjection,
+    TILT: setCamera,
+    WFSID: highlightFeaturesByAttributes,
+    ZOOMLEVEL: zoomToCoordinates,
+  };
 
 /**
  * Process the map url params.
  * @returns {void}
  */
-function processMapUrlParams () {
-    processUrlParams(mapUrlParams, legacyMapUrlParams);
+function processMapUrlParams() {
+  processUrlParams(mapUrlParams, legacyMapUrlParams);
 }
 
 /**
@@ -86,14 +86,17 @@ function processMapUrlParams () {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setMapAttributes (params) {
-    const mapsParams = Object.fromEntries(
-        Object.entries(JSON.parse(params.MAPS)).map(([k, v]) => [k.toUpperCase(), v])
-    );
+function setMapAttributes(params) {
+  const mapsParams = Object.fromEntries(
+    Object.entries(JSON.parse(params.MAPS)).map(([k, v]) => [
+      k.toUpperCase(),
+      v,
+    ]),
+  );
 
-    setCamera(mapsParams);
-    setMode(mapsParams);
-    zoomToCoordinates(mapsParams);
+  setCamera(mapsParams);
+  setMode(mapsParams);
+  zoomToCoordinates(mapsParams);
 }
 
 /**
@@ -101,14 +104,15 @@ function setMapAttributes (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function featureViaUrl (params) {
-    try {
-        store.dispatch("Maps/featureViaUrl", JSON.parse(params.FEATUREVIAURL));
-    }
-    catch (error) {
-        console.warn(i18next.t("common:core.maps.featureViaURL.messages.featureParsing"));
-        console.error(error);
-    }
+function featureViaUrl(params) {
+  try {
+    store.dispatch("Maps/featureViaUrl", JSON.parse(params.FEATUREVIAURL));
+  } catch (error) {
+    console.warn(
+      i18next.t("common:core.maps.featureViaURL.messages.featureParsing"),
+    );
+    console.error(error);
+  }
 }
 
 /**
@@ -116,18 +120,26 @@ function featureViaUrl (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function highlightFeature (params) {
-    const layerId = (params.HIGHLIGHTFEATURE || params["MAP/HIGHLIGHTFEATURE"])?.split(",")[0],
-        featureIds = (params.HIGHLIGHTFEATURE || params["MAP/HIGHLIGHTFEATURE"])?.split(",");
+function highlightFeature(params) {
+  const layerId = (
+      params.HIGHLIGHTFEATURE || params["MAP/HIGHLIGHTFEATURE"]
+    )?.split(",")[0],
+    featureIds = (
+      params.HIGHLIGHTFEATURE || params["MAP/HIGHLIGHTFEATURE"]
+    )?.split(",");
 
-    featureIds.shift();
-    featureIds.forEach(featureId => {
-        store.dispatch("Maps/highlightFeature", {
-            layerIdAndFeatureId: [layerId, featureId],
-            type: "viaLayerIdAndFeatureId"
-        });
+  featureIds.shift();
+  featureIds.forEach((featureId) => {
+    store.dispatch("Maps/highlightFeature", {
+      layerIdAndFeatureId: [layerId, featureId],
+      type: "viaLayerIdAndFeatureId",
     });
-    store.dispatch("Maps/zoomToFilteredFeatures", {ids: featureIds, layerId: layerId, zoomOptions: {duration: 0}});
+  });
+  store.dispatch("Maps/zoomToFilteredFeatures", {
+    ids: featureIds,
+    layerId: layerId,
+    zoomOptions: { duration: 0 },
+  });
 }
 
 /**
@@ -135,25 +147,26 @@ function highlightFeature (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function highlightFeaturesByAttributes (params) {
-    const attributeName = params.ATTRIBUTENAME,
-        attributeValue = params.ATTRIBUTEVALUE,
-        attributeQuery = params.ATTRIBUTEQUERY,
-        wfsId = params.WFSID;
+function highlightFeaturesByAttributes(params) {
+  const attributeName = params.ATTRIBUTENAME,
+    attributeValue = params.ATTRIBUTEVALUE,
+    attributeQuery = params.ATTRIBUTEQUERY,
+    wfsId = params.WFSID;
 
-    if (attributeName && attributeValue && wfsId) {
-        highlightFeaturesByAttribute.highlightFeaturesByAttribute(
-            store.dispatch,
-            store.getters,
-            wfsId,
-            attributeName,
-            attributeValue,
-            attributeQuery
-        );
-    }
-    else {
-        console.warn("Not all required URL parameters given for highlightFeaturesByAttribute.");
-    }
+  if (attributeName && attributeValue && wfsId) {
+    highlightFeaturesByAttribute.highlightFeaturesByAttribute(
+      store.dispatch,
+      store.getters,
+      wfsId,
+      attributeName,
+      attributeValue,
+      attributeQuery,
+    );
+  } else {
+    console.warn(
+      "Not all required URL parameters given for highlightFeaturesByAttribute.",
+    );
+  }
 }
 
 /**
@@ -165,16 +178,16 @@ function highlightFeaturesByAttributes (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function processProjection (params) {
-    if (params.CENTER || params["MAP/CENTER"]) {
-        zoomToCoordinates(params);
-    }
-    if (params.MARKER || params.MAPMARKER) {
-        setMapMarker(params);
-    }
-    if (params.ZOOMTOEXTENT || params["MAP/ZOOMTOEXTENT"]) {
-        zoomToProjExtent(params);
-    }
+function processProjection(params) {
+  if (params.CENTER || params["MAP/CENTER"]) {
+    zoomToCoordinates(params);
+  }
+  if (params.MARKER || params.MAPMARKER) {
+    setMapMarker(params);
+  }
+  if (params.ZOOMTOEXTENT || params["MAP/ZOOMTOEXTENT"]) {
+    zoomToProjExtent(params);
+  }
 }
 
 /**
@@ -182,12 +195,12 @@ function processProjection (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setCamera (params) {
-    store.dispatch("Maps/setCamera", {
-        altitude: params.ALTITUDE,
-        heading: params.HEADING,
-        tilt: params.TILT
-    });
+function setCamera(params) {
+  store.dispatch("Maps/setCamera", {
+    altitude: params.ALTITUDE,
+    heading: params.HEADING,
+    tilt: params.TILT,
+  });
 }
 
 /**
@@ -195,22 +208,30 @@ function setCamera (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setMapMarker (params) {
-    const projection = params.PROJECTION || params["MAP/PROJECTION"];
-    let marker = params.MARKER || params.MAPMARKER;
+function setMapMarker(params) {
+  const projection = params.PROJECTION || params["MAP/PROJECTION"];
+  let marker = params.MARKER || params.MAPMARKER;
 
-    if (marker && !Array.isArray(marker)) {
-        if (marker.includes("[")) {
-            marker = JSON.parse(marker);
-        }
-        else {
-            marker = marker?.split(",");
-        }
+  if (marker && !Array.isArray(marker)) {
+    if (marker.includes("[")) {
+      marker = JSON.parse(marker);
+    } else {
+      marker = marker?.split(",");
     }
+  }
 
-    marker = marker?.map(coord => parseFloat(coord, 10));
+  marker = marker?.map((coord) => parseFloat(coord, 10));
 
-    store.dispatch("Maps/placingPointMarker", projection ? crs.transformToMapProjection(mapCollection.getMap("2D"), projection, marker) : marker);
+  store.dispatch(
+    "Maps/placingPointMarker",
+    projection
+      ? crs.transformToMapProjection(
+          mapCollection.getMap("2D"),
+          projection,
+          marker,
+        )
+      : marker,
+  );
 }
 
 /**
@@ -218,8 +239,16 @@ function setMapMarker (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setMode (params) {
-    store.dispatch("Maps/changeMapMode", (params.MODE || params.MAP || params.MAPMODE || params["MAP/MAPMODE"])?.toUpperCase());
+function setMode(params) {
+  store.dispatch(
+    "Maps/changeMapMode",
+    (
+      params.MODE ||
+      params.MAP ||
+      params.MAPMODE ||
+      params["MAP/MAPMODE"]
+    )?.toUpperCase(),
+  );
 }
 
 /**
@@ -227,24 +256,29 @@ function setMode (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function zoomToCoordinates (params) {
-    const projection = params.PROJECTION || params["MAP/PROJECTION"];
-    let center = params.CENTER || params["MAP/CENTER"];
+function zoomToCoordinates(params) {
+  const projection = params.PROJECTION || params["MAP/PROJECTION"];
+  let center = params.CENTER || params["MAP/CENTER"];
 
-    if (center && !Array.isArray(center)) {
-        if (center.includes("[")) {
-            center = JSON.parse(center);
-        }
-        else {
-            center = center?.split(",");
-        }
+  if (center && !Array.isArray(center)) {
+    if (center.includes("[")) {
+      center = JSON.parse(center);
+    } else {
+      center = center?.split(",");
     }
+  }
 
-    store.dispatch("Maps/zoomToCoordinates", {
-        center: projection ? crs.transformToMapProjection(mapCollection.getMap("2D"), projection, center) : center,
-        zoom: params.ZOOM ?? params.ZOOMLEVEL ?? params["MAP/ZOOMLEVEL"],
-        rotation: params.ROTATION
-    });
+  store.dispatch("Maps/zoomToCoordinates", {
+    center: projection
+      ? crs.transformToMapProjection(
+          mapCollection.getMap("2D"),
+          projection,
+          center,
+        )
+      : center,
+    zoom: params.ZOOM ?? params.ZOOMLEVEL ?? params["MAP/ZOOMLEVEL"],
+    rotation: params.ROTATION,
+  });
 }
 
 /**
@@ -252,11 +286,15 @@ function zoomToCoordinates (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function zoomToFeatures (params) {
-    store.dispatch("Maps/zoomToFeatures", {
-        ZOOMTOFEATUREID: params.FEATUREID || params.ZOOMTOFEATUREID || params["MAP/ZOOMTOFEATUREID"],
-        ZOOMTOGEOMETRY: params.BEZIRK || params.ZOOMTOGEOMETRY || params["MAP/ZOOMTOGEOMETRY"]
-    });
+function zoomToFeatures(params) {
+  store.dispatch("Maps/zoomToFeatures", {
+    ZOOMTOFEATUREID:
+      params.FEATUREID ||
+      params.ZOOMTOFEATUREID ||
+      params["MAP/ZOOMTOFEATUREID"],
+    ZOOMTOGEOMETRY:
+      params.BEZIRK || params.ZOOMTOGEOMETRY || params["MAP/ZOOMTOGEOMETRY"],
+  });
 }
 
 /**
@@ -264,25 +302,28 @@ function zoomToFeatures (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function zoomToProjExtent (params) {
-    store.dispatch("Maps/zoomToProjExtent", {
-        extent: (params.ZOOMTOEXTENT || params["MAP/ZOOMTOEXTENT"])?.split(","),
-        options: {duration: 0},
-        projection: params.PROJECTION || params["MAP/PROJECTION"] || store.getters["Maps/projectionCode"]
-    });
+function zoomToProjExtent(params) {
+  store.dispatch("Maps/zoomToProjExtent", {
+    extent: (params.ZOOMTOEXTENT || params["MAP/ZOOMTOEXTENT"])?.split(","),
+    options: { duration: 0 },
+    projection:
+      params.PROJECTION ||
+      params["MAP/PROJECTION"] ||
+      store.getters["Maps/projectionCode"],
+  });
 }
 
 export default {
-    processMapUrlParams,
-    setMapAttributes,
-    featureViaUrl,
-    highlightFeature,
-    highlightFeaturesByAttributes,
-    processProjection,
-    setMapMarker,
-    setCamera,
-    setMode,
-    zoomToCoordinates,
-    zoomToFeatures,
-    zoomToProjExtent
+  processMapUrlParams,
+  setMapAttributes,
+  featureViaUrl,
+  highlightFeature,
+  highlightFeaturesByAttributes,
+  processProjection,
+  setMapMarker,
+  setCamera,
+  setMode,
+  zoomToCoordinates,
+  zoomToFeatures,
+  zoomToProjExtent,
 };

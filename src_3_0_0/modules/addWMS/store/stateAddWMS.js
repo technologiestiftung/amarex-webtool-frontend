@@ -8,12 +8,12 @@
  * @property {String[]} supportedMapModes Map mode in which this module can be used.
  */
 const state = {
-    description: "common:modules.addWMS.description",
-    type: "addWMS",
-    name: "common:modules.addWMS.name",
-    icon: "bi-cloud-plus",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"]
+  description: "common:modules.addWMS.description",
+  type: "addWMS",
+  name: "common:modules.addWMS.name",
+  icon: "bi-cloud-plus",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
 };
 
 export default state;

@@ -1,5 +1,5 @@
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 import SearchBarResultListTopicTreeItem from "./SearchBarResultListTopicTreeItem.vue";
 
 /**
@@ -8,40 +8,37 @@ import SearchBarResultListTopicTreeItem from "./SearchBarResultListTopicTreeItem
  * @vue-props {Object[]} resultItems - The result items.
  */
 export default {
-    name: "SearchBarResultListTopicTree",
-    components: {
-        SearchBarResultListTopicTreeItem
+  name: "SearchBarResultListTopicTree",
+  components: {
+    SearchBarResultListTopicTreeItem,
+  },
+  props: {
+    resultItems: {
+      type: Array,
+      required: true,
     },
-    props: {
-        resultItems: {
-            type: Array,
-            required: true
-        }
-    },
-    computed: {
-        ...mapGetters("Modules/SearchBar", [
-            "searchInput",
-            "searchResults",
-            "selectedSearchResults"
-        ])
-    }
+  },
+  computed: {
+    ...mapGetters("Modules/SearchBar", [
+      "searchInput",
+      "searchResults",
+      "selectedSearchResults",
+    ]),
+  },
 };
 </script>
 
 <template lang="html">
-    <div class="overflow-auto results-topic-tree-container">
-        <div
-            v-for="(item, index) in resultItems"
-            :key="item.id + '-' + index"
-        >
-            <span :id="'searchInputLi' + index">
-                <SearchBarResultListTopicTreeItem
-                    :search-result="item"
-                />
-            </span>
-        </div>
+  <div class="overflow-auto results-topic-tree-container">
+    <div
+      v-for="(item, index) in resultItems"
+      :key="item.id + '-' + index"
+    >
+      <span :id="'searchInputLi' + index">
+        <SearchBarResultListTopicTreeItem :search-result="item" />
+      </span>
     </div>
+  </div>
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

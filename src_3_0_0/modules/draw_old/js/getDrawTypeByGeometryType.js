@@ -4,28 +4,33 @@
  * @param {Object[]} drawTypeOptions an array of object{geometry, ...} holding all possibilities
  * @returns {Object} the first drawTypeOption with a matching value for geometryType
  */
-function getDrawTypeByGeometryType (geometryType, drawTypeOptions) {
-    if (!Array.isArray(drawTypeOptions) || drawTypeOptions.length === 0) {
-        return null;
-    }
+function getDrawTypeByGeometryType(geometryType, drawTypeOptions) {
+  if (!Array.isArray(drawTypeOptions) || drawTypeOptions.length === 0) {
+    return null;
+  }
 
-    for (let i = 0; i < drawTypeOptions.length; i++) {
-        if (drawTypeOptions[i] === null || typeof drawTypeOptions[i] !== "object" || !Object.prototype.hasOwnProperty.call(drawTypeOptions[i], "geometry")) {
-            continue;
+  for (let i = 0; i < drawTypeOptions.length; i++) {
+    if (
+      drawTypeOptions[i] === null ||
+      typeof drawTypeOptions[i] !== "object" ||
+      !Object.prototype.hasOwnProperty.call(drawTypeOptions[i], "geometry")
+    ) {
+      continue;
+    } else if (drawTypeOptions[i].geometry === geometryType) {
+      return drawTypeOptions[i];
+    } else if (
+      Object.prototype.hasOwnProperty.call(drawTypeOptions[i], "altGeometry") &&
+      Array.isArray(drawTypeOptions[i].altGeometry)
+    ) {
+      for (let n = 0; n < drawTypeOptions[i].altGeometry.length; n++) {
+        if (drawTypeOptions[i].altGeometry[n] === geometryType) {
+          return drawTypeOptions[i];
         }
-        else if (drawTypeOptions[i].geometry === geometryType) {
-            return drawTypeOptions[i];
-        }
-        else if (Object.prototype.hasOwnProperty.call(drawTypeOptions[i], "altGeometry") && Array.isArray(drawTypeOptions[i].altGeometry)) {
-            for (let n = 0; n < drawTypeOptions[i].altGeometry.length; n++) {
-                if (drawTypeOptions[i].altGeometry[n] === geometryType) {
-                    return drawTypeOptions[i];
-                }
-            }
-        }
+      }
     }
+  }
 
-    return drawTypeOptions[0];
+  return drawTypeOptions[0];
 }
 
 export default getDrawTypeByGeometryType;

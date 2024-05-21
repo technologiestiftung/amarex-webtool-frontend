@@ -4,9 +4,9 @@ import getters from "./gettersFileImport";
 import mutations from "./mutationsFileImport";
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters,
 };

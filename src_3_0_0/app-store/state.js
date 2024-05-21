@@ -12,18 +12,18 @@
  * @property {Object} [urlParams=[]] The url params.
  */
 const state = {
-    configJs: null,
-    deviceMode: "Desktop",
-    layerConfig: [],
-    loadedConfigs: {
-        configJson: false,
-        restServicesJson: false,
-        servicesJson: false
-    },
-    styleListLoaded: false,
-    portalConfig: null,
-    restConfig: null,
-    urlParams: {}
+  configJs: null,
+  deviceMode: "Desktop",
+  layerConfig: [],
+  loadedConfigs: {
+    configJson: false,
+    restServicesJson: false,
+    servicesJson: false,
+  },
+  styleListLoaded: false,
+  portalConfig: null,
+  restConfig: null,
+  urlParams: {},
 };
 
 export default state;

@@ -1,4 +1,4 @@
-import {Circle, Fill, Stroke, Style} from "ol/style.js";
+import { Circle, Fill, Stroke, Style } from "ol/style.js";
 import stateRouting from "../../../../store/stateRouting";
 
 /**
@@ -6,19 +6,19 @@ import stateRouting from "../../../../store/stateRouting";
  * @param {ol/Feature} feature for the current style
  * @returns {ol/Style} style
  */
-export default function createIsochronesPointStyle () {
-    const styleSetting = stateRouting.Isochrones.settings.styleCenter;
+export default function createIsochronesPointStyle() {
+  const styleSetting = stateRouting.Isochrones.settings.styleCenter;
 
-    return new Style({
-        image: new Circle({
-            radius: styleSetting.radius,
-            stroke: new Stroke({
-                color: [...styleSetting.lineColor, 1.0],
-                width: styleSetting.lineWidth
-            }),
-            fill: new Fill({
-                color: [...styleSetting.fillColor, styleSetting.opacity]
-            })
-        })
-    });
+  return new Style({
+    image: new Circle({
+      radius: styleSetting.radius,
+      stroke: new Stroke({
+        color: [...styleSetting.lineColor, 1.0],
+        width: styleSetting.lineWidth,
+      }),
+      fill: new Fill({
+        color: [...styleSetting.fillColor, styleSetting.opacity],
+      }),
+    }),
+  });
 }

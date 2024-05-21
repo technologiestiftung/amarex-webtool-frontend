@@ -4,13 +4,13 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
 export const validIso8601Precisions = [
-    "YYYY",
-    "YYYY-MM",
-    "YYYY-MM-DD",
-    "YYYY-MM-DDTHH",
-    "YYYY-MM-DDTHH:mm",
-    "YYYY-MM-DDTHH:mm:ss",
-    "YYYY-MM-DDTHH:mm:ss.SSS"
+  "YYYY",
+  "YYYY-MM",
+  "YYYY-MM-DD",
+  "YYYY-MM-DDTHH",
+  "YYYY-MM-DDTHH:mm",
+  "YYYY-MM-DDTHH:mm:ss",
+  "YYYY-MM-DDTHH:mm:ss.SSS",
 ];
 
 /**
@@ -20,17 +20,17 @@ export const validIso8601Precisions = [
  * @returns {String} format value for precision
  * @throws Error
  */
-export default function detectIso8601Precision (timestamp) {
-    const checkTimestamp = timestamp.endsWith("Z")
-            ? timestamp.substring(0, timestamp.length - 1)
-            : timestamp,
-        format = validIso8601Precisions.find(
-            precision => dayjs(checkTimestamp, precision, true).isValid()
-        );
+export default function detectIso8601Precision(timestamp) {
+  const checkTimestamp = timestamp.endsWith("Z")
+      ? timestamp.substring(0, timestamp.length - 1)
+      : timestamp,
+    format = validIso8601Precisions.find((precision) =>
+      dayjs(checkTimestamp, precision, true).isValid(),
+    );
 
-    if (!format) {
-        throw new Error(`Given timestamp "${timestamp}" is not in ISO8601.`);
-    }
+  if (!format) {
+    throw new Error(`Given timestamp "${timestamp}" is not in ISO8601.`);
+  }
 
-    return format;
+  return format;
 }

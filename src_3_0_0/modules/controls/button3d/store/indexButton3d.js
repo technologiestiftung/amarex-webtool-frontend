@@ -3,8 +3,8 @@ import getters from "./gettersButton3d";
 import mutations from "./mutationsButton3d";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    getters,
-    mutations
+  namespaced: true,
+  state: { ...state },
+  getters,
+  mutations,
 };

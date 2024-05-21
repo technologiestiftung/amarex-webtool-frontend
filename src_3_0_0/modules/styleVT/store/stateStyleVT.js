@@ -9,12 +9,12 @@
  * @property {VTLayer[]} vectorTileLayerList Array of visible Vector Tile Layers selectable to style.
  */
 const state = {
-    description: "common:modules.styleVT.description",
-    icon: "bi-paint-bucket",
-    layerModel: null,
-    name: "common:modules.styleVT.name",
-    type: "styleVT",
-    vectorTileLayerList: []
+  description: "common:modules.styleVT.description",
+  icon: "bi-paint-bucket",
+  layerModel: null,
+  name: "common:modules.styleVT.name",
+  type: "styleVT",
+  vectorTileLayerList: [],
 };
 
 export default state;

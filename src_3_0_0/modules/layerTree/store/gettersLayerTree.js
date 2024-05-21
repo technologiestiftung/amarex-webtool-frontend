@@ -1,4 +1,4 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateLayerTree from "./stateLayerTree";
 
 /**
@@ -6,7 +6,7 @@ import stateLayerTree from "./stateLayerTree";
  * @module modules/layerTree/store/gettersLayerTree
  */
 const getters = {
-    ...generateSimpleGetters(stateLayerTree)
+  ...generateSimpleGetters(stateLayerTree),
 };
 
 export default getters;

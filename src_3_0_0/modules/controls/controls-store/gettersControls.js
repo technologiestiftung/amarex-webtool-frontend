@@ -1,4 +1,4 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateControls from "./stateControls";
 
 import BackForward from "../backForward/components/BackForward.vue";
@@ -13,22 +13,22 @@ import TotalView from "../totalView/components/TotalView.vue";
 import Zoom from "../zoom/components/ZoomInAndOut.vue";
 
 const getters = {
-    ...generateSimpleGetters(stateControls),
+  ...generateSimpleGetters(stateControls),
 
-    componentMap: () => {
-        return {
-            BackForward,
-            Button3d,
-            Freeze,
-            FullScreen,
-            Orientation,
-            Rotation,
-            StartModule,
-            TiltView,
-            TotalView,
-            Zoom
-        };
-    }
+  componentMap: () => {
+    return {
+      BackForward,
+      Button3d,
+      Freeze,
+      FullScreen,
+      Orientation,
+      Rotation,
+      StartModule,
+      TiltView,
+      TotalView,
+      Zoom,
+    };
+  },
 };
 
 export default getters;

@@ -4,9 +4,9 @@ import actions from "./actionsAbimo";
 import state from "./stateAbimo";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state: { ...state },
+  mutations,
+  actions,
+  getters,
 };

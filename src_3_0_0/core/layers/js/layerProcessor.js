@@ -8,11 +8,11 @@ import store from "../../../app-store";
  * @param {Object[]} visibleLayerConfigs The layer configurations.
  * @returns {void}
  */
-export default function initializeLayers (visibleLayerConfigs) {
-    processLayerConfig(visibleLayerConfigs, store.getters["Maps/mode"]);
+export default function initializeLayers(visibleLayerConfigs) {
+  processLayerConfig(visibleLayerConfigs, store.getters["Maps/mode"]);
 
-    watchMapMode();
-    watchLayerConfig();
+  watchMapMode();
+  watchLayerConfig();
 }
 
 /**
@@ -20,12 +20,15 @@ export default function initializeLayers (visibleLayerConfigs) {
  * Starts processing of visible 3d layer configs.
  * @returns {void}
  */
-function watchMapMode () {
-    store.watch((state, getters) => getters["Maps/mode"], mapMode => {
-        if (mapMode === "3D") {
-            processLayerConfig(store.getters.visibleLayerConfigs, mapMode);
-        }
-    });
+function watchMapMode() {
+  store.watch(
+    (state, getters) => getters["Maps/mode"],
+    (mapMode) => {
+      if (mapMode === "3D") {
+        processLayerConfig(store.getters.visibleLayerConfigs, mapMode);
+      }
+    },
+  );
 }
 
 /**
@@ -33,10 +36,14 @@ function watchMapMode () {
  * Starts processing of all layer configs.
  * @returns {void}
  */
-function watchLayerConfig () {
-    store.watch((state, getters) => getters.allLayerConfigs, layerConfig => {
-        processLayerConfig(layerConfig, store.getters["Maps/mode"]);
-    }, {deep: true});
+function watchLayerConfig() {
+  store.watch(
+    (state, getters) => getters.allLayerConfigs,
+    (layerConfig) => {
+      processLayerConfig(layerConfig, store.getters["Maps/mode"]);
+    },
+    { deep: true },
+  );
 }
 
 /**
@@ -47,29 +54,30 @@ function watchLayerConfig () {
  * @param {String} mapMode The current map mode.
  * @returns {void}
  */
-export function processLayerConfig (layerConfig, mapMode) {
-    layerConfig?.forEach(layerConf => {
-        let layer = layerCollection.getLayerById(layerConf.id);
+export function processLayerConfig(layerConfig, mapMode) {
+  layerConfig?.forEach((layerConf) => {
+    let layer = layerCollection.getLayerById(layerConf.id);
 
-        if (layer !== undefined) {
-            updateLayerAttributes(layer, layerConf);
-        }
-        else if (layerConf.visibility === true) {
-            Object.assign(layerConf, {showInLayerTree: true}); // a visible layer is always show in layer tree
-            layer = layerFactory.createLayer(layerConf, mapMode);
-            processLayer(layer, mapMode);
-        }
-    });
-    if (store.getters.styleListLoaded) {
-        store.dispatch("Modules/Legend/createLegend", {root: true});
+    if (layer !== undefined) {
+      updateLayerAttributes(layer, layerConf);
+    } else if (layerConf.visibility === true) {
+      Object.assign(layerConf, { showInLayerTree: true }); // a visible layer is always show in layer tree
+      layer = layerFactory.createLayer(layerConf, mapMode);
+      processLayer(layer, mapMode);
     }
-    else {
-        store.watch((state, getters) => getters.styleListLoaded, value => {
-            if (value) {
-                store.dispatch("Modules/Legend/createLegend", {root: true});
-            }
-        });
-    }
+  });
+  if (store.getters.styleListLoaded) {
+    store.dispatch("Modules/Legend/createLegend", { root: true });
+  } else {
+    store.watch(
+      (state, getters) => getters.styleListLoaded,
+      (value) => {
+        if (value) {
+          store.dispatch("Modules/Legend/createLegend", { root: true });
+        }
+      },
+    );
+  }
 }
 
 /**
@@ -78,9 +86,9 @@ export function processLayerConfig (layerConfig, mapMode) {
  * @param {Object} layerConf The layer config.
  * @returns {void}
  */
-export function updateLayerAttributes (layer, layerConf) {
-    layer.updateLayerValues(layerConf);
-    Object.assign(layer.attributes, layerConf);
+export function updateLayerAttributes(layer, layerConf) {
+  layer.updateLayerValues(layerConf);
+  Object.assign(layer.attributes, layerConf);
 }
 
 /**
@@ -89,12 +97,12 @@ export function updateLayerAttributes (layer, layerConf) {
  * @param {Layer} layer The layer of the layer collection.
  * @returns {void}
  */
-function processLayer (layer) {
-    if (layer) {
-        updateLayerConfig(layer);
-        setResolutions(layer);
-        layerCollection.addLayer(layer);
-    }
+function processLayer(layer) {
+  if (layer) {
+    updateLayerConfig(layer);
+    setResolutions(layer);
+    layerCollection.addLayer(layer);
+  }
 }
 
 /**
@@ -102,14 +110,20 @@ function processLayer (layer) {
  * @param {Layer} layer The layer of the layer collection.
  * @returns {void}
  */
-export function setResolutions (layer) {
-    if (layer.get("maxScale") !== undefined) {
-        const resoByMaxScale = store.getters["Maps/getResolutionByScale"](layer.get("maxScale"), "max"),
-            resoByMinScale = store.getters["Maps/getResolutionByScale"](layer.get("minScale"), "min");
+export function setResolutions(layer) {
+  if (layer.get("maxScale") !== undefined) {
+    const resoByMaxScale = store.getters["Maps/getResolutionByScale"](
+        layer.get("maxScale"),
+        "max",
+      ),
+      resoByMinScale = store.getters["Maps/getResolutionByScale"](
+        layer.get("minScale"),
+        "min",
+      );
 
-        layer.getLayer().setMaxResolution(resoByMaxScale + (resoByMaxScale / 100));
-        layer.getLayer().setMinResolution(resoByMinScale);
-    }
+    layer.getLayer().setMaxResolution(resoByMaxScale + resoByMaxScale / 100);
+    layer.getLayer().setMinResolution(resoByMinScale);
+  }
 }
 
 /**
@@ -119,12 +133,18 @@ export function setResolutions (layer) {
  * @param {Layer} layer Layer of the layer collection.
  * @returns {void}
  */
-function updateLayerConfig (layer) {
-    store.dispatch("replaceByIdInLayerConfig", {
-        layerConfigs: [{
-            id: layer.get("id"),
-            layer: layer.attributes
-        }],
-        trigger: false
-    }, {root: true});
+function updateLayerConfig(layer) {
+  store.dispatch(
+    "replaceByIdInLayerConfig",
+    {
+      layerConfigs: [
+        {
+          id: layer.get("id"),
+          layer: layer.attributes,
+        },
+      ],
+      trigger: false,
+    },
+    { root: true },
+  );
 }

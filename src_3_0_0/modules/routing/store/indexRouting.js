@@ -7,13 +7,13 @@ import Directions from "./directions/indexDirections";
 import Isochrones from "./isochrones/indexIsochrones";
 
 export default {
-    namespaced: true,
-    modules: {
-        Directions,
-        Isochrones
-    },
-    state,
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  modules: {
+    Directions,
+    Isochrones,
+  },
+  state,
+  mutations,
+  actions,
+  getters,
 };

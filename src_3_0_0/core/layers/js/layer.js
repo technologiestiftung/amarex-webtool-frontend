@@ -6,12 +6,11 @@
  * @param {Object} attributes The attributes of the layer configuration.
  * @returns {void}
  */
-export default function Layer (attributes) {
-    const defaultAttributes = {
-    };
+export default function Layer(attributes) {
+  const defaultAttributes = {};
 
-    this.attributes = Object.assign(defaultAttributes, attributes);
-    this.createLayer(this.attributes);
+  this.attributes = Object.assign(defaultAttributes, attributes);
+  this.createLayer(this.attributes);
 }
 
 /**
@@ -20,17 +19,21 @@ export default function Layer (attributes) {
  * @returns {void}
  */
 Layer.prototype.createLayer = function () {
-    // do in children
-    console.warn("Function Layer: 'createLayer' must be overwritten in extended layers!");
+  // do in children
+  console.warn(
+    "Function Layer: 'createLayer' must be overwritten in extended layers!",
+  );
 };
 
 /**
  * To be overwritten, does nothing.
  * @abstract
  * @returns {void}
-*/
+ */
 Layer.prototype.createLegend = function () {
-    console.warn("Function Layer: 'createLegend' must be overwritten in extended layers!");
+  console.warn(
+    "Function Layer: 'createLegend' must be overwritten in extended layers!",
+  );
 };
 
 /**
@@ -39,8 +42,10 @@ Layer.prototype.createLegend = function () {
  * @returns {void}
  */
 Layer.prototype.updateLayerValues = function () {
-    // do in children
-    console.warn("Function Layer: 'updateLayerValues' must be overwritten in extended layers!");
+  // do in children
+  console.warn(
+    "Function Layer: 'updateLayerValues' must be overwritten in extended layers!",
+  );
 };
 
 /**
@@ -49,7 +54,7 @@ Layer.prototype.updateLayerValues = function () {
  * @returns {void}
  */
 Layer.prototype.visibilityChanged = function () {
-    // do in children
+  // do in children
 };
 
 /**
@@ -58,7 +63,7 @@ Layer.prototype.visibilityChanged = function () {
  * @returns {*} The attribute value
  */
 Layer.prototype.get = function (key) {
-    return this.attributes[key];
+  return this.attributes[key];
 };
 
 /**
@@ -66,7 +71,7 @@ Layer.prototype.get = function (key) {
  * @returns {ol/layer/Layer~Layer|Object} The ol layer
  */
 Layer.prototype.getLayer = function () {
-    return this.layer;
+  return this.layer;
 };
 
 /**
@@ -76,7 +81,7 @@ Layer.prototype.getLayer = function () {
  * @returns {void}
  */
 Layer.prototype.set = function (key, value) {
-    this.attributes[key] = value;
+  this.attributes[key] = value;
 };
 
 /**
@@ -85,7 +90,7 @@ Layer.prototype.set = function (key, value) {
  * @returns {void}
  */
 Layer.prototype.setLayer = function (value) {
-    this.layer = value;
+  this.layer = value;
 };
 
 /**
@@ -95,20 +100,18 @@ Layer.prototype.setLayer = function (value) {
  * @returns {String|Boolean} depending on content of 'legendUrl'
  */
 Layer.prototype.inspectLegendUrl = function () {
-    let legend = typeof this.get("legend") !== "undefined" ? this.get("legend") : true;
+  let legend =
+    typeof this.get("legend") !== "undefined" ? this.get("legend") : true;
 
-    if (typeof this.get("legendURL") !== "undefined") {
-        if (this.get("legendURL") === "") {
-            legend = true;
-        }
-        else if (this.get("legendURL") === "ignore") {
-            legend = false;
-        }
-        else {
-            legend = this.get("legendURL");
-        }
+  if (typeof this.get("legendURL") !== "undefined") {
+    if (this.get("legendURL") === "") {
+      legend = true;
+    } else if (this.get("legendURL") === "ignore") {
+      legend = false;
+    } else {
+      legend = this.get("legendURL");
     }
+  }
 
-    return legend;
+  return legend;
 };
-

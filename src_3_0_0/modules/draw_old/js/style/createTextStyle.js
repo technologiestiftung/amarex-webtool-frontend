@@ -1,4 +1,4 @@
-import {Fill, Style, Text} from "ol/style.js";
+import { Fill, Style, Text } from "ol/style.js";
 
 /**
  * Creates and returns a feature style for text.
@@ -10,17 +10,17 @@ import {Fill, Style, Text} from "ol/style.js";
  * @param {Number} zIndex Determines in which order features are rendered on the view.
  * @returns {module:ol/style/Style} style for features.
  */
-export function createTextStyle (color, font, fontSize, text, zIndex) {
-    return new Style({
-        text: new Text({
-            textAlign: "left",
-            text: text,
-            font: fontSize + "px " + font,
-            fill: new Fill({
-                color: color
-            }),
-            textBaseline: "bottom"
-        }),
-        zIndex: zIndex
-    });
+export function createTextStyle(color, font, fontSize, text, zIndex) {
+  return new Style({
+    text: new Text({
+      textAlign: "left",
+      text: text,
+      font: fontSize + "px " + font,
+      fill: new Fill({
+        color: color,
+      }),
+      textBaseline: "bottom",
+    }),
+    zIndex: zIndex,
+  });
 }

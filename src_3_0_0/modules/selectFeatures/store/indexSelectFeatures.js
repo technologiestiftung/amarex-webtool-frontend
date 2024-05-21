@@ -4,9 +4,9 @@ import actions from "./actionsSelectFeatures";
 import state from "./stateSelectFeatures";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    mutations,
-    getters,
-    actions
+  namespaced: true,
+  state: { ...state },
+  mutations,
+  getters,
+  actions,
 };

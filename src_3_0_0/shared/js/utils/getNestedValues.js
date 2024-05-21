@@ -9,14 +9,19 @@
  * @param {Number} [maxDepth=200] maximum number of self calls, default: 200
  * @returns {Array} the found nested values as simple array of values
  */
-export default function getNestedValues (obj, searchKey, searchInArrays = false, maxDepth = 200) {
-    if (typeof obj !== "object" || obj === null) {
-        return [];
-    }
-    const result = [];
+export default function getNestedValues(
+  obj,
+  searchKey,
+  searchInArrays = false,
+  maxDepth = 200,
+) {
+  if (typeof obj !== "object" || obj === null) {
+    return [];
+  }
+  const result = [];
 
-    getNestedValuesHelper(obj, searchKey, searchInArrays, maxDepth, result, 0);
-    return result;
+  getNestedValuesHelper(obj, searchKey, searchInArrays, maxDepth, result, 0);
+  return result;
 }
 
 /**
@@ -29,30 +34,47 @@ export default function getNestedValues (obj, searchKey, searchInArrays = false,
  * @param {Number} depth current depth
  * @returns {void}
  */
-function getNestedValuesHelper (obj, searchKey, searchInArrays, maxDepth, result, depth) {
-    if (typeof obj !== "object" || obj === null || depth >= maxDepth) {
-        return;
+function getNestedValuesHelper(
+  obj,
+  searchKey,
+  searchInArrays,
+  maxDepth,
+  result,
+  depth,
+) {
+  if (typeof obj !== "object" || obj === null || depth >= maxDepth) {
+    return;
+  }
+
+  Object.keys(obj).forEach((key) => {
+    if (key === searchKey) {
+      if (searchInArrays && Array.isArray(obj[key])) {
+        obj[key].forEach((subelement) => {
+          if (subelement[searchKey]) {
+            getNestedValuesHelper(
+              subelement,
+              searchKey,
+              searchInArrays,
+              maxDepth,
+              result,
+              depth + 1,
+            );
+          } else {
+            result.push(subelement);
+          }
+        });
+      } else {
+        result.push(obj[key]);
+      }
+    } else {
+      getNestedValuesHelper(
+        obj[key],
+        searchKey,
+        searchInArrays,
+        maxDepth,
+        result,
+        depth + 1,
+      );
     }
-
-    Object.keys(obj).forEach(key => {
-        if (key === searchKey) {
-            if (searchInArrays && Array.isArray(obj[key])) {
-                obj[key].forEach(subelement => {
-                    if (subelement[searchKey]) {
-                        getNestedValuesHelper(subelement, searchKey, searchInArrays, maxDepth, result, depth + 1);
-                    }
-                    else {
-                        result.push(subelement);
-                    }
-                });
-            }
-            else {
-                result.push(obj[key]);
-            }
-
-        }
-        else {
-            getNestedValuesHelper(obj[key], searchKey, searchInArrays, maxDepth, result, depth + 1);
-        }
-    });
+  });
 }

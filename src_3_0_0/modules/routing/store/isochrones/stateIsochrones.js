@@ -1,4 +1,4 @@
-import {RoutingWaypoint} from "../../js/classes/routing-waypoint";
+import { RoutingWaypoint } from "../../js/classes/routing-waypoint";
 
 import isochronesPointSource from "../../js/map/isochrones/point/isochronesPointSource";
 import isochronesPointLayer from "../../js/map/isochrones/point/isochronesPointLayer";
@@ -12,22 +12,22 @@ import isochronesAreaLayer from "../../js/map/isochrones/area/isochronesAreaLaye
 import stateRouting from "../stateRouting";
 
 export default {
-    isochronesPointSource,
-    isochronesPointLayer,
-    isochronesPointDrawInteraction,
-    isochronesPointModifyInteraction,
-    isochronesPointSnapInteraction,
-    isochronesAreaSource,
-    isochronesAreaLayer,
-    mapListenerAdded: false,
-    waypoint: new RoutingWaypoint({
-        index: 0,
-        source: isochronesPointSource
-    }),
-    // Routing Isochrones Result
-    routingIsochrones: null,
-    isLoadingIsochrones: false,
-    routingAvoidFeaturesOptions: [],
+  isochronesPointSource,
+  isochronesPointLayer,
+  isochronesPointDrawInteraction,
+  isochronesPointModifyInteraction,
+  isochronesPointSnapInteraction,
+  isochronesAreaSource,
+  isochronesAreaLayer,
+  mapListenerAdded: false,
+  waypoint: new RoutingWaypoint({
+    index: 0,
+    source: isochronesPointSource,
+  }),
+  // Routing Isochrones Result
+  routingIsochrones: null,
+  isLoadingIsochrones: false,
+  routingAvoidFeaturesOptions: [],
 
-    settings: stateRouting.isochronesSettings
+  settings: stateRouting.isochronesSettings,
 };

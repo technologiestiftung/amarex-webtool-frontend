@@ -14,16 +14,16 @@
  * @property {String} [highlightLayerId=null] id of the layer to highlight
  */
 export default {
-    visible: false,
-    type: "layerSelection",
-    menuSide: "mainMenu",
-    name: "common:modules.layerSelection.addSubject",
+  visible: false,
+  type: "layerSelection",
+  menuSide: "mainMenu",
+  name: "common:modules.layerSelection.addSubject",
 
-    subjectDataLayerConfs: [],
-    baselayerConfs: [],
-    lastFolderNames: [],
-    lastSubjectDataLayerConfs: [],
-    lastBaselayerConfs: [],
-    layerInfoVisible: false,
-    highlightLayerId: null
+  subjectDataLayerConfs: [],
+  baselayerConfs: [],
+  lastFolderNames: [],
+  lastSubjectDataLayerConfs: [],
+  lastBaselayerConfs: [],
+  layerInfoVisible: false,
+  highlightLayerId: null,
 };

@@ -15,84 +15,87 @@ import SliderItem from "../../../shared/modules/slider/components/SliderItem.vue
  * @vue-event {Number} input - Emits the slider input.
  */
 export default {
-    name: "ShadowToolSliderInput",
-    components: {
-        SliderItem
+  name: "ShadowToolSliderInput",
+  components: {
+    SliderItem,
+  },
+  props: {
+    label: {
+      type: String,
+      required: false,
+      default: "",
     },
-    props: {
-        label: {
-            type: String,
-            required: false,
-            default: ""
-        },
-        valuelabel: {
-            type: String,
-            required: true
-        },
-        value: {
-            type: Number,
-            required: true
-        },
-        min: {
-            type: Number,
-            required: true
-        },
-        max: {
-            type: Number,
-            required: true
-        },
-        step: {
-            type: Number,
-            required: false,
-            default: 1
-        },
-        unit: {
-            type: String,
-            required: false,
-            default: ""
-        },
-        disabled: {
-            type: Boolean,
-            required: true
-        }
+    valuelabel: {
+      type: String,
+      required: true,
     },
-    emits: ["input"]
+    value: {
+      type: Number,
+      required: true,
+    },
+    min: {
+      type: Number,
+      required: true,
+    },
+    max: {
+      type: Number,
+      required: true,
+    },
+    step: {
+      type: Number,
+      required: false,
+      default: 1,
+    },
+    unit: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    disabled: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  emits: ["input"],
 };
 </script>
 
 <template>
-    <div
-        class="d-flex flex-column mt-2 slider-input"
-    >
-        <label :for="'shadow-slider-input-' + label">
-            <h6>{{ label }}</h6>
-        </label>
-        <div class="d-flex justify-content-end">
-            <span>{{ valuelabel }}</span>
-        </div>
-
-        <SliderItem
-            :id="'shadow-slider-input-' + label"
-            :aria="label === 'Wählen Sie eine Uhrzeit:' ? $t('common:modules.aria.sliderAria') + $t('common:modules.shadow.slideHour') :
-                $t('common:modules.aria.sliderAria') + $t('common:modules.shadow.pickDate')"
-            :value="value"
-            :min="min"
-            :max="max"
-            :step="step"
-            :disabled="disabled"
-            :interaction="$event => $emit('input', Number($event.target.value))"
-        />
+  <div class="d-flex flex-column mt-2 slider-input">
+    <label :for="'shadow-slider-input-' + label">
+      <h6>{{ label }}</h6>
+    </label>
+    <div class="d-flex justify-content-end">
+      <span>{{ valuelabel }}</span>
     </div>
+
+    <SliderItem
+      :id="'shadow-slider-input-' + label"
+      :aria="
+        label === 'Wählen Sie eine Uhrzeit:'
+          ? $t('common:modules.aria.sliderAria') +
+            $t('common:modules.shadow.slideHour')
+          : $t('common:modules.aria.sliderAria') +
+            $t('common:modules.shadow.pickDate')
+      "
+      :value="value"
+      :min="min"
+      :max="max"
+      :step="step"
+      :disabled="disabled"
+      :interaction="($event) => $emit('input', Number($event.target.value))"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
-    @import "~variables";
+@import "~variables";
 
-    .slider-input {
-        accent-color: $secondary;
-    }
+.slider-input {
+  accent-color: $secondary;
+}
 
-    h6 {
-        font-size: $font-size-base;
+h6 {
+  font-size: $font-size-base;
 }
 </style>

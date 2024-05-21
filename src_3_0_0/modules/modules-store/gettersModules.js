@@ -41,57 +41,56 @@ import WfsSearch from "../wfsSearch/components/WfsSearch.vue";
 import Wfst from "../wfst/components/WfsTransaction.vue";
 import WmsTime from "../wmsTime/components/WmsTime.vue";
 
-
 const getters = {
-    componentMap: () => {
-        const coreModules = {
-            abimo: AbimoMeasure,
-            about: About,
-            addWMS: AddWMS,
-            baselayerSwitcher: BaselayerSwitcher,
-            bufferAnalysis: BufferAnalysis,
-            contact: Contact,
-            coordToolkit: CoordToolkit,
-            customMenuElement: CustomMenuElement,
-            draw: Draw,
-            draw_old: Draw_old,
-            featureLister: FeatureLister,
-            fileImport: FileImport,
-            filter: FilterGeneral,
-            folder: Folder,
-            graphicalSelect: GraphicalSelect,
-            language: Language,
-            layerClusterToggler: LayerClusterToggler,
-            layerInformation: LayerInformation,
-            layerPills: LayerPills,
-            layerPreview: LayerPreview,
-            layerSelection: LayerSelection,
-            layerSlider: LayerSlider,
-            layerTree: LayerTree,
-            legend: Legend,
-            login: LoginComponent,
-            measure: Measure,
-            mouseHover: MouseHover,
-            news: NewsView,
-            openConfig: OpenConfig,
-            portalFooter: PortalFooter,
-            print: PrintMap,
-            routing: Routing,
-            searchbar: SearchBar,
-            searchbarresultlist: SearchBarResultList,
-            scaleSwitcher: ScaleSwitcher,
-            selectFeatures: SelectFeatures,
-            shadow: Shadow,
-            shareView: ShareView,
-            styleVT: StyleVT,
-            wfsSearch: WfsSearch,
-            wfst: Wfst,
-            wmsTime: WmsTime
-        };
+  componentMap: () => {
+    const coreModules = {
+      abimo: AbimoMeasure,
+      about: About,
+      addWMS: AddWMS,
+      baselayerSwitcher: BaselayerSwitcher,
+      bufferAnalysis: BufferAnalysis,
+      contact: Contact,
+      coordToolkit: CoordToolkit,
+      customMenuElement: CustomMenuElement,
+      draw: Draw,
+      draw_old: Draw_old,
+      featureLister: FeatureLister,
+      fileImport: FileImport,
+      filter: FilterGeneral,
+      folder: Folder,
+      graphicalSelect: GraphicalSelect,
+      language: Language,
+      layerClusterToggler: LayerClusterToggler,
+      layerInformation: LayerInformation,
+      layerPills: LayerPills,
+      layerPreview: LayerPreview,
+      layerSelection: LayerSelection,
+      layerSlider: LayerSlider,
+      layerTree: LayerTree,
+      legend: Legend,
+      login: LoginComponent,
+      measure: Measure,
+      mouseHover: MouseHover,
+      news: NewsView,
+      openConfig: OpenConfig,
+      portalFooter: PortalFooter,
+      print: PrintMap,
+      routing: Routing,
+      searchbar: SearchBar,
+      searchbarresultlist: SearchBarResultList,
+      scaleSwitcher: ScaleSwitcher,
+      selectFeatures: SelectFeatures,
+      shadow: Shadow,
+      shareView: ShareView,
+      styleVT: StyleVT,
+      wfsSearch: WfsSearch,
+      wfst: Wfst,
+      wmsTime: WmsTime,
+    };
 
-        moduleCollection = {...coreModules, ...moduleCollection};
-        return moduleCollection;
-    }
+    moduleCollection = { ...coreModules, ...moduleCollection };
+    return moduleCollection;
+  },
 };
 
 export default getters;

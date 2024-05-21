@@ -1,6 +1,6 @@
 import axios from "axios";
 import isObject from "../../../shared/js/utils/isObject";
-import {convertAttrTypeXML} from "./convertAttrType.js";
+import { convertAttrTypeXML } from "./convertAttrType.js";
 
 /**
  * Calls DescribeFeatureType on the given url for the given typename.
@@ -11,23 +11,30 @@ import {convertAttrTypeXML} from "./convertAttrType.js";
  * @param {Function|Boolean} [axiosMock=false] false to use axios, an object with get function(url, {params}) if mock is neaded
  * @returns {void}
  */
-function describeFeatureTypeWFS (url, typename, onsuccess, onerror, axiosMock = false) {
-    const params = {
-            service: "WFS",
-            version: "1.1.0",
-            request: "DescribeFeatureType"
-        },
-        axiosObject = isObject(axiosMock) ? axiosMock : axios;
+function describeFeatureTypeWFS(
+  url,
+  typename,
+  onsuccess,
+  onerror,
+  axiosMock = false,
+) {
+  const params = {
+      service: "WFS",
+      version: "1.1.0",
+      request: "DescribeFeatureType",
+    },
+    axiosObject = isObject(axiosMock) ? axiosMock : axios;
 
-    axiosObject.get(url, {params})
-        .then(response => {
-            return parseResponse(response, typename, onsuccess, onerror);
-        })
-        .catch(error => {
-            if (typeof onerror === "function") {
-                onerror(error);
-            }
-        });
+  axiosObject
+    .get(url, { params })
+    .then((response) => {
+      return parseResponse(response, typename, onsuccess, onerror);
+    })
+    .catch((error) => {
+      if (typeof onerror === "function") {
+        onerror(error);
+      }
+    });
 }
 
 /**
@@ -38,14 +45,22 @@ function describeFeatureTypeWFS (url, typename, onsuccess, onerror, axiosMock = 
  * @param {Function} onerror a function(error) with error as object of type Error
  * @returns {void}
  */
-function parseResponse (response, typename, onsuccess, onerror) {
-    if (typeof response?.request?.responseXML !== "object" || response?.request?.responseXML === null) {
-        if (typeof onerror === "function") {
-            onerror(new Error("The response from the server is invalid."));
-        }
-        return;
+function parseResponse(response, typename, onsuccess, onerror) {
+  if (
+    typeof response?.request?.responseXML !== "object" ||
+    response?.request?.responseXML === null
+  ) {
+    if (typeof onerror === "function") {
+      onerror(new Error("The response from the server is invalid."));
     }
-    parseResponseXML(response?.request?.responseXML, typename, onsuccess, onerror);
+    return;
+  }
+  parseResponseXML(
+    response?.request?.responseXML,
+    typename,
+    onsuccess,
+    onerror,
+  );
 }
 
 /**
@@ -56,14 +71,14 @@ function parseResponse (response, typename, onsuccess, onerror) {
  * @param {Function} onerror a function(error) with error as object of type Error
  * @returns {void}
  */
-function parseResponseXML (responseXML, typename, onsuccess, onerror) {
-    if (!responseXML?.childElementCount) {
-        if (typeof onerror === "function") {
-            onerror(new Error("The response from the server is empty."));
-        }
-        return;
+function parseResponseXML(responseXML, typename, onsuccess, onerror) {
+  if (!responseXML?.childElementCount) {
+    if (typeof onerror === "function") {
+      onerror(new Error("The response from the server is empty."));
     }
-    parseSchemaXML(responseXML.children[0], typename, onsuccess, onerror);
+    return;
+  }
+  parseSchemaXML(responseXML.children[0], typename, onsuccess, onerror);
 }
 
 /**
@@ -74,14 +89,14 @@ function parseResponseXML (responseXML, typename, onsuccess, onerror) {
  * @param {Function} onerror a function(error) with error as object of type Error
  * @returns {void}
  */
-function parseSchemaXML (schemaXML, typename, onsuccess, onerror) {
-    if (typeof schemaXML !== "object" || schemaXML === null) {
-        if (typeof onerror === "function") {
-            onerror(new Error("The response from the server has an invalid schema."));
-        }
-        return;
+function parseSchemaXML(schemaXML, typename, onsuccess, onerror) {
+  if (typeof schemaXML !== "object" || schemaXML === null) {
+    if (typeof onerror === "function") {
+      onerror(new Error("The response from the server has an invalid schema."));
     }
-    parseUnknownSchemaChildren(schemaXML.children, typename, onsuccess, onerror);
+    return;
+  }
+  parseUnknownSchemaChildren(schemaXML.children, typename, onsuccess, onerror);
 }
 
 /**
@@ -92,20 +107,28 @@ function parseSchemaXML (schemaXML, typename, onsuccess, onerror) {
  * @param {Function} onerror a function(error) with error as object of type Error
  * @returns {void}
  */
-function parseUnknownSchemaChildren (unknownSchemaChildren, typename, onsuccess, onerror) {
-    if (typeof unknownSchemaChildren !== "object" || unknownSchemaChildren === null || !unknownSchemaChildren?.length) {
-        if (typeof onerror === "function") {
-            onerror(new Error("The response from the server has an empty schema."));
-        }
-        return;
+function parseUnknownSchemaChildren(
+  unknownSchemaChildren,
+  typename,
+  onsuccess,
+  onerror,
+) {
+  if (
+    typeof unknownSchemaChildren !== "object" ||
+    unknownSchemaChildren === null ||
+    !unknownSchemaChildren?.length
+  ) {
+    if (typeof onerror === "function") {
+      onerror(new Error("The response from the server has an empty schema."));
     }
-    else if (unknownSchemaChildren[0].getAttribute("exceptionCode")) {
-        if (typeof onerror === "function") {
-            onerror(new Error(unknownSchemaChildren[0].children[0].textContent));
-        }
-        return;
+    return;
+  } else if (unknownSchemaChildren[0].getAttribute("exceptionCode")) {
+    if (typeof onerror === "function") {
+      onerror(new Error(unknownSchemaChildren[0].children[0].textContent));
     }
-    parseSchemaChildren(unknownSchemaChildren, typename, onsuccess, onerror);
+    return;
+  }
+  parseSchemaChildren(unknownSchemaChildren, typename, onsuccess, onerror);
 }
 
 /**
@@ -116,47 +139,48 @@ function parseUnknownSchemaChildren (unknownSchemaChildren, typename, onsuccess,
  * @param {Function} onerror a function(error) with error as object of type Error
  * @returns {void}
  */
-function parseSchemaChildren (schemaChildren, typename, onsuccess, onerror) {
-    const result = {};
-    let typenameFound = false,
-        complexTypeName = typename;
+function parseSchemaChildren(schemaChildren, typename, onsuccess, onerror) {
+  const result = {};
+  let typenameFound = false,
+    complexTypeName = typename;
 
-    Array.prototype.slice.call(schemaChildren).forEach(element => {
-        if (element.getAttribute("name") === complexTypeName) {
-            if (element.hasAttribute("type")) {
-                const splitType = element.getAttribute("type").split(":");
+  Array.prototype.slice.call(schemaChildren).forEach((element) => {
+    if (element.getAttribute("name") === complexTypeName) {
+      if (element.hasAttribute("type")) {
+        const splitType = element.getAttribute("type").split(":");
 
-                complexTypeName = splitType.length === 1 ? splitType[0] : splitType[1];
-            }
-            const attributes = element.getElementsByTagName("element");
+        complexTypeName = splitType.length === 1 ? splitType[0] : splitType[1];
+      }
+      const attributes = element.getElementsByTagName("element");
 
-            if (typeof attributes !== "object" || attributes === null) {
-                return;
-            }
-            Array.prototype.slice.call(attributes).forEach(attribute => {
-                if (typeof attribute !== "object" || attribute === null) {
-                    return;
-                }
-                const attrName = attribute.getAttribute("name"),
-                    attrType = attribute.getAttribute("type");
-
-                result[attrName] = convertAttrTypeXML(attrType);
-            });
-            typenameFound = true;
-        }
-    });
-    if (!typenameFound) {
-        if (typeof onerror === "function") {
-            onerror(new Error("The typename '" + typename + "' is unknown for this service."));
-        }
+      if (typeof attributes !== "object" || attributes === null) {
         return;
+      }
+      Array.prototype.slice.call(attributes).forEach((attribute) => {
+        if (typeof attribute !== "object" || attribute === null) {
+          return;
+        }
+        const attrName = attribute.getAttribute("name"),
+          attrType = attribute.getAttribute("type");
+
+        result[attrName] = convertAttrTypeXML(attrType);
+      });
+      typenameFound = true;
     }
-    if (typeof onsuccess === "function") {
-        onsuccess(result);
+  });
+  if (!typenameFound) {
+    if (typeof onerror === "function") {
+      onerror(
+        new Error(
+          "The typename '" + typename + "' is unknown for this service.",
+        ),
+      );
     }
+    return;
+  }
+  if (typeof onsuccess === "function") {
+    onsuccess(result);
+  }
 }
 
-export {
-    describeFeatureTypeWFS,
-    parseResponse
-};
+export { describeFeatureTypeWFS, parseResponse };

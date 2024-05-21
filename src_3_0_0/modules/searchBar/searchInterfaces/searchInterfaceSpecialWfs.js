@@ -1,6 +1,6 @@
 import SearchInterface from "./searchInterface";
 import WFS from "ol/format/WFS";
-import {uniqueId} from "../../../shared/js/utils/uniqueId";
+import { uniqueId } from "../../../shared/js/utils/uniqueId";
 
 /**
  * The search interface to the special wfs.
@@ -29,23 +29,35 @@ import {uniqueId} from "../../../shared/js/utils/uniqueId";
  * @param {String} [searchInterfaceId="specialWfs"] The id of the service interface.
  * @returns {void}
  */
-export default function SearchInterfaceSpecialWfs ({definitions, hitTemplate, icon, geometryName, maxFeatures, namespaces, resultEvents, searchInterfaceId} = {}) {
-    SearchInterface.call(this,
-        "client",
-        searchInterfaceId || "specialWfs",
-        resultEvents || {
-            onClick: ["highlightFeature", "setMarker", "zoomToResult"],
-            onHover: ["highlightFeature", "setMarker"]
-        },
-        hitTemplate
-    );
+export default function SearchInterfaceSpecialWfs({
+  definitions,
+  hitTemplate,
+  icon,
+  geometryName,
+  maxFeatures,
+  namespaces,
+  resultEvents,
+  searchInterfaceId,
+} = {}) {
+  SearchInterface.call(
+    this,
+    "client",
+    searchInterfaceId || "specialWfs",
+    resultEvents || {
+      onClick: ["highlightFeature", "setMarker", "zoomToResult"],
+      onHover: ["highlightFeature", "setMarker"],
+    },
+    hitTemplate,
+  );
 
-    this.definitions = definitions;
+  this.definitions = definitions;
 
-    this.icon = icon || "bi-house";
-    this.geometryName = geometryName || "app:geom";
-    this.maxFeatures = maxFeatures || 20;
-    this.namespaces = namespaces || "xmlns:wfs='http://www.opengis.net/wfs' xmlns:ogc='http://www.opengis.net/ogc' xmlns:gml='http://www.opengis.net/gml'";
+  this.icon = icon || "bi-house";
+  this.geometryName = geometryName || "app:geom";
+  this.maxFeatures = maxFeatures || 20;
+  this.namespaces =
+    namespaces ||
+    "xmlns:wfs='http://www.opengis.net/wfs' xmlns:ogc='http://www.opengis.net/ogc' xmlns:gml='http://www.opengis.net/gml'";
 }
 
 SearchInterfaceSpecialWfs.prototype = Object.create(SearchInterface.prototype);
@@ -57,24 +69,24 @@ SearchInterfaceSpecialWfs.prototype = Object.create(SearchInterface.prototype);
  * @returns {Object} the search results
  */
 SearchInterfaceSpecialWfs.prototype.search = async function (searchInput) {
-    this.searchState = "running";
+  this.searchState = "running";
 
-    for (const definition of this.definitions) {
-        const wfsXml = this.getWFS110Xml(definition, searchInput);
-        let result = {
-            status: "success",
-            message: "",
-            hits: []
-        };
+  for (const definition of this.definitions) {
+    const wfsXml = this.getWFS110Xml(definition, searchInput);
+    let result = {
+      status: "success",
+      message: "",
+      hits: [],
+    };
 
-        result = await this.sendRequest(definition.url, definition, wfsXml, result);
-        result.hits = this.normalizeResults(result.hits);
+    result = await this.sendRequest(definition.url, definition, wfsXml, result);
+    result.hits = this.normalizeResults(result.hits);
 
-        this.pushHitsToSearchResults(result.hits);
-    }
+    this.pushHitsToSearchResults(result.hits);
+  }
 
-    this.searchState = "finished";
-    return this.searchResults;
+  this.searchState = "finished";
+  return this.searchResults;
 };
 
 /**
@@ -82,58 +94,74 @@ SearchInterfaceSpecialWfs.prototype.search = async function (searchInput) {
  * @param {Object[]} searchResults The search results of wfs.
  * @returns {Object[]} The normalized search result.
  */
-SearchInterfaceSpecialWfs.prototype.normalizeResults = function (searchResults) {
-    const normalizedResults = [];
+SearchInterfaceSpecialWfs.prototype.normalizeResults = function (
+  searchResults,
+) {
+  const normalizedResults = [];
 
-    searchResults.forEach(searchResult => {
-        normalizedResults.push({
-            events: this.normalizeResultEvents(this.resultEvents, searchResult),
-            category: i18next.t(searchResult.type),
-            icon: searchResult.icon,
-            id: uniqueId("SpecialWFS"),
-            name: searchResult.identifier,
-            toolTip: `${searchResult.identifier}`
-        });
+  searchResults.forEach((searchResult) => {
+    normalizedResults.push({
+      events: this.normalizeResultEvents(this.resultEvents, searchResult),
+      category: i18next.t(searchResult.type),
+      icon: searchResult.icon,
+      id: uniqueId("SpecialWFS"),
+      name: searchResult.identifier,
+      toolTip: `${searchResult.identifier}`,
     });
+  });
 
-    return normalizedResults;
+  return normalizedResults;
 };
 
 /**
-     * Creates the XML for a WFS 1.1.0 POST request
-     * @param   {Object} definition    Definition from Configuration
-     * @param   {String} searchString  The string queried
-     * @returns {String}               XML String
-     */
-SearchInterfaceSpecialWfs.prototype.getWFS110Xml = function (definition, searchString) {
-    const typeName = definition.typeName,
-        propertyNames = definition.propertyNames,
-        geometryName = definition.geometryName ? definition.geometryName : this.geometryName,
-        maxFeatures = definition.maxFeatures ? definition.maxFeatures : this.maxFeatures,
-        namespaces = definition.namespaces ? this.namespaces + " " + definition.namespaces : this.namespaces;
-    let data, propertyName;
+ * Creates the XML for a WFS 1.1.0 POST request
+ * @param   {Object} definition    Definition from Configuration
+ * @param   {String} searchString  The string queried
+ * @returns {String}               XML String
+ */
+SearchInterfaceSpecialWfs.prototype.getWFS110Xml = function (
+  definition,
+  searchString,
+) {
+  const typeName = definition.typeName,
+    propertyNames = definition.propertyNames,
+    geometryName = definition.geometryName
+      ? definition.geometryName
+      : this.geometryName,
+    maxFeatures = definition.maxFeatures
+      ? definition.maxFeatures
+      : this.maxFeatures,
+    namespaces = definition.namespaces
+      ? this.namespaces + " " + definition.namespaces
+      : this.namespaces;
+  let data, propertyName;
 
-    data = "<wfs:GetFeature service='WFS' ";
-    data += namespaces + " traverseXlinkDepth='*' version='1.1.0'>";
-    data += "<wfs:Query typeName='" + typeName + "'>";
-    for (propertyName of propertyNames) {
-        data += "<wfs:PropertyName>" + propertyName + "</wfs:PropertyName>";
-    }
-    data += "<wfs:PropertyName>" + geometryName + "</wfs:PropertyName>";
-    data += "<wfs:maxFeatures>" + maxFeatures + "</wfs:maxFeatures>";
-    data += "<ogc:Filter>";
-    if (propertyNames.length > 1) {
-        data += "<ogc:Or>";
-    }
-    for (propertyName of propertyNames) {
-        data += "<ogc:PropertyIsLike matchCase='false' wildCard='*' singleChar='#' escapeChar='!'><ogc:PropertyName>" + propertyName + "</ogc:PropertyName><ogc:Literal>*" + searchString + "*</ogc:Literal></ogc:PropertyIsLike>";
-    }
-    if (propertyNames.length > 1) {
-        data += "</ogc:Or>";
-    }
-    data += "</ogc:Filter></wfs:Query></wfs:GetFeature>";
+  data = "<wfs:GetFeature service='WFS' ";
+  data += namespaces + " traverseXlinkDepth='*' version='1.1.0'>";
+  data += "<wfs:Query typeName='" + typeName + "'>";
+  for (propertyName of propertyNames) {
+    data += "<wfs:PropertyName>" + propertyName + "</wfs:PropertyName>";
+  }
+  data += "<wfs:PropertyName>" + geometryName + "</wfs:PropertyName>";
+  data += "<wfs:maxFeatures>" + maxFeatures + "</wfs:maxFeatures>";
+  data += "<ogc:Filter>";
+  if (propertyNames.length > 1) {
+    data += "<ogc:Or>";
+  }
+  for (propertyName of propertyNames) {
+    data +=
+      "<ogc:PropertyIsLike matchCase='false' wildCard='*' singleChar='#' escapeChar='!'><ogc:PropertyName>" +
+      propertyName +
+      "</ogc:PropertyName><ogc:Literal>*" +
+      searchString +
+      "*</ogc:Literal></ogc:PropertyIsLike>";
+  }
+  if (propertyNames.length > 1) {
+    data += "</ogc:Or>";
+  }
+  data += "</ogc:Filter></wfs:Query></wfs:GetFeature>";
 
-    return data;
+  return data;
 };
 
 /**
@@ -147,13 +175,23 @@ SearchInterfaceSpecialWfs.prototype.getWFS110Xml = function (definition, searchS
  * @param {Object[]} result.hits Array of result hits.
  * @returns {Object} Parsed result of request.
  */
-SearchInterfaceSpecialWfs.prototype.sendRequest = async function (url, requestConfig, payload, result) {
-    let resultData = result;
-    const resultXml = await this.requestSearch(url, "POST", payload, "application/xml");
+SearchInterfaceSpecialWfs.prototype.sendRequest = async function (
+  url,
+  requestConfig,
+  payload,
+  result,
+) {
+  let resultData = result;
+  const resultXml = await this.requestSearch(
+    url,
+    "POST",
+    payload,
+    "application/xml",
+  );
 
-    resultData = this.fillHitList(resultXml, resultData, requestConfig);
+  resultData = this.fillHitList(resultXml, resultData, requestConfig);
 
-    return resultData;
+  return resultData;
 };
 
 /**
@@ -163,63 +201,80 @@ SearchInterfaceSpecialWfs.prototype.sendRequest = async function (url, requestCo
  * @param {Object} requestConfig The request configuration.
  * @returns {Object} Aggregated result object containing the hits.
  */
-SearchInterfaceSpecialWfs.prototype.fillHitList = function (xml, result, requestConfig) {
-    const type = requestConfig.name,
-        typeName = requestConfig.typeName,
-        propertyNames = requestConfig.propertyNames,
-        geometryName = requestConfig.geometryName ? requestConfig.geometryName : this.geometryName,
-        icon = requestConfig.icon ? requestConfig.icon : this.icon,
-        multiGeometries = ["MULTIPOLYGON"],
-        parser = new DOMParser(),
-        xmlData = parser.parseFromString(xml, "application/xml"),
-        elements = xmlData.getElementsByTagNameNS("*", typeName.split(":")[1]),
-        resultData = result;
+SearchInterfaceSpecialWfs.prototype.fillHitList = function (
+  xml,
+  result,
+  requestConfig,
+) {
+  const type = requestConfig.name,
+    typeName = requestConfig.typeName,
+    propertyNames = requestConfig.propertyNames,
+    geometryName = requestConfig.geometryName
+      ? requestConfig.geometryName
+      : this.geometryName,
+    icon = requestConfig.icon ? requestConfig.icon : this.icon,
+    multiGeometries = ["MULTIPOLYGON"],
+    parser = new DOMParser(),
+    xmlData = parser.parseFromString(xml, "application/xml"),
+    elements = xmlData.getElementsByTagNameNS("*", typeName.split(":")[1]),
+    resultData = result;
 
-    for (let i = 0; i < elements.length && i < this.maxFeatures; i++) {
-        const element = elements[i];
+  for (let i = 0; i < elements.length && i < this.maxFeatures; i++) {
+    const element = elements[i];
 
-        propertyNames.forEach(propertyName => {
-            if (element.getElementsByTagName(propertyName).length > 0 && element.getElementsByTagName(geometryName).length > 0) {
-                const elementGeometryName = element.getElementsByTagNameNS("*", geometryName.split(":")[1])[0],
-                    elementGeometryFirstChild = elementGeometryName.firstElementChild,
-                    firstChildNameUpperCase = elementGeometryFirstChild.localName.toUpperCase(),
-                    identifier = element.getElementsByTagName(propertyName)[0].textContent;
-                let geometry, geometryType, coordinates;
+    propertyNames.forEach((propertyName) => {
+      if (
+        element.getElementsByTagName(propertyName).length > 0 &&
+        element.getElementsByTagName(geometryName).length > 0
+      ) {
+        const elementGeometryName = element.getElementsByTagNameNS(
+            "*",
+            geometryName.split(":")[1],
+          )[0],
+          elementGeometryFirstChild = elementGeometryName.firstElementChild,
+          firstChildNameUpperCase =
+            elementGeometryFirstChild.localName.toUpperCase(),
+          identifier =
+            element.getElementsByTagName(propertyName)[0].textContent;
+        let geometry, geometryType, coordinates;
 
-                if (multiGeometries.includes(firstChildNameUpperCase)) {
-                    const memberName = elementGeometryFirstChild.firstElementChild.localName,
-                        geometryMembers = elementGeometryName.getElementsByTagNameNS("*", memberName);
+        if (multiGeometries.includes(firstChildNameUpperCase)) {
+          const memberName =
+              elementGeometryFirstChild.firstElementChild.localName,
+            geometryMembers = elementGeometryName.getElementsByTagNameNS(
+              "*",
+              memberName,
+            );
 
-                    coordinates = this.getInteriorAndExteriorPolygonMembers(geometryMembers);
-                    geometry = undefined;
-                    geometryType = "MultiPolygon";
-                }
-                else {
-                    const feature = new WFS().readFeatures(xml)[i];
+          coordinates =
+            this.getInteriorAndExteriorPolygonMembers(geometryMembers);
+          geometry = undefined;
+          geometryType = "MultiPolygon";
+        } else {
+          const feature = new WFS().readFeatures(xml)[i];
 
-                    geometry = feature.getGeometry();
-                    coordinates = undefined;
-                    geometryType = geometry.getType();
-                }
+          geometry = feature.getGeometry();
+          coordinates = undefined;
+          geometryType = geometry.getType();
+        }
 
-                resultData.hits.push(
-                    {
-                        type,
-                        identifier,
-                        geometryType,
-                        geometry,
-                        coordinates,
-                        icon
-                    }
-                );
-            }
-            else {
-                console.error("Missing properties in specialWFS-Response. Ignoring Feature...");
-            }
+        resultData.hits.push({
+          type,
+          identifier,
+          geometryType,
+          geometry,
+          coordinates,
+          icon,
         });
-    }
+      } else {
+        console.error(
+          "Missing properties in specialWFS-Response. Ignoring Feature...",
+        );
+      }
+    });
+  }
 
-    return resultData;
+  return resultData;
 };
 
 /**
@@ -227,37 +282,41 @@ SearchInterfaceSpecialWfs.prototype.fillHitList = function (xml, result, request
  * @param   {Object} polygonMembers members of the polygon
  * @returns {Array[]} returns the coordinates of every polygon
  */
-SearchInterfaceSpecialWfs.prototype.getInteriorAndExteriorPolygonMembers = function (polygonMembers) {
+SearchInterfaceSpecialWfs.prototype.getInteriorAndExteriorPolygonMembers =
+  function (polygonMembers) {
     const lengthIndex = polygonMembers.length,
-        coordinateArray = [];
+      coordinateArray = [];
 
     for (let i = 0; i < lengthIndex; i++) {
-        const posListPolygonMembers = polygonMembers[i].getElementsByTagNameNS("*", "posList");
+      const posListPolygonMembers = polygonMembers[i].getElementsByTagNameNS(
+        "*",
+        "posList",
+      );
 
-        for (const key in Object.keys(posListPolygonMembers)) {
-            const posPolygonMembers = posListPolygonMembers[key].getElementsByTagNameNS("*", "pos");
+      for (const key in Object.keys(posListPolygonMembers)) {
+        const posPolygonMembers = posListPolygonMembers[
+          key
+        ].getElementsByTagNameNS("*", "pos");
 
-            if (posPolygonMembers.length > 0) {
-                Array.from(posPolygonMembers).forEach(posElement => {
+        if (posPolygonMembers.length > 0) {
+          Array.from(posPolygonMembers).forEach((posElement) => {
+            for (const posKey in Object.keys(posElement)) {
+              const coordinatesText = posElement[posKey].textContent,
+                coords = coordinatesText.trim().split(" ").map(Number);
 
-                    for (const posKey in Object.keys(posElement)) {
-                        const coordinatesText = posElement[posKey].textContent,
-                            coords = coordinatesText.trim().split(" ").map(Number);
-
-                        coords.forEach(coordArray => coordinateArray.push(coordArray));
-                    }
-                });
+              coords.forEach((coordArray) => coordinateArray.push(coordArray));
             }
-            else {
-                const coordinatesText = posListPolygonMembers[key].textContent,
-                    coords = coordinatesText.trim().split(" ").map(Number);
+          });
+        } else {
+          const coordinatesText = posListPolygonMembers[key].textContent,
+            coords = coordinatesText.trim().split(" ").map(Number);
 
-                coords.forEach(coordArray => coordinateArray.push(coordArray));
-            }
+          coords.forEach((coordArray) => coordinateArray.push(coordArray));
         }
+      }
     }
     return [coordinateArray];
-};
+  };
 
 /**
  * Creates the possible actions and fills them.
@@ -265,53 +324,52 @@ SearchInterfaceSpecialWfs.prototype.getInteriorAndExteriorPolygonMembers = funct
  * @param {Object} searchResult The search result.
  * @returns {Object} The possible actions.
  */
-SearchInterfaceSpecialWfs.prototype.createPossibleActions = function (searchResult) {
-    const coordinates = [];
+SearchInterfaceSpecialWfs.prototype.createPossibleActions = function (
+  searchResult,
+) {
+  const coordinates = [];
 
-    if (Array.isArray(searchResult?.coordinates)) {
-        searchResult.coordinates.forEach(coord => {
-            if (Array.isArray(coord)) {
-                coord.forEach(coordinate => {
-                    coordinates.push(parseFloat(coordinate));
-                });
-            }
-            else {
-                coordinates.push(parseFloat(coord));
-            }
+  if (Array.isArray(searchResult?.coordinates)) {
+    searchResult.coordinates.forEach((coord) => {
+      if (Array.isArray(coord)) {
+        coord.forEach((coordinate) => {
+          coordinates.push(parseFloat(coordinate));
         });
-    }
-    else if (Array.isArray(searchResult?.geometry)) {
-        searchResult.geometry.forEach(coord => {
-            if (Array.isArray(coord)) {
-                coord.forEach(coordinate => {
-                    coordinates.push(parseFloat(coordinate));
-                });
-            }
-            if (coord) {
-                coordinates.push(parseFloat(coord));
-            }
+      } else {
+        coordinates.push(parseFloat(coord));
+      }
+    });
+  } else if (Array.isArray(searchResult?.geometry)) {
+    searchResult.geometry.forEach((coord) => {
+      if (Array.isArray(coord)) {
+        coord.forEach((coordinate) => {
+          coordinates.push(parseFloat(coordinate));
         });
-    }
-    else if (searchResult?.geometry?.flatCoordinates) {
-        searchResult?.geometry?.flatCoordinates.forEach(coord => {
-            if (coord) {
-                coordinates.push(parseFloat(coord));
-            }
-        });
-    }
+      }
+      if (coord) {
+        coordinates.push(parseFloat(coord));
+      }
+    });
+  } else if (searchResult?.geometry?.flatCoordinates) {
+    searchResult?.geometry?.flatCoordinates.forEach((coord) => {
+      if (coord) {
+        coordinates.push(parseFloat(coord));
+      }
+    });
+  }
 
-    return {
-        highlightFeature: {
-            hit: {
-                coordinate: [coordinates],
-                geometryType: searchResult.geometryType
-            }
-        },
-        setMarker: {
-            coordinates: coordinates
-        },
-        zoomToResult: {
-            coordinates: coordinates
-        }
-    };
+  return {
+    highlightFeature: {
+      hit: {
+        coordinate: [coordinates],
+        geometryType: searchResult.geometryType,
+      },
+    },
+    setMarker: {
+      coordinates: coordinates,
+    },
+    zoomToResult: {
+      coordinates: coordinates,
+    },
+  };
 };

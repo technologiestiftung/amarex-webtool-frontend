@@ -5,17 +5,17 @@ import dayjs from "dayjs";
  * @param {String} systemInfo Information about the system which the user uses.
  * @return {String} An HTML String to be used as part of the E-Mail.
  */
-function createSystemInfo (systemInfo) {
-    let info = "";
+function createSystemInfo(systemInfo) {
+  let info = "";
 
-    info += "<br>";
-    info += "==================<br>";
-    info += `Referrer: <a href="${systemInfo.referrer}">${systemInfo.portalTitle}</a><br>`;
-    info += `Platform: ${systemInfo.platform}<br>`;
-    info += `Cookies enabled: ${systemInfo.cookieEnabled}<br>`;
-    info += `UserAgent: ${systemInfo.userAgent}<br>`;
+  info += "<br>";
+  info += "==================<br>";
+  info += `Referrer: <a href="${systemInfo.referrer}">${systemInfo.portalTitle}</a><br>`;
+  info += `Platform: ${systemInfo.platform}<br>`;
+  info += `Cookies enabled: ${systemInfo.cookieEnabled}<br>`;
+  info += `UserAgent: ${systemInfo.userAgent}<br>`;
 
-    return info;
+  return info;
 }
 
 /**
@@ -31,17 +31,17 @@ function createSystemInfo (systemInfo) {
  * @param {?ContactSystemInfo} systemInfo Information about the system of the user.
  * @returns {String} The prepared message as HTML.
  */
-function createMessage ({username, mail, phone, message}, systemInfo) {
-    let msg = "";
+function createMessage({ username, mail, phone, message }, systemInfo) {
+  let msg = "";
 
-    msg += `Name: ${username}<br>`;
-    msg += `E-Mail: ${mail}<br>`;
-    msg += `Tel.:: ${phone}<br>`;
-    msg += "==================<br>";
-    msg += `${message}<br>`;
-    msg += systemInfo ? createSystemInfo(systemInfo) : "";
+  msg += `Name: ${username}<br>`;
+  msg += `E-Mail: ${mail}<br>`;
+  msg += `Tel.:: ${phone}<br>`;
+  msg += "==================<br>";
+  msg += `${message}<br>`;
+  msg += systemInfo ? createSystemInfo(systemInfo) : "";
 
-    return msg;
+  return msg;
 }
 
 /**
@@ -51,8 +51,8 @@ function createMessage ({username, mail, phone, message}, systemInfo) {
  * @param {String} subject The subject that was configured.
  * @returns {String} The subject that will be used for the E-Mail.
  */
-function createSubject (ticketId, subject) {
-    return `${ticketId}: ${subject}`;
+function createSubject(ticketId, subject) {
+  return `${ticketId}: ${subject}`;
 }
 
 /**
@@ -61,16 +61,12 @@ function createSubject (ticketId, subject) {
  * @param {String} locationOfCustomerService locale key for day.js
  * @returns {String} The generated unique Id.
  */
-function createTicketId (locationOfCustomerService = "de") {
-    const prefix = dayjs().locale(locationOfCustomerService).format("MMDD"),
-        randomNumber = String(Math.floor(Math.random() * 9000) + 1000),
-        anotherRandomNumber = String(Math.floor(Math.random() * 9000) + 1000);
+function createTicketId(locationOfCustomerService = "de") {
+  const prefix = dayjs().locale(locationOfCustomerService).format("MMDD"),
+    randomNumber = String(Math.floor(Math.random() * 9000) + 1000),
+    anotherRandomNumber = String(Math.floor(Math.random() * 9000) + 1000);
 
-    return prefix + "-" + randomNumber + "-" + anotherRandomNumber;
+  return prefix + "-" + randomNumber + "-" + anotherRandomNumber;
 }
 
-export {
-    createMessage,
-    createSubject,
-    createTicketId
-};
+export { createMessage, createSubject, createTicketId };

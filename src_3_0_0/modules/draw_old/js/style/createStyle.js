@@ -1,7 +1,7 @@
-import {Style} from "ol/style.js";
-import {createDrawStyle} from "./createDrawStyle";
-import {createIconStyle} from "./createIconStyle";
-import {createTextStyle} from "./createTextStyle";
+import { Style } from "ol/style.js";
+import { createDrawStyle } from "./createDrawStyle";
+import { createIconStyle } from "./createIconStyle";
+import { createTextStyle } from "./createTextStyle";
 
 /**
  * Creates and returns the styling for the draw interaction.
@@ -20,34 +20,39 @@ import {createTextStyle} from "./createTextStyle";
  * @param {String} styleSettings.text The text to be written if the drawType "writeText" is chosen.
  * @returns {module:ol/style/Style} style of the draw interaction
  */
-function createStyle (state, styleSettings) {
-    const drawType = state.drawType,
-        imgPath = state.imgPath,
-        pointSize = state.pointSize,
-        symbol = state.symbol,
-        zIndex = state.zIndex,
-        color = styleSettings.color,
-        colorContour = styleSettings.colorContour,
-        font = styleSettings.font,
-        fontSize = styleSettings.fontSize,
-        strokeWidth = styleSettings.strokeWidth,
-        text = styleSettings.text,
-        isSimplePoint = symbol?.type ? symbol.type === "simple_point" : false;
-    let style = new Style();
+function createStyle(state, styleSettings) {
+  const drawType = state.drawType,
+    imgPath = state.imgPath,
+    pointSize = state.pointSize,
+    symbol = state.symbol,
+    zIndex = state.zIndex,
+    color = styleSettings.color,
+    colorContour = styleSettings.colorContour,
+    font = styleSettings.font,
+    fontSize = styleSettings.fontSize,
+    strokeWidth = styleSettings.strokeWidth,
+    text = styleSettings.text,
+    isSimplePoint = symbol?.type ? symbol.type === "simple_point" : false;
+  let style = new Style();
 
-    if (drawType.id === "drawSymbol" && !isSimplePoint) {
-        style = createIconStyle(color, imgPath, pointSize, symbol, zIndex);
-    }
-    else if (drawType.id === "writeText") {
-        style = createTextStyle(color, font, fontSize, text, 9999);
-    }
-    else {
-        style = createDrawStyle(color, colorContour, drawType.geometry, pointSize, strokeWidth, zIndex);
-    }
+  if (drawType.id === "drawSymbol" && !isSimplePoint) {
+    style = createIconStyle(color, imgPath, pointSize, symbol, zIndex);
+  } else if (drawType.id === "writeText") {
+    style = createTextStyle(color, font, fontSize, text, 9999);
+  } else {
+    style = createDrawStyle(
+      color,
+      colorContour,
+      drawType.geometry,
+      pointSize,
+      strokeWidth,
+      zIndex,
+    );
+  }
 
-    return style.clone();
+  return style.clone();
 }
 
 export default {
-    createStyle
+  createStyle,
 };

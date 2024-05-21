@@ -4,9 +4,9 @@ import getters from "./gettersLogin";
 import actions from "./actionsLogin";
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    getters,
-    actions
+  namespaced: true,
+  state,
+  mutations,
+  getters,
+  actions,
 };

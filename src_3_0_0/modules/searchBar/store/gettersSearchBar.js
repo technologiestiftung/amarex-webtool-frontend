@@ -1,4 +1,4 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateSearchBar from "./stateSearchBar";
 
 /**
@@ -6,6 +6,5 @@ import stateSearchBar from "./stateSearchBar";
  * @module modules/searchBar/store/getterssearchBar
  */
 export default {
-    ...generateSimpleGetters(stateSearchBar)
+  ...generateSimpleGetters(stateSearchBar),
 };
-

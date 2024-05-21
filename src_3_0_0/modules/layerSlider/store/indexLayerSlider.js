@@ -4,9 +4,9 @@ import actions from "./actionsLayerSlider";
 import state from "./stateLayerSlider";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state: { ...state },
+  mutations,
+  actions,
+  getters,
 };
