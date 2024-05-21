@@ -123,7 +123,7 @@
             "type": "selectFeatures"
           },
           {
-            "type": "fileImport"
+            "type": "appFileImport"
           },
           {
             "type": "addWMS"
@@ -155,4 +155,5 @@
     }
   }
 }
+
 

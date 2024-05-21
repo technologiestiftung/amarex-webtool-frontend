@@ -76,7 +76,7 @@
     },
     "aria": {
       "sliderAria": "Schieberegeler für "
-     },
+    },
     "bufferAnalysis": {
       "clearButton": "Zurücksetzen",
       "description": "Finde heraus, was sich in einem Umkreis um ein Objekt befindet",
@@ -309,6 +309,35 @@
       "more": "Mehr...",
       "name": "Liste",
       "visibleVectorLayers": "Sichtbare Vektorlayer"
+    },
+    "appFileImport": {
+      "alertingMessages": {
+        "featureError": "Ein Feature in dieser Datei konnte nicht gelesen werden.",
+        "formatError": "Die Datei \"{{filename}}\" konnte nicht gelesen werden. Bitte prüfen Sie, ob die Datei das Format *.kml. *.gpx, *.geojson oder *.json hat.",
+        "missingFileContent": "Fehler beim Lesen der Datei \"{{filename}}\". Bitte überprüfen Sie den Dateityp sowie den Inhalt der Datei. Falls die Datei fehlerfrei ist, wenden Sie sich bitte an den Support.",
+        "missingFormat": "Das Dateiformat {{format}} wird nicht unterstützt. Bitte wenden Sie sich an den Support.",
+        "success": "Die Datei \"{{filename}}\" wurde erfolgreich importiert.",
+        "successPartly": "Die Datei \"{{filename}}\" wurde teilweise importiert."
+      },
+      "captions": {
+        "drawTool": "$t(common:modules.draw.name) öffnen",
+        "introDrawTool": "Importierte Geometrien können im Nachhinein verändert werden. Nutzen Sie hierfür das Werkzeug \"$t(modules.draw.name)\".",
+        "introFormats": "Es können KML-Dateien (*.kml), GPX-Dateien (*.gpx) oder GeoJson-Dateien (*.geojson, *.json) importiert werden.",
+        "introInfo": "Importieren Sie Ihre gewünschte Datei einfach per Drag and Drop oder alternativ mit dem Öffnen-Dialog des Browsers.",
+        "supportedFiletypes": {
+          "auto": "Automatische Erkennung",
+          "geojson": "GeoJson-Datei (*.geojson, *.json)",
+          "gpx": "GPX-Datei (*.gpx)",
+          "kml": "KML-Datei (*.kml)"
+        }
+      },
+      "description": "Importiere Geodaten aus verschiedenen Dateiformaten",
+      "fileZoom": "Auf Features dieser Datei \"{{filename}}\" zoomen",
+      "importFiles": "Ausgewählte Dateien importieren",
+      "name": "Datei-Import",
+      "removeAttachment": "Datei entfernen",
+      "successfullyImportedLabel": "Erfolgreich importiert:",
+      "zoom": "Zoomen"
     },
     "fileImport": {
       "alertingMessages": {
@@ -765,15 +794,15 @@
         "addressHospitalBplan": "Suche nach Adresse/Krankenhaus/B-Plan",
         "addressTopic": "Suche Adresse, Stadtteil, Themen",
         "addressTopicParcel": "Suche Adresse, Stadtteil, Themen, Flurstück"
-    },
-    "showAllResults": "alle Ergebnisse anzeigen",
-    "searchResults": "Suchergebnisse",
-    "search": "Suche",
-    "searchResultList": "Suchübersicht",
-    "searchResultsFrom": "Suchergebnisse von: ",
-    "mark": "Wähle das Thema aus",
-    "add": "Thema hinzufügen",
-    "type": {
+      },
+      "showAllResults": "alle Ergebnisse anzeigen",
+      "searchResults": "Suchergebnisse",
+      "search": "Suche",
+      "searchResultList": "Suchübersicht",
+      "searchResultsFrom": "Suchergebnisse von: ",
+      "mark": "Wähle das Thema aus",
+      "add": "Thema hinzufügen",
+      "type": {
         "address": "Adresse",
         "county": "Bezirk",
         "district": "Stadtteil",
@@ -784,28 +813,28 @@
         "street": "Straße",
         "subject": "Thema (externe Fachdaten)",
         "topic": "Thema (Fachdaten)"
-    },
-    "specialWFS": {
-      "ongoing": "im Verfahren",
-      "terminated": "festgestellt",
-      "hazardous": "Störfallbetrieb",
-      "childcare": "Kita",
-      "bplan": "B-Plan"
-    },
-    "actions":{
-      "activateLayerInTopicTree":"Layer im Themenbaum anzeigen",
-      "addLayerToTopicTree":"Layer dem Themenbaum hinzufügen",
-      "highlightFeature":"Feature hervorheben",
-      "openGetFeatureInfo":"Informationen anzeigen",
-      "setMarker":"Marker setzen",
-      "zoomToResult":"Zum Ergebnis zoomen",
-      "startRouting":"Route starten",
-      "showInTree":"Thema anzeigen",
-      "showLayerInfo":"Informationen und Legende"
-    },
-    "noInitialResults": "Die initiale Suche ergab keine Treffer.",
-    "showAll": "Alle anzeigen",
-    "layerResultNotShown": "Der gefundene Layer kann nicht angezeigt werden."
+      },
+      "specialWFS": {
+        "ongoing": "im Verfahren",
+        "terminated": "festgestellt",
+        "hazardous": "Störfallbetrieb",
+        "childcare": "Kita",
+        "bplan": "B-Plan"
+      },
+      "actions": {
+        "activateLayerInTopicTree": "Layer im Themenbaum anzeigen",
+        "addLayerToTopicTree": "Layer dem Themenbaum hinzufügen",
+        "highlightFeature": "Feature hervorheben",
+        "openGetFeatureInfo": "Informationen anzeigen",
+        "setMarker": "Marker setzen",
+        "zoomToResult": "Zum Ergebnis zoomen",
+        "startRouting": "Route starten",
+        "showInTree": "Thema anzeigen",
+        "showLayerInfo": "Informationen und Legende"
+      },
+      "noInitialResults": "Die initiale Suche ergab keine Treffer.",
+      "showAll": "Alle anzeigen",
+      "layerResultNotShown": "Der gefundene Layer kann nicht angezeigt werden."
     },
     "selectFeatures": {
       "description": "Erhalte Informationen zu Objekten die du auf der Karte auswählst",
@@ -917,20 +946,20 @@
     },
     "wmsTime": {
       "layerSwiper": {
-          "description": "Der Swiper kann mithilfe der Maus oder den Pfeiltasten der Tastatur bewegt werden. Bei der Nutzung der Pfeiltasten wird der Swiper {{amount}}px in die entsprechende Richtung bewegt.",
-          "title": "Layer vergleichen"
+        "description": "Der Swiper kann mithilfe der Maus oder den Pfeiltasten der Tastatur bewegt werden. Bei der Nutzung der Pfeiltasten wird der Swiper {{amount}}px in die entsprechende Richtung bewegt.",
+        "title": "Layer vergleichen"
       },
       "timeSlider": {
-          "buttons": {
-              "backward": "Einen Zeitpunkt zurück",
-              "deactivateLayerSwiper": "Layer entfernen",
-              "forward": "Einen Zeitpunkt voran",
-              "layerSwiper": "Zeitpunkte vergleichen",
-              "play": "Ein automatisches Abspielen aller Zeitpunkte, ausgehend vom aktuell ausgewählten Zeitpunkt"
-          },
-          "inputRangeLabel": "Einen Zeitpunkt auswählen"
+        "buttons": {
+          "backward": "Einen Zeitpunkt zurück",
+          "deactivateLayerSwiper": "Layer entfernen",
+          "forward": "Einen Zeitpunkt voran",
+          "layerSwiper": "Zeitpunkte vergleichen",
+          "play": "Ein automatisches Abspielen aller Zeitpunkte, ausgehend vom aktuell ausgewählten Zeitpunkt"
+        },
+        "inputRangeLabel": "Einen Zeitpunkt auswählen"
       }
-  }
+    }
   },
   "shared": {
     "js": {

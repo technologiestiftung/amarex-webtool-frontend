@@ -1,8 +1,11 @@
 import getters from "./gettersModules";
 
+import GraphicalSelect from "../../shared/modules/graphicalSelect/store/indexGraphicalSelect";
+import LayerPreview from "../../shared/modules/layerPreview/store/indexLayerPreview";
 import Abimo from "../abimo/store/indexAbimo";
 import About from "../about/store/indexAbout";
 import AddWMS from "../addWMS/store/indexAddWMS";
+import AppFileImport from "../appFileImport/store/indexAppFileImport";
 import BaselayerSwitcher from "../baselayerSwitcher/store/indexBaselayerSwitcher";
 import BufferAnalysis from "../bufferAnalysis/store/indexBufferAnalysis";
 import Contact from "../contact/store/indexContact";
@@ -12,12 +15,10 @@ import Draw_old from "../draw_old/store/indexDraw";
 import FeatureLister from "../featureLister/store/indexFeatureLister";
 import FileImport from "../fileImport/store/indexFileImport";
 import Filter from "../filter/store/indexFilter";
-import GraphicalSelect from "../../shared/modules/graphicalSelect/store/indexGraphicalSelect";
 import Language from "../language/store/indexLanguage";
 import LayerClusterToggler from "../layerClusterToggler/store/indexLayerClusterToggler";
 import LayerInformation from "../layerInformation/store/indexLayerInformation";
 import LayerPills from "../layerPills/store/indexLayerPills";
-import LayerPreview from "../../shared/modules/layerPreview/store/indexLayerPreview";
 import LayerSelection from "../layerSelection/store/indexLayerSelection";
 import LayerSlider from "../layerSlider/store/indexLayerSlider";
 import LayerTree from "../layerTree/store/indexLayerTree";
@@ -47,7 +48,8 @@ export default {
         // modules must be copied, else tests fail in watch mode
         Abimo: {...Abimo},
         About: {...About},
-        AddWMS: {...AddWMS},
+        AddWMS: { ...AddWMS },
+        AppFileImport: {...AppFileImport},
         BaselayerSwitcher: {...BaselayerSwitcher},
         BufferAnalysis: {...BufferAnalysis},
         Contact: {...Contact},

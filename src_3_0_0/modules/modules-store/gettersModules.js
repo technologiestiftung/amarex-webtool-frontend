@@ -1,6 +1,7 @@
 import AbimoMeasure from "../abimo/components/AbimoMeasure.vue";
 import About from "../about/components/AboutModule.vue";
 import AddWMS from "../addWMS/components/AddWMS.vue";
+import AppFileImport from "../appFileImport/components/AppFileImport.vue";
 import BaselayerSwitcher from "../baselayerSwitcher/components/BaselayerSwitcher.vue";
 import BufferAnalysis from "../bufferAnalysis/components/BufferAnalysis.vue";
 import Contact from "../contact/components/ContactFormular.vue";
@@ -48,6 +49,7 @@ const getters = {
             abimo: AbimoMeasure,
             about: About,
             addWMS: AddWMS,
+            appFileImport: AppFileImport,
             baselayerSwitcher: BaselayerSwitcher,
             bufferAnalysis: BufferAnalysis,
             contact: Contact,
