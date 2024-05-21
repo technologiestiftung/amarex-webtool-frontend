@@ -24,21 +24,15 @@
     ]
   },
   {
-    "id": "basis_abimo",
+    "id": "abimo_2020_wfs",
     "styleId": "abimo",
-    "name": "Wasserhaushalt 2017",
-    "crs": "urn:ogc:def:crs:EPSG::25833",
-    "url": "https://fbinter.stadt-berlin.de/fb/wfs/data/senstadt/s02_13whaus2017",
+    "name": "Abimo 2020",
+    "crs": "EPSG:25833",
+    "url": "https://technologiestiftung-berlin.webgis1.com/geoserver/SmartWater/wfs",
     "typ": "WFS",
-    "featureType": "fis:s02_13whaus2017",
-    "featureNS": "http://www.berlin.de/broker",
-    "datasets": [
-      {
-        "md_id": "9730cd74-bde2-3c74-8145-1b8c6fec9242",
-        "rs_id": "https://registry.gdi-de.org/id/de.be.csw/0d008b8b-84b3-327a-9aa6-8c1ce425e937",
-        "csw_url": "https://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&SERVICE=CSW&VERSION=2.0.2&ID=9730cd74-bde2-3c74-8145-1b8c6fec9242&ELEMENTSETNAME=FULL"
-      }
-    ],
+    "featureType": "SmartWater:abimo_2020",
+    "featureNS": "http://geoserver.org",
+    "datasets": false,
     "gfiAttributes": "showAll"
   },
   {
