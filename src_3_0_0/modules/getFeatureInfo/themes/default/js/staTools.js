@@ -1,6 +1,9 @@
-import {convertColor} from "../../../../../shared/js/utils/convertColor";
-import {getPrimaryColor, getColorUniversalDesign} from "../../../../../shared/js/utils/colors";
-import {SensorThingsHttp} from "../../../../../shared/js/api/sensorThingsHttp.js";
+import { convertColor } from "../../../../../shared/js/utils/convertColor";
+import {
+  getPrimaryColor,
+  getColorUniversalDesign,
+} from "../../../../../shared/js/utils/colors";
+import { SensorThingsHttp } from "../../../../../shared/js/api/sensorThingsHttp.js";
 import dayjs from "dayjs";
 
 /**
@@ -8,21 +11,19 @@ import dayjs from "dayjs";
  * @module modules/getFeatureInfo/themes/default/js/staTools
  */
 
-
 /**
  * returns an url based on the given query an @iot.selfLink of a STA object
  * @param {String} selfLink the selfLink to add the query at
  * @param {String} query the query to add to the selfLink
  * @returns {String} the link to use
  */
-function getQueryLink (selfLink, query) {
-    if (typeof query !== "string" || typeof selfLink !== "string") {
-        return false;
-    }
-    else if (query.substr(0, 1) !== "/") {
-        return selfLink + "/" + query;
-    }
-    return selfLink + query;
+function getQueryLink(selfLink, query) {
+  if (typeof query !== "string" || typeof selfLink !== "string") {
+    return false;
+  } else if (query.substr(0, 1) !== "/") {
+    return selfLink + "/" + query;
+  }
+  return selfLink + query;
 }
 
 /**
@@ -34,12 +35,12 @@ function getQueryLink (selfLink, query) {
  * @param {Function} [onerror] as function(error)
  * @returns {void}
  */
-function getObservations (url, onsuccess, onstart, oncomplete, onerror) {
-    const api = new SensorThingsHttp({
-        removeIotLinks: true
-    });
+function getObservations(url, onsuccess, onstart, oncomplete, onerror) {
+  const api = new SensorThingsHttp({
+    removeIotLinks: true,
+  });
 
-    api.get(url, onsuccess, onstart, oncomplete, onerror);
+  api.get(url, onsuccess, onstart, oncomplete, onerror);
 }
 
 /**
@@ -52,8 +53,20 @@ function getObservations (url, onsuccess, onstart, oncomplete, onerror) {
  * @return {Object|boolean} an object following chartJS dataset configuration or false on failure
  * @see {@link https://www.chartjs.org/docs/master/general/data-structures.html}
  */
-function convertObservationsToLinechart (listOfObservations, label, format, options = null, lineColor = false) {
-    return convertObservationsToMultilinechart([listOfObservations], label, format, options, [lineColor ? lineColor : getPrimaryColor()]);
+function convertObservationsToLinechart(
+  listOfObservations,
+  label,
+  format,
+  options = null,
+  lineColor = false,
+) {
+  return convertObservationsToMultilinechart(
+    [listOfObservations],
+    label,
+    format,
+    options,
+    [lineColor ? lineColor : getPrimaryColor()],
+  );
 }
 
 /**
@@ -67,52 +80,77 @@ function convertObservationsToLinechart (listOfObservations, label, format, opti
  * @return {Object|boolean} an object following chartJS dataset configuration for multilinecharts or false on failure
  * @see {@link https://www.chartjs.org/docs/master/general/data-structures.html}
  */
-function convertObservationsToMultilinechart (listOfObservations, label, format, options = null, lineColors = false) {
-    if (!Array.isArray(listOfObservations)) {
-        return false;
+function convertObservationsToMultilinechart(
+  listOfObservations,
+  label,
+  format,
+  options = null,
+  lineColors = false,
+) {
+  if (!Array.isArray(listOfObservations)) {
+    return false;
+  }
+  const labelsets = [],
+    datasets = [],
+    // default colors - see  https://jfly.uni-koeln.de/color/
+    defaultColors =
+      Array.isArray(lineColors) && lineColors.length
+        ? lineColors
+        : getColorUniversalDesign();
+
+  listOfObservations.forEach((observations, idx) => {
+    if (!Array.isArray(observations)) {
+      return;
     }
-    const labelsets = [],
-        datasets = [],
-        // default colors - see  https://jfly.uni-koeln.de/color/
-        defaultColors = Array.isArray(lineColors) && lineColors.length ? lineColors : getColorUniversalDesign();
+    const data = [],
+      labels = [];
 
-    listOfObservations.forEach((observations, idx) => {
-        if (!Array.isArray(observations)) {
-            return;
-        }
-        const data = [],
-            labels = [];
-
-        observations.forEach(observation => {
-            if (!isObservation(observation)) {
-                return;
-            }
-            labels.push(convertPhenomenonTime(observation.phenomenonTime, format));
-            data.push(observation.result);
-        });
-
-        labelsets.push(labels);
-        datasets.push(Object.assign({
-            label,
-            data,
-            borderColor: convertColor(defaultColors[idx % defaultColors.length], "rgbaString"),
-            backgroundColor: convertColor(defaultColors[idx % defaultColors.length], "rgbaString"),
-            spanGaps: false,
-            fill: false,
-            borderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 4,
-            lineTension: 0
-        }, options));
+    observations.forEach((observation) => {
+      if (!isObservation(observation)) {
+        return;
+      }
+      labels.push(convertPhenomenonTime(observation.phenomenonTime, format));
+      data.push(observation.result);
     });
 
-    if (!Array.isArray(labelsets) || !labelsets.length || !Array.isArray(datasets) || !datasets.length) {
-        return false;
-    }
-    return {
-        datasets,
-        labels: labelsets[0]
-    };
+    labelsets.push(labels);
+    datasets.push(
+      Object.assign(
+        {
+          label,
+          data,
+          borderColor: convertColor(
+            defaultColors[idx % defaultColors.length],
+            "rgbaString",
+          ),
+          backgroundColor: convertColor(
+            defaultColors[idx % defaultColors.length],
+            "rgbaString",
+          ),
+          spanGaps: false,
+          fill: false,
+          borderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 4,
+          lineTension: 0,
+        },
+        options,
+      ),
+    );
+  });
+
+  if (
+    !Array.isArray(labelsets) ||
+    !labelsets.length ||
+    !Array.isArray(datasets) ||
+    !datasets.length
+  ) {
+    return false;
+  }
+  return {
+    datasets,
+    labels: labelsets[0],
+  };
 }
 
 /**
@@ -120,11 +158,15 @@ function convertObservationsToMultilinechart (listOfObservations, label, format,
  * @param {*} observation anything to check
  * @returns {Boolean} true if this is an observation, false if not
  */
-function isObservation (observation) {
-    return typeof observation === "object" && observation !== null
-        && (typeof observation["@iot.id"] === "number" || typeof observation["@iot.id"] === "string")
-        && typeof observation.phenomenonTime === "string"
-        && Object.prototype.hasOwnProperty.call(observation, "result");
+function isObservation(observation) {
+  return (
+    typeof observation === "object" &&
+    observation !== null &&
+    (typeof observation["@iot.id"] === "number" ||
+      typeof observation["@iot.id"] === "string") &&
+    typeof observation.phenomenonTime === "string" &&
+    Object.prototype.hasOwnProperty.call(observation, "result")
+  );
 }
 
 /**
@@ -133,24 +175,27 @@ function isObservation (observation) {
  * @param {String} format a format to use for dayjs
  * @returns {String|Boolean} the phenomenonTime in the given format or false if an error occured
  */
-function convertPhenomenonTime (phenomenonTime, format) {
-    if (typeof phenomenonTime !== "string" || typeof format !== "string") {
-        return false;
-    }
-    const validPhenomenonTime = phenomenonTime.indexOf("/") === -1 ? phenomenonTime : phenomenonTime.split("/")[0],
-        validMoment = dayjs(validPhenomenonTime);
+function convertPhenomenonTime(phenomenonTime, format) {
+  if (typeof phenomenonTime !== "string" || typeof format !== "string") {
+    return false;
+  }
+  const validPhenomenonTime =
+      phenomenonTime.indexOf("/") === -1
+        ? phenomenonTime
+        : phenomenonTime.split("/")[0],
+    validMoment = dayjs(validPhenomenonTime);
 
-    if (!validMoment.isValid()) {
-        return false;
-    }
-    return validMoment.format(format);
+  if (!validMoment.isValid()) {
+    return false;
+  }
+  return validMoment.format(format);
 }
 
 export {
-    getQueryLink,
-    getObservations,
-    convertObservationsToLinechart,
-    convertObservationsToMultilinechart,
-    isObservation,
-    convertPhenomenonTime
+  getQueryLink,
+  getObservations,
+  convertObservationsToLinechart,
+  convertObservationsToMultilinechart,
+  isObservation,
+  convertPhenomenonTime,
 };

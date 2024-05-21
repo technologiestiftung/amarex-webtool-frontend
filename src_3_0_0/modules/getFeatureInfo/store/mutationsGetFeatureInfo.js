@@ -1,4 +1,4 @@
-import {generateSimpleMutations} from "../../../shared/js/utils/generators";
+import { generateSimpleMutations } from "../../../shared/js/utils/generators";
 import stateGetFeatureInfo from "./stateGetFeatureInfo";
 
 /**
@@ -6,5 +6,5 @@ import stateGetFeatureInfo from "./stateGetFeatureInfo";
  * @module modules/getFeatureInfo/store/mutationsGetFeatureInfo
  */
 export default {
-    ...generateSimpleMutations(stateGetFeatureInfo)
+  ...generateSimpleMutations(stateGetFeatureInfo),
 };

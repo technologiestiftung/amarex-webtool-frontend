@@ -3,8 +3,8 @@ import getters from "./gettersPortalFooter";
 import mutations from "./mutationsPortalFooter";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    getters,
-    mutations
+  namespaced: true,
+  state: { ...state },
+  getters,
+  mutations,
 };

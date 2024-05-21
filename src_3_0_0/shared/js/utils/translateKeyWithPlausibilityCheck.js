@@ -6,20 +6,22 @@
  * @param {Function} translateFunction the function to use for translation
  * @returns {String} the translation
  */
-export function translateKeyWithPlausibilityCheck (key, translateFunction) {
-    if (typeof key !== "string" || typeof translateFunction !== "function") {
-        return "";
-    }
-    const translation = translateFunction(key),
-        doublepointSplit = key.split(":");
+export function translateKeyWithPlausibilityCheck(key, translateFunction) {
+  if (typeof key !== "string" || typeof translateFunction !== "function") {
+    return "";
+  }
+  const translation = translateFunction(key),
+    doublepointSplit = key.split(":");
 
-    if (doublepointSplit.length > 2) {
-        // this is not a valid i18next key
-        return key;
-    }
-    else if (doublepointSplit.length === 2 && doublepointSplit[1] === translation) {
-        // second term equals translation, so we assume a cut off key and thereby key as value and not a translation key
-        return key;
-    }
-    return translation;
+  if (doublepointSplit.length > 2) {
+    // this is not a valid i18next key
+    return key;
+  } else if (
+    doublepointSplit.length === 2 &&
+    doublepointSplit[1] === translation
+  ) {
+    // second term equals translation, so we assume a cut off key and thereby key as value and not a translation key
+    return key;
+  }
+  return translation;
 }

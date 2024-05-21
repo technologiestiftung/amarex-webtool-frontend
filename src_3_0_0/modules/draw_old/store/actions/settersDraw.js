@@ -5,11 +5,11 @@
  * @param {Object} styleSettings the style to set
  * @returns {void}
  */
-function setStyleSettings ({getters, commit}, styleSettings) {
-    const stateKey = getters.drawType.id + "Settings",
-        mutationKey = `set${stateKey[0].toUpperCase()}${stateKey.slice(1)}`;
+function setStyleSettings({ getters, commit }, styleSettings) {
+  const stateKey = getters.drawType.id + "Settings",
+    mutationKey = `set${stateKey[0].toUpperCase()}${stateKey.slice(1)}`;
 
-    commit(mutationKey, styleSettings);
+  commit(mutationKey, styleSettings);
 }
 /**
  * Starts the interactions when the tool becomes visible.
@@ -17,18 +17,29 @@ function setStyleSettings ({getters, commit}, styleSettings) {
  * @param {Object} context actions context object.
  * @returns {void}
  */
-async function startInteractions ({state, commit, dispatch, rootState}) {
-    commit("setSymbol", state.iconList[0]);
-    commit("setImgPath", rootState?.configJs?.wfsImgPath);
-    dispatch("createDrawInteractionAndAddToMap", {active: state.currentInteraction === "draw"});
-    dispatch("createSelectInteractionAndAddToMap", state.currentInteraction === "delete");
-    dispatch("createModifyInteractionAndAddToMap", state.currentInteraction === "modify");
-    dispatch("createModifyAttributesInteractionAndAddToMap", state.currentInteraction === "modifyAttributes");
-    dispatch("updateDrawLayerVisible", true);
+async function startInteractions({ state, commit, dispatch, rootState }) {
+  commit("setSymbol", state.iconList[0]);
+  commit("setImgPath", rootState?.configJs?.wfsImgPath);
+  dispatch("createDrawInteractionAndAddToMap", {
+    active: state.currentInteraction === "draw",
+  });
+  dispatch(
+    "createSelectInteractionAndAddToMap",
+    state.currentInteraction === "delete",
+  );
+  dispatch(
+    "createModifyInteractionAndAddToMap",
+    state.currentInteraction === "modify",
+  );
+  dispatch(
+    "createModifyAttributesInteractionAndAddToMap",
+    state.currentInteraction === "modifyAttributes",
+  );
+  dispatch("updateDrawLayerVisible", true);
 
-    if (state.withoutGUI) {
-        dispatch("toggleInteraction", "draw");
-    }
+  if (state.withoutGUI) {
+    dispatch("toggleInteraction", "draw");
+  }
 }
 /**
  * Sets the inner radius for the circle of the current drawType.
@@ -37,13 +48,13 @@ async function startInteractions ({state, commit, dispatch, rootState}) {
  * @param {Number} radius the radius of the inner circle in meters
  * @returns {void}
  */
-function setCircleRadius ({getters, commit, dispatch}, radius) {
-    const {styleSettings} = getters;
+function setCircleRadius({ getters, commit, dispatch }, radius) {
+  const { styleSettings } = getters;
 
-    styleSettings.circleRadius = radius;
+  styleSettings.circleRadius = radius;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateCircleRadiusDuringModify", radius);
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateCircleRadiusDuringModify", radius);
 }
 /**
  * Sets the method for drawing a circle of the current drawType.
@@ -53,13 +64,13 @@ function setCircleRadius ({getters, commit, dispatch}, radius) {
  * @param {HTMLSelectElement} event.target The HTML select element for the circleMethod.
  * @returns {void}
  */
-function setCircleMethod ({getters, commit}, {target}) {
-    const circleMethod = target.options[target.selectedIndex].value,
-        {styleSettings} = getters;
+function setCircleMethod({ getters, commit }, { target }) {
+  const circleMethod = target.options[target.selectedIndex].value,
+    { styleSettings } = getters;
 
-    styleSettings.circleMethod = circleMethod;
+  styleSettings.circleMethod = circleMethod;
 
-    setStyleSettings({getters, commit}, styleSettings);
+  setStyleSettings({ getters, commit }, styleSettings);
 }
 /**
  * Sets the outer radius for the circle of the current drawType.
@@ -68,13 +79,13 @@ function setCircleMethod ({getters, commit}, {target}) {
  * @param {Number} radius the radius of the inner circle in meters
  * @returns {void}
  */
-function setCircleOuterRadius ({getters, commit, dispatch}, radius) {
-    const {styleSettings} = getters;
+function setCircleOuterRadius({ getters, commit, dispatch }, radius) {
+  const { styleSettings } = getters;
 
-    styleSettings.circleOuterRadius = radius;
+  styleSettings.circleOuterRadius = radius;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateCircleRadiusDuringModify", radius);
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateCircleRadiusDuringModify", radius);
 }
 /**
  * Sets the color of the current drawType.
@@ -84,20 +95,20 @@ function setCircleOuterRadius ({getters, commit, dispatch}, radius) {
  * @param {HTMLSelectElement} event.target The HTML select element for the color.
  * @returns {void}
  */
-function setColor ({getters, commit, dispatch}, {target}) {
-    const color = target.options[target.selectedIndex].value.split(","),
-        colorCopy = [],
-        {styleSettings} = getters;
+function setColor({ getters, commit, dispatch }, { target }) {
+  const color = target.options[target.selectedIndex].value.split(","),
+    colorCopy = [],
+    { styleSettings } = getters;
 
-    color.forEach(val => {
-        colorCopy.push(parseInt(val, 10));
-    });
-    colorCopy.push(styleSettings.opacity);
+  color.forEach((val) => {
+    colorCopy.push(parseInt(val, 10));
+  });
+  colorCopy.push(styleSettings.opacity);
 
-    styleSettings.color = colorCopy;
+  styleSettings.color = colorCopy;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the color of the contours of the current drawType.
@@ -107,20 +118,20 @@ function setColor ({getters, commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the colorContour.
  * @returns {void}
  */
-function setColorContour ({getters, commit, dispatch}, {target}) {
-    const color = target.options[target.selectedIndex].value.split(","),
-        colorCopy = [],
-        {styleSettings} = getters;
+function setColorContour({ getters, commit, dispatch }, { target }) {
+  const color = target.options[target.selectedIndex].value.split(","),
+    colorCopy = [],
+    { styleSettings } = getters;
 
-    color.forEach(val => {
-        colorCopy.push(parseInt(val, 10));
-    });
-    colorCopy.push(styleSettings.opacityContour);
+  color.forEach((val) => {
+    colorCopy.push(parseInt(val, 10));
+  });
+  colorCopy.push(styleSettings.opacityContour);
 
-    styleSettings.colorContour = colorCopy;
+  styleSettings.colorContour = colorCopy;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the outer color of the contours of the drawType drawDoubleCircle.
@@ -130,20 +141,20 @@ function setColorContour ({getters, commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the colorContour.
  * @returns {void}
  */
-function setOuterColorContour ({getters, commit, dispatch}, {target}) {
-    const color = target.options[target.selectedIndex].value.split(","),
-        colorCopy = [],
-        {styleSettings} = getters;
+function setOuterColorContour({ getters, commit, dispatch }, { target }) {
+  const color = target.options[target.selectedIndex].value.split(","),
+    colorCopy = [],
+    { styleSettings } = getters;
 
-    color.forEach(val => {
-        colorCopy.push(parseInt(val, 10));
-    });
-    colorCopy.push(styleSettings.opacityContour);
+  color.forEach((val) => {
+    colorCopy.push(parseInt(val, 10));
+  });
+  colorCopy.push(styleSettings.opacityContour);
 
-    styleSettings.outerColorContour = colorCopy;
+  styleSettings.outerColorContour = colorCopy;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Adds another symbol if it doesn't exist already.
@@ -152,12 +163,12 @@ function setOuterColorContour ({getters, commit, dispatch}, {target}) {
  * @param {Object} symbol The icon to add.
  * @returns {void}
  */
-function addSymbolIfNotExists ({state, commit}, symbol) {
-    const iconList = state.iconList;
+function addSymbolIfNotExists({ state, commit }, symbol) {
+  const iconList = state.iconList;
 
-    if (!iconList.find(icon => icon.id === symbol.id)) {
-        commit("addSymbol", symbol);
-    }
+  if (!iconList.find((icon) => icon.id === symbol.id)) {
+    commit("addSymbol", symbol);
+  }
 }
 /**
 /**
@@ -169,13 +180,16 @@ function addSymbolIfNotExists ({state, commit}, symbol) {
  * @param {HTMLSelectElement} event.target The HTML select element for the drawTypes.
  * @returns {void}
  */
-function setDrawType ({commit, dispatch}, {target}) {
-    const selectedElement = target.options[target.selectedIndex];
+function setDrawType({ commit, dispatch }, { target }) {
+  const selectedElement = target.options[target.selectedIndex];
 
-    commit("setFreeHand", selectedElement.id === "drawCurve");
-    commit("setDrawType", {id: selectedElement.id, geometry: selectedElement.value});
+  commit("setFreeHand", selectedElement.id === "drawCurve");
+  commit("setDrawType", {
+    id: selectedElement.id,
+    geometry: selectedElement.value,
+  });
 
-    dispatch("updateDrawInteraction");
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the font for the text of the current drawType.
@@ -185,14 +199,14 @@ function setDrawType ({commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the font.
  * @returns {void}
  */
-function setFont ({getters, commit, dispatch}, {target}) {
-    const font = target.options[target.selectedIndex].value,
-        {styleSettings} = getters;
+function setFont({ getters, commit, dispatch }, { target }) {
+  const font = target.options[target.selectedIndex].value,
+    { styleSettings } = getters;
 
-    styleSettings.font = font;
+  styleSettings.font = font;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the font size for the text of the current drawType.
@@ -202,14 +216,14 @@ function setFont ({getters, commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the fontSize.
  * @returns {void}
  */
-function setFontSize ({getters, commit, dispatch}, {target}) {
-    const fontSize = target.options[target.selectedIndex].value,
-        {styleSettings} = getters;
+function setFontSize({ getters, commit, dispatch }, { target }) {
+  const fontSize = target.options[target.selectedIndex].value,
+    { styleSettings } = getters;
 
-    styleSettings.fontSize = fontSize;
+  styleSettings.fontSize = fontSize;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the opacity of the current drawType.
@@ -219,15 +233,15 @@ function setFontSize ({getters, commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the opacity.
  * @returns {void}
  */
-function setOpacity ({getters, commit, dispatch}, {target}) {
-    const opacity = parseFloat(target.options[target.selectedIndex].value),
-        {styleSettings} = getters;
+function setOpacity({ getters, commit, dispatch }, { target }) {
+  const opacity = parseFloat(target.options[target.selectedIndex].value),
+    { styleSettings } = getters;
 
-    styleSettings.opacity = opacity;
-    styleSettings.color[3] = opacity;
+  styleSettings.opacity = opacity;
+  styleSettings.color[3] = opacity;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the opacity for the contours of the current drawType.
@@ -237,15 +251,15 @@ function setOpacity ({getters, commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the opacityContour.
  * @returns {void}
  */
-function setOpacityContour ({getters, commit, dispatch}, {target}) {
-    const opacityContour = parseFloat(target.options[target.selectedIndex].value),
-        {styleSettings} = getters;
+function setOpacityContour({ getters, commit, dispatch }, { target }) {
+  const opacityContour = parseFloat(target.options[target.selectedIndex].value),
+    { styleSettings } = getters;
 
-    styleSettings.opacityContour = opacityContour;
-    styleSettings.colorContour[3] = opacityContour;
+  styleSettings.opacityContour = opacityContour;
+  styleSettings.colorContour[3] = opacityContour;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the size of the point.
@@ -255,11 +269,11 @@ function setOpacityContour ({getters, commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the pointSize.
  * @returns {void}
  */
-function setPointSize ({commit, dispatch}, {target}) {
-    const selectedElement = target.options[target.selectedIndex];
+function setPointSize({ commit, dispatch }, { target }) {
+  const selectedElement = target.options[target.selectedIndex];
 
-    commit("setPointSize", parseInt(selectedElement.value, 10));
-    dispatch("updateDrawInteraction");
+  commit("setPointSize", parseInt(selectedElement.value, 10));
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the strokwidth of the current drawType.
@@ -269,14 +283,14 @@ function setPointSize ({commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the strokewidth.
  * @returns {void}
  */
-function setStrokeWidth ({getters, commit, dispatch}, {target}) {
-    const strokeWidth = target.options[target.selectedIndex].value,
-        {styleSettings} = getters;
+function setStrokeWidth({ getters, commit, dispatch }, { target }) {
+  const strokeWidth = target.options[target.selectedIndex].value,
+    { styleSettings } = getters;
 
-    styleSettings.strokeWidth = parseInt(strokeWidth, 10);
+  styleSettings.strokeWidth = parseInt(strokeWidth, 10);
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the symbol.
@@ -286,13 +300,13 @@ function setStrokeWidth ({getters, commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the symbol.
  * @returns {void}
  */
-function setSymbol ({state, commit, dispatch}, {target}) {
-    const selectedElement = target.options[target.selectedIndex],
-        iconList = Object.values(state.iconList),
-        symbol = iconList.filter(icon => icon.id === selectedElement.value)[0];
+function setSymbol({ state, commit, dispatch }, { target }) {
+  const selectedElement = target.options[target.selectedIndex],
+    iconList = Object.values(state.iconList),
+    symbol = iconList.filter((icon) => icon.id === selectedElement.value)[0];
 
-    commit("setSymbol", symbol);
-    dispatch("updateDrawInteraction");
+  commit("setSymbol", symbol);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the text of the current drawType.
@@ -302,14 +316,14 @@ function setSymbol ({state, commit, dispatch}, {target}) {
  * @param {HTMLInputElement} event.target The HTML input element for the text.
  * @returns {void}
  */
-function setText ({getters, commit, dispatch}, {target}) {
-    const text = target.value,
-        {styleSettings} = getters;
+function setText({ getters, commit, dispatch }, { target }) {
+  const text = target.value,
+    { styleSettings } = getters;
 
-    styleSettings.text = text;
+  styleSettings.text = text;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 /**
  * Sets the unit for the radius of the circle of the current drawType.
@@ -319,34 +333,34 @@ function setText ({getters, commit, dispatch}, {target}) {
  * @param {HTMLSelectElement} event.target The HTML select element for the unit.
  * @returns {void}
  */
-function setUnit ({getters, commit, dispatch}, {target}) {
-    const unit = target.options[target.selectedIndex].value,
-        {styleSettings} = getters;
+function setUnit({ getters, commit, dispatch }, { target }) {
+  const unit = target.options[target.selectedIndex].value,
+    { styleSettings } = getters;
 
-    styleSettings.unit = unit;
+  styleSettings.unit = unit;
 
-    setStyleSettings({getters, commit}, styleSettings);
-    dispatch("updateDrawInteraction");
+  setStyleSettings({ getters, commit }, styleSettings);
+  dispatch("updateDrawInteraction");
 }
 
 export {
-    setStyleSettings,
-    startInteractions,
-    setCircleRadius,
-    setCircleMethod,
-    setCircleOuterRadius,
-    setColor,
-    setColorContour,
-    setOuterColorContour,
-    setDrawType,
-    setFont,
-    setFontSize,
-    setOpacity,
-    setOpacityContour,
-    setPointSize,
-    setStrokeWidth,
-    setSymbol,
-    addSymbolIfNotExists,
-    setText,
-    setUnit
+  setStyleSettings,
+  startInteractions,
+  setCircleRadius,
+  setCircleMethod,
+  setCircleOuterRadius,
+  setColor,
+  setColorContour,
+  setOuterColorContour,
+  setDrawType,
+  setFont,
+  setFontSize,
+  setOpacity,
+  setOpacityContour,
+  setPointSize,
+  setStrokeWidth,
+  setSymbol,
+  addSymbolIfNotExists,
+  setText,
+  setUnit,
 };

@@ -5,89 +5,89 @@
  * @param {Object} [context=undefined] the context to be used for iteratee, if iteratee is a function
  * @returns {Array}  a new list as array
  */
-export default function sortBy (list, iteratee, context) {
-    let sortArray = list,
-        mapToSort = [];
+export default function sortBy(list, iteratee, context) {
+  let sortArray = list,
+    mapToSort = [];
 
-    if (sortArray === null || typeof sortArray !== "object" && typeof sortArray !== "string") {
-        return [];
-    }
+  if (
+    sortArray === null ||
+    (typeof sortArray !== "object" && typeof sortArray !== "string")
+  ) {
+    return [];
+  }
 
-    if (typeof sortArray === "string") {
-        sortArray = sortArray.split("");
-    }
+  if (typeof sortArray === "string") {
+    sortArray = sortArray.split("");
+  }
 
-    if (typeof iteratee !== "function") {
-        if (!Array.isArray(sortArray)) {
-            sortArray = Object.values(sortArray);
-        }
-
-        // it is important to work with concat() on a copy of sortArray
-        return sortArray.concat().sort((a, b) => {
-            if (a === undefined) {
-                return 1;
-            }
-            else if (b === undefined) {
-                return -1;
-            }
-            else if (iteratee !== undefined) {
-                if (typeof a !== "object" || !Object.prototype.hasOwnProperty.call(a, iteratee)) {
-                    return 1;
-                }
-                else if (typeof b !== "object" || !Object.prototype.hasOwnProperty.call(b, iteratee)) {
-                    return -1;
-                }
-                else if (a[iteratee] > b[iteratee]) {
-                    return 1;
-                }
-                else if (a[iteratee] < b[iteratee]) {
-                    return -1;
-                }
-
-                return 0;
-            }
-            else if (a > b) {
-                return 1;
-            }
-            else if (a < b) {
-                return -1;
-            }
-
-            return 0;
-        });
-    }
-
+  if (typeof iteratee !== "function") {
     if (!Array.isArray(sortArray)) {
-        let key;
-
-        for (key in sortArray) {
-            mapToSort.push({
-                idx: iteratee.call(context, sortArray[key], key, list),
-                obj: sortArray[key]
-            });
-        }
-    }
-    else {
-        mapToSort = sortArray.map((value, key) => {
-            return {
-                idx: iteratee.call(context, value, key, list),
-                obj: value
-            };
-        }, context);
+      sortArray = Object.values(sortArray);
     }
 
-    mapToSort.sort((a, b) => {
-        if (a.idx > b.idx) {
-            return 1;
-        }
-        else if (a.idx < b.idx) {
-            return -1;
+    // it is important to work with concat() on a copy of sortArray
+    return sortArray.concat().sort((a, b) => {
+      if (a === undefined) {
+        return 1;
+      } else if (b === undefined) {
+        return -1;
+      } else if (iteratee !== undefined) {
+        if (
+          typeof a !== "object" ||
+          !Object.prototype.hasOwnProperty.call(a, iteratee)
+        ) {
+          return 1;
+        } else if (
+          typeof b !== "object" ||
+          !Object.prototype.hasOwnProperty.call(b, iteratee)
+        ) {
+          return -1;
+        } else if (a[iteratee] > b[iteratee]) {
+          return 1;
+        } else if (a[iteratee] < b[iteratee]) {
+          return -1;
         }
 
         return 0;
-    });
+      } else if (a > b) {
+        return 1;
+      } else if (a < b) {
+        return -1;
+      }
 
-    return mapToSort.map((value) => {
-        return value.obj;
+      return 0;
     });
+  }
+
+  if (!Array.isArray(sortArray)) {
+    let key;
+
+    for (key in sortArray) {
+      mapToSort.push({
+        idx: iteratee.call(context, sortArray[key], key, list),
+        obj: sortArray[key],
+      });
+    }
+  } else {
+    mapToSort = sortArray.map((value, key) => {
+      return {
+        idx: iteratee.call(context, value, key, list),
+        obj: value,
+      };
+    }, context);
+  }
+
+  mapToSort.sort((a, b) => {
+    if (a.idx > b.idx) {
+      return 1;
+    } else if (a.idx < b.idx) {
+      return -1;
+    }
+
+    return 0;
+  });
+
+  return mapToSort.map((value) => {
+    return value.obj;
+  });
 }

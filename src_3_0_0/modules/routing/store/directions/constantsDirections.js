@@ -1,5 +1,3 @@
-const preferenceOptions = [
-    "RECOMMENDED", "SHORTEST"
-];
+const preferenceOptions = ["RECOMMENDED", "SHORTEST"];
 
-export {preferenceOptions};
+export { preferenceOptions };

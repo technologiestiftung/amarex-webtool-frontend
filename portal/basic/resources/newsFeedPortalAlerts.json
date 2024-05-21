@@ -2,16 +2,41 @@
   "globalAlerts": ["wartungsarbeiten"],
 
   "restrictedAlerts": {
-    "https://geofos.fhhnet.stadt.hamburg.de/atlas-innere-sicherheit-mp/": ["news-ais"],
-    "https://qs-geofos.fhhnet.stadt.hamburg.de/atlas_innere_sicherheit/": ["news-ais"],
-    "https://qs-geofos.fhhnet.stadt.hamburg.de/fhh-atlas/": ["oblique_2020", "fhh-atlas-ie11"],
-    "https://geofos.fhhnet.stadt.hamburg.de/fhh-atlas/": ["oblique_2020", "fhh-atlas-ie11", "news_fhh-atlas"],
-    "https://geofos/fhh-atlas/": ["oblique_2020", "fhh-atlas-ie11", "news_fhh-atlas"],
-    "https://geoportal.metropolregion.hamburg.de/mrhportal_abnahme/": ["qs-release"],
-    "https://geoportal.metropolregion.hamburg.de/mrhportal_elmshorn_abnahme/": ["qs-release"],
-    "https://geoportal.metropolregion.hamburg.de/roads_abnahme/": ["qs-release"],
-    "https://geoportal.metropolregion.hamburg.de/mrh_erreichbarkeitsanalysen_abnahme/": ["qs-release"],
-    "https://geoportal.metropolregion.hamburg.de/mrh_lieblingsplaetze_abnahme/": ["qs-release"],
+    "https://geofos.fhhnet.stadt.hamburg.de/atlas-innere-sicherheit-mp/": [
+      "news-ais"
+    ],
+    "https://qs-geofos.fhhnet.stadt.hamburg.de/atlas_innere_sicherheit/": [
+      "news-ais"
+    ],
+    "https://qs-geofos.fhhnet.stadt.hamburg.de/fhh-atlas/": [
+      "oblique_2020",
+      "fhh-atlas-ie11"
+    ],
+    "https://geofos.fhhnet.stadt.hamburg.de/fhh-atlas/": [
+      "oblique_2020",
+      "fhh-atlas-ie11",
+      "news_fhh-atlas"
+    ],
+    "https://geofos/fhh-atlas/": [
+      "oblique_2020",
+      "fhh-atlas-ie11",
+      "news_fhh-atlas"
+    ],
+    "https://geoportal.metropolregion.hamburg.de/mrhportal_abnahme/": [
+      "qs-release"
+    ],
+    "https://geoportal.metropolregion.hamburg.de/mrhportal_elmshorn_abnahme/": [
+      "qs-release"
+    ],
+    "https://geoportal.metropolregion.hamburg.de/roads_abnahme/": [
+      "qs-release"
+    ],
+    "https://geoportal.metropolregion.hamburg.de/mrh_erreichbarkeitsanalysen_abnahme/": [
+      "qs-release"
+    ],
+    "https://geoportal.metropolregion.hamburg.de/mrh_lieblingsplaetze_abnahme/": [
+      "qs-release"
+    ],
     "https://geoportal-hamburg.de/boris_abnahme/": ["qs-release"],
     "https://geoportal-hamburg.de/boris/": ["boris-fme"],
     "https://test.geoportal-hamburg.de/boris/": ["boris-fme"],
@@ -22,13 +47,17 @@
     "https://geoportal-hamburg.de/iot_abnahme/": ["qs-release"],
     "https://geoportal-hamburg.de/schulinfosystem_abnahme/": ["qs-release"],
     "https://geoportal-hamburg.de/geo-online/": ["info_vt"],
-    "https://qs-geofos.fhhnet.stadt.hamburg.de/oktagonKartenportal_abnahme/": ["qs-release"],
+    "https://qs-geofos.fhhnet.stadt.hamburg.de/oktagonKartenportal_abnahme/": [
+      "qs-release"
+    ],
     "https://geoportal-hamburg.de/bohrdaten/": ["bohrdaten-alert"],
-    "https://geofos.fhhnet.stadt.hamburg.de/geoportal-eimsbuettel-abnahme/":["qs-release"]
+    "https://geofos.fhhnet.stadt.hamburg.de/geoportal-eimsbuettel-abnahme/": [
+      "qs-release"
+    ]
   },
 
   "alerts": {
-	 "fhh-panorama": {
+    "fhh-panorama": {
       "category": "info",
       "title": "Nutzerumfrage 360°-Panoramabilder",
       "content": "Wie nutzen Sie die 360°-Panoramabilder? Das möchten wir von Ihnen erfahren!<br> Nehmen Sie gerne an unserer Umfrage teil. Die Befragung dauert ca. 5 Minuten.<br><br>Folgen Sie direkt diesem Link:<br><a href='https://geowerkstatthamburg.limesurvey.net/982796?lang=de'>https://geowerkstatthamburg.limesurvey.net/982796?lang=de</a><br><br><img src='https://geofos.fhhnet.stadt.hamburg.de/Mastercode/2_24_1/img/Streetsmart.jpg' alt='LGV Panoramabild' width='250' height='226'><br>Ihre Daten werden anonym erfasst und nicht an Dritte weitergegeben.<br><br>Ihr Team LGV Befahrungsdaten",
@@ -48,7 +77,7 @@
       "displayClass": "info",
       "category": "Portal zur Abnahme!",
       "content": "Dieses Geoportal dient der Qualitätskontrolle durch den Kunden.<br>Es ist aufgrund von möglichen Fehlern <b>nicht</b> zur Nutzung für alltägliche oder berufliche Aufgaben geeignet!<br><br>",
-	    "mustBeConfirmed": true,
+      "mustBeConfirmed": true,
       "once": false
     },
     "failing-service": {
@@ -107,7 +136,7 @@
       "category": "Aktuelle Informationen",
       "content": "Sehr geehrte Anwender und Anwenderinnen,<br><br>aufgrund von Problemen bei einem Softwareupdate arbeitet BORIS.HH derzeit leider nicht stabil. Die Erreichbarkeit der Bodenrichtwerte ist jedoch gegeben. Sofern die Umrechnungsfunktion nicht zur Verfügung steht, können Sie nach der Anleitung in den Erläuterungen zu den Bodenrichtwerten auch eine „händische“ Umrechnung nach den Formeln, die auch im Immobilienmarktbericht veröffentlich sind, vornehmen. Wir bedauern die Unannehmlichkeiten sehr und bemühen uns um kurzfristige Abhilfe.<br><br>Ihr LGV",
       "mustBeConfirmed": true,
-      "once": {"days": 1}
+      "once": { "days": 1 }
     },
     "fhh-atlas-ie11": {
       "displayClass": "info",

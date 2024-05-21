@@ -16,18 +16,20 @@
  * @param {Object} sources The source object(s) — objects containing the properties you want to apply.
  * @returns {Object} The modified target object.
  */
-export default function deepAssign (target, ...sources) {
-    if (typeof target !== "object" || target === null) {
-        console.error("deepAssign: The given target is not an object. Please check the target object before handing it over to deepAssign.");
-        return null;
-    }
+export default function deepAssign(target, ...sources) {
+  if (typeof target !== "object" || target === null) {
+    console.error(
+      "deepAssign: The given target is not an object. Please check the target object before handing it over to deepAssign.",
+    );
+    return null;
+  }
 
-    sources.forEach(source => {
-        // the depth barrier is fixed to a depth of 200
-        deepAssignHelper(target, source, 200);
-    });
+  sources.forEach((source) => {
+    // the depth barrier is fixed to a depth of 200
+    deepAssignHelper(target, source, 200);
+  });
 
-    return target;
+  return target;
 }
 /**
  * Assignes nested source object to nested target object. Ignores case of source keys.
@@ -36,12 +38,14 @@ export default function deepAssign (target, ...sources) {
  * @param {Object} source to assign at target
  * @returns {Object|null} target with source assigned to or null, if source was not found in target
  */
-export function deepAssignIgnoreCase (target, source) {
-    if (typeof target !== "object" || target === null) {
-        console.error("deepAssign: The given target is not an object. Please check the target object before handing it over to deepAssign.");
-        return null;
-    }
-    return deepAssignHelper(target, source, 200, 0, true, false);
+export function deepAssignIgnoreCase(target, source) {
+  if (typeof target !== "object" || target === null) {
+    console.error(
+      "deepAssign: The given target is not an object. Please check the target object before handing it over to deepAssign.",
+    );
+    return null;
+  }
+  return deepAssignHelper(target, source, 200, 0, true, false);
 }
 /**
  * helper function for the recursion
@@ -53,34 +57,55 @@ export function deepAssignIgnoreCase (target, source) {
  * @param {Boolean} [createTargetKey=true] if true, not available key in target is created
  * @returns {Object|null} target with source assigned to or null, if source was not found in target
  */
-function deepAssignHelper (target, source, depthBarrier, depth = 0, ignoreCase = false, createTargetKey = true) {
-    if (depthBarrier <= depth || typeof source !== "object" || source === null) {
-        return null;
+function deepAssignHelper(
+  target,
+  source,
+  depthBarrier,
+  depth = 0,
+  ignoreCase = false,
+  createTargetKey = true,
+) {
+  if (depthBarrier <= depth || typeof source !== "object" || source === null) {
+    return null;
+  }
+  for (const [key] of Object.entries(source)) {
+    if (target === null || target === undefined) {
+      return null;
     }
-    for (const [key] of Object.entries(source)) {
-        if (target === null || target === undefined) {
-            return null;
-        }
-        const targetKey = ignoreCase ? Object.keys(target).find(tKey=>tKey.toLowerCase() === key.toLowerCase()) : key;
+    const targetKey = ignoreCase
+      ? Object.keys(target).find(
+          (tKey) => tKey.toLowerCase() === key.toLowerCase(),
+        )
+      : key;
 
-        if (typeof source[key] === "object" && source[key] !== null) {
-            if (createTargetKey && (!Object.prototype.hasOwnProperty.call(target, targetKey) || typeof target[targetKey] !== "object" || target[targetKey] === null)) {
-                target[targetKey] = {};
-            }
-            if (Array.isArray(source[key]) && typeof source[key][0] !== "object") {
-                target[targetKey] = source[key];
-            }
-            else {
-                const assigned = deepAssignHelper(target[targetKey], source[key], depthBarrier, depth + 1, ignoreCase, createTargetKey);
+    if (typeof source[key] === "object" && source[key] !== null) {
+      if (
+        createTargetKey &&
+        (!Object.prototype.hasOwnProperty.call(target, targetKey) ||
+          typeof target[targetKey] !== "object" ||
+          target[targetKey] === null)
+      ) {
+        target[targetKey] = {};
+      }
+      if (Array.isArray(source[key]) && typeof source[key][0] !== "object") {
+        target[targetKey] = source[key];
+      } else {
+        const assigned = deepAssignHelper(
+          target[targetKey],
+          source[key],
+          depthBarrier,
+          depth + 1,
+          ignoreCase,
+          createTargetKey,
+        );
 
-                if (!createTargetKey && (assigned === null || assigned === undefined)) {
-                    return null;
-                }
-            }
+        if (!createTargetKey && (assigned === null || assigned === undefined)) {
+          return null;
         }
-        else {
-            target[targetKey] = source[key];
-        }
+      }
+    } else {
+      target[targetKey] = source[key];
     }
-    return target;
+  }
+  return target;
 }

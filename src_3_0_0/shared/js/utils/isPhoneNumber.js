@@ -1,4 +1,3 @@
-
 /**
  * checks if the given string is a phone number with a leading country dial-in code (e.g. +49 for germany)
  * @see dial-in-codes https://en.wikipedia.org/wiki/List_of_country_calling_codes
@@ -6,10 +5,10 @@
  * @param {String} phonenumber the phone number to check
  * @returns {Boolean}  true if this is a phone number with a country dial-in code, false if not
  */
-export function isPhoneNumber (phonenumber) {
-    const regExp = new RegExp(/^\+[0-9]{2,4}[^a-zA-Z]*$/);
+export function isPhoneNumber(phonenumber) {
+  const regExp = new RegExp(/^\+[0-9]{2,4}[^a-zA-Z]*$/);
 
-    return regExp.test(phonenumber);
+  return regExp.test(phonenumber);
 }
 
 /**
@@ -18,10 +17,10 @@ export function isPhoneNumber (phonenumber) {
  * @param {String} phonenumber the phone number to check
  * @returns {Boolean}  true if this is a phone number, false if not
  */
-export function isPhoneNumberBasic (phonenumber) {
-    const regExp = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/g);
+export function isPhoneNumberBasic(phonenumber) {
+  const regExp = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/g);
 
-    return regExp.test(phonenumber);
+  return regExp.test(phonenumber);
 }
 
 /**
@@ -30,15 +29,15 @@ export function isPhoneNumberBasic (phonenumber) {
  * @param {Boolean} [prefix="tel:"] prefixes the phone number with the given string (e.g. "skype:", "tel:")
  * @returns {String}  the phone number to use in href attributes
  */
-export function getPhoneNumberAsWebLink (phonenumber, prefix = "tel:") {
-    let result = String(phonenumber);
+export function getPhoneNumberAsWebLink(phonenumber, prefix = "tel:") {
+  let result = String(phonenumber);
 
-    // remove the following signs
-    [" ", "-", "(", ")", ".", "/"].forEach(sign => {
-        result = result.split(sign).join("");
-    });
+  // remove the following signs
+  [" ", "-", "(", ")", ".", "/"].forEach((sign) => {
+    result = result.split(sign).join("");
+  });
 
-    return prefix + result;
+  return prefix + result;
 }
 
-export default {isPhoneNumber, getPhoneNumberAsWebLink, isPhoneNumberBasic};
+export default { isPhoneNumber, getPhoneNumberAsWebLink, isPhoneNumberBasic };

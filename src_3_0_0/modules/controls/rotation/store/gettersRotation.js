@@ -1,4 +1,4 @@
-import {generateSimpleGetters} from "../../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../../shared/js/utils/generators";
 import stateRotation from "./stateRotation";
 
 /**
@@ -6,5 +6,5 @@ import stateRotation from "./stateRotation";
  * @module modules/controls/rotation/store/gettersRotation
  */
 export default {
-    ...generateSimpleGetters(stateRotation)
+  ...generateSimpleGetters(stateRotation),
 };

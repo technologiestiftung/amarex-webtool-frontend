@@ -1,8 +1,8 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateMouseHover from "./stateMouseHover";
 
 const getters = {
-    ...generateSimpleGetters(stateMouseHover)
+  ...generateSimpleGetters(stateMouseHover),
 };
 
 export default getters;

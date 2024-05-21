@@ -4,9 +4,9 @@ import actions from "./actions/actionsSearchBar";
 import state from "./stateSearchBar";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state: { ...state },
+  mutations,
+  actions,
+  getters,
 };

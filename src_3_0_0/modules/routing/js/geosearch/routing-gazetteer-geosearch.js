@@ -1,22 +1,26 @@
-import {RoutingGeosearchResult} from "../classes/routing-geosearch-result";
-import {search} from "@masterportal/masterportalapi/src/searchAddress";
+import { RoutingGeosearchResult } from "../classes/routing-geosearch-result";
+import { search } from "@masterportal/masterportalapi/src/searchAddress";
 
 /**
  * Requests POIs from text from Gazetteer
  * @param {String} searchInput text to search with
  * @returns {RoutingGeosearchResult[]} routingGeosearchResults
  */
-async function fetchRoutingGazetteerGeosearch (searchInput) {
-    const fetchedResults = await search(searchInput, {
-        searchAddress: true,
-        searchStreets: true,
-        searchHouseNumbers: true
-    }, true);
+async function fetchRoutingGazetteerGeosearch(searchInput) {
+  const fetchedResults = await search(
+    searchInput,
+    {
+      searchAddress: true,
+      searchStreets: true,
+      searchHouseNumbers: true,
+    },
+    true,
+  );
 
-    return fetchedResults.map(d => {
-        d.epsg = "25832";
-        return parseRoutingGazetteerGeosearchResult(d);
-    });
+  return fetchedResults.map((d) => {
+    d.epsg = "25832";
+    return parseRoutingGazetteerGeosearchResult(d);
+  });
 }
 
 /**
@@ -28,12 +32,15 @@ async function fetchRoutingGazetteerGeosearch (searchInput) {
  * @param {String} [geosearchResult.properties.text] geosearchResult properties text
  * @returns {RoutingGeosearchResult} routingGeosearchResult
  */
-function parseRoutingGazetteerGeosearchResult (geosearchResult) {
-    return new RoutingGeosearchResult(
-        [Number(geosearchResult.geometry.coordinates[0]), Number(geosearchResult.geometry.coordinates[1])],
-        geosearchResult.name,
-        geosearchResult.epsg.toString()
-    );
+function parseRoutingGazetteerGeosearchResult(geosearchResult) {
+  return new RoutingGeosearchResult(
+    [
+      Number(geosearchResult.geometry.coordinates[0]),
+      Number(geosearchResult.geometry.coordinates[1]),
+    ],
+    geosearchResult.name,
+    geosearchResult.epsg.toString(),
+  );
 }
 
-export {fetchRoutingGazetteerGeosearch};
+export { fetchRoutingGazetteerGeosearch };

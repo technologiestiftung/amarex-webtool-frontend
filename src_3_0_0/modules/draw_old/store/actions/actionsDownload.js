@@ -1,10 +1,14 @@
-import {Circle} from "ol/geom.js";
-import {fromCircle} from "ol/geom/Polygon.js";
-import {GeoJSON, GPX} from "ol/format.js";
+import { Circle } from "ol/geom.js";
+import { fromCircle } from "ol/geom/Polygon.js";
+import { GeoJSON, GPX } from "ol/format.js";
 import convertFeaturesToKml from "../../../../shared/js/utils/convertFeaturesToKml.js";
-import {convertJsonToCsv} from "../../../../shared/js/utils/convertJsonToCsv";
-import {setCsvAttributes} from "../../js/setCsvAttributes.js";
-import {transform, transformPoint, transformGeometry} from "../../js/download/transformGeometry";
+import { convertJsonToCsv } from "../../../../shared/js/utils/convertJsonToCsv";
+import { setCsvAttributes } from "../../js/setCsvAttributes.js";
+import {
+  transform,
+  transformPoint,
+  transformGeometry,
+} from "../../js/download/transformGeometry";
 import main from "../../js/main";
 
 /**
@@ -13,62 +17,74 @@ import main from "../../js/main";
  * @param {module:ol/format} format Format in which the features should be saved.
  * @returns {String} The features written in the chosen format as a String.
  */
-async function convertFeatures ({state, dispatch}, format) {
-    const convertedFeatures = [];
+async function convertFeatures({ state, dispatch }, format) {
+  const convertedFeatures = [];
 
-    for (const feature of state.download.features) {
-        const cloned = feature.clone(),
-            transCoords = await dispatch("transformCoordinates", cloned.getGeometry());
+  for (const feature of state.download.features) {
+    const cloned = feature.clone(),
+      transCoords = await dispatch(
+        "transformCoordinates",
+        cloned.getGeometry(),
+      );
 
-        if (transCoords.length === 3 && transCoords[2] === 0) {
-            transCoords.pop();
-        }
-
-        cloned.getGeometry().setCoordinates(transCoords, "XY");
-        convertedFeatures.push(cloned);
+    if (transCoords.length === 3 && transCoords[2] === 0) {
+      transCoords.pop();
     }
 
-    return format.writeFeatures(convertedFeatures);
+    cloned.getGeometry().setCoordinates(transCoords, "XY");
+    convertedFeatures.push(cloned);
+  }
+
+  return format.writeFeatures(convertedFeatures);
 }
 /**
  * Resets values to hide the UI for the Download and not cause side effects while doing so.
  *
  * @returns {void}
  */
-function fileDownloaded ({state, commit}) {
-    commit("setDownloadSelectedFormat", state.download.selectedFormat);
+function fileDownloaded({ state, commit }) {
+  commit("setDownloadSelectedFormat", state.download.selectedFormat);
 }
 /**
  * Converts the features to the chosen format and saves it in the state.
  *
  * @returns {void}
  */
-async function prepareData ({state, commit, dispatch, rootGetters}) {
-    let features = "";
+async function prepareData({ state, commit, dispatch, rootGetters }) {
+  let features = "";
 
-    switch (state.download.selectedFormat) {
-        case "GEOJSON":
-            features = await dispatch("convertFeatures", new GeoJSON());
-            break;
-        case "GPX":
-            features = await dispatch("convertFeatures", new GPX());
-            break;
-        case "KML":
-            features = await convertFeaturesToKml(state.download.features);
-            break;
-        case "CSV":
-            features = setCsvAttributes(state.download.features, rootGetters["Maps/projection"].getCode());
+  switch (state.download.selectedFormat) {
+    case "GEOJSON":
+      features = await dispatch("convertFeatures", new GeoJSON());
+      break;
+    case "GPX":
+      features = await dispatch("convertFeatures", new GPX());
+      break;
+    case "KML":
+      features = await convertFeaturesToKml(state.download.features);
+      break;
+    case "CSV":
+      features = setCsvAttributes(
+        state.download.features,
+        rootGetters["Maps/projection"].getCode(),
+      );
 
-            features = Array.isArray(features) ? convertJsonToCsv(features.map(feature => feature.get("attributes")), false, state.semicolonCSVDelimiter) : "";
-            break;
-        case "none":
-            commit("setDownloadSelectedFormat", "");
-            break;
-        default:
-            break;
-    }
+      features = Array.isArray(features)
+        ? convertJsonToCsv(
+            features.map((feature) => feature.get("attributes")),
+            false,
+            state.semicolonCSVDelimiter,
+          )
+        : "";
+      break;
+    case "none":
+      commit("setDownloadSelectedFormat", "");
+      break;
+    default:
+      break;
+  }
 
-    commit("setDownloadDataString", features);
+  commit("setDownloadDataString", features);
 }
 /**
  * Prepares the download.
@@ -76,17 +92,19 @@ async function prepareData ({state, commit, dispatch, rootGetters}) {
  *
  * @returns {void}
  */
-function prepareDownload ({state, commit, dispatch}) {
-    dispatch("validateFileName").then(fileName => {
-        if (fileName && fileName !== "") {
-            const dataString = state.download.dataString,
-                url = `data:text/plain;charset=utf-8,${encodeURIComponent(dataString)}`;
+function prepareDownload({ state, commit, dispatch }) {
+  dispatch("validateFileName")
+    .then((fileName) => {
+      if (fileName && fileName !== "") {
+        const dataString = state.download.dataString,
+          url = `data:text/plain;charset=utf-8,${encodeURIComponent(dataString)}`;
 
-            commit("setDownloadFile", fileName);
-            commit("setDownloadFileUrl", url);
-        }
-    }).catch(err => {
-        console.error(err);
+        commit("setDownloadFile", fileName);
+        commit("setDownloadFileUrl", url);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
     });
 }
 /**
@@ -96,40 +114,46 @@ function prepareDownload ({state, commit, dispatch}) {
  *
  * @returns {void}
  */
-function setDownloadFeatures ({state, commit, dispatch, rootGetters}) {
-    const downloadFeatures = [],
-        drawnFeatures = main.getApp().config.globalProperties.$layer.getSource().getFeatures();
+function setDownloadFeatures({ state, commit, dispatch, rootGetters }) {
+  const downloadFeatures = [],
+    drawnFeatures = main
+      .getApp()
+      .config.globalProperties.$layer.getSource()
+      .getFeatures();
 
-    drawnFeatures?.forEach(drawnFeature => {
-        const feature = drawnFeature.clone(),
-            geometry = feature.getGeometry();
+  drawnFeatures?.forEach((drawnFeature) => {
+    const feature = drawnFeature.clone(),
+      geometry = feature.getGeometry();
 
-        // If the feature is invisible from filter, the style will be reset by printing.
-        if (!feature.get("isVisible") && feature.get("invisibleStyle")) {
-            feature.setStyle(feature.get("invisibleStyle"));
-        }
+    // If the feature is invisible from filter, the style will be reset by printing.
+    if (!feature.get("isVisible") && feature.get("invisibleStyle")) {
+      feature.setStyle(feature.get("invisibleStyle"));
+    }
 
-        if (state.oldStyle && typeof state.selectedFeature?.get === "function"
-            && drawnFeature.get("styleId") === state.selectedFeature.get("styleId")
-            && (typeof drawnFeature.get("styleId") === "number" || typeof drawnFeature.get("styleId") === "string")
-        ) {
-            feature.setStyle(state.oldStyle);
-        }
+    if (
+      state.oldStyle &&
+      typeof state.selectedFeature?.get === "function" &&
+      drawnFeature.get("styleId") === state.selectedFeature.get("styleId") &&
+      (typeof drawnFeature.get("styleId") === "number" ||
+        typeof drawnFeature.get("styleId") === "string")
+    ) {
+      feature.setStyle(state.oldStyle);
+    }
 
-        if (geometry instanceof Circle) {
-            feature.set("isGeoCircle", true);
-            transformGeometry(rootGetters["Maps/projection"].getCode(), geometry);
-            feature.set("geoCircleCenter", geometry.getCenter().join(","));
-            feature.set("geoCircleRadius", geometry.getRadius());
-            feature.setGeometry(fromCircle(geometry));
-        }
+    if (geometry instanceof Circle) {
+      feature.set("isGeoCircle", true);
+      transformGeometry(rootGetters["Maps/projection"].getCode(), geometry);
+      feature.set("geoCircleCenter", geometry.getCenter().join(","));
+      feature.set("geoCircleRadius", geometry.getRadius());
+      feature.setGeometry(fromCircle(geometry));
+    }
 
-        downloadFeatures.push(feature);
-    });
+    downloadFeatures.push(feature);
+  });
 
-    commit("setDownloadFeatures", downloadFeatures);
-    dispatch("prepareData");
-    dispatch("prepareDownload");
+  commit("setDownloadFeatures", downloadFeatures);
+  dispatch("prepareData");
+  dispatch("prepareDownload");
 }
 /**
  * Commits the input of the user for the name of the file to the state.
@@ -140,14 +164,17 @@ function setDownloadFeatures ({state, commit, dispatch, rootGetters}) {
  * @param {HTMLInputElement} event.currentTarget The HTML input element for the name of the file.
  * @returns {void}
  */
-function setDownloadFileName ({commit, dispatch}, {currentTarget}) {
-    const {value} = currentTarget;
+function setDownloadFileName({ commit, dispatch }, { currentTarget }) {
+  const { value } = currentTarget;
 
-    commit("setDownloadFileName", value);
+  commit("setDownloadFileName", value);
 
-    if (main.getApp().config.globalProperties.$layer.getSource().getFeatures().length > 0) {
-        dispatch("prepareDownload");
-    }
+  if (
+    main.getApp().config.globalProperties.$layer.getSource().getFeatures()
+      .length > 0
+  ) {
+    dispatch("prepareDownload");
+  }
 }
 /**
  * Commits the selection of the user for file format to the state.
@@ -158,14 +185,16 @@ function setDownloadFileName ({commit, dispatch}, {currentTarget}) {
  * @param {String} value The selected option value from dropdown or pre selected value.
  * @returns {void}
  */
-async function setDownloadSelectedFormat ({commit, dispatch}, value) {
-
-    commit("setDownloadSelectedFormat", value);
-    if (main.getApp().config.globalProperties.$layer.getSource().getFeatures().length > 0) {
-        await dispatch("setDownloadFeatures");
-        await dispatch("prepareData");
-        dispatch("prepareDownload");
-    }
+async function setDownloadSelectedFormat({ commit, dispatch }, value) {
+  commit("setDownloadSelectedFormat", value);
+  if (
+    main.getApp().config.globalProperties.$layer.getSource().getFeatures()
+      .length > 0
+  ) {
+    await dispatch("setDownloadFeatures");
+    await dispatch("prepareData");
+    dispatch("prepareDownload");
+  }
 }
 /**
  * Transforms the given geometry from EPSG:25832 to EPSG:4326.
@@ -174,52 +203,56 @@ async function setDownloadSelectedFormat ({commit, dispatch}, value) {
  * @param {module:ol/geom/Geometry} geometry Geometry to be transformed.
  * @returns {(Array<number>|Array<Array<number>>|Array<Array<Array<number>>>)} The transformed Geometry or an empty array.
  */
-function transformCoordinates ({dispatch, rootGetters}, geometry) {
-    const coords = geometry.getCoordinates(),
-        type = geometry.getType(),
-        alert = {
-            category: "error",
-            content: i18next.t("common:modules.draw_old.download.unknownGeometry", {geometry: type}),
-            displayClass: "error",
-            multipleAlert: true
-        };
+function transformCoordinates({ dispatch, rootGetters }, geometry) {
+  const coords = geometry.getCoordinates(),
+    type = geometry.getType(),
+    alert = {
+      category: "error",
+      content: i18next.t("common:modules.draw_old.download.unknownGeometry", {
+        geometry: type,
+      }),
+      displayClass: "error",
+      multipleAlert: true,
+    };
 
-    switch (type) {
-        case "LineString":
-            return transform(rootGetters["Maps/projection"].getCode(), coords, false);
-        case "Point":
-            return transformPoint(rootGetters["Maps/projection"].getCode(), coords);
-        case "Polygon":
-            return transform(rootGetters["Maps/projection"].getCode(), coords, true);
-        default:
-            dispatch("Alerting/addSingleAlert", alert, {root: true});
-            return [];
-    }
+  switch (type) {
+    case "LineString":
+      return transform(rootGetters["Maps/projection"].getCode(), coords, false);
+    case "Point":
+      return transformPoint(rootGetters["Maps/projection"].getCode(), coords);
+    case "Polygon":
+      return transform(rootGetters["Maps/projection"].getCode(), coords, true);
+    default:
+      dispatch("Alerting/addSingleAlert", alert, { root: true });
+      return [];
+  }
 }
 /**
  * Checks whether the user has added the suffix of the chosen format to the filename and if not, it is added.
  *
  * @returns {String} Returns the filename including the suffix of the chosen format; returns and empty String if either the filename or the format has not been chosen yet.
  */
-function validateFileName ({state}) {
-    const {fileName, selectedFormat} = state.download;
+function validateFileName({ state }) {
+  const { fileName, selectedFormat } = state.download;
 
-    if (fileName.length > 0 && selectedFormat.length > 0) {
-        const suffix = `.${selectedFormat.toLowerCase()}`;
+  if (fileName.length > 0 && selectedFormat.length > 0) {
+    const suffix = `.${selectedFormat.toLowerCase()}`;
 
-        return fileName.toLowerCase().endsWith(suffix) ? fileName : fileName + suffix;
-    }
-    return "";
+    return fileName.toLowerCase().endsWith(suffix)
+      ? fileName
+      : fileName + suffix;
+  }
+  return "";
 }
 
 export {
-    convertFeatures,
-    fileDownloaded,
-    prepareData,
-    prepareDownload,
-    setDownloadFeatures,
-    setDownloadFileName,
-    setDownloadSelectedFormat,
-    transformCoordinates,
-    validateFileName
+  convertFeatures,
+  fileDownloaded,
+  prepareData,
+  prepareDownload,
+  setDownloadFeatures,
+  setDownloadFileName,
+  setDownloadSelectedFormat,
+  transformCoordinates,
+  validateFileName,
 };

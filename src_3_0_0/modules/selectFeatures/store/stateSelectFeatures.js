@@ -13,35 +13,35 @@
  * @property {Object} highlightVectorRulesPointLine the default configuration for point or line highlighting
  */
 const state = {
-    description: "common:modules.selectFeatures.description",
-    hasMouseMapInteractions: true,
-    type: "selectFeatures",
-    name: "common:modules.selectFeatures.name",
-    icon: "bi-hand-index",
-    selectedFeatures: undefined,
-    selectedFeaturesWithRenderInformation: [],
-    selectInteraction: undefined,
-    dragBoxInteraction: undefined,
-    highlightVectorRulesPolygon: {
-        "fill": {
-            "color": [255, 255, 0, 0.9]
-        },
-        "stroke": {
-            "width": 4,
-            "color": [255, 255, 0, 0.9]
-        },
-        "zoomLevel": 7
+  description: "common:modules.selectFeatures.description",
+  hasMouseMapInteractions: true,
+  type: "selectFeatures",
+  name: "common:modules.selectFeatures.name",
+  icon: "bi-hand-index",
+  selectedFeatures: undefined,
+  selectedFeaturesWithRenderInformation: [],
+  selectInteraction: undefined,
+  dragBoxInteraction: undefined,
+  highlightVectorRulesPolygon: {
+    fill: {
+      color: [255, 255, 0, 0.9],
     },
-    highlightVectorRulesPointLine: {
-        "stroke": {
-            "width": 8,
-            "color": [255, 255, 0, 0.9]
-        },
-        "image": {
-            "scale": 2
-        },
-        "zoomLevel": 7
-    }
+    stroke: {
+      width: 4,
+      color: [255, 255, 0, 0.9],
+    },
+    zoomLevel: 7,
+  },
+  highlightVectorRulesPointLine: {
+    stroke: {
+      width: 8,
+      color: [255, 255, 0, 0.9],
+    },
+    image: {
+      scale: 2,
+    },
+    zoomLevel: 7,
+  },
 };
 
 export default state;

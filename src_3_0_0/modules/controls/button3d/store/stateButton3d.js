@@ -7,10 +7,10 @@
  * @property {String[]} supportedMapModes Map mode in which this module can be used.
  */
 const state = {
-    icon2d: "https://geodienste.hamburg.de/lgv-config/img/badge-2d.svg",
-    icon3d: "badge-3d",
-    supportedDevices: ["Desktop", "Mobile"],
-    supportedMapModes: ["2D", "3D"]
+  icon2d: "https://geodienste.hamburg.de/lgv-config/img/badge-2d.svg",
+  icon3d: "badge-3d",
+  supportedDevices: ["Desktop", "Mobile"],
+  supportedMapModes: ["2D", "3D"],
 };
 
 export default state;

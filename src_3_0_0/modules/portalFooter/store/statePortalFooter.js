@@ -13,12 +13,12 @@
  * @property {String} urls[].url The URL to be called.
  */
 const state = {
-    configPaths: ["portalConfig.portalFooter"],
-    scaleLine: true,
-    scaleLineWidth: 2,
-    seperator: "&nbsp;|&nbsp;",
-    type: "portalFooter",
-    urls: []
+  configPaths: ["portalConfig.portalFooter"],
+  scaleLine: true,
+  scaleLineWidth: 2,
+  seperator: "&nbsp;|&nbsp;",
+  type: "portalFooter",
+  urls: [],
 };
 
 export default state;

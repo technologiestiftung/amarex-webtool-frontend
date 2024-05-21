@@ -4,7 +4,7 @@
  * @property {Boolean} activatedExpandable Controls are expandend.
  */
 const state = {
-    activatedExpandable: false
+  activatedExpandable: false,
 };
 
 export default state;

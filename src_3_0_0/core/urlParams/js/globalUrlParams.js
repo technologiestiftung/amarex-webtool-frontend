@@ -7,21 +7,21 @@ import processUrlParams from "../../../shared/js/utils/processUrlParams";
  */
 
 const globalUrlParams = {
-        CONFIGJSON: setConfigJsonPath,
-        LNG: setLanguage,
-        UISTYLE: setUiStyle
-    },
-    legacyGlobalUrlParams = {
-        CONFIG: setConfigJsonPath,
-        STYLE: setUiStyle
-    };
+    CONFIGJSON: setConfigJsonPath,
+    LNG: setLanguage,
+    UISTYLE: setUiStyle,
+  },
+  legacyGlobalUrlParams = {
+    CONFIG: setConfigJsonPath,
+    STYLE: setUiStyle,
+  };
 
 /**
  * Process the menu url params.
  * @returns {void}
  */
-function processGlobalUrlParams () {
-    processUrlParams(globalUrlParams, legacyGlobalUrlParams);
+function processGlobalUrlParams() {
+  processUrlParams(globalUrlParams, legacyGlobalUrlParams);
 }
 
 /**
@@ -29,8 +29,8 @@ function processGlobalUrlParams () {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setConfigJsonPath (params) {
-    Config.portalConf = params.CONFIGJSON || params.CONFIG;
+function setConfigJsonPath(params) {
+  Config.portalConf = params.CONFIGJSON || params.CONFIG;
 }
 
 /**
@@ -38,8 +38,8 @@ function setConfigJsonPath (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setLanguage (params) {
-    i18next.changeLanguage(params.LNG);
+function setLanguage(params) {
+  i18next.changeLanguage(params.LNG);
 }
 
 /**
@@ -47,10 +47,10 @@ function setLanguage (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setUiStyle (params) {
-    Config.uiStyle = params.UISTYLE || params.STYLE;
+function setUiStyle(params) {
+  Config.uiStyle = params.UISTYLE || params.STYLE;
 }
 
 export default {
-    processGlobalUrlParams
+  processGlobalUrlParams,
 };

@@ -1,8 +1,8 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateOpenConfig from "./stateOpenConfig";
 
 const getters = {
-    ...generateSimpleGetters(stateOpenConfig)
+  ...generateSimpleGetters(stateOpenConfig),
 };
 
 export default getters;

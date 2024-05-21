@@ -1,5 +1,5 @@
 import axios from "axios";
-import {RoutingGeosearchResult} from "../classes/routing-geosearch-result";
+import { RoutingGeosearchResult } from "../classes/routing-geosearch-result";
 import state from "./../../store/stateRouting";
 import store from "../../../../app-store";
 
@@ -8,17 +8,17 @@ import store from "../../../../app-store";
  * @param {String} search text to search with
  * @returns {RoutingGeosearchResult[]} routingGeosearchResults
  */
-async function fetchRoutingNominatimGeosearch (search) {
-    const url = getRoutingNominatimGeosearchUrl(search),
-        response = await axios.get(url);
+async function fetchRoutingNominatimGeosearch(search) {
+  const url = getRoutingNominatimGeosearchUrl(search),
+    response = await axios.get(url);
 
-    if (response.status !== 200 && !response.data.success) {
-        throw new Error({
-            status: response.status,
-            message: response.statusText
-        });
-    }
-    return response.data.map(d => parseRoutingNominatimGeosearchResult(d));
+  if (response.status !== 200 && !response.data.success) {
+    throw new Error({
+      status: response.status,
+      message: response.statusText,
+    });
+  }
+  return response.data.map((d) => parseRoutingNominatimGeosearchResult(d));
 }
 
 /**
@@ -26,16 +26,18 @@ async function fetchRoutingNominatimGeosearch (search) {
  * @param {String} search to search for
  * @returns {String} the url
  */
-function getRoutingNominatimGeosearchUrl (search) {
-    const serviceUrl = store.getters.restServiceById(state.geosearch.serviceId).url,
-        url = new URL(serviceUrl);
+function getRoutingNominatimGeosearchUrl(search) {
+  const serviceUrl = store.getters.restServiceById(
+      state.geosearch.serviceId,
+    ).url,
+    url = new URL(serviceUrl);
 
-    url.searchParams.set("countrycodes", "de");
-    url.searchParams.set("format", "json");
-    url.searchParams.set("limit", state.geosearch.limit);
-    url.searchParams.set("bounded", "1");
-    url.searchParams.set("q", encodeURIComponent(search));
-    return url;
+  url.searchParams.set("countrycodes", "de");
+  url.searchParams.set("format", "json");
+  url.searchParams.set("limit", state.geosearch.limit);
+  url.searchParams.set("bounded", "1");
+  url.searchParams.set("q", encodeURIComponent(search));
+  return url;
 }
 
 /**
@@ -43,17 +45,17 @@ function getRoutingNominatimGeosearchUrl (search) {
  * @param {Array<{Number, Number}>} coordinates to search at
  * @returns {RoutingGeosearchResult} routingGeosearchResult
  */
-async function fetchRoutingNominatimGeosearchReverse (coordinates) {
-    const url = getRoutingNominatimGeosearchReverseUrl(coordinates),
-        response = await axios.get(url);
+async function fetchRoutingNominatimGeosearchReverse(coordinates) {
+  const url = getRoutingNominatimGeosearchReverseUrl(coordinates),
+    response = await axios.get(url);
 
-    if (response.status !== 200 && !response.data.success) {
-        throw new Error({
-            status: response.status,
-            message: response.statusText
-        });
-    }
-    return parseRoutingNominatimGeosearchResult(response.data);
+  if (response.status !== 200 && !response.data.success) {
+    throw new Error({
+      status: response.status,
+      message: response.statusText,
+    });
+  }
+  return parseRoutingNominatimGeosearchResult(response.data);
 }
 
 /**
@@ -61,15 +63,17 @@ async function fetchRoutingNominatimGeosearchReverse (coordinates) {
  * @param {Array} coordinates to add as params
  * @returns {String} the url
  */
-function getRoutingNominatimGeosearchReverseUrl (coordinates) {
-    const serviceUrl = store.getters.restServiceById(state.geosearchReverse.serviceId).url,
-        url = new URL(serviceUrl);
+function getRoutingNominatimGeosearchReverseUrl(coordinates) {
+  const serviceUrl = store.getters.restServiceById(
+      state.geosearchReverse.serviceId,
+    ).url,
+    url = new URL(serviceUrl);
 
-    url.searchParams.set("lon", coordinates[0]);
-    url.searchParams.set("lat", coordinates[1]);
-    url.searchParams.set("format", "json");
-    url.searchParams.set("addressdetails", "0");
-    return url;
+  url.searchParams.set("lon", coordinates[0]);
+  url.searchParams.set("lat", coordinates[1]);
+  url.searchParams.set("format", "json");
+  url.searchParams.set("addressdetails", "0");
+  return url;
 }
 
 /**
@@ -80,11 +84,16 @@ function getRoutingNominatimGeosearchReverseUrl (coordinates) {
  * @param {String} [geosearchResult.properties.display_name] geosearchResult display_name
  * @returns {RoutingGeosearchResult} routingGeosearchResult
  */
-function parseRoutingNominatimGeosearchResult (geosearchResult) {
-    return new RoutingGeosearchResult(
-        [Number(geosearchResult.lat), Number(geosearchResult.lon)],
-        geosearchResult.display_name
-    );
+function parseRoutingNominatimGeosearchResult(geosearchResult) {
+  return new RoutingGeosearchResult(
+    [Number(geosearchResult.lat), Number(geosearchResult.lon)],
+    geosearchResult.display_name,
+  );
 }
 
-export {fetchRoutingNominatimGeosearch, fetchRoutingNominatimGeosearchReverse, getRoutingNominatimGeosearchUrl, getRoutingNominatimGeosearchReverseUrl};
+export {
+  fetchRoutingNominatimGeosearch,
+  fetchRoutingNominatimGeosearchReverse,
+  getRoutingNominatimGeosearchUrl,
+  getRoutingNominatimGeosearchReverseUrl,
+};

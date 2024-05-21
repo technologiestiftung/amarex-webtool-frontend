@@ -11,27 +11,40 @@
  * @param {Number} [depthBarrier=20] the depth barrier to avoid infinit recurtions
  * @returns {Object|Boolean} a flat key-value object with concatenated keys to address the attributes in config.json or false on error
  */
-function getPropertiesWithFullKeys (properties, prefix = "@", delimitor = ".", depthBarrier = 20) {
-    if (
-        typeof properties !== "object" || properties === null
-        || typeof depthBarrier !== "number" || depthBarrier < 0
-        || typeof prefix !== "string"
-        || typeof delimitor !== "string"
-    ) {
-        return false;
-    }
-    const result = {};
+function getPropertiesWithFullKeys(
+  properties,
+  prefix = "@",
+  delimitor = ".",
+  depthBarrier = 20,
+) {
+  if (
+    typeof properties !== "object" ||
+    properties === null ||
+    typeof depthBarrier !== "number" ||
+    depthBarrier < 0 ||
+    typeof prefix !== "string" ||
+    typeof delimitor !== "string"
+  ) {
+    return false;
+  }
+  const result = {};
 
-    for (const [key, value] of Object.entries(properties)) {
-        if (typeof value === "object" && value !== null) {
-            getPropertiesWithFullKeysHelper(value, result, prefix + escapeTerm(key), 0, depthBarrier, delimitor);
-        }
-        else {
-            result[key] = value;
-        }
+  for (const [key, value] of Object.entries(properties)) {
+    if (typeof value === "object" && value !== null) {
+      getPropertiesWithFullKeysHelper(
+        value,
+        result,
+        prefix + escapeTerm(key),
+        0,
+        depthBarrier,
+        delimitor,
+      );
+    } else {
+      result[key] = value;
     }
+  }
 
-    return result;
+  return result;
 }
 
 /**
@@ -44,18 +57,31 @@ function getPropertiesWithFullKeys (properties, prefix = "@", delimitor = ".", d
  * @param {String} delimitor the delimitor to use for object paths
  * @returns {void}
  */
-function getPropertiesWithFullKeysHelper (obj, result, pathPrefix, depth, depthBarrier, delimitor) {
-    if (depth >= depthBarrier) {
-        return;
+function getPropertiesWithFullKeysHelper(
+  obj,
+  result,
+  pathPrefix,
+  depth,
+  depthBarrier,
+  delimitor,
+) {
+  if (depth >= depthBarrier) {
+    return;
+  }
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === "object" && value !== null) {
+      getPropertiesWithFullKeysHelper(
+        value,
+        result,
+        pathPrefix + delimitor + escapeTerm(key),
+        depth + 1,
+        depthBarrier,
+        delimitor,
+      );
+    } else {
+      result[pathPrefix + delimitor + escapeTerm(key)] = value;
     }
-    for (const [key, value] of Object.entries(obj)) {
-        if (typeof value === "object" && value !== null) {
-            getPropertiesWithFullKeysHelper(value, result, pathPrefix + delimitor + escapeTerm(key), depth + 1, depthBarrier, delimitor);
-        }
-        else {
-            result[pathPrefix + delimitor + escapeTerm(key)] = value;
-        }
-    }
+  }
 }
 
 /**
@@ -65,20 +91,20 @@ function getPropertiesWithFullKeysHelper (obj, result, pathPrefix, depth, depthB
  * @param {String} [escapeSign="\\"] the escape sign to use
  * @returns {String} the resulting word with escaped terms
  */
-function escapeTerm (word, term = ".", escapeSign = "\\") {
-    if (typeof word !== "string") {
-        return word;
-    }
-    const len = word.length;
-    let result = "";
+function escapeTerm(word, term = ".", escapeSign = "\\") {
+  if (typeof word !== "string") {
+    return word;
+  }
+  const len = word.length;
+  let result = "";
 
-    for (let i = 0; i < len; i++) {
-        if (word[i] === term) {
-            result += escapeSign;
-        }
-        result += word[i];
+  for (let i = 0; i < len; i++) {
+    if (word[i] === term) {
+      result += escapeSign;
     }
-    return result;
+    result += word[i];
+  }
+  return result;
 }
 
-export {getPropertiesWithFullKeys, escapeTerm};
+export { getPropertiesWithFullKeys, escapeTerm };

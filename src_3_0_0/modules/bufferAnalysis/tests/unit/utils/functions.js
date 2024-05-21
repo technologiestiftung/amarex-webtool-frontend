@@ -5,23 +5,20 @@
  *
  * @return {Array} the array of layer objects
  */
-function createLayerConfigsArray (count) {
-    const layers = [];
+function createLayerConfigsArray(count) {
+  const layers = [];
 
+  for (let i = 0; i < count; i++) {
+    const layer = {
+      id: i,
+      name: "Layer-" + i,
+      typ: "WFS",
+      visibility: true,
+    };
 
-    for (let i = 0; i < count; i++) {
-        const layer = {
-            "id": i,
-            "name": "Layer-" + i,
-            "typ": "WFS",
-            "visibility": true
-        };
-
-        layers.push(layer);
-    }
-    return layers;
+    layers.push(layer);
+  }
+  return layers;
 }
 
-export {
-    createLayerConfigsArray
-};
+export { createLayerConfigsArray };

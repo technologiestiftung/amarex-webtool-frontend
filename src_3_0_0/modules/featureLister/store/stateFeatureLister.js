@@ -24,47 +24,47 @@
  * @property {Object} highlightVectorRulesPointLine default style for highlighting lines and points
  */
 const state = {
-    // defaults for config.json parameters
-    hasMouseMapInteractions: true,
-    type: "featureLister",
-    description: "common:modules.featureLister.description",
-    name: "common:modules.featureLister.name",
-    icon: "bi-list",
-    maxFeatures: 20,
-    // featureLister state
-    layerlist: [],
-    layer: null,
-    layerListView: true,
-    gfiFeaturesOfLayer: [],
-    featureCount: "",
-    shownFeatures: "",
-    featureListView: false,
-    nestedFeatures: false,
-    featureDetailView: false,
-    headers: [],
-    selectedFeatureIndex: null,
-    highlightVectorRulesPolygon: {
-        "fill": {
-            "color": [255, 0, 255, 0.9]
-        },
-        "stroke": {
-            "width": 4,
-            "color": [0, 0, 204, 0.9]
-        },
-        "zoomLevel": 7
+  // defaults for config.json parameters
+  hasMouseMapInteractions: true,
+  type: "featureLister",
+  description: "common:modules.featureLister.description",
+  name: "common:modules.featureLister.name",
+  icon: "bi-list",
+  maxFeatures: 20,
+  // featureLister state
+  layerlist: [],
+  layer: null,
+  layerListView: true,
+  gfiFeaturesOfLayer: [],
+  featureCount: "",
+  shownFeatures: "",
+  featureListView: false,
+  nestedFeatures: false,
+  featureDetailView: false,
+  headers: [],
+  selectedFeatureIndex: null,
+  highlightVectorRulesPolygon: {
+    fill: {
+      color: [255, 0, 255, 0.9],
     },
-    highlightVectorRulesPointLine: {
-        "stroke": {
-            "width": 8,
-            "color": [255, 0, 255, 0.9]
-        },
-        "image": {
-            "scale": 2
-        },
-        "zoomLevel": 7
+    stroke: {
+      width: 4,
+      color: [0, 0, 204, 0.9],
     },
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"]
+    zoomLevel: 7,
+  },
+  highlightVectorRulesPointLine: {
+    stroke: {
+      width: 8,
+      color: [255, 0, 255, 0.9],
+    },
+    image: {
+      scale: 2,
+    },
+    zoomLevel: 7,
+  },
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
 };
 
 export default state;

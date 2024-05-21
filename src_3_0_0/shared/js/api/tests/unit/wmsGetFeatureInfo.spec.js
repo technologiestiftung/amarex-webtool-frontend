@@ -1,144 +1,179 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import sinon from "sinon";
 
-import {parseDocumentString, parseFeatures} from "../../wmsGetFeatureInfo.js";
+import { parseDocumentString, parseFeatures } from "../../wmsGetFeatureInfo.js";
 import handleAxiosResponse from "../../../utils/handleAxiosResponse.js";
 
 describe("src_3_0_0/shared/js/api/wmsGetFeatureInfo.js", () => {
-    let warn;
+  let warn;
 
-    beforeEach(() => {
-        warn = sinon.spy();
-        sinon.stub(console, "warn").callsFake(warn);
+  beforeEach(() => {
+    warn = sinon.spy();
+    sinon.stub(console, "warn").callsFake(warn);
+  });
+
+  after(() => {
+    sinon.restore();
+  });
+
+  describe("handleAxiosResponse", () => {
+    const testFunctions = {
+      getResponse: (response) => {
+        try {
+          return handleAxiosResponse(response);
+        } catch (err) {
+          return err;
+        }
+      },
+    };
+
+    it("should throw an error if the received object is no valid axios object", () => {
+      expect(testFunctions.getResponse(undefined)).to.be.an.instanceof(Error);
+      expect(testFunctions.getResponse(null)).to.be.an.instanceof(Error);
+      expect(testFunctions.getResponse(1234)).to.be.an.instanceof(Error);
+      expect(testFunctions.getResponse("string")).to.be.an.instanceof(Error);
+      expect(testFunctions.getResponse(true)).to.be.an.instanceof(Error);
+      expect(testFunctions.getResponse([])).to.be.an.instanceof(Error);
+      expect(testFunctions.getResponse({})).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResponse({
+          status: 200,
+        }),
+      ).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResponse({
+          statusText: "statusText",
+        }),
+      ).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResponse({
+          data: "data",
+        }),
+      ).to.be.an.instanceof(Error);
     });
-
-    after(() => {
-        sinon.restore();
+    it("should throw an error if the status code is not positive", () => {
+      expect(
+        testFunctions.getResponse({
+          status: 440,
+          statusText: "statusText",
+          data: "data",
+        }),
+      ).to.be.an.instanceof(Error);
     });
-
-    describe("handleAxiosResponse", () => {
-        const testFunctions = {
-            getResponse: response => {
-                try {
-                    return handleAxiosResponse(response);
-                }
-                catch (err) {
-                    return err;
-                }
-            }
-        };
-
-        it("should throw an error if the received object is no valid axios object", () => {
-            expect(testFunctions.getResponse(undefined)).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse(null)).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse(1234)).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse("string")).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse(true)).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse([])).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse({})).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse({
-                status: 200
-            })).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse({
-                statusText: "statusText"
-            })).to.be.an.instanceof(Error);
-            expect(testFunctions.getResponse({
-                data: "data"
-            })).to.be.an.instanceof(Error);
-        });
-        it("should throw an error if the status code is not positive", () => {
-            expect(testFunctions.getResponse({
-                status: 440,
-                statusText: "statusText",
-                data: "data"
-            })).to.be.an.instanceof(Error);
-        });
-        it("should return the data part from a valid axios response object with a positive status code", () => {
-            expect(testFunctions.getResponse({
-                status: 200,
-                statusText: "statusText",
-                data: "data"
-            })).to.equal("data");
-        });
+    it("should return the data part from a valid axios response object with a positive status code", () => {
+      expect(
+        testFunctions.getResponse({
+          status: 200,
+          statusText: "statusText",
+          data: "data",
+        }),
+      ).to.equal("data");
     });
+  });
 
-    describe("parseDocumentString", () => {
-        it("should throw an error if the document can't be parsed", () => {
-            const testFunctions = {
-                    getResult: (documentString, mimeType, parserResponse) => {
-                        try {
-                            return parseDocumentString(documentString, mimeType, () => {
-                                // parseFromStringOpt: simulating response
-                                return parserResponse;
-                            });
-                        }
-                        catch (err) {
-                            return err;
-                        }
-                    }
-                },
-                documentString = "<TestTag>testData</TestTag>";
-
-            expect(testFunctions.getResult(documentString, "text/html", null)).to.be.an.instanceof(Error);
-            expect(testFunctions.getResult(documentString, "text/html", undefined)).to.be.an.instanceof(Error);
-            expect(testFunctions.getResult(documentString, "text/html", 1234)).to.be.an.instanceof(Error);
-            expect(testFunctions.getResult(documentString, "text/html", "string")).to.be.an.instanceof(Error);
-            expect(testFunctions.getResult(documentString, "text/html", true)).to.be.an.instanceof(Error);
-            expect(testFunctions.getResult(documentString, "text/html", [])).to.be.an.instanceof(Error);
-            expect(testFunctions.getResult(documentString, "text/html", {})).to.be.an.instanceof(Error);
-        });
-        it("should throw an error if the document reports a parsererror", () => {
-            const testFunctions = {
-                parseFromStringOpt: () => {
-                    const parser = new DOMParser(),
-                        documentString = "<?xml version='1.0' encoding='UTF-8'?><parsererror>error</parsererror>";
-
-                    return parser.parseFromString(documentString, "text/xml");
-                }
-            };
-            let result = null;
-
+  describe("parseDocumentString", () => {
+    it("should throw an error if the document can't be parsed", () => {
+      const testFunctions = {
+          getResult: (documentString, mimeType, parserResponse) => {
             try {
-                result = parseDocumentString("documentString", "mimeType", testFunctions.parseFromStringOpt);
+              return parseDocumentString(documentString, mimeType, () => {
+                // parseFromStringOpt: simulating response
+                return parserResponse;
+              });
+            } catch (err) {
+              return err;
             }
-            catch (err) {
-                result = err;
-            }
-            expect(result).to.be.an.instanceof(Error);
-        });
+          },
+        },
+        documentString = "<TestTag>testData</TestTag>";
 
-        it("should return a parsed Document from the given documentString as text/html", () => {
-            const testFunctions = {
-                    parseFromStringOpt: (documentString, mimeType) => {
-                        const parser = new DOMParser();
+      expect(
+        testFunctions.getResult(documentString, "text/html", null),
+      ).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResult(documentString, "text/html", undefined),
+      ).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResult(documentString, "text/html", 1234),
+      ).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResult(documentString, "text/html", "string"),
+      ).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResult(documentString, "text/html", true),
+      ).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResult(documentString, "text/html", []),
+      ).to.be.an.instanceof(Error);
+      expect(
+        testFunctions.getResult(documentString, "text/html", {}),
+      ).to.be.an.instanceof(Error);
+    });
+    it("should throw an error if the document reports a parsererror", () => {
+      const testFunctions = {
+        parseFromStringOpt: () => {
+          const parser = new DOMParser(),
+            documentString =
+              "<?xml version='1.0' encoding='UTF-8'?><parsererror>error</parsererror>";
 
-                        return parser.parseFromString(documentString, mimeType);
-                    }
-                },
-                documentString = "<TestTag>testData</TestTag>",
-                expected = "<head></head><body><testtag>testData</testtag></body>",
-                result = parseDocumentString(documentString, "text/html", testFunctions.parseFromStringOpt);
+          return parser.parseFromString(documentString, "text/xml");
+        },
+      };
+      let result = null;
 
-            expect(result).to.be.an.instanceof(Document);
-            expect(result.firstElementChild.innerHTML).to.equal(expected);
-        });
-        it("should return a parsed Document from the given documentString as text/xml", () => {
-            const testFunctions = {
-                    parseFromStringOpt: (documentString, mimeType) => {
-                        const parser = new DOMParser();
+      try {
+        result = parseDocumentString(
+          "documentString",
+          "mimeType",
+          testFunctions.parseFromStringOpt,
+        );
+      } catch (err) {
+        result = err;
+      }
+      expect(result).to.be.an.instanceof(Error);
+    });
 
-                        return parser.parseFromString(documentString, mimeType);
-                    }
-                },
-                documentString = "<?xml version='1.0' encoding='UTF-8'?><TestTag>testData</TestTag>",
-                expected = "testData",
-                result = parseDocumentString(documentString, "text/xml", testFunctions.parseFromStringOpt);
+    it("should return a parsed Document from the given documentString as text/html", () => {
+      const testFunctions = {
+          parseFromStringOpt: (documentString, mimeType) => {
+            const parser = new DOMParser();
 
-            expect(result).to.be.an.instanceof(Document);
-            expect(result.firstElementChild.innerHTML).to.equal(expected);
-        });
-        it("should return a feature from the given documentString as text/xml with the infoFormat application/vnd.ogc.gml", () => {
-            const documentString = `<?xml version="1.0" encoding="UTF-8"?>
+            return parser.parseFromString(documentString, mimeType);
+          },
+        },
+        documentString = "<TestTag>testData</TestTag>",
+        expected = "<head></head><body><testtag>testData</testtag></body>",
+        result = parseDocumentString(
+          documentString,
+          "text/html",
+          testFunctions.parseFromStringOpt,
+        );
+
+      expect(result).to.be.an.instanceof(Document);
+      expect(result.firstElementChild.innerHTML).to.equal(expected);
+    });
+    it("should return a parsed Document from the given documentString as text/xml", () => {
+      const testFunctions = {
+          parseFromStringOpt: (documentString, mimeType) => {
+            const parser = new DOMParser();
+
+            return parser.parseFromString(documentString, mimeType);
+          },
+        },
+        documentString =
+          "<?xml version='1.0' encoding='UTF-8'?><TestTag>testData</TestTag>",
+        expected = "testData",
+        result = parseDocumentString(
+          documentString,
+          "text/xml",
+          testFunctions.parseFromStringOpt,
+        );
+
+      expect(result).to.be.an.instanceof(Document);
+      expect(result.firstElementChild.innerHTML).to.equal(expected);
+    });
+    it("should return a feature from the given documentString as text/xml with the infoFormat application/vnd.ogc.gml", () => {
+      const documentString = `<?xml version="1.0" encoding="UTF-8"?>
                 <wfs:FeatureCollection xmlns="http://www.opengis.net/wfs" xmlns:wfs="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml" xmlns:geofox_workspace="geofox" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs https://map.geofox.de:443/geoserver/schemas/wfs/1.0.0/WFS-basic.xsd geofox https://map.geofox.de:443/geoserver/geofox_workspace/wfs?service=WFS&amp;version=1.0.0&amp;request=DescribeFeatureType&amp;typeName=geofox_workspace%3Ageofoxdb_stations">
                     <gml:boundedBy>
                         <gml:null>unknown</gml:null>
@@ -163,19 +198,27 @@ describe("src_3_0_0/shared/js/api/wmsGetFeatureInfo.js", () => {
                         </geofox_workspace:geofoxdb_stations>
                     </gml:featureMember>
                 </wfs:FeatureCollection>`,
-                parser = new DOMParser(),
-                features = parseFeatures(parser.parseFromString(documentString, "text/xml"));
+        parser = new DOMParser(),
+        features = parseFeatures(
+          parser.parseFromString(documentString, "text/xml"),
+        );
 
-            expect(features.length).equals(1);
-            expect(features[0].get("x")).equals("3563130");
-            expect(features[0].get("y")).equals("5936370");
-            expect(features[0].get("name")).equals("Thadenstrasse (West)");
-            expect(features[0].get("linekat")).equals("Niederflur-Nachtbus,Niederflur Stadtbus");
-            expect(features[0].get("lineshortkat")).equals("Nachtbus,Bus");
-            expect(features[0].getGeometry().getCoordinates()).to.include(563033.73375521, 5934434.5087641, 0);
-        });
-        it("should return a feature from mapserver service with the given documentString as text/xml with the infoFormat application/vnd.ogc.gml", () => {
-            const documentString = `<msGMLOutput
+      expect(features.length).equals(1);
+      expect(features[0].get("x")).equals("3563130");
+      expect(features[0].get("y")).equals("5936370");
+      expect(features[0].get("name")).equals("Thadenstrasse (West)");
+      expect(features[0].get("linekat")).equals(
+        "Niederflur-Nachtbus,Niederflur Stadtbus",
+      );
+      expect(features[0].get("lineshortkat")).equals("Nachtbus,Bus");
+      expect(features[0].getGeometry().getCoordinates()).to.include(
+        563033.73375521,
+        5934434.5087641,
+        0,
+      );
+    });
+    it("should return a feature from mapserver service with the given documentString as text/xml with the infoFormat application/vnd.ogc.gml", () => {
+      const documentString = `<msGMLOutput
                 xmlns:gml="http://www.opengis.net/gml"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -195,19 +238,21 @@ describe("src_3_0_0/shared/js/api/wmsGetFeatureInfo.js", () => {
                         </addresses_feature>
                     </addresses_layer>
                 </msGMLOutput>`,
-                parser = new DOMParser(),
-                features = parseFeatures(parser.parseFromString(documentString, "text/xml"));
+        parser = new DOMParser(),
+        features = parseFeatures(
+          parser.parseFromString(documentString, "text/xml"),
+        );
 
-            expect(features.length).equals(1);
-            expect(features[0].get("id")).equals("82549");
-            expect(features[0].get("hnr_a")).equals("3");
-            expect(features[0].get("str_strs_a")).equals("04480");
-            expect(features[0].get("x_coord")).equals("412600.66");
-            expect(features[0].get("y_coord")).equals("5315290.1");
-        });
+      expect(features.length).equals(1);
+      expect(features[0].get("id")).equals("82549");
+      expect(features[0].get("hnr_a")).equals("3");
+      expect(features[0].get("str_strs_a")).equals("04480");
+      expect(features[0].get("x_coord")).equals("412600.66");
+      expect(features[0].get("y_coord")).equals("5315290.1");
     });
-    it("should return a feature from qgis service with the given documentString as text/xml", () => {
-        const documentString = `<GetFeatureInfoResponse>
+  });
+  it("should return a feature from qgis service with the given documentString as text/xml", () => {
+    const documentString = `<GetFeatureInfoResponse>
         <Layer name="void"/>
         <Layer name="oidv">
             <Feature id="A-28">
@@ -224,14 +269,15 @@ describe("src_3_0_0/shared/js/api/wmsGetFeatureInfo.js", () => {
         <Layer name="dvoi">
         </Layer>
        </GetFeatureInfoResponse>`,
-            parser = new DOMParser(),
-            features = parseFeatures(parser.parseFromString(documentString, "text/xml"));
+      parser = new DOMParser(),
+      features = parseFeatures(
+        parser.parseFromString(documentString, "text/xml"),
+      );
 
-        expect(features.length).equals(2);
-        expect(features[0].get("big")).equals("yes");
-        expect(features[0].get("small")).equals("no");
-        expect(features[1].get("sideways")).equals("left");
-        expect(features[1].get("upwards")).equals("maybe");
-    });
+    expect(features.length).equals(2);
+    expect(features[0].get("big")).equals("yes");
+    expect(features[0].get("small")).equals("no");
+    expect(features[1].get("sideways")).equals("left");
+    expect(features[1].get("upwards")).equals("maybe");
+  });
 });
-

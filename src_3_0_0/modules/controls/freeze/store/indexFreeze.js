@@ -3,8 +3,8 @@ import getters from "./gettersFreeze";
 import mutations from "./mutationsFreeze";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    getters,
-    mutations
+  namespaced: true,
+  state: { ...state },
+  getters,
+  mutations,
 };

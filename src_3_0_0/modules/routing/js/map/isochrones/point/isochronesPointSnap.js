@@ -1,4 +1,4 @@
-import {Snap} from "ol/interaction.js";
+import { Snap } from "ol/interaction.js";
 import isochronesPointSource from "./isochronesPointSource";
 
-export default new Snap({source: isochronesPointSource});
+export default new Snap({ source: isochronesPointSource });

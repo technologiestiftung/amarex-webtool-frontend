@@ -12,15 +12,15 @@
  * @property {Object} shadowTime Object to define start date and time. (config-param)
  */
 const state = {
-    description: "common:modules.shadow.description",
-    icon: "bi-lamp-fill",
-    name: "common:modules.shadow.name",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["3D"],
-    type: "shadow",
+  description: "common:modules.shadow.description",
+  icon: "bi-lamp-fill",
+  name: "common:modules.shadow.name",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["3D"],
+  type: "shadow",
 
-    isShadowEnabled: false,
-    shadowTime: {}
+  isShadowEnabled: false,
+  shadowTime: {},
 };
 
 export default state;

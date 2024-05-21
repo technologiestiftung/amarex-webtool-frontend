@@ -8,12 +8,12 @@
  * @property {String} type The type of the baselayerSwitcher component
  */
 const state = {
-    active: false,
-    activatedExpandable: false,
-    baselayerIds: [],
-    configPaths: ["portalConfig.map.baselayerSwitcher"],
-    topBaselayerId: null,
-    type: "baselayerSwitcher"
+  active: false,
+  activatedExpandable: false,
+  baselayerIds: [],
+  configPaths: ["portalConfig.map.baselayerSwitcher"],
+  topBaselayerId: null,
+  type: "baselayerSwitcher",
 };
 
 export default state;

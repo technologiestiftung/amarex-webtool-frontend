@@ -56,17 +56,28 @@
     }
  * @returns {void}
  */
-export default function SearchResult ({category, events, id, index, name, searchInterfaceId, displayedInfo, icon, imagePath, toolTip} = {}) {
-    this.category = category;
-    this.id = id;
-    this.index = index;
-    this.name = name;
-    this.searchInterfaceId = searchInterfaceId;
+export default function SearchResult({
+  category,
+  events,
+  id,
+  index,
+  name,
+  searchInterfaceId,
+  displayedInfo,
+  icon,
+  imagePath,
+  toolTip,
+} = {}) {
+  this.category = category;
+  this.id = id;
+  this.index = index;
+  this.name = name;
+  this.searchInterfaceId = searchInterfaceId;
 
-    this.events = events;
+  this.events = events;
 
-    this.displayedInfo = displayedInfo || "";
-    this.icon = icon || "";
-    this.imagePath = imagePath || "";
-    this.toolTip = toolTip || "";
+  this.displayedInfo = displayedInfo || "";
+  this.icon = icon || "";
+  this.imagePath = imagePath || "";
+  this.toolTip = toolTip || "";
 }

@@ -4,9 +4,9 @@ import mutations from "./mutationsGetFeatureInfo";
 import actions from "./actionsGetFeatureInfo";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    getters,
-    mutations,
-    actions
+  namespaced: true,
+  state: { ...state },
+  getters,
+  mutations,
+  actions,
 };

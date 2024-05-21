@@ -7,12 +7,14 @@
  * @param {Object} state state to generate getters for
  * @returns {Object.<String, Function>} object of getters
  */
-export function generateSimpleGetters (state) {
-    return Object.keys(state)
-        .reduce((acc, key) => ({
-            ...acc,
-            [key]: s => s[key]
-        }), {});
+export function generateSimpleGetters(state) {
+  return Object.keys(state).reduce(
+    (acc, key) => ({
+      ...acc,
+      [key]: (s) => s[key],
+    }),
+    {},
+  );
 }
 
 /**
@@ -24,16 +26,15 @@ export function generateSimpleGetters (state) {
  * @param {Object} state state to generate mutations for
  * @returns {Object.<String, Function>} object of mutations
  */
-export function generateSimpleMutations (state) {
-    return Object.keys(state)
-        .reduce((acc, key) => {
-            const mutationKey = `set${key[0].toUpperCase()}${key.slice(1)}`;
+export function generateSimpleMutations(state) {
+  return Object.keys(state).reduce((acc, key) => {
+    const mutationKey = `set${key[0].toUpperCase()}${key.slice(1)}`;
 
-            return {
-                ...acc,
-                [mutationKey]: (moduleState, payload) => {
-                    moduleState[key] = payload;
-                }
-            };
-        }, {});
+    return {
+      ...acc,
+      [mutationKey]: (moduleState, payload) => {
+        moduleState[key] = payload;
+      },
+    };
+  }, {});
 }

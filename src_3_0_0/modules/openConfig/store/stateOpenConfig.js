@@ -9,12 +9,12 @@
  * @property {String} type The type of the module.
  */
 const state = {
-    description: "common:modules.openConfig.description",
-    icon: "bi-upload",
-    name: "common:modules.openConfig.name",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
-    type: "openConfig"
+  description: "common:modules.openConfig.description",
+  icon: "bi-upload",
+  name: "common:modules.openConfig.name",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
+  type: "openConfig",
 };
 
 export default state;

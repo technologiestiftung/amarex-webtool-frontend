@@ -5,9 +5,9 @@ import state from "./stateMeasure";
 import "../js/typedefs";
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters,
 };

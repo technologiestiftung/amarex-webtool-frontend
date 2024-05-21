@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import SearchInterface from "./searchInterface";
 import store from "../../../app-store";
-import {uniqueId} from "../../../shared/js/utils/uniqueId";
+import { uniqueId } from "../../../shared/js/utils/uniqueId";
 
 /**
  * The search interface to the osm nominatim geocoder.
@@ -25,29 +25,42 @@ import {uniqueId} from "../../../shared/js/utils/uniqueId";
  * @param {String} [states=""] May contain federal state names with arbitrary separators.
  * @returns {void}
  */
-export default function SearchInterfaceOsmNominatim ({serviceId, classes, countryCodes, hitTemplate, limit, resultEvents, searchInterfaceId, states} = {}) {
-    SearchInterface.call(this,
-        "client",
-        searchInterfaceId || "osmNominatim",
-        resultEvents || {
-            onClick: ["setMarker", "zoomToResult"],
-            onHover: ["setMarker"],
-            buttons: ["startRouting"]
-        },
-        hitTemplate
-    );
+export default function SearchInterfaceOsmNominatim({
+  serviceId,
+  classes,
+  countryCodes,
+  hitTemplate,
+  limit,
+  resultEvents,
+  searchInterfaceId,
+  states,
+} = {}) {
+  SearchInterface.call(
+    this,
+    "client",
+    searchInterfaceId || "osmNominatim",
+    resultEvents || {
+      onClick: ["setMarker", "zoomToResult"],
+      onHover: ["setMarker"],
+      buttons: ["startRouting"],
+    },
+    hitTemplate,
+  );
 
-    this.serviceId = serviceId;
+  this.serviceId = serviceId;
 
-    this.classes = classes || "place,highway,building,shop,historic,leisure,city,county";
-    this.countryCodes = countryCodes || ["de"];
-    this.limit = limit || 50;
-    this.states = states || "";
+  this.classes =
+    classes || "place,highway,building,shop,historic,leisure,city,county";
+  this.countryCodes = countryCodes || ["de"];
+  this.limit = limit || 50;
+  this.states = states || "";
 
-    this.timeStamp = dayjs();
+  this.timeStamp = dayjs();
 }
 
-SearchInterfaceOsmNominatim.prototype = Object.create(SearchInterface.prototype);
+SearchInterfaceOsmNominatim.prototype = Object.create(
+  SearchInterface.prototype,
+);
 
 /**
  * Search in osm nominatim search interface.
@@ -58,26 +71,28 @@ SearchInterfaceOsmNominatim.prototype = Object.create(SearchInterface.prototype)
  * @returns {void}
  */
 SearchInterfaceOsmNominatim.prototype.search = async function (searchInput) {
-    const timeStampNow = dayjs();
+  const timeStampNow = dayjs();
 
-    if (timeStampNow.diff(this.timeStamp) > 1000) {
-        this.timeStamp = timeStampNow;
+  if (timeStampNow.diff(this.timeStamp) > 1000) {
+    this.timeStamp = timeStampNow;
 
-        const resultData = await this.requestSearch(this.createSearchUrl(searchInput), "GET");
+    const resultData = await this.requestSearch(
+      this.createSearchUrl(searchInput),
+      "GET",
+    );
 
-        this.pushHitsToSearchResults(this.normalizeResults(resultData));
-    }
-    else {
-        await new Promise(resolve => {
-            setTimeout(async () => {
-                if (searchInput === store.getters["SearchBar/searchInput"]) {
-                    resolve(await this.search(searchInput));
-                }
-            }, 1000);
-        });
-    }
+    this.pushHitsToSearchResults(this.normalizeResults(resultData));
+  } else {
+    await new Promise((resolve) => {
+      setTimeout(async () => {
+        if (searchInput === store.getters["SearchBar/searchInput"]) {
+          resolve(await this.search(searchInput));
+        }
+      }, 1000);
+    });
+  }
 
-    return this.searchResults;
+  return this.searchResults;
 };
 
 /**
@@ -86,10 +101,10 @@ SearchInterfaceOsmNominatim.prototype.search = async function (searchInput) {
  * @returns {String} The search url.
  */
 SearchInterfaceOsmNominatim.prototype.createSearchUrl = function (searchInput) {
-    const searchUrl = store?.getters?.restServiceById(this.serviceId)?.url,
-        extendedSearchUrl = `${searchUrl}countrycodes=${this.countryCodes}&format=json&polygon=0&addressdetails=1&extratags=1&limit=${this.limit}&q=${encodeURIComponent(searchInput)}`;
+  const searchUrl = store?.getters?.restServiceById(this.serviceId)?.url,
+    extendedSearchUrl = `${searchUrl}countrycodes=${this.countryCodes}&format=json&polygon=0&addressdetails=1&extratags=1&limit=${this.limit}&q=${encodeURIComponent(searchInput)}`;
 
-    return extendedSearchUrl;
+  return extendedSearchUrl;
 };
 
 /**
@@ -98,21 +113,26 @@ SearchInterfaceOsmNominatim.prototype.createSearchUrl = function (searchInput) {
  * @param {Object[]} searchResults The search results of osm nominatim.
  * @returns {Object[]} The normalized search result.
  */
-SearchInterfaceOsmNominatim.prototype.normalizeResults = function (searchResults) {
-    const classes = this.classes.split(","),
-        states = this.states !== "" ? this.states.split(",") : [],
-        normalizedResults = [];
+SearchInterfaceOsmNominatim.prototype.normalizeResults = function (
+  searchResults,
+) {
+  const classes = this.classes.split(","),
+    states = this.states !== "" ? this.states.split(",") : [],
+    normalizedResults = [];
 
-    searchResults.forEach(searchResult => {
-        const state = searchResult.address.state,
-            city = searchResult.address.city;
+  searchResults.forEach((searchResult) => {
+    const state = searchResult.address.state,
+      city = searchResult.address.city;
 
-        if (classes.includes(searchResult.class) && (states.length === 0 || states.includes(state || city))) {
-            normalizedResults.push(this.normalizeResult(searchResult));
-        }
-    });
+    if (
+      classes.includes(searchResult.class) &&
+      (states.length === 0 || states.includes(state || city))
+    ) {
+      normalizedResults.push(this.normalizeResult(searchResult));
+    }
+  });
 
-    return normalizedResults;
+  return normalizedResults;
 };
 
 /**
@@ -120,17 +140,19 @@ SearchInterfaceOsmNominatim.prototype.normalizeResults = function (searchResults
  * @param {Object[]} searchResult The search result of osm nominatim.
  * @returns {Object[]} The normalized search result.
  */
-SearchInterfaceOsmNominatim.prototype.normalizeResult = function (searchResult) {
-    const displayName = this.createDisplayName(searchResult);
+SearchInterfaceOsmNominatim.prototype.normalizeResult = function (
+  searchResult,
+) {
+  const displayName = this.createDisplayName(searchResult);
 
-    return {
-        events: this.normalizeResultEvents(this.resultEvents, searchResult),
-        category: "OpenStreetMap",
-        icon: "bi-signpost-2",
-        id: uniqueId("OSMNominatim"),
-        name: displayName,
-        toolTip: this.createToolTipName(searchResult, displayName)
-    };
+  return {
+    events: this.normalizeResultEvents(this.resultEvents, searchResult),
+    category: "OpenStreetMap",
+    icon: "bi-signpost-2",
+    id: uniqueId("OSMNominatim"),
+    name: displayName,
+    toolTip: this.createToolTipName(searchResult, displayName),
+  };
 };
 
 /**
@@ -138,19 +160,28 @@ SearchInterfaceOsmNominatim.prototype.normalizeResult = function (searchResult) 
  * @param {Object} searchResult The search result of osm nominatim.
  * @returns {String} The display name.
  */
-SearchInterfaceOsmNominatim.prototype.createDisplayName = function (searchResult) {
-    const address = searchResult.address;
-    let displayName = address.city || address.city_district || address.town || address.village || address.suburb || address.county || "";
+SearchInterfaceOsmNominatim.prototype.createDisplayName = function (
+  searchResult,
+) {
+  const address = searchResult.address;
+  let displayName =
+    address.city ||
+    address.city_district ||
+    address.town ||
+    address.village ||
+    address.suburb ||
+    address.county ||
+    "";
 
-    if (address.road || address.pedestrian) {
-        displayName = `${displayName}, ${address.road || address.pedestrian}`;
+  if (address.road || address.pedestrian) {
+    displayName = `${displayName}, ${address.road || address.pedestrian}`;
 
-        if (address.house_number) {
-            displayName = `${displayName} ${address.house_number}`;
-        }
+    if (address.house_number) {
+      displayName = `${displayName} ${address.house_number}`;
     }
+  }
 
-    return displayName;
+  return displayName;
 };
 
 /**
@@ -159,19 +190,30 @@ SearchInterfaceOsmNominatim.prototype.createDisplayName = function (searchResult
  * @param {String} displayName The display name.
  * @returns {String} The tool tip name.
  */
-SearchInterfaceOsmNominatim.prototype.createToolTipName = function (searchResult, displayName) {
-    const address = searchResult.address;
-    let toolTipName = displayName;
+SearchInterfaceOsmNominatim.prototype.createToolTipName = function (
+  searchResult,
+  displayName,
+) {
+  const address = searchResult.address;
+  let toolTipName = displayName;
 
-    if (typeof address.postcode !== "undefined" && typeof (address.state || address.city) !== "undefined") {
-        toolTipName = toolTipName + ", " + address.postcode + " " + (address.state || address.city);
+  if (
+    typeof address.postcode !== "undefined" &&
+    typeof (address.state || address.city) !== "undefined"
+  ) {
+    toolTipName =
+      toolTipName +
+      ", " +
+      address.postcode +
+      " " +
+      (address.state || address.city);
 
-        if (typeof address.suburb !== "undefined") {
-            toolTipName = toolTipName + " (" + address.suburb + ")";
-        }
+    if (typeof address.suburb !== "undefined") {
+      toolTipName = toolTipName + " (" + address.suburb + ")";
     }
+  }
 
-    return toolTipName;
+  return toolTipName;
 };
 
 /**
@@ -180,21 +222,23 @@ SearchInterfaceOsmNominatim.prototype.createToolTipName = function (searchResult
  * @param {Object} searchResult The search result of osm nominatim.
  * @returns {Object} The possible actions.
  */
-SearchInterfaceOsmNominatim.prototype.createPossibleActions = function (searchResult) {
-    const coordinates = this.processCoordinatesForActions(searchResult);
+SearchInterfaceOsmNominatim.prototype.createPossibleActions = function (
+  searchResult,
+) {
+  const coordinates = this.processCoordinatesForActions(searchResult);
 
-    return {
-        setMarker: {
-            coordinates: coordinates
-        },
-        zoomToResult: {
-            coordinates: coordinates
-        },
-        startRouting: {
-            coordinates: coordinates,
-            name: searchResult.display_name
-        }
-    };
+  return {
+    setMarker: {
+      coordinates: coordinates,
+    },
+    zoomToResult: {
+      coordinates: coordinates,
+    },
+    startRouting: {
+      coordinates: coordinates,
+      name: searchResult.display_name,
+    },
+  };
 };
 
 /**
@@ -202,20 +246,23 @@ SearchInterfaceOsmNominatim.prototype.createPossibleActions = function (searchRe
  * @param {Object} searchResult The search result of osm nominatim.
  * @returns {Object} The coordinates for actions.
  */
-SearchInterfaceOsmNominatim.prototype.processCoordinatesForActions = function (searchResult) {
-    let lat,
-        lon;
+SearchInterfaceOsmNominatim.prototype.processCoordinatesForActions = function (
+  searchResult,
+) {
+  let lat, lon;
 
-    if (searchResult.lat && searchResult.lon) {
-        lat = parseFloat(searchResult.lat);
-        lon = parseFloat(searchResult.lon);
-    }
-    else {
-        const bbox = searchResult.boundingbox;
+  if (searchResult.lat && searchResult.lon) {
+    lat = parseFloat(searchResult.lat);
+    lon = parseFloat(searchResult.lon);
+  } else {
+    const bbox = searchResult.boundingbox;
 
-        lat = (parseFloat(bbox[0]) + parseFloat(bbox[1])) / 2.0;
-        lon = (parseFloat(bbox[2]) + parseFloat(bbox[3])) / 2.0;
-    }
+    lat = (parseFloat(bbox[0]) + parseFloat(bbox[1])) / 2.0;
+    lon = (parseFloat(bbox[2]) + parseFloat(bbox[3])) / 2.0;
+  }
 
-    return crs.transformToMapProjection(mapCollection.getMap("2D"), "EPSG:4326", [lon, lat]);
+  return crs.transformToMapProjection(mapCollection.getMap("2D"), "EPSG:4326", [
+    lon,
+    lat,
+  ]);
 };

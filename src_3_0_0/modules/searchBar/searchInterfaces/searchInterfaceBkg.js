@@ -2,7 +2,7 @@ import crs from "@masterportal/masterportalapi/src/crs";
 
 import SearchInterface from "./searchInterface";
 import store from "../../../app-store";
-import {uniqueId} from "../../../shared/js/utils/uniqueId";
+import { uniqueId } from "../../../shared/js/utils/uniqueId";
 
 /**
  * The search interface to the bkg geocoder.
@@ -24,24 +24,34 @@ import {uniqueId} from "../../../shared/js/utils/uniqueId";
  * @param {Number} [resultCount=20] Result amount.
  * @returns {void}
  */
-export default function SearchInterfaceBkg ({geoSearchServiceId, epsg, extent, hitTemplate, minScore, resultEvents, searchInterfaceId, resultCount} = {}) {
-    SearchInterface.call(this,
-        "request",
-        searchInterfaceId || "bkg",
-        resultEvents || {
-            onClick: ["setMarker", "zoomToResult"],
-            onHover: ["setMarker"],
-            buttons: ["startRouting"]
-        },
-        hitTemplate
-    );
+export default function SearchInterfaceBkg({
+  geoSearchServiceId,
+  epsg,
+  extent,
+  hitTemplate,
+  minScore,
+  resultEvents,
+  searchInterfaceId,
+  resultCount,
+} = {}) {
+  SearchInterface.call(
+    this,
+    "request",
+    searchInterfaceId || "bkg",
+    resultEvents || {
+      onClick: ["setMarker", "zoomToResult"],
+      onHover: ["setMarker"],
+      buttons: ["startRouting"],
+    },
+    hitTemplate,
+  );
 
-    this.geoSearchServiceId = geoSearchServiceId;
+  this.geoSearchServiceId = geoSearchServiceId;
 
-    this.epsg = epsg;
-    this.extent = extent || [454591, 5809000, 700000, 6075769];
-    this.minScore = minScore || 0.6;
-    this.resultCount = resultCount || 20;
+  this.epsg = epsg;
+  this.extent = extent || [454591, 5809000, 700000, 6075769];
+  this.minScore = minScore || 0.6;
+  this.resultCount = resultCount || 20;
 }
 
 SearchInterfaceBkg.prototype = Object.create(SearchInterface.prototype);
@@ -53,11 +63,14 @@ SearchInterfaceBkg.prototype = Object.create(SearchInterface.prototype);
  * @returns {void}
  */
 SearchInterfaceBkg.prototype.search = async function (searchInput) {
-    const resultData = await this.requestSearch(this.createSearchUrl(searchInput), "GET");
+  const resultData = await this.requestSearch(
+    this.createSearchUrl(searchInput),
+    "GET",
+  );
 
-    this.pushHitsToSearchResults(this.normalizeResults(resultData.features));
+  this.pushHitsToSearchResults(this.normalizeResults(resultData.features));
 
-    return this.searchResults;
+  return this.searchResults;
 };
 
 /**
@@ -66,10 +79,12 @@ SearchInterfaceBkg.prototype.search = async function (searchInput) {
  * @returns {String} The search url.
  */
 SearchInterfaceBkg.prototype.createSearchUrl = function (searchInput) {
-    const searchUrl = store?.getters?.restServiceById(this.geoSearchServiceId)?.url,
-        extendedSearchUrl = `${searchUrl}?bbox=${this.extent}&outputformat=json&srsName=${this.epsg}&count=${this.resultCount}&query=${encodeURIComponent(searchInput)}`;
+  const searchUrl = store?.getters?.restServiceById(
+      this.geoSearchServiceId,
+    )?.url,
+    extendedSearchUrl = `${searchUrl}?bbox=${this.extent}&outputformat=json&srsName=${this.epsg}&count=${this.resultCount}&query=${encodeURIComponent(searchInput)}`;
 
-    return extendedSearchUrl;
+  return extendedSearchUrl;
 };
 
 /**
@@ -78,15 +93,15 @@ SearchInterfaceBkg.prototype.createSearchUrl = function (searchInput) {
  * @returns {Object[]} The normalized search result.
  */
 SearchInterfaceBkg.prototype.normalizeResults = function (searchResults) {
-    const normalizedResults = [];
+  const normalizedResults = [];
 
-    searchResults.forEach(searchResult => {
-        if (searchResult.properties.score > this.minScore) {
-            normalizedResults.push(this.normalizeResult(searchResult));
-        }
-    });
+  searchResults.forEach((searchResult) => {
+    if (searchResult.properties.score > this.minScore) {
+      normalizedResults.push(this.normalizeResult(searchResult));
+    }
+  });
 
-    return normalizedResults;
+  return normalizedResults;
 };
 
 /**
@@ -95,16 +110,15 @@ SearchInterfaceBkg.prototype.normalizeResults = function (searchResults) {
  * @returns {Object[]} The normalized search result.
  */
 SearchInterfaceBkg.prototype.normalizeResult = function (searchResult) {
-    return {
-        events: this.normalizeResultEvents(this.resultEvents, searchResult),
-        category: searchResult.properties.typ,
-        id: uniqueId("BkgGeoSearch"),
-        icon: "bi-signpost-2",
-        name: searchResult.properties.text,
-        toolTip: searchResult.properties.text
-    };
+  return {
+    events: this.normalizeResultEvents(this.resultEvents, searchResult),
+    category: searchResult.properties.typ,
+    id: uniqueId("BkgGeoSearch"),
+    icon: "bi-signpost-2",
+    name: searchResult.properties.text,
+    toolTip: searchResult.properties.text,
+  };
 };
-
 
 /**
  * Creates the possible actions and fills them.
@@ -113,22 +127,26 @@ SearchInterfaceBkg.prototype.normalizeResult = function (searchResult) {
  * @returns {Object} The possible actions.
  */
 SearchInterfaceBkg.prototype.createPossibleActions = function (searchResult) {
-    let coordinates = searchResult.geometry.coordinates;
+  let coordinates = searchResult.geometry.coordinates;
 
-    if (store.getters["Maps/projectionCode"] !== this.epsg) {
-        coordinates = crs.transformToMapProjection(mapCollection.getMap("2D"), this.epsg, [parseFloat(coordinates[0]), parseFloat(coordinates[1])]);
-    }
+  if (store.getters["Maps/projectionCode"] !== this.epsg) {
+    coordinates = crs.transformToMapProjection(
+      mapCollection.getMap("2D"),
+      this.epsg,
+      [parseFloat(coordinates[0]), parseFloat(coordinates[1])],
+    );
+  }
 
-    return {
-        setMarker: {
-            coordinates: coordinates
-        },
-        zoomToResult: {
-            coordinates: coordinates
-        },
-        startRouting: {
-            coordinates: coordinates,
-            name: searchResult.properties?.text
-        }
-    };
+  return {
+    setMarker: {
+      coordinates: coordinates,
+    },
+    zoomToResult: {
+      coordinates: coordinates,
+    },
+    startRouting: {
+      coordinates: coordinates,
+      name: searchResult.properties?.text,
+    },
+  };
 };

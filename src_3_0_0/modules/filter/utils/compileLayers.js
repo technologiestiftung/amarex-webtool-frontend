@@ -7,26 +7,33 @@ import isObject from "../../../shared/js/utils/isObject";
  * @param {Object} FilterApi the api
  * @returns {Object[]} resulting layers to use in Filter
  */
-function compileLayers (originalLayerGroups, originalLayers, FilterApi) {
-    let nextFilterId = 0;
-    const groups = [],
-        nextFilter = {id: nextFilterId, get: () => nextFilterId, inc: () => nextFilterId++},
-        layers = removeInvalidLayers(JSON.parse(JSON.stringify(originalLayers)));
+function compileLayers(originalLayerGroups, originalLayers, FilterApi) {
+  let nextFilterId = 0;
+  const groups = [],
+    nextFilter = {
+      id: nextFilterId,
+      get: () => nextFilterId,
+      inc: () => nextFilterId++,
+    },
+    layers = removeInvalidLayers(JSON.parse(JSON.stringify(originalLayers)));
 
-    originalLayerGroups.forEach(group => {
-        const layersOfGroup = removeInvalidLayers(JSON.parse(JSON.stringify(group.layers)));
+  originalLayerGroups.forEach((group) => {
+    const layersOfGroup = removeInvalidLayers(
+      JSON.parse(JSON.stringify(group.layers)),
+    );
 
-        prepareLayers(layersOfGroup, nextFilter, FilterApi);
-        groups.push({
-            title: group.title,
-            layers: layersOfGroup
-        });
-        nextFilterId = layersOfGroup.length > 0 ?
-            layersOfGroup[layersOfGroup.length - 1].filterId + 1 :
-            nextFilterId + 1;
+    prepareLayers(layersOfGroup, nextFilter, FilterApi);
+    groups.push({
+      title: group.title,
+      layers: layersOfGroup,
     });
-    prepareLayers(layers, nextFilter, FilterApi);
-    return {groups, layers};
+    nextFilterId =
+      layersOfGroup.length > 0
+        ? layersOfGroup[layersOfGroup.length - 1].filterId + 1
+        : nextFilterId + 1;
+  });
+  prepareLayers(layers, nextFilter, FilterApi);
+  return { groups, layers };
 }
 
 /**
@@ -36,11 +43,11 @@ function compileLayers (originalLayerGroups, originalLayers, FilterApi) {
  * @param {Object} FilterApi the api
  * @returns {void}
  */
-function prepareLayers (layers, nextFilterId, FilterApi) {
-    convertStringLayersIntoObjects(layers);
-    addFilterIds(layers, nextFilterId);
-    addSnippetArrayIfMissing(layers);
-    addApi(layers, FilterApi);
+function prepareLayers(layers, nextFilterId, FilterApi) {
+  convertStringLayersIntoObjects(layers);
+  addFilterIds(layers, nextFilterId);
+  addSnippetArrayIfMissing(layers);
+  addApi(layers, FilterApi);
 }
 
 /**
@@ -48,20 +55,20 @@ function prepareLayers (layers, nextFilterId, FilterApi) {
  * @param {Array} layers a list of layers with a potential object string mix
  * @returns {Object[]|String[]} a list of layers with a object and string mix
  */
-function removeInvalidLayers (layers) {
-    if (!Array.isArray(layers)) {
-        return [];
+function removeInvalidLayers(layers) {
+  if (!Array.isArray(layers)) {
+    return [];
+  }
+  const result = [];
+
+  layers.forEach((layer) => {
+    if (!isObject(layer) && typeof layer !== "string") {
+      return;
     }
-    const result = [];
+    result.push(layer);
+  });
 
-    layers.forEach(layer => {
-        if (!isObject(layer) && typeof layer !== "string") {
-            return;
-        }
-        result.push(layer);
-    });
-
-    return result;
+  return result;
 }
 
 /**
@@ -69,14 +76,14 @@ function removeInvalidLayers (layers) {
  * @param {Object[]|String[]} layers a list of layers a with potential object string mix
  * @returns {void}
  */
-function convertStringLayersIntoObjects (layers) {
-    layers.forEach((layer, idx) => {
-        if (typeof layer === "string") {
-            layers[idx] = {
-                layerId: layer
-            };
-        }
-    });
+function convertStringLayersIntoObjects(layers) {
+  layers.forEach((layer, idx) => {
+    if (typeof layer === "string") {
+      layers[idx] = {
+        layerId: layer,
+      };
+    }
+  });
 }
 
 /**
@@ -85,21 +92,21 @@ function convertStringLayersIntoObjects (layers) {
  * @param {Object} [nextFilterId={}] getter, increment and instance for next filter id reference
  * @returns {void}
  */
-function addFilterIds (layers, nextFilterId = {}) {
-    if (typeof nextFilterId.id !== "number") {
-        nextFilterId.id = 0;
-        nextFilterId.inc = () => {
-            nextFilterId.id++;
-        };
-        nextFilterId.get = () => {
-            return nextFilterId.id;
-        };
-    }
+function addFilterIds(layers, nextFilterId = {}) {
+  if (typeof nextFilterId.id !== "number") {
+    nextFilterId.id = 0;
+    nextFilterId.inc = () => {
+      nextFilterId.id++;
+    };
+    nextFilterId.get = () => {
+      return nextFilterId.id;
+    };
+  }
 
-    layers.forEach(layer => {
-        layer.filterId = nextFilterId.get();
-        nextFilterId.inc();
-    });
+  layers.forEach((layer) => {
+    layer.filterId = nextFilterId.get();
+    nextFilterId.inc();
+  });
 }
 
 /**
@@ -107,12 +114,12 @@ function addFilterIds (layers, nextFilterId = {}) {
  * @param {Object[]} layers the list of layers
  * @returns {void}
  */
-function addSnippetArrayIfMissing (layers) {
-    layers.forEach(layer => {
-        if (!Array.isArray(layer.snippets)) {
-            layer.snippets = [];
-        }
-    });
+function addSnippetArrayIfMissing(layers) {
+  layers.forEach((layer) => {
+    if (!Array.isArray(layer.snippets)) {
+      layer.snippets = [];
+    }
+  });
 }
 
 /**
@@ -121,12 +128,12 @@ function addSnippetArrayIfMissing (layers) {
  * @param {Object} FilterApi the api
  * @returns {void}
  */
-function addApi (layers, FilterApi) {
-    layers.forEach(layer => {
-        if (typeof FilterApi !== "undefined") {
-            layer.api = new FilterApi(layer.filterId);
-        }
-    });
+function addApi(layers, FilterApi) {
+  layers.forEach((layer) => {
+    if (typeof FilterApi !== "undefined") {
+      layer.api = new FilterApi(layer.filterId);
+    }
+  });
 }
 
 /**
@@ -135,18 +142,18 @@ function addApi (layers, FilterApi) {
  * @param {Object} assoc the object with filterId as key and the layer as value for recursion
  * @returns {Object} an object with filterId as key and the layer as value
  */
-function createLayerConfigsAssoc (layers, assoc = {}) {
-    layers.forEach(layer => {
-        assoc[layer.filterId] = layer;
-    });
-    return assoc;
+function createLayerConfigsAssoc(layers, assoc = {}) {
+  layers.forEach((layer) => {
+    assoc[layer.filterId] = layer;
+  });
+  return assoc;
 }
 
 export {
-    compileLayers,
-    removeInvalidLayers,
-    convertStringLayersIntoObjects,
-    addFilterIds,
-    addSnippetArrayIfMissing,
-    createLayerConfigsAssoc
+  compileLayers,
+  removeInvalidLayers,
+  convertStringLayersIntoObjects,
+  addFilterIds,
+  addSnippetArrayIfMissing,
+  createLayerConfigsAssoc,
 };

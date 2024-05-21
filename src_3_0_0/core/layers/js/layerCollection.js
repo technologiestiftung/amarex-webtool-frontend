@@ -9,12 +9,12 @@ const layerCollection = [];
  * @param {Layer} layer The layer.
  * @returns {void}
  */
-function addLayer (layer) {
-    layerCollection.push(layer);
+function addLayer(layer) {
+  layerCollection.push(layer);
 
-    if (layer instanceof Layer2d) {
-        store.dispatch("Maps/addLayer", layer.getLayer());
-    }
+  if (layer instanceof Layer2d) {
+    store.dispatch("Maps/addLayer", layer.getLayer());
+  }
 }
 
 /**
@@ -22,47 +22,46 @@ function addLayer (layer) {
  * @param {Layer} layerId The layer Id.
  * @returns {void}
  */
-function removeLayerById (layerId) {
-    const removeLayer = getLayerById(layerId);
+function removeLayerById(layerId) {
+  const removeLayer = getLayerById(layerId);
 
-    if (removeLayer instanceof Layer2d) {
-        mapCollection.getMap("2D")?.removeLayer(removeLayer.layer);
+  if (removeLayer instanceof Layer2d) {
+    mapCollection.getMap("2D")?.removeLayer(removeLayer.layer);
+  }
+  for (let i = 0; i < layerCollection.length; i++) {
+    if (layerCollection[i].attributes?.id === layerId) {
+      layerCollection.splice(i, 1);
     }
-    for (let i = 0; i < layerCollection.length; i++) {
-        if (layerCollection[i].attributes?.id === layerId) {
-            layerCollection.splice(i, 1);
-        }
-    }
+  }
 }
 
 /**
  * Removes all entries from the collection and remove all layers from maps.
  * @returns {void}
  */
-function clear () {
-    layerCollection.forEach(layer => {
-        if (layer instanceof Layer2d) {
-            const olLayer = layer.getLayer();
+function clear() {
+  layerCollection.forEach((layer) => {
+    if (layer instanceof Layer2d) {
+      const olLayer = layer.getLayer();
 
-            olLayer.setVisible(false);
-            mapCollection.getMap("2D")?.removeLayer(olLayer);
-        }
-        else if (layer instanceof Layer3d) {
-            layer.setVisible(false, mapCollection.getMap("3D"), layer.attributes);
-        }
-    });
-
-    while (layerCollection.length > 0) {
-        layerCollection.pop();
+      olLayer.setVisible(false);
+      mapCollection.getMap("2D")?.removeLayer(olLayer);
+    } else if (layer instanceof Layer3d) {
+      layer.setVisible(false, mapCollection.getMap("3D"), layer.attributes);
     }
+  });
+
+  while (layerCollection.length > 0) {
+    layerCollection.pop();
+  }
 }
 
 /**
  * Gets the layerCollection
  * @returns {Layer[]} The layer collection.
  */
-function getLayers () {
-    return layerCollection;
+function getLayers() {
+  return layerCollection;
 }
 
 /**
@@ -70,8 +69,8 @@ function getLayers () {
  * @param {String} id The layer id.
  * @returns {Layer} The layer.
  */
-function getLayerById (id) {
-    return layerCollection.find(layer => layer.attributes.id === id);
+function getLayerById(id) {
+  return layerCollection.find((layer) => layer.attributes.id === id);
 }
 
 /**
@@ -79,23 +78,23 @@ function getLayerById (id) {
  * @param {String} id The layer id.
  * @returns {Layer} The layer.
  */
-function getOlLayers () {
-    const olLayers = [];
+function getOlLayers() {
+  const olLayers = [];
 
-    layerCollection.forEach(layer => {
-        if (layer.getLayer().get("visible")) {
-            olLayers.push(layer.getLayer());
-        }
-    });
+  layerCollection.forEach((layer) => {
+    if (layer.getLayer().get("visible")) {
+      olLayers.push(layer.getLayer());
+    }
+  });
 
-    return olLayers;
+  return olLayers;
 }
 
 export default {
-    addLayer,
-    removeLayerById,
-    clear,
-    getLayers,
-    getLayerById,
-    getOlLayers
+  addLayer,
+  removeLayerById,
+  clear,
+  getLayers,
+  getLayerById,
+  getOlLayers,
 };

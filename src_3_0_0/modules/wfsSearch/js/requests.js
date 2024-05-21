@@ -1,9 +1,9 @@
 import axios from "axios";
 import Feature from "ol/Feature";
-import {Point, Polygon} from "ol/geom";
+import { Point, Polygon } from "ol/geom";
 import WFS from "ol/format/WFS";
 import handleAxiosResponse from "../../../shared/js/utils/handleAxiosResponse";
-import {buildFilter, buildStoredFilter} from "./buildFilter";
+import { buildFilter, buildStoredFilter } from "./buildFilter";
 
 /**
  * Makes sure that the filter is ready to be used.
@@ -12,15 +12,15 @@ import {buildFilter, buildStoredFilter} from "./buildFilter";
  * @param {(XML | XML[])} filter The filter to be adjusted.
  * @returns {String} The adjusted Filter.
  */
-function adjustFilter (filter) {
-    if (Array.isArray(filter)) {
-        if (filter.length === 0) {
-            return "";
-        }
-        return filter.length > 1 ? `<And>${filter.join("")}</And>` : filter[0];
+function adjustFilter(filter) {
+  if (Array.isArray(filter)) {
+    if (filter.length === 0) {
+      return "";
     }
+    return filter.length > 1 ? `<And>${filter.join("")}</And>` : filter[0];
+  }
 
-    return filter;
+  return filter;
 }
 
 /**
@@ -31,52 +31,60 @@ function adjustFilter (filter) {
  * @param {String} memberSuffix The suffix of the feature in the FeatureCollection.
  * @returns {module:ol/Feature[]} Array of Features returned from the service.
  */
-function parseGazetteerResponse (responseData, namespaces, memberSuffix) {
-    const attributes = {},
-        features = [],
-        namespaceArray = Array.isArray(namespaces) ? namespaces : [namespaces],
-        gmlFeatures = new DOMParser().parseFromString(responseData, "application/xml").getElementsByTagName(`wfs:${memberSuffix}`);
+function parseGazetteerResponse(responseData, namespaces, memberSuffix) {
+  const attributes = {},
+    features = [],
+    namespaceArray = Array.isArray(namespaces) ? namespaces : [namespaces],
+    gmlFeatures = new DOMParser()
+      .parseFromString(responseData, "application/xml")
+      .getElementsByTagName(`wfs:${memberSuffix}`);
 
-    if (gmlFeatures.length === 0) {
-        return features;
+  if (gmlFeatures.length === 0) {
+    return features;
+  }
+
+  Array.from(gmlFeatures).forEach((feature) => {
+    // read attributes by all configured namespaces
+    namespaceArray
+      .map((namespace) => feature.getElementsByTagNameNS(namespace, "*"))
+      .map((htmlCollection) => Object.values(htmlCollection))
+      .flat(1)
+      .forEach((attribute) => {
+        attributes[attribute.localName] = attribute.textContent;
+      });
+
+    if (feature.getElementsByTagName("iso19112:position").length > 0) {
+      attributes.geometry = new Point(
+        feature
+          .getElementsByTagName("iso19112:position")[0]
+          .getElementsByTagName("gml:pos")[0]
+          .textContent.split(" ")
+          .map((coordinate) => parseFloat(coordinate)),
+      );
     }
 
-    Array.from(gmlFeatures).forEach(feature => {
-        // read attributes by all configured namespaces
-        namespaceArray
-            .map(namespace => feature.getElementsByTagNameNS(namespace, "*"))
-            .map(htmlCollection => Object.values(htmlCollection))
-            .flat(1)
-            .forEach(attribute => {
-                attributes[attribute.localName] = attribute.textContent;
-            });
+    if (feature.getElementsByTagName("iso19112:geographicExtent").length > 0) {
+      // Reads the coordinates from the response and prepares them to a readable format for the OL Polygon.
+      attributes.geographicExtent = new Polygon([
+        feature
+          .getElementsByTagName("iso19112:geographicExtent")[0]
+          .getElementsByTagName("gml:posList")[0]
+          .textContent.split(" ")
+          .map((coordinate) => parseFloat(coordinate))
+          .reduce(
+            (accumulator, _, index, array) =>
+              index % 2 === 0
+                ? [...accumulator, [array[index], array[index + 1]]]
+                : accumulator,
+            [],
+          ),
+      ]);
+    }
 
-        if (feature.getElementsByTagName("iso19112:position").length > 0) {
-            attributes.geometry = new Point(
-                feature.getElementsByTagName("iso19112:position")[0].getElementsByTagName("gml:pos")[0]
-                    .textContent.split(" ")
-                    .map(coordinate => parseFloat(coordinate))
-            );
-        }
+    features.push(new Feature(attributes));
+  });
 
-        if (feature.getElementsByTagName("iso19112:geographicExtent").length > 0) {
-            // Reads the coordinates from the response and prepares them to a readable format for the OL Polygon.
-            attributes.geographicExtent = new Polygon([
-                feature
-                    .getElementsByTagName("iso19112:geographicExtent")[0]
-                    .getElementsByTagName("gml:posList")[0]
-                    .textContent.split(" ")
-                    .map(coordinate => parseFloat(coordinate))
-                    .reduce((accumulator, _, index, array) => index % 2 === 0
-                        ? [...accumulator, [array[index], array[index + 1]]]
-                        : accumulator, [])
-            ]);
-        }
-
-        features.push(new Feature(attributes));
-    });
-
-    return features;
+  return features;
 }
 
 /**
@@ -86,21 +94,21 @@ function parseGazetteerResponse (responseData, namespaces, memberSuffix) {
  * @param {String} storedQueryId The Id of the stored Query of the service.
  * @returns {String} The added parts for the request url.
  */
-function storedFilter (requestUrl, filter, storedQueryId) {
-    requestUrl.searchParams.set("version", "2.0.0");
-    if (filter !== "") {
-        const filterSplitted = filter.split("&");
+function storedFilter(requestUrl, filter, storedQueryId) {
+  requestUrl.searchParams.set("version", "2.0.0");
+  if (filter !== "") {
+    const filterSplitted = filter.split("&");
 
-        requestUrl.searchParams.set("StoredQuery_ID", storedQueryId);
-        filterSplitted.forEach(param => {
-            if (param) {
-                const split = param.split("=");
+    requestUrl.searchParams.set("StoredQuery_ID", storedQueryId);
+    filterSplitted.forEach((param) => {
+      if (param) {
+        const split = param.split("=");
 
-                requestUrl.searchParams.set(split[0], split[1]);
-            }
-        });
-    }
-    return requestUrl;
+        requestUrl.searchParams.set(split[0], split[1]);
+      }
+    });
+  }
+  return requestUrl;
 }
 
 /**
@@ -109,12 +117,12 @@ function storedFilter (requestUrl, filter, storedQueryId) {
  * @param {XML[]} filter The filter written in XML.
  * @returns {String} The added parts for the request Url.
  */
-function xmlFilter (requestUrl, filter) {
-    const value = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">${adjustFilter(filter)}</ogc:Filter>`;
+function xmlFilter(requestUrl, filter) {
+  const value = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">${adjustFilter(filter)}</ogc:Filter>`;
 
-    requestUrl.searchParams.set("version", "1.1.0");
-    requestUrl.searchParams.set("filter", value);
-    return requestUrl;
+  requestUrl.searchParams.set("version", "1.1.0");
+  requestUrl.searchParams.set("filter", value);
+  return requestUrl;
 }
 
 let currentRequest = null;
@@ -136,25 +144,48 @@ let currentRequest = null;
  * @param {?String} [featureType = null] FeatureType of the features which should be requested. Only given for queries for suggestions.
  * @returns {Promise} If the send request was successful, the found features are converted from XML to OL Features and returned.
  */
-function searchFeatures (store, {literals, requestConfig: {gazetteer = null, layerId, maxFeatures, storedQueryId}}, service, singleValueFilter = null, featureType = null) {
-    const fromServicesJson = Boolean(layerId);
-    let filter;
+function searchFeatures(
+  store,
+  {
+    literals,
+    requestConfig: { gazetteer = null, layerId, maxFeatures, storedQueryId },
+  },
+  service,
+  singleValueFilter = null,
+  featureType = null,
+) {
+  const fromServicesJson = Boolean(layerId);
+  let filter;
 
-    if (singleValueFilter) {
-        filter = singleValueFilter;
-    }
-    else {
-        filter = storedQueryId ? buildStoredFilter(literals) : buildFilter(literals);
-    }
+  if (singleValueFilter) {
+    filter = singleValueFilter;
+  } else {
+    filter = storedQueryId
+      ? buildStoredFilter(literals)
+      : buildFilter(literals);
+  }
 
-    return sendRequest(store, service, filter, fromServicesJson, storedQueryId, maxFeatures, featureType)
-        .then(data => {
-            // NOTE: This extra case can be removed when OL can parse WFS-G services with the WFS.readFeatures function.
-            if (gazetteer) {
-                return parseGazetteerResponse(data, gazetteer.namespaces, gazetteer.memberSuffix);
-            }
-            return new WFS({version: storedQueryId ? "2.0.0" : "1.1.0"}).readFeatures(data);
-        });
+  return sendRequest(
+    store,
+    service,
+    filter,
+    fromServicesJson,
+    storedQueryId,
+    maxFeatures,
+    featureType,
+  ).then((data) => {
+    // NOTE: This extra case can be removed when OL can parse WFS-G services with the WFS.readFeatures function.
+    if (gazetteer) {
+      return parseGazetteerResponse(
+        data,
+        gazetteer.namespaces,
+        gazetteer.memberSuffix,
+      );
+    }
+    return new WFS({ version: storedQueryId ? "2.0.0" : "1.1.0" }).readFeatures(
+      data,
+    );
+  });
 }
 
 /**
@@ -168,24 +199,34 @@ function searchFeatures (store, {literals, requestConfig: {gazetteer = null, lay
  * @param {?String} [featureType = null] FeatureType of the features which should be requested. Only given for queries for suggestions.
  * @returns {Object} the created Url
  */
-function createUrl (urlString, typeName, filter, fromServicesJson, storedQueryId, maxFeatures, featureType) {
-    let requestUrl = new URL(urlString);
+function createUrl(
+  urlString,
+  typeName,
+  filter,
+  fromServicesJson,
+  storedQueryId,
+  maxFeatures,
+  featureType,
+) {
+  let requestUrl = new URL(urlString);
 
-    if (fromServicesJson) {
-        requestUrl.searchParams.set("service", "WFS");
-        requestUrl.searchParams.set("request", "GetFeature");
-        requestUrl.searchParams.set("typeName", featureType ? featureType : typeName);
-    }
-    if (maxFeatures !== "showAll") {
-        requestUrl.searchParams.set("maxFeatures", maxFeatures);
-    }
-    if (storedQueryId) {
-        requestUrl = storedFilter(requestUrl, filter, storedQueryId);
-    }
-    else {
-        requestUrl = xmlFilter(requestUrl, filter);
-    }
-    return requestUrl;
+  if (fromServicesJson) {
+    requestUrl.searchParams.set("service", "WFS");
+    requestUrl.searchParams.set("request", "GetFeature");
+    requestUrl.searchParams.set(
+      "typeName",
+      featureType ? featureType : typeName,
+    );
+  }
+  if (maxFeatures !== "showAll") {
+    requestUrl.searchParams.set("maxFeatures", maxFeatures);
+  }
+  if (storedQueryId) {
+    requestUrl = storedFilter(requestUrl, filter, storedQueryId);
+  } else {
+    requestUrl = xmlFilter(requestUrl, filter);
+  }
+  return requestUrl;
 }
 
 /**
@@ -203,20 +244,44 @@ function createUrl (urlString, typeName, filter, fromServicesJson, storedQueryId
  * @returns {Promise} If the request was successful, the data of the response gets resolved.
  *                    If an error occurs (e.g. the service is not reachable or there was no such feature) the error is caught and the message is displayed as an alert.
  */
-function sendRequest (store, {url, typeName}, filter, fromServicesJson, storedQueryId, maxFeatures = 8, featureType = null) {
-    const requestUrl = createUrl(url, typeName, filter, fromServicesJson, storedQueryId, maxFeatures, featureType);
+function sendRequest(
+  store,
+  { url, typeName },
+  filter,
+  fromServicesJson,
+  storedQueryId,
+  maxFeatures = 8,
+  featureType = null,
+) {
+  const requestUrl = createUrl(
+    url,
+    typeName,
+    filter,
+    fromServicesJson,
+    storedQueryId,
+    maxFeatures,
+    featureType,
+  );
 
-    if (currentRequest) {
-        currentRequest.cancel();
-    }
-    currentRequest = axios.CancelToken.source();
+  if (currentRequest) {
+    currentRequest.cancel();
+  }
+  currentRequest = axios.CancelToken.source();
 
-    return axios.get(decodeURI(requestUrl))
-        .then(response => handleAxiosResponse(response, "WfsSearch, searchFeatures, sendRequest"))
-        .catch(error => store.dispatch("Alerting/addSingleAlert", i18next.t("common:modules.wfsSearch.searchError", {error})));
+  return axios
+    .get(decodeURI(requestUrl))
+    .then((response) =>
+      handleAxiosResponse(response, "WfsSearch, searchFeatures, sendRequest"),
+    )
+    .catch((error) =>
+      store.dispatch(
+        "Alerting/addSingleAlert",
+        i18next.t("common:modules.wfsSearch.searchError", { error }),
+      ),
+    );
 }
 
 export default {
-    createUrl,
-    searchFeatures
+  createUrl,
+  searchFeatures,
 };

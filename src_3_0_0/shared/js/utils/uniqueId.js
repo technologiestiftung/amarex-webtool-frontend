@@ -5,28 +5,28 @@ let idCounter = 1;
  * @param {String} [prefix=""] prefix for the id
  * @returns {String}  a globally-unique id
  */
-function uniqueId (prefix) {
-    const localIdCounter = String(getIdCounter());
+function uniqueId(prefix) {
+  const localIdCounter = String(getIdCounter());
 
-    incIdCounter();
+  incIdCounter();
 
-    return prefix ? prefix + localIdCounter : localIdCounter;
+  return prefix ? prefix + localIdCounter : localIdCounter;
 }
 
 /**
  * gets the current idCounter
  * @returns {Integer}  the current idCounter
  */
-function getIdCounter () {
-    return idCounter;
+function getIdCounter() {
+  return idCounter;
 }
 
 /**
  * Resets the idCounter back to 1.
  * @returns {void}
  */
-function reset () {
-    idCounter = 1;
+function reset() {
+  idCounter = 1;
 }
 
 /**
@@ -34,11 +34,11 @@ function reset () {
  * @post the static idCounter (Util.idCounter) is incremented by 1
  * @returns {void}
  */
-function incIdCounter () {
-    idCounter++;
+function incIdCounter() {
+  idCounter++;
 }
 
 module.exports = {
-    uniqueId,
-    reset
+  uniqueId,
+  reset,
 };

@@ -4,9 +4,9 @@ import getters from "./gettersBaselayerSwitcher";
 import actions from "./actionsBaselayerSwitcher";
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    getters,
-    actions
+  namespaced: true,
+  state,
+  mutations,
+  getters,
+  actions,
 };

@@ -9,18 +9,18 @@
  * @param  {Object[]} [dataPerHour=[]] Data for every day, according to targetresult.
  * @returns {Object[]} The data per hour.
  */
-export function arrayPerHour (position, dataPerHour = []) {
-    const perHour = [];
+export function arrayPerHour(position, dataPerHour = []) {
+  const perHour = [];
 
-    dataPerHour.forEach(day => {
-        const positionData = parseFloat(day[position], 10);
+  dataPerHour.forEach((day) => {
+    const positionData = parseFloat(day[position], 10);
 
-        if (positionData !== undefined && !isNaN(positionData)) {
-            perHour.push(positionData);
-        }
-    });
+    if (positionData !== undefined && !isNaN(positionData)) {
+      perHour.push(positionData);
+    }
+  });
 
-    return perHour;
+  return perHour;
 }
 
 /**
@@ -28,34 +28,34 @@ export function arrayPerHour (position, dataPerHour = []) {
  * @param  {Object[]} [dataPerHour=[]] Data for every day, according to targetresult.
  * @returns {Object[]} the day means.
  */
-export function calculateArithmeticMean (dataPerHour = []) {
-    const dayMeans = [];
+export function calculateArithmeticMean(dataPerHour = []) {
+  const dayMeans = [];
 
-    for (let i = 0; i < 24; i++) {
-        let result = 0,
-            perHour = arrayPerHour(i, dataPerHour);
+  for (let i = 0; i < 24; i++) {
+    let result = 0,
+      perHour = arrayPerHour(i, dataPerHour);
 
-        if (perHour.length === 0) {
-            dayMeans.push({
-                hour: i,
-                result: 0
-            });
-            continue;
-        }
-
-        perHour = perHour.filter(value => value !== undefined);
-        result = perHour.reduce((memo, value) => memo + value) / perHour.length;
-        if (isNaN(result)) {
-            result = 0;
-        }
-
-        dayMeans.push({
-            hour: i,
-            result: Math.round(result * 1000) / 1000
-        });
+    if (perHour.length === 0) {
+      dayMeans.push({
+        hour: i,
+        result: 0,
+      });
+      continue;
     }
 
-    return dayMeans;
+    perHour = perHour.filter((value) => value !== undefined);
+    result = perHour.reduce((memo, value) => memo + value) / perHour.length;
+    if (isNaN(result)) {
+      result = 0;
+    }
+
+    dayMeans.push({
+      hour: i,
+      result: Math.round(result * 1000) / 1000,
+    });
+  }
+
+  return dayMeans;
 }
 
-export default {arrayPerHour, calculateArithmeticMean};
+export default { arrayPerHour, calculateArithmeticMean };

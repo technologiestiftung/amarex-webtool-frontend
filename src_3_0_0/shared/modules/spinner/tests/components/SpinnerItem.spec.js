@@ -1,16 +1,15 @@
-import {config, mount} from "@vue/test-utils";
-import {expect} from "chai";
+import { config, mount } from "@vue/test-utils";
+import { expect } from "chai";
 import SpinnerItem from "../../components/SpinnerItem.vue";
 
-config.global.mocks.$t = key => key;
+config.global.mocks.$t = (key) => key;
 
 describe("src_3_0_0/shared/components/SpinnerItem.vue", () => {
+  it("should render a spinner", async () => {
+    const wrapper = mount(SpinnerItem, {}),
+      spinner = wrapper.find(".spinner-border");
 
-    it("should render a spinner", async () => {
-        const wrapper = mount(SpinnerItem, {}),
-            spinner = wrapper.find(".spinner-border");
-
-        expect(spinner.exists()).to.be.true;
-        expect(spinner.attributes("role")).to.equal("status");
-    });
+    expect(spinner.exists()).to.be.true;
+    expect(spinner.attributes("role")).to.equal("status");
+  });
 });

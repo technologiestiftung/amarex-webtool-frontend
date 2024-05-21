@@ -4,9 +4,9 @@ import getters from "./gettersIsochrones";
 import state from "./stateIsochrones";
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters,
 };
