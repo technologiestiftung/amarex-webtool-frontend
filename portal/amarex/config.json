@@ -58,7 +58,7 @@
             "resolution": 0.14,
             "scale": 500,
             "zoomLevel": 8
-          }
+          },
           {
             "resolution": 52.9,
             "scale": 200000,
@@ -106,73 +106,70 @@
           }
         ]
       }
-      }
-    },
-    "portalFooter": {
-      "urls": []
-      "urls": []
-    },
-    "tree": {
-      "addLayerButton": {
-        "active": false,
-        "searchBar": {
-          "active": true,
-          "searchInterfaceInstanceId": "elasticSearch_0",
-          "searchCategory": "Thema (externe Fachdaten)"
-        }
-      },
-      "highlightedFeatures": {
-        "active": true
-      }
-    },
-    "mainMenu": {
-      "expanded": true,
-      "title": {
-        "text": "",
-        "logo": "./resources/img/amarex_logo.png",
-        "link": "https://www.amarex-projekt.de/de",
-        "toolTip": "Anpassung des Managements von Regenwasser an Extremereignisse"
-      },
-      "searchBar": {
-        "searchInterfaces": [
-          {
-            "type": "komootPhoton",
-            "minChars": 3,
-            "serviceId": "11",
-            "limit": 10,
-            "lang": "de",
-            "lat": 52.52,
-            "lon": 13.405,
-            "bbox": "13.0883,52.3382,13.7611,52.6755"
-          },
-          {
-            "type": "visibleVector",
-            "resultEvents": {
-              "onHover": ["setMarker"]
-            }
-          },
-          {
-            "type": "topicTree",
-            "hitTemplate": "layer"
-          }
-        ]
-      },
-      "sections": [[]]
-    },
-    "secondaryMenu": {
-      "expanded": false,
-      "sections": [
-        [
-          {
-          {
-            "type": "abimo"
-          },
-          {
-            "type": "selectFeatures"
-          }
-        ]
-      ]
     }
+  },
+  "portalFooter": {
+    "urls": []
+  },
+  "tree": {
+    "addLayerButton": {
+      "active": false,
+      "searchBar": {
+        "active": true,
+        "searchInterfaceInstanceId": "elasticSearch_0",
+        "searchCategory": "Thema (externe Fachdaten)"
+      }
+    },
+    "highlightedFeatures": {
+      "active": true
+    }
+  },
+  "mainMenu": {
+    "expanded": true,
+    "title": {
+      "text": "",
+      "logo": "./resources/img/amarex_logo.png",
+      "link": "https://www.amarex-projekt.de/de",
+      "toolTip": "Anpassung des Managements von Regenwasser an Extremereignisse"
+    },
+    "searchBar": {
+      "searchInterfaces": [
+        {
+          "type": "komootPhoton",
+          "minChars": 3,
+          "serviceId": "11",
+          "limit": 10,
+          "lang": "de",
+          "lat": 52.52,
+          "lon": 13.405,
+          "bbox": "13.0883,52.3382,13.7611,52.6755"
+        },
+        {
+          "type": "visibleVector",
+          "resultEvents": {
+            "onHover": ["setMarker"]
+          }
+        },
+        {
+          "type": "topicTree",
+          "hitTemplate": "layer"
+        }
+      ]
+    },
+    "sections": [[]]
+  },
+  "secondaryMenu": {
+    "expanded": false,
+    "sections": [
+      [
+        {
+          "type": "abimo"
+        },
+        {
+          "type": "selectFeatures"
+        }
+      ]
+    ]
   },
   "layerConfig": {
     "baselayer": {
@@ -180,7 +177,6 @@
         {
           "id": "hintergrund_default_grau",
           "visibility": true
-        }
         }
       ]
     },
