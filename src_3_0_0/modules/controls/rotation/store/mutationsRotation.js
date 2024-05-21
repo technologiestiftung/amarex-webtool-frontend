@@ -1,4 +1,4 @@
-import {generateSimpleMutations} from "../../../../shared/js/utils/generators";
+import { generateSimpleMutations } from "../../../../shared/js/utils/generators";
 import stateRotation from "./stateRotation";
 
 /**
@@ -6,5 +6,5 @@ import stateRotation from "./stateRotation";
  * @module modules/controls/rotation/store/mutationsRotation
  */
 export default {
-    ...generateSimpleMutations(stateRotation)
+  ...generateSimpleMutations(stateRotation),
 };

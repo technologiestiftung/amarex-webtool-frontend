@@ -11,13 +11,13 @@
  *
  */
 const state = {
-    currentLocale: "",
-    description: "common:modules.language.description",
-    type: "language",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
-    icon: "bi-flag",
-    name: "common:modules.language.name"
+  currentLocale: "",
+  description: "common:modules.language.description",
+  type: "language",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
+  icon: "bi-flag",
+  name: "common:modules.language.name",
 };
 
 export default state;

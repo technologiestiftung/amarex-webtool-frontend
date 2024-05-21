@@ -11,21 +11,29 @@ import changeCase from "../../../shared/js/utils/changeCase";
  * @param {String} configThemeWithSuffix The configured theme with suffix 'theme'.
  * @returns {String} The theme name.
  */
-function getAddonTheme (addonThemes, configTheme, configThemeWithSuffix) {
-    let theme;
+function getAddonTheme(addonThemes, configTheme, configThemeWithSuffix) {
+  let theme;
 
-    if (addonThemes.includes(configTheme)) {
-        theme = configTheme;
-    }
-    else if (addonThemes.map(addon => addon.slice(-5) === "Theme" ? addon : `${addon}Theme`).includes(configThemeWithSuffix)) {
-        theme = configThemeWithSuffix;
-    }
-    else {
-        console.warn(String("The gfi theme '" + configTheme + "' could not be found, the default theme will be used. Please check your configuration!"));
-        theme = "DefaultTheme";
-    }
+  if (addonThemes.includes(configTheme)) {
+    theme = configTheme;
+  } else if (
+    addonThemes
+      .map((addon) => (addon.slice(-5) === "Theme" ? addon : `${addon}Theme`))
+      .includes(configThemeWithSuffix)
+  ) {
+    theme = configThemeWithSuffix;
+  } else {
+    console.warn(
+      String(
+        "The gfi theme '" +
+          configTheme +
+          "' could not be found, the default theme will be used. Please check your configuration!",
+      ),
+    );
+    theme = "DefaultTheme";
+  }
 
-    return theme;
+  return theme;
 }
 
 /**
@@ -36,24 +44,37 @@ function getAddonTheme (addonThemes, configTheme, configThemeWithSuffix) {
  * @param {String[]} addonThemes list of names of themes defined in addons
  * @returns {String} the name of the gfi Theme
  */
-function getTheme (themeFromFeature, components, addonThemes) {
-    const gfiComponents = Object.keys(components),
-        configTheme = changeCase.upperFirst(themeFromFeature && typeof themeFromFeature === "object" ? themeFromFeature.name : themeFromFeature),
-        configThemeWithSuffix = configTheme.slice(-5) === "Theme" ? configTheme : `${configTheme}Theme`;
-    let theme = "";
+function getTheme(themeFromFeature, components, addonThemes) {
+  const gfiComponents = Object.keys(components),
+    configTheme = changeCase.upperFirst(
+      themeFromFeature && typeof themeFromFeature === "object"
+        ? themeFromFeature.name
+        : themeFromFeature,
+    ),
+    configThemeWithSuffix =
+      configTheme.slice(-5) === "Theme" ? configTheme : `${configTheme}Theme`;
+  let theme = "";
 
-    if (gfiComponents && gfiComponents.length && gfiComponents.includes(configThemeWithSuffix)) {
-        theme = configThemeWithSuffix;
-    }
-    else if (addonThemes) {
-        theme = getAddonTheme(addonThemes, configTheme, configThemeWithSuffix);
-    }
-    else {
-        console.warn(String("The gfi theme '" + configTheme + "' could not be found, the default theme will be used. Please check your configuration!"));
-        theme = "DefaultTheme";
-    }
+  if (
+    gfiComponents &&
+    gfiComponents.length &&
+    gfiComponents.includes(configThemeWithSuffix)
+  ) {
+    theme = configThemeWithSuffix;
+  } else if (addonThemes) {
+    theme = getAddonTheme(addonThemes, configTheme, configThemeWithSuffix);
+  } else {
+    console.warn(
+      String(
+        "The gfi theme '" +
+          configTheme +
+          "' could not be found, the default theme will be used. Please check your configuration!",
+      ),
+    );
+    theme = "DefaultTheme";
+  }
 
-    return theme;
+  return theme;
 }
 
 export default getTheme;

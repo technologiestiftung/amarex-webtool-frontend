@@ -10,13 +10,13 @@
  */
 
 const state = {
-    configPaths: ["portalConfig.map.layerPills"],
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
-    visibleSubjectDataLayers: [],
-    active: false,
-    mobileOnly: false,
-    type: "layerPills"
+  configPaths: ["portalConfig.map.layerPills"],
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
+  visibleSubjectDataLayers: [],
+  active: false,
+  mobileOnly: false,
+  type: "layerPills",
 };
 
 export default state;

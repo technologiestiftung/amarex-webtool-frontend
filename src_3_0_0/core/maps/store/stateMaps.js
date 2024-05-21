@@ -22,30 +22,30 @@
  * @property {Number[]} scales Available scales of the map.
  * @property {Number} size Current size in pixels of the map in the DOM.
  * @property {Number} zoom Current zoom level of the map view.
-*/
+ */
 
 const state = {
-    center: null,
-    clickCoordinate: null,
-    clickPixel: null,
-    extent: null,
-    highlightedFeatures: [],
-    highlightedFeatureStyles: [],
-    initialCenter: null,
-    initialRotation: null,
-    initialZoom: null,
-    maxZoom: null,
-    minZoom: null,
-    mode: "2D",
-    mouseCoordinate: null,
-    projection: null,
-    resolution: null,
-    resolutions: null,
-    rotation: null,
-    scale: null,
-    scales: null,
-    size: null,
-    zoom: null
+  center: null,
+  clickCoordinate: null,
+  clickPixel: null,
+  extent: null,
+  highlightedFeatures: [],
+  highlightedFeatureStyles: [],
+  initialCenter: null,
+  initialRotation: null,
+  initialZoom: null,
+  maxZoom: null,
+  minZoom: null,
+  mode: "2D",
+  mouseCoordinate: null,
+  projection: null,
+  resolution: null,
+  resolutions: null,
+  rotation: null,
+  scale: null,
+  scales: null,
+  size: null,
+  zoom: null,
 };
 
 export default state;

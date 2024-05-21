@@ -21,41 +21,41 @@
  * @property {String} secondaryMenu.currentComponent The current Component shown in secondaryMenu Body Section.
  */
 export default {
-    currentMouseMapInteractionsComponent: "getFeatureInfo",
-    defaultComponent: "getFeatureInfo",
-    customMenuElementIcon: "bi-asterisk",
-    mainMenu: {
-        configPaths: ["portalConfig.mainMenu.sections"],
-        expanded: false,
-        width: "25%",
-        currentComponent: "root",
-        title: null,
-        toggleButtonIcon: "bi-list",
-        sections: [[]],
-        showDescription: false,
-        navigation: {
-            currentComponent: {
-                type: "root",
-                props: []
-            },
-            history: []
-        }
+  currentMouseMapInteractionsComponent: "getFeatureInfo",
+  defaultComponent: "getFeatureInfo",
+  customMenuElementIcon: "bi-asterisk",
+  mainMenu: {
+    configPaths: ["portalConfig.mainMenu.sections"],
+    expanded: false,
+    width: "25%",
+    currentComponent: "root",
+    title: null,
+    toggleButtonIcon: "bi-list",
+    sections: [[]],
+    showDescription: false,
+    navigation: {
+      currentComponent: {
+        type: "root",
+        props: [],
+      },
+      history: [],
     },
-    secondaryMenu: {
-        configPaths: ["portalConfig.secondaryMenu.sections"],
-        expanded: false,
-        width: "25%",
-        currentComponent: "root",
-        sections: [[]],
-        showDescription: true,
-        title: null,
-        toggleButtonIcon: "bi-tools",
-        navigation: {
-            currentComponent: {
-                type: "root",
-                props: []
-            },
-            history: []
-        }
-    }
+  },
+  secondaryMenu: {
+    configPaths: ["portalConfig.secondaryMenu.sections"],
+    expanded: false,
+    width: "25%",
+    currentComponent: "root",
+    sections: [[]],
+    showDescription: true,
+    title: null,
+    toggleButtonIcon: "bi-tools",
+    navigation: {
+      currentComponent: {
+        type: "root",
+        props: [],
+      },
+      history: [],
+    },
+  },
 };

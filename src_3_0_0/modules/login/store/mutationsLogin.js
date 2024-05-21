@@ -1,4 +1,4 @@
-import {generateSimpleMutations} from "../../../shared/js/utils/generators";
+import { generateSimpleMutations } from "../../../shared/js/utils/generators";
 import initialState from "./stateLogin";
 
 /**
@@ -6,7 +6,7 @@ import initialState from "./stateLogin";
  * @module modules/login/store/mutationsLogin
  */
 const mutations = {
-    ...generateSimpleMutations(initialState)
+  ...generateSimpleMutations(initialState),
 };
 
 export default mutations;

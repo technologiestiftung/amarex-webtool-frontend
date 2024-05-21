@@ -1,5 +1,5 @@
 import axios from "axios";
-import {RoutingGeosearchResult} from "../classes/routing-geosearch-result";
+import { RoutingGeosearchResult } from "../classes/routing-geosearch-result";
 import state from "../../store/stateRouting";
 import store from "../../../../app-store";
 import crs from "@masterportal/masterportalapi/src/crs";
@@ -9,21 +9,29 @@ import crs from "@masterportal/masterportalapi/src/crs";
  * @param {String} search text to search with
  * @returns {RoutingGeosearchResult[]} routingGeosearchResults
  */
-async function fetchRoutingKomootGeosearch (search) {
-    const map = mapCollection.getMap("2D"),
-        mapBboxLng = crs.transformFromMapProjection(map, "EPSG:4326", [store.getters["Maps/extent"][0], store.getters["Maps/extent"][1]]),
-        mapBboxLat = crs.transformFromMapProjection(map, "EPSG:4326", [store.getters["Maps/extent"][2], store.getters["Maps/extent"][3]]),
-        mapBbox = mapBboxLng.concat(mapBboxLat),
-        url = getRoutingKomootGeosearchUrl(mapBbox, search),
-        response = await axios.get(url);
+async function fetchRoutingKomootGeosearch(search) {
+  const map = mapCollection.getMap("2D"),
+    mapBboxLng = crs.transformFromMapProjection(map, "EPSG:4326", [
+      store.getters["Maps/extent"][0],
+      store.getters["Maps/extent"][1],
+    ]),
+    mapBboxLat = crs.transformFromMapProjection(map, "EPSG:4326", [
+      store.getters["Maps/extent"][2],
+      store.getters["Maps/extent"][3],
+    ]),
+    mapBbox = mapBboxLng.concat(mapBboxLat),
+    url = getRoutingKomootGeosearchUrl(mapBbox, search),
+    response = await axios.get(url);
 
-    if (response.status !== 200 && !response.data.success) {
-        throw new Error({
-            status: response.status,
-            message: response.statusText
-        });
-    }
-    return response.data.features.map(d => parseRoutingKomootGeosearchResult(d));
+  if (response.status !== 200 && !response.data.success) {
+    throw new Error({
+      status: response.status,
+      message: response.statusText,
+    });
+  }
+  return response.data.features.map((d) =>
+    parseRoutingKomootGeosearchResult(d),
+  );
 }
 
 /**
@@ -32,17 +40,19 @@ async function fetchRoutingKomootGeosearch (search) {
  * @param {String} search the string to search for
  * @returns {String} the url
  */
-function getRoutingKomootGeosearchUrl (mapBbox, search) {
-    const serviceUrl = store.getters.restServiceById(state.geosearch.serviceId).url,
-        url = new URL(serviceUrl);
+function getRoutingKomootGeosearchUrl(mapBbox, search) {
+  const serviceUrl = store.getters.restServiceById(
+      state.geosearch.serviceId,
+    ).url,
+    url = new URL(serviceUrl);
 
-    url.searchParams.set("lang", "de");
-    url.searchParams.set("lon", "10");
-    url.searchParams.set("lat", "53.6");
-    url.searchParams.set("bbox", mapBbox);
-    url.searchParams.set("limit", state.geosearch.limit);
-    url.searchParams.set("q", encodeURIComponent(search));
-    return url;
+  url.searchParams.set("lang", "de");
+  url.searchParams.set("lon", "10");
+  url.searchParams.set("lat", "53.6");
+  url.searchParams.set("bbox", mapBbox);
+  url.searchParams.set("limit", state.geosearch.limit);
+  url.searchParams.set("q", encodeURIComponent(search));
+  return url;
 }
 
 /**
@@ -50,18 +60,18 @@ function getRoutingKomootGeosearchUrl (mapBbox, search) {
  * @param {Array} coordinates to search at
  * @returns {RoutingGeosearchResult} routingGeosearchResult
  */
-async function fetchRoutingKomootGeosearchReverse (coordinates) {
-    const url = getRoutingKomootGeosearchReverseUrl(coordinates),
-        response = await axios.get(url);
+async function fetchRoutingKomootGeosearchReverse(coordinates) {
+  const url = getRoutingKomootGeosearchReverseUrl(coordinates),
+    response = await axios.get(url);
 
-    if (response.status !== 200 && !response.data.success) {
-        throw new Error({
-            status: response.status,
-            message: response.statusText
-        });
-    }
+  if (response.status !== 200 && !response.data.success) {
+    throw new Error({
+      status: response.status,
+      message: response.statusText,
+    });
+  }
 
-    return parseRoutingKomootGeosearchResult(response.data.features[0]);
+  return parseRoutingKomootGeosearchResult(response.data.features[0]);
 }
 
 /**
@@ -69,15 +79,16 @@ async function fetchRoutingKomootGeosearchReverse (coordinates) {
  * @param {Array} coordinates the coordinates
  * @returns {String} the url
  */
-function getRoutingKomootGeosearchReverseUrl (coordinates) {
-    const serviceUrl = store.getters.restServiceById(state.geosearchReverse.serviceId).url,
-        url = new URL(serviceUrl);
+function getRoutingKomootGeosearchReverseUrl(coordinates) {
+  const serviceUrl = store.getters.restServiceById(
+      state.geosearchReverse.serviceId,
+    ).url,
+    url = new URL(serviceUrl);
 
-    url.searchParams.set("lon", coordinates[0]);
-    url.searchParams.set("lat", coordinates[1]);
-    return url;
+  url.searchParams.set("lon", coordinates[0]);
+  url.searchParams.set("lat", coordinates[1]);
+  return url;
 }
-
 
 /**
  * Parses Response from Komoot to RoutingGeosearchResult
@@ -90,11 +101,23 @@ function getRoutingKomootGeosearchReverseUrl (coordinates) {
  * @param {String} [geosearchResult.properties.name] geosearchResult properties name
  * @returns {RoutingGeosearchResult} routingGeosearchResult
  */
-function parseRoutingKomootGeosearchResult (geosearchResult) {
-    return new RoutingGeosearchResult(
-        [Number(geosearchResult.geometry.coordinates[0]), Number(geosearchResult.geometry.coordinates[1])],
-        geosearchResult.properties.housenumber ? geosearchResult.properties.street + " " + geosearchResult.properties.housenumber : geosearchResult.properties.name
-    );
+function parseRoutingKomootGeosearchResult(geosearchResult) {
+  return new RoutingGeosearchResult(
+    [
+      Number(geosearchResult.geometry.coordinates[0]),
+      Number(geosearchResult.geometry.coordinates[1]),
+    ],
+    geosearchResult.properties.housenumber
+      ? geosearchResult.properties.street +
+        " " +
+        geosearchResult.properties.housenumber
+      : geosearchResult.properties.name,
+  );
 }
 
-export {fetchRoutingKomootGeosearch, fetchRoutingKomootGeosearchReverse, getRoutingKomootGeosearchUrl, getRoutingKomootGeosearchReverseUrl};
+export {
+  fetchRoutingKomootGeosearch,
+  fetchRoutingKomootGeosearchReverse,
+  getRoutingKomootGeosearchUrl,
+  getRoutingKomootGeosearchReverseUrl,
+};

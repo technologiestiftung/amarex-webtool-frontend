@@ -17,22 +17,21 @@
  * @property {String} showPoiIcon Wether to show the poi icon.
  */
 const state = {
-    iconGeolocate: "geo-alt",
-    iconGeolocatePOI: "record-circle",
-    poiDistances: [],
-    supportedDevices: ["Desktop", "Mobile"],
-    supportedMapModes: ["2D", "3D"],
-    zoomMode: "once",
+  iconGeolocate: "geo-alt",
+  iconGeolocatePOI: "record-circle",
+  poiDistances: [],
+  supportedDevices: ["Desktop", "Mobile"],
+  supportedMapModes: ["2D", "3D"],
+  zoomMode: "once",
 
-    activeCategory: "",
-    geolocation: null,
-    poiMode: "currentPosition",
-    poiModeCurrentPositionEnabled: true,
-    position: null,
-    showPoi: false,
-    showPoiChoice: false,
-    showPoiIcon: false
+  activeCategory: "",
+  geolocation: null,
+  poiMode: "currentPosition",
+  poiModeCurrentPositionEnabled: true,
+  position: null,
+  showPoi: false,
+  showPoiChoice: false,
+  showPoiIcon: false,
 };
 
 export default state;
-

@@ -1,28 +1,28 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import sinon from "sinon";
 import processUrlParams from "../../processUrlParams";
 import store from "../../../../../app-store";
 
 describe("src_3_0_0/shared/js/utils/processUrlParams.js", () => {
-    let spyMenu;
+  let spyMenu;
 
-    beforeEach(() => {
-        spyMenu = sinon.spy();
+  beforeEach(() => {
+    spyMenu = sinon.spy();
 
-        store.getters = {
-            getUrlParamValue: () => "draw"
-        };
-    });
+    store.getters = {
+      getUrlParamValue: () => "draw",
+    };
+  });
 
-    it("should start the function of MENU param", () => {
-        const params = {
-                MENU: spyMenu
-            },
-            legacyParams = {};
+  it("should start the function of MENU param", () => {
+    const params = {
+        MENU: spyMenu,
+      },
+      legacyParams = {};
 
-        processUrlParams(params, legacyParams);
+    processUrlParams(params, legacyParams);
 
-        expect(spyMenu.called).to.be.true;
-        expect(spyMenu.firstCall.args[0]).to.deep.equals({MENU: "draw"});
-    });
+    expect(spyMenu.called).to.be.true;
+    expect(spyMenu.firstCall.args[0]).to.deep.equals({ MENU: "draw" });
+  });
 });

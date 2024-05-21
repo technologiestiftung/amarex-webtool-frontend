@@ -1,9 +1,9 @@
-import {WFS} from "ol/format";
+import { WFS } from "ol/format";
 
 const transactionPosition = {
-    insert: 0,
-    selectedUpdate: 1,
-    delete: 2
+  insert: 0,
+  selectedUpdate: 1,
+  delete: 2,
 };
 
 /**
@@ -16,22 +16,25 @@ const transactionPosition = {
  * @param {String} srsName EPSG code currently used by the map.
  * @returns {String} WFS Transaction as an XML String.
  */
-function writeTransaction (feature, layerInformation, transactionMethod, srsName) {
-    const {featureNS, featurePrefix, featureType, version} = layerInformation,
-        transaction = [[], [], []];
+function writeTransaction(
+  feature,
+  layerInformation,
+  transactionMethod,
+  srsName,
+) {
+  const { featureNS, featurePrefix, featureType, version } = layerInformation,
+    transaction = [[], [], []];
 
-    transaction[transactionPosition[transactionMethod]].push(feature);
-    return new XMLSerializer()
-        .serializeToString(
-            new WFS({version})
-                .writeTransaction(...transaction, {
-                    featureNS,
-                    featurePrefix,
-                    featureType,
-                    version,
-                    srsName
-                })
-        );
+  transaction[transactionPosition[transactionMethod]].push(feature);
+  return new XMLSerializer().serializeToString(
+    new WFS({ version }).writeTransaction(...transaction, {
+      featureNS,
+      featurePrefix,
+      featureType,
+      version,
+      srsName,
+    }),
+  );
 }
 
-export default {writeTransaction};
+export default { writeTransaction };

@@ -11,12 +11,7 @@
           "clusterImageName": "krankenhaus.png",
           "clusterTextOffsetX": 30,
           "clusterTextOffsetY": 0,
-          "clusterTextFillColor": [
-            0,
-            0,
-            255,
-            1
-          ]
+          "clusterTextFillColor": [0, 0, 255, 1]
         }
       }
     ]
@@ -26,19 +21,9 @@
     "rules": [
       {
         "style": {
-          "polygonStrokeColor": [
-            0,
-            0,
-            0,
-            1
-          ],
+          "polygonStrokeColor": [0, 0, 0, 1],
           "polygonStrokeWidth": 1,
-          "polygonFillColor": [
-            10,
-            200,
-            0,
-            0.2
-          ]
+          "polygonFillColor": [10, 200, 0, 0.2]
         }
       }
     ]
@@ -240,18 +225,8 @@
           "clusterImageScale": 0.7,
           "clusterImageOffsetX": 0.9,
           "clusterImageOffsetY": 0.1,
-          "clusterTextFillColor": [
-            69,
-            96,
-            166,
-            1
-          ],
-          "clusterTextStrokeColor": [
-            240,
-            240,
-            240,
-            1
-          ],
+          "clusterTextFillColor": [69, 96, 166, 1],
+          "clusterTextStrokeColor": [240, 240, 240, 1],
           "clusterTextType": "none"
         }
       },
@@ -270,18 +245,8 @@
           "clusterImageScale": 0.7,
           "clusterImageOffsetX": 0.9,
           "clusterImageOffsetY": 0.1,
-          "clusterTextFillColor": [
-            69,
-            96,
-            166,
-            1
-          ],
-          "clusterTextStrokeColor": [
-            240,
-            240,
-            240,
-            1
-          ],
+          "clusterTextFillColor": [69, 96, 166, 1],
+          "clusterTextStrokeColor": [240, 240, 240, 1],
           "clusterTextType": "none"
         }
       },
@@ -300,18 +265,8 @@
           "clusterImageScale": 0.7,
           "clusterImageOffsetX": 0.9,
           "clusterImageOffsetY": 0.1,
-          "clusterTextFillColor": [
-            69,
-            96,
-            166,
-            1
-          ],
-          "clusterTextStrokeColor": [
-            240,
-            240,
-            240,
-            1
-          ],
+          "clusterTextFillColor": [69, 96, 166, 1],
+          "clusterTextStrokeColor": [240, 240, 240, 1],
           "clusterTextType": "none"
         }
       },
@@ -330,18 +285,8 @@
           "clusterImageScale": 0.7,
           "clusterImageOffsetX": 0.9,
           "clusterImageOffsetY": 0.1,
-          "clusterTextFillColor": [
-            69,
-            96,
-            166,
-            1
-          ],
-          "clusterTextStrokeColor": [
-            240,
-            240,
-            240,
-            1
-          ],
+          "clusterTextFillColor": [69, 96, 166, 1],
+          "clusterTextStrokeColor": [240, 240, 240, 1],
           "clusterTextType": "none"
         }
       }
@@ -353,10 +298,7 @@
       {
         "conditions": {
           "properties": {
-            "@Datastreams.0.Observations.0.result": [
-              1,
-              1000
-            ]
+            "@Datastreams.0.Observations.0.result": [1, 1000]
           }
         },
         "style": {

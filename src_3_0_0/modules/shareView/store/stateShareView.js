@@ -13,15 +13,15 @@
  * @property {Boolean} qrShare Shows if the qr Code share button should be there.
  */
 const state = {
-    description: "common:modules.shareView.description",
-    icon: "bi-share",
-    name: "common:modules.shareView.name",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
-    type: "shareView",
-    copyShare: true,
-    facebookShare: false,
-    qrShare: false
+  description: "common:modules.shareView.description",
+  icon: "bi-share",
+  name: "common:modules.shareView.name",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
+  type: "shareView",
+  copyShare: true,
+  facebookShare: false,
+  qrShare: false,
 };
 
 export default state;

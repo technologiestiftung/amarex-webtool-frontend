@@ -10,13 +10,13 @@
  * @property {Object[]} news The news to display.
  */
 const state = {
-    description: "common:modules.news.description",
-    icon: "bi-newspaper",
-    name: "common:modules.news.name",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
-    type: "news",
-    news: []
+  description: "common:modules.news.description",
+  icon: "bi-newspaper",
+  name: "common:modules.news.name",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
+  type: "news",
+  news: [],
 };
 
 export default state;

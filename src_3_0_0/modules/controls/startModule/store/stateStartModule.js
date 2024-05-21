@@ -8,12 +8,12 @@
  * @property {Object} configuredModuleStates The states of the confiigured modules.
  */
 const state = {
-    mainMenu: [],
-    secondaryMenu: [],
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
+  mainMenu: [],
+  secondaryMenu: [],
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
 
-    configuredModuleStates: []
+  configuredModuleStates: [],
 };
 
 export default state;

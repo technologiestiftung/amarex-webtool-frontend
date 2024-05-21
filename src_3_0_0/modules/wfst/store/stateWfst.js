@@ -25,30 +25,30 @@
  * @property {("LineString"|"Point"|"Polygon"|"delete"|"updated"|"selectedUpdate"|null)} selectedInteraction Which selection is currently active, if any.
  */
 const state = {
-    // General configuration
-    type: "wfst",
-    description: "common:modules.wfst.description",
-    name: "common:modules.wfst.name",
-    icon: "bi-globe",
-    hasMouseMapInteractions: true,
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D"],
-    // Module specific configuration
-    update: false,
-    delete: false,
-    layerIds: [],
-    layerSelectLabel: "common:modules.wfst.layerSelectLabel",
-    lineButton: [],
-    pointButton: [],
-    polygonButton: [],
-    transactionProcessing: false,
-    showConfirmModal: false,
-    toggleLayer: false,
-    // Actual state
-    currentLayerIndex: -1,
-    featureProperties: [],
-    layerInformation: [],
-    selectedInteraction: null
+  // General configuration
+  type: "wfst",
+  description: "common:modules.wfst.description",
+  name: "common:modules.wfst.name",
+  icon: "bi-globe",
+  hasMouseMapInteractions: true,
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D"],
+  // Module specific configuration
+  update: false,
+  delete: false,
+  layerIds: [],
+  layerSelectLabel: "common:modules.wfst.layerSelectLabel",
+  lineButton: [],
+  pointButton: [],
+  polygonButton: [],
+  transactionProcessing: false,
+  showConfirmModal: false,
+  toggleLayer: false,
+  // Actual state
+  currentLayerIndex: -1,
+  featureProperties: [],
+  layerInformation: [],
+  selectedInteraction: null,
 };
 
 export default state;

@@ -6,13 +6,13 @@
  * @param {*} value value to collect
  * @returns {Array} elements with key and value
  */
-export default function searchInTree (element, childKey, key, value) {
-    const result = [];
+export default function searchInTree(element, childKey, key, value) {
+  const result = [];
 
-    if (element) {
-        search(result, element, childKey, key, value);
-    }
-    return result;
+  if (element) {
+    search(result, element, childKey, key, value);
+  }
+  return result;
 }
 
 /**
@@ -24,14 +24,13 @@ export default function searchInTree (element, childKey, key, value) {
  * @param {*} value value to collect
  * @returns {void}
  */
-function search (result, element, childKey, key, value) {
-
-    if (element[key] === value) {
-        result.push(element);
+function search(result, element, childKey, key, value) {
+  if (element[key] === value) {
+    result.push(element);
+  }
+  if (Array.isArray(element[childKey])) {
+    for (let i = 0; i < element[childKey].length; i++) {
+      search(result, element[childKey][i], childKey, key, value);
     }
-    if (Array.isArray(element[childKey])) {
-        for (let i = 0; i < element[childKey].length; i++) {
-            search(result, element[childKey][i], childKey, key, value);
-        }
-    }
+  }
 }

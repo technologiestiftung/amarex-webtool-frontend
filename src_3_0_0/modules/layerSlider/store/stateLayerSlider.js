@@ -19,25 +19,25 @@
  * @property {String} sliderTicks Slider ticks. Show the positions of the layers in the slider. Used for slider input.
  */
 const state = {
-    description: "common:modules.layerSlider.description",
-    icon: "bi-collection-play",
-    layerIds: [],
-    name: "common:modules.layerSlider.name",
-    timeInterval: 2000,
-    title: "common:modules.layerSlider.title",
-    type: "layerSlider",
+  description: "common:modules.layerSlider.description",
+  icon: "bi-collection-play",
+  layerIds: [],
+  name: "common:modules.layerSlider.name",
+  timeInterval: 2000,
+  title: "common:modules.layerSlider.title",
+  type: "layerSlider",
 
-    activeLayer: {
-        layerId: "",
-        index: -1
-    },
-    currentProgressBarWidth: "width: 0%; margin-left: 0%",
-    progressBarWidth: 0,
-    windowsInterval: null,
+  activeLayer: {
+    layerId: "",
+    index: -1,
+  },
+  currentProgressBarWidth: "width: 0%; margin-left: 0%",
+  progressBarWidth: 0,
+  windowsInterval: null,
 
-    sliderMax: "",
-    sliderMin: "0",
-    sliderTicks: ""
+  sliderMax: "",
+  sliderMin: "0",
+  sliderTicks: "",
 };
 
 export default state;

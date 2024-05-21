@@ -13,16 +13,16 @@
  * @param {String} title will be used if given; else, document.title will be used
  * @returns {ContactSystemInfo} information object
  */
-function getSystemInfo (title) {
-    const {platform, cookieEnabled, userAgent} = navigator;
+function getSystemInfo(title) {
+  const { platform, cookieEnabled, userAgent } = navigator;
 
-    return {
-        portalTitle: title || document.title,
-        referrer: window.location.href,
-        platform,
-        cookieEnabled,
-        userAgent
-    };
+  return {
+    portalTitle: title || document.title,
+    referrer: window.location.href,
+    platform,
+    cookieEnabled,
+    userAgent,
+  };
 }
 
 export default getSystemInfo;

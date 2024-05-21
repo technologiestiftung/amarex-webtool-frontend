@@ -1,5 +1,5 @@
 import crs from "@masterportal/masterportalapi/src/crs";
-import {toLonLat, transform} from "ol/proj";
+import { toLonLat, transform } from "ol/proj";
 
 const earthRadius = 6378137;
 
@@ -11,32 +11,32 @@ const earthRadius = 6378137;
  * @param {module:ol/Map} map Map object.
  * @returns {void}
  */
-function calculateCircle (event, circleCenter, circleRadius, map) {
-    const diameter = parseInt(circleRadius, 10) * 2,
-        resultCoordinates = [
-            getCircleExtentByDistanceLat(circleCenter, diameter, map),
-            getCircleExtentByDistanceLat(circleCenter, -1 * diameter, map),
-            getCircleExtentByDistanceLon(circleCenter, diameter, map),
-            getCircleExtentByDistanceLon(circleCenter, -1 * diameter, map)
-        ];
+function calculateCircle(event, circleCenter, circleRadius, map) {
+  const diameter = parseInt(circleRadius, 10) * 2,
+    resultCoordinates = [
+      getCircleExtentByDistanceLat(circleCenter, diameter, map),
+      getCircleExtentByDistanceLat(circleCenter, -1 * diameter, map),
+      getCircleExtentByDistanceLon(circleCenter, diameter, map),
+      getCircleExtentByDistanceLon(circleCenter, -1 * diameter, map),
+    ];
 
-    // The northernmost point of the circle is described by the longitude (northing) of that point (0).
-    // The southernmost point is described by the longitude (northing) of that point (1).
-    // The easternmost point is described by the latitude (easting) of that point (2).
-    // The westernmost point is described by the latitude (easting) of that point (3).
-    // They must be added to the array in the following order: [3, 1, 2, 0]
-    event.feature.getGeometry().extent_ = [
-        resultCoordinates[3][0],
-        resultCoordinates[1][1],
-        resultCoordinates[2][0],
-        resultCoordinates[0][1]
-    ];
-    event.feature.getGeometry().flatCoordinates = [
-        circleCenter[0],
-        circleCenter[1],
-        resultCoordinates[3][0],
-        resultCoordinates[3][1]
-    ];
+  // The northernmost point of the circle is described by the longitude (northing) of that point (0).
+  // The southernmost point is described by the longitude (northing) of that point (1).
+  // The easternmost point is described by the latitude (easting) of that point (2).
+  // The westernmost point is described by the latitude (easting) of that point (3).
+  // They must be added to the array in the following order: [3, 1, 2, 0]
+  event.feature.getGeometry().extent_ = [
+    resultCoordinates[3][0],
+    resultCoordinates[1][1],
+    resultCoordinates[2][0],
+    resultCoordinates[0][1],
+  ];
+  event.feature.getGeometry().flatCoordinates = [
+    circleCenter[0],
+    circleCenter[1],
+    resultCoordinates[3][0],
+    resultCoordinates[3][1],
+  ];
 }
 /**
  * Calculates new flat and extent latitude coordinates for the (circle-) feature.
@@ -47,13 +47,17 @@ function calculateCircle (event, circleCenter, circleRadius, map) {
  * @param {module:ol/Map} map Map object.
  * @returns {module:ol/coordinate~Coordinate} New and transformed extent / flat coordinates of the circle.
  */
-function getCircleExtentByDistanceLat (circleCenter, circleDiameter, map) {
-    const offsetLat = circleDiameter / 2,
-        circleCenterWGS = toLonLat(circleCenter, crs.getMapProjection(map)),
-        deltaLat = offsetLat / earthRadius,
-        newPositionLat = circleCenterWGS[1] + deltaLat * 180 / Math.PI;
+function getCircleExtentByDistanceLat(circleCenter, circleDiameter, map) {
+  const offsetLat = circleDiameter / 2,
+    circleCenterWGS = toLonLat(circleCenter, crs.getMapProjection(map)),
+    deltaLat = offsetLat / earthRadius,
+    newPositionLat = circleCenterWGS[1] + (deltaLat * 180) / Math.PI;
 
-    return transform([circleCenterWGS[0], newPositionLat], "EPSG:4326", crs.getMapProjection(map));
+  return transform(
+    [circleCenterWGS[0], newPositionLat],
+    "EPSG:4326",
+    crs.getMapProjection(map),
+  );
 }
 /**
  * Calculates new flat and extent longitude coordinates for the (circle-) feature.
@@ -64,17 +68,23 @@ function getCircleExtentByDistanceLat (circleCenter, circleDiameter, map) {
  * @param {module:ol/Map} map Map object.
  * @returns {module:ol/coordinate~Coordinate} New and transformed extent / flat coordinates of the circle.
  */
-function getCircleExtentByDistanceLon (circleCenter, circleDiameter, map) {
-    const offsetLon = circleDiameter / 2,
-        circleCenterWGS = toLonLat(circleCenter, crs.getMapProjection(map)),
-        deltaLon = offsetLon / (earthRadius * Math.cos(Math.PI * circleCenterWGS[1] / 180)),
-        newPositionLon = circleCenterWGS[0] + deltaLon * 180 / Math.PI;
+function getCircleExtentByDistanceLon(circleCenter, circleDiameter, map) {
+  const offsetLon = circleDiameter / 2,
+    circleCenterWGS = toLonLat(circleCenter, crs.getMapProjection(map)),
+    deltaLon =
+      offsetLon /
+      (earthRadius * Math.cos((Math.PI * circleCenterWGS[1]) / 180)),
+    newPositionLon = circleCenterWGS[0] + (deltaLon * 180) / Math.PI;
 
-    return transform([newPositionLon, circleCenterWGS[1]], "EPSG:4326", crs.getMapProjection(map));
+  return transform(
+    [newPositionLon, circleCenterWGS[1]],
+    "EPSG:4326",
+    crs.getMapProjection(map),
+  );
 }
 
 export default {
-    calculateCircle,
-    getCircleExtentByDistanceLat,
-    getCircleExtentByDistanceLon
+  calculateCircle,
+  getCircleExtentByDistanceLat,
+  getCircleExtentByDistanceLon,
 };

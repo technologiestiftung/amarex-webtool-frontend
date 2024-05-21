@@ -19,8 +19,8 @@
 //
 // Quickly modify global styling by enabling or disabling optional features.
 
-$enable-caret:                false;
-$enable-shadows:              true;
+$enable-caret: false;
+$enable-shadows: true;
 
 // Links
 //
@@ -57,15 +57,18 @@ $navbar-padding-y: 0;
 
 $navbar-nav-link-padding-x: 0.9375rem;
 
-$navbar-toggler-padding-x: .625rem;
+$navbar-toggler-padding-x: 0.625rem;
 $navbar-toggler-focus-width: 0;
 
 $badge-border-radius: 10px;
 $font-family-sans-serif: MasterPortalFont, Arial, sans-serif;
 $icon-font-path: "fonts/";
 
-$bootstrap-icons-font-src: url("../../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?a74547b2f0863226942ff8ded57db345") format("woff2"),
-url("../../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?a74547b2f0863226942ff8ded57db345") format("woff") !default;
+$bootstrap-icons-font-src:
+  url("../../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?a74547b2f0863226942ff8ded57db345")
+    format("woff2"),
+  url("../../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?a74547b2f0863226942ff8ded57db345")
+    format("woff") !default;
 
 // Colors
 
@@ -73,7 +76,7 @@ url("../../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?a745
  * Used for backgrounds and light elements that are not necessarily primary.
  * Elements: Buttons and button-like elements, borders, backgrounds
  */
-$light_grey: #E3E3E3;
+$light_grey: #e3e3e3;
 $light_grey_hover: lighten($light_grey, 5%);
 $light_grey_focus: lighten($light_grey, 15%);
 $light_grey_active: darken($light_grey, 10%);
@@ -85,14 +88,14 @@ $light_grey_outline: #050505;
 /* PRIMARY: The primary buttons blue
 * Used for primary buttons like start a search, print etc.
 */
-$dark_blue: #151C27;
-$primary: #D6E3FF;
-$secondary: #3C5F94;
+$dark_blue: #151c27;
+$primary: #d6e3ff;
+$secondary: #3c5f94;
 $white: #ffffff;
 $black: #000;
-$light_red: #E10019;
+$light_red: #e10019;
 $dark_grey: #424242;
-$light_blue: #DCE2F3;
+$light_blue: #dce2f3;
 
 $placeholder-color: lighten($dark_grey, 30%);
 $navbar-light-color: $dark_grey;
@@ -115,7 +118,7 @@ $accordion-active-color: $dark_blue;
 // $secondary_active_contrast: $light_blue;
 // $secondary_focus: $dark_blue;
 // $secondary_focus_contrast: $light_blue;
-$secondary_table_style: #F2F2F2;  // background for table view style
+$secondary_table_style: #f2f2f2; // background for table view style
 
 /*ToDo: bei neuem bootstrap update hoffentlich möglich*/
 // .btn-secondary {
@@ -132,45 +135,45 @@ $secondary_table_style: #F2F2F2;  // background for table view style
 // }
 
 .btn-primary {
-  --bs-btn-color: #001B3D;
-  --bs-btn-bg: #D6E3FF;
+  --bs-btn-color: #001b3d;
+  --bs-btn-bg: #d6e3ff;
   --bs-btn-border-radius: 16px;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #001B3D;
-  --bs-btn-hover-border-color: #001B3D;
+  --bs-btn-hover-bg: #001b3d;
+  --bs-btn-hover-border-color: #001b3d;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #151C27;
+  --bs-btn-active-bg: #151c27;
   --bs-btn-focus-color: #fff;
-  --bs-btn-focus-bg: #151C27;
+  --bs-btn-focus-bg: #151c27;
 }
 .btn-secondary {
   --bs-btn-color: #ffffff;
-  --bs-btn-bg: #3C5F94;
-  --bs-btn-border-color: #3C5F94;
+  --bs-btn-bg: #3c5f94;
+  --bs-btn-border-color: #3c5f94;
   --bs-btn-border-radius: 50px;
-  --bs-btn-hover-color: #001B3D;
-  --bs-btn-hover-bg: #D6E3FF;
-  --bs-btn-hover-border-color: #D6E3FF;
+  --bs-btn-hover-color: #001b3d;
+  --bs-btn-hover-bg: #d6e3ff;
+  --bs-btn-hover-border-color: #d6e3ff;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #151C27;
+  --bs-btn-active-bg: #151c27;
   --bs-btn-focus-color: #fff;
-  --bs-btn-focus-bg: #151C27;
+  --bs-btn-focus-bg: #151c27;
   --bs-btn-box-shadow: none;
 }
 
 .btn-light {
-  --bs-btn-color: #151C27;
+  --bs-btn-color: #151c27;
   --bs-btn-bg: #ffffff;
   --bs-btn-border-color: #ffffff;
   --bs-btn-border-radius: 50px;
   --bs-btn-disabled-opacity: 0.3;
-  --bs-btn-hover-color: #151C27;
-  --bs-btn-hover-bg: #DCE2F3;
-  --bs-btn-hover-border-color: #DCE2F3;
+  --bs-btn-hover-color: #151c27;
+  --bs-btn-hover-bg: #dce2f3;
+  --bs-btn-hover-border-color: #dce2f3;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #151C27;
+  --bs-btn-active-bg: #151c27;
   --bs-btn-focus-color: #fff;
-  --bs-btn-focus-bg: #151C27;
+  --bs-btn-focus-bg: #151c27;
   --bs-btn-box-shadow: none;
 }
 
@@ -178,26 +181,25 @@ $secondary_table_style: #F2F2F2;  // background for table view style
  * switches and checkboxes
  */
 
-$form-check-input-checked-bg-color: #001B3D;
-$form-check-input-border: 1px solid #75777D;
-$form-check-input-focus-border: 1px solid #75777D;
+$form-check-input-checked-bg-color: #001b3d;
+$form-check-input-border: 1px solid #75777d;
+$form-check-input-focus-border: 1px solid #75777d;
 
 /*
  * Inputs
  */
-$input-focus-border-color: #3C5F94;
+$input-focus-border-color: #3c5f94;
 
 /* ACCENT: Action
  * Action color for certain special accents
  * Examples: fileImport, routing or Quickhelp
  */
 $accent: $light_blue;
-$accent_hover: #DCE2F3;
+$accent_hover: #dce2f3;
 $accent_focus: #204d74;
 $accent_active: #204d74;
 $accent_disabled: #7aa9d0;
 $accent_contrast: #ffffff;
-
 
 /* NOTIFICATION COLOURS
  * Notification colours can and should be used directly from Bootstrap 3.
@@ -216,7 +218,7 @@ $dropdown-link-active-bg: transparent;
 
 // List group
 
-$dropdown-item-disabled-bg:  #eeeeee;
+$dropdown-item-disabled-bg: #eeeeee;
 
 // Menu
 $menu-background-color: $white;
@@ -230,7 +232,8 @@ $icon_length_list: 0; // TODO figure out correct value before usage
 /* FONT STYLES */
 $font_family_default: "MasterPortalFont", "Arial", sans-serif;
 $font_family_narrow: "MasterPortalFont", "Arial Narrow", Arial, sans-serif;
-$font_family_accent: "MasterPortalFont Bold", "Arial Narrow Bold", Arial, sans-serif;
+$font_family_accent: "MasterPortalFont Bold", "Arial Narrow Bold", Arial,
+  sans-serif;
 
 /* NOTE we use bootstrap font-sizes and only add font-sizes if really necessary
  * bootstrap sizes:
@@ -259,7 +262,6 @@ $shadow: rgba(0, 0, 0, 0.176);
 $shadow_overlay: rgba(0, 0, 0, 0.4);
 $tool_box_shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
 
-
 /*
  * Customer Style. In this place, all previously mentioned variables may be overwritten
  * to achieve a different look and feel from the default Masterportal design.
@@ -277,14 +279,12 @@ $tool_box_shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
 @import "../../../node_modules/bootstrap/scss/variables-dark";
 // Add old default theme color to color map
 $custom-colors: (
-  "default": $gray-400
+  "default": $gray-400,
 );
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
-
 @import "../../../node_modules/bootstrap/scss/maps";
 @import "../../../node_modules/bootstrap/scss/mixins";
-
 
 /*
  * Grid breakpoints
@@ -292,12 +292,12 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
  * Define the minimum dimensions at which your layout will change,
  * adapting to different screen sizes, for use in media queries.
  */
- $xs: 0;
- $sm: 576px;
- $md: 768px;
- $lg: 992px;
- $xl: 1200px;
- $xxl: 1400px;
+$xs: 0;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;
 
 $grid-breakpoints: (
   xs: $xs,
@@ -305,16 +305,16 @@ $grid-breakpoints: (
   md: $md,
   lg: $lg,
   xl: $xl,
-  xxl: $xxl
+  xxl: $xxl,
 );
 
 :export {
-    gridBreakpoints: {
-        xs: $xs;
-        sm: $sm;
-        md: $md;
-        lg: $lg;
-        xl: $xl;
-        xxl: $xxl;
-    }
+  gridbreakpoints: {
+    xs: $xs;
+    sm: $sm;
+    md: $md;
+    lg: $lg;
+    xl: $xl;
+    xxl: $xxl;
+  }
 }

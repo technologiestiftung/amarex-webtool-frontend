@@ -6,13 +6,13 @@ import Feature from "ol/Feature";
  * @param {Object} commit the commit
  * @returns {void}
  */
-function removeAllHighlightedFeatures (state, commit) {
-    state.highlightedFeatureStyles?.forEach((style, index) => {
-        state.highlightedFeatures[index].setStyle(style);
-    });
+function removeAllHighlightedFeatures(state, commit) {
+  state.highlightedFeatureStyles?.forEach((style, index) => {
+    state.highlightedFeatures[index].setStyle(style);
+  });
 
-    commit("setHighlightedFeatureStyles", []);
-    commit("setHighlightedFeatures", []);
+  commit("setHighlightedFeatureStyles", []);
+  commit("setHighlightedFeatures", []);
 }
 
 /**
@@ -22,17 +22,22 @@ function removeAllHighlightedFeatures (state, commit) {
  * @param {module:ol/Feature} feature the feature to remove from the highlighted features, remove all if none is given
  * @returns {void}
  */
-function removeSingleHighlightedFeature (state, commit, feature) {
+function removeSingleHighlightedFeature(state, commit, feature) {
+  const index = state.highlightedFeatures.indexOf(feature);
 
-    const index = state.highlightedFeatures.indexOf(feature);
+  if (index !== -1) {
+    const highlightedFeatureStyle = state.highlightedFeatureStyles[index];
 
-    if (index !== -1) {
-        const highlightedFeatureStyle = state.highlightedFeatureStyles[index];
-
-        state.highlightedFeatures[index].setStyle(highlightedFeatureStyle);
-        commit("setHighlightedFeatureStyles", state.highlightedFeatureStyles.filter((style, i) => i !== index));
-        commit("setHighlightedFeatures", state.highlightedFeatures.filter((feat, i) => i !== index));
-    }
+    state.highlightedFeatures[index].setStyle(highlightedFeatureStyle);
+    commit(
+      "setHighlightedFeatureStyles",
+      state.highlightedFeatureStyles.filter((style, i) => i !== index),
+    );
+    commit(
+      "setHighlightedFeatures",
+      state.highlightedFeatures.filter((feat, i) => i !== index),
+    );
+  }
 }
 
 /**
@@ -43,14 +48,12 @@ function removeSingleHighlightedFeature (state, commit, feature) {
  * @param {module:ol/Feature} [feature] the feature to remove from the highlighted features, remove all if none is given
  * @returns {void}
  */
-function removeHighlightFeature ({commit, state}, feature) {
-    if (feature && feature instanceof Feature) {
-        removeSingleHighlightedFeature(state, commit, feature);
-    }
-    else {
-        removeAllHighlightedFeatures(state, commit);
-    }
+function removeHighlightFeature({ commit, state }, feature) {
+  if (feature && feature instanceof Feature) {
+    removeSingleHighlightedFeature(state, commit, feature);
+  } else {
+    removeAllHighlightedFeatures(state, commit);
+  }
 }
 
-export {removeHighlightFeature};
-
+export { removeHighlightFeature };

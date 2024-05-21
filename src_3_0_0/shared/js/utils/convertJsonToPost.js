@@ -14,17 +14,23 @@
  * @param {String} [struct=""] (for recursion) leading structure: leave empty
  * @return {String} a string to use as raw data for a post request
  */
-export default function convertJsonToPost (jsondata, struct = "") {
-    if (typeof jsondata !== "object" || jsondata === null) {
-        return (struct ? encodeURIComponent(struct) + "=" : "") + encodeURIComponent(jsondata);
-    }
-    let result = "";
+export default function convertJsonToPost(jsondata, struct = "") {
+  if (typeof jsondata !== "object" || jsondata === null) {
+    return (
+      (struct ? encodeURIComponent(struct) + "=" : "") +
+      encodeURIComponent(jsondata)
+    );
+  }
+  let result = "";
 
-    Object.keys(jsondata).forEach(key => {
-        if (result) {
-            result += "&";
-        }
-        result += convertJsonToPost(jsondata[key], struct ? struct + "[" + key + "]" : key);
-    });
-    return result;
+  Object.keys(jsondata).forEach((key) => {
+    if (result) {
+      result += "&";
+    }
+    result += convertJsonToPost(
+      jsondata[key],
+      struct ? struct + "[" + key + "]" : key,
+    );
+  });
+  return result;
 }

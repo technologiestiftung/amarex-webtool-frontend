@@ -12,12 +12,12 @@
  */
 
 export default {
-    active: false,
-    description: "common:modules.layerClusterToggler.description",
-    icon: "bi-list",
-    name: "common:modules.layerClusterToggler.name",
-    type: "layerClusterToggler",
+  active: false,
+  description: "common:modules.layerClusterToggler.description",
+  icon: "bi-list",
+  name: "common:modules.layerClusterToggler.name",
+  type: "layerClusterToggler",
 
-    isToggled: true,
-    layerIdList: []
+  isToggled: true,
+  layerIdList: [],
 };

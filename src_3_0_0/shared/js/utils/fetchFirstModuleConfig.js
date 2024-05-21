@@ -13,14 +13,14 @@
  * @param {String} separator - Charactor to separate multiple keys
  * @returns {*}  Retrieved value or undefined, if nothing found
  */
-function getByDotSyntax (obj, path, separator = ".") {
-    const pathArray = createKeyPathArray(path, separator);
+function getByDotSyntax(obj, path, separator = ".") {
+  const pathArray = createKeyPathArray(path, separator);
 
-    if (pathArray === false) {
-        console.warn("Invalid path parameter given for \"getByDotSyntax()\":", path);
-        return undefined;
-    }
-    return getByArraySyntax(obj, pathArray);
+  if (pathArray === false) {
+    console.warn('Invalid path parameter given for "getByDotSyntax()":', path);
+    return undefined;
+  }
+  return getByArraySyntax(obj, pathArray);
 }
 
 /**
@@ -32,20 +32,23 @@ function getByDotSyntax (obj, path, separator = ".") {
  * @param {String[]} pathArray - Array with path keys
  * @returns {*}  Retrieved value or undefined, if nothing found
  */
-function getByArraySyntax (obj, pathArray) {
-    if (!Array.isArray(pathArray)) {
-        return undefined;
-    }
-    const step = pathArray.shift();
+function getByArraySyntax(obj, pathArray) {
+  if (!Array.isArray(pathArray)) {
+    return undefined;
+  }
+  const step = pathArray.shift();
 
-    if (!(obj instanceof Object || Array.isArray(obj)) || typeof obj[step] === "undefined") {
-        return undefined;
-    }
+  if (
+    !(obj instanceof Object || Array.isArray(obj)) ||
+    typeof obj[step] === "undefined"
+  ) {
+    return undefined;
+  }
 
-    if (pathArray.length === 0) {
-        return obj[step];
-    }
-    return getByArraySyntax(obj[step], pathArray);
+  if (pathArray.length === 0) {
+    return obj[step];
+  }
+  return getByArraySyntax(obj[step], pathArray);
 }
 
 /**
@@ -64,35 +67,34 @@ function getByArraySyntax (obj, pathArray) {
  * @param {String} separator Charactor to separate multiple keys
  * @returns {String[]|Boolean} Array of path strings or false
  */
-function createKeyPathArray (path, separator = ".") {
-    let result = [];
+function createKeyPathArray(path, separator = ".") {
+  let result = [];
 
-    if (typeof path === "string") {
-        result = path.split(separator);
+  if (typeof path === "string") {
+    result = path.split(separator);
 
-        for (const pathPart1 of result) {
-            if (pathPart1 === "") {
-                return false;
-            }
-        }
-
-        return result;
-    }
-    else if (!Array.isArray(path)) {
+    for (const pathPart1 of result) {
+      if (pathPart1 === "") {
         return false;
-    }
-
-    for (const pathPart2 of path) {
-        const resultRec = createKeyPathArray(pathPart2, separator);
-
-        if (resultRec === false) {
-            return false;
-        }
-
-        result = [...result, ...resultRec];
+      }
     }
 
     return result;
+  } else if (!Array.isArray(path)) {
+    return false;
+  }
+
+  for (const pathPart2 of path) {
+    const resultRec = createKeyPathArray(pathPart2, separator);
+
+    if (resultRec === false) {
+      return false;
+    }
+
+    result = [...result, ...resultRec];
+  }
+
+  return result;
 }
 
 /**
@@ -105,66 +107,89 @@ function createKeyPathArray (path, separator = ".") {
  * @param {String} moduleName - Name of the module
  * @returns {Boolean} true, if successfully merged
  */
-function fetchFirstModuleConfig (context, configPaths, moduleName) {
-    if (!(context?.state instanceof Object)) {
-        console.warn("fetchFirstModuleConfig: The given context is missing a state:", context);
-        return false;
-    }
-    else if (!Array.isArray(configPaths)) {
-        console.warn("fetchFirstModuleConfig: The given configPaths must be an array, but none is given:", configPaths);
-        return false;
-    }
+function fetchFirstModuleConfig(context, configPaths, moduleName) {
+  if (!(context?.state instanceof Object)) {
+    console.warn(
+      "fetchFirstModuleConfig: The given context is missing a state:",
+      context,
+    );
+    return false;
+  } else if (!Array.isArray(configPaths)) {
+    console.warn(
+      "fetchFirstModuleConfig: The given configPaths must be an array, but none is given:",
+      configPaths,
+    );
+    return false;
+  }
 
-    const missingSources = [],
-        missingDefaultValue = [],
-        // no real config-params, e.g. added during parsing: must not be in state as default
-        defaultsNotInState = ["i18nextTranslate", "useConfigName", "type", "parentId", "onlyDesktop"],
-        state = context.state[moduleName] || context.state.Modules[moduleName];
-    let source,
-        success = false;
+  const missingSources = [],
+    missingDefaultValue = [],
+    // no real config-params, e.g. added during parsing: must not be in state as default
+    defaultsNotInState = [
+      "i18nextTranslate",
+      "useConfigName",
+      "type",
+      "parentId",
+      "onlyDesktop",
+    ],
+    state = context.state[moduleName] || context.state.Modules[moduleName];
+  let source,
+    success = false;
 
-    for (const path of configPaths) {
-        source = getByDotSyntax(context.rootState, path);
+  for (const path of configPaths) {
+    source = getByDotSyntax(context.rootState, path);
 
-        if (typeof source === "undefined") {
-            missingSources.push(createKeyPathArray(path));
-            continue;
-        }
-
-        // Config Source must be an object in order to set those into the module state
-        if (!(source instanceof Object) || Array.isArray(source)) {
-            console.error("The config for \"" + moduleName + "\" is not an object and thereby ignored.", source);
-            console.warn("Path to the defective config:", createKeyPathArray(path));
-            continue;
-        }
-
-        // Check for missing default values in module state
-        for (const sourceProp in source) {
-            if (!defaultsNotInState.includes(sourceProp) && typeof state[sourceProp] === "undefined") {
-                missingDefaultValue.push(sourceProp);
-            }
-        }
-
-        if (missingDefaultValue.length > 0) {
-            console.warn("Default value were not found in module \"" + moduleName + "\". Those are taken from config now, but are not expected to have any effect.", missingDefaultValue);
-            console.warn("Path to the module:", createKeyPathArray(path));
-        }
-
-        // only use the first found config
-        break;
+    if (typeof source === "undefined") {
+      missingSources.push(createKeyPathArray(path));
+      continue;
     }
 
-    if (source) {
-        if (context.state[moduleName]) {
-            context.state[moduleName] = deepMerge(source, state);
-        }
-        else if (context.state.Modules[moduleName]) {
-            context.state.Modules[moduleName] = deepMerge(source, state);
-        }
-        success = true;
+    // Config Source must be an object in order to set those into the module state
+    if (!(source instanceof Object) || Array.isArray(source)) {
+      console.error(
+        'The config for "' +
+          moduleName +
+          '" is not an object and thereby ignored.',
+        source,
+      );
+      console.warn("Path to the defective config:", createKeyPathArray(path));
+      continue;
     }
 
-    return success;
+    // Check for missing default values in module state
+    for (const sourceProp in source) {
+      if (
+        !defaultsNotInState.includes(sourceProp) &&
+        typeof state[sourceProp] === "undefined"
+      ) {
+        missingDefaultValue.push(sourceProp);
+      }
+    }
+
+    if (missingDefaultValue.length > 0) {
+      console.warn(
+        'Default value were not found in module "' +
+          moduleName +
+          '". Those are taken from config now, but are not expected to have any effect.',
+        missingDefaultValue,
+      );
+      console.warn("Path to the module:", createKeyPathArray(path));
+    }
+
+    // only use the first found config
+    break;
+  }
+
+  if (source) {
+    if (context.state[moduleName]) {
+      context.state[moduleName] = deepMerge(source, state);
+    } else if (context.state.Modules[moduleName]) {
+      context.state.Modules[moduleName] = deepMerge(source, state);
+    }
+    success = true;
+  }
+
+  return success;
 }
 
 /**
@@ -173,38 +198,37 @@ function fetchFirstModuleConfig (context, configPaths, moduleName) {
  * @param {Object} target - Target object that will be modified
  * @returns {Object} - The resulting merged object
  */
-function deepMerge (source, target) {
-    if (!(source instanceof Object)) {
-        return target;
-    }
-
-    if (!(target instanceof Object)) {
-        if (Array.isArray(source)) {
-            return [...source];
-        }
-        return {...source};
-    }
-    if (Array.isArray(target) && target.length > 0) {
-        target.splice(0, target.length, ...source);
-        return target;
-    }
-
-    for (const key in source) {
-        if (!(source[key] instanceof Object)) {
-            target[key] = source[key];
-        }
-        else {
-            target[key] = deepMerge(source[key], target[key]);
-        }
-    }
-
+function deepMerge(source, target) {
+  if (!(source instanceof Object)) {
     return target;
+  }
+
+  if (!(target instanceof Object)) {
+    if (Array.isArray(source)) {
+      return [...source];
+    }
+    return { ...source };
+  }
+  if (Array.isArray(target) && target.length > 0) {
+    target.splice(0, target.length, ...source);
+    return target;
+  }
+
+  for (const key in source) {
+    if (!(source[key] instanceof Object)) {
+      target[key] = source[key];
+    } else {
+      target[key] = deepMerge(source[key], target[key]);
+    }
+  }
+
+  return target;
 }
 
 export {
-    getByDotSyntax,
-    getByArraySyntax,
-    createKeyPathArray,
-    fetchFirstModuleConfig,
-    deepMerge
+  getByDotSyntax,
+  getByArraySyntax,
+  createKeyPathArray,
+  fetchFirstModuleConfig,
+  deepMerge,
 };

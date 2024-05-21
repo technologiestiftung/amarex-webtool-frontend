@@ -1,4 +1,4 @@
-import {Draw} from "ol/interaction.js";
+import { Draw } from "ol/interaction.js";
 import style from "./measureStyle";
 import source from "./measureSource";
 
@@ -12,49 +12,56 @@ let styleIdCounter = 0;
  * @param {function} setTooltipCoord to set the coordinates for the tooltip into state
  * @returns {module:ol/interaction/Draw} draw interaction
  */
-function makeDraw (type, addFeature, setIsDrawing, setFeatureId, setTooltipCoord) {
-    const draw = new Draw({
-        source,
-        type,
-        style
-    });
+function makeDraw(
+  type,
+  addFeature,
+  setIsDrawing,
+  setFeatureId,
+  setTooltipCoord,
+) {
+  const draw = new Draw({
+    source,
+    type,
+    style,
+  });
 
-    let sketch = null,
-        listener = null;
+  let sketch = null,
+    listener = null;
 
-    draw.on("drawstart", function (evt) {
-        sketch = evt.feature;
-        sketch.set("isBeingDrawn", true);
-        addFeature(sketch);
-        setFeatureId(sketch.ol_uid);
+  draw.on("drawstart", function (evt) {
+    sketch = evt.feature;
+    sketch.set("isBeingDrawn", true);
+    addFeature(sketch);
+    setFeatureId(sketch.ol_uid);
 
-        listener = sketch.getGeometry().getType() === "Polygon"
-            ? ({target}) => {
-                const polygonCoordinates = target.getCoordinates()[0];
+    listener =
+      sketch.getGeometry().getType() === "Polygon"
+        ? ({ target }) => {
+            const polygonCoordinates = target.getCoordinates()[0];
 
-                // triggers update, no duplicates are created by add method design
-                addFeature(sketch);
-                setTooltipCoord(polygonCoordinates[polygonCoordinates.length - 2]);
-            }
-            : ({target}) => {
-                addFeature(sketch);
-                setTooltipCoord(target.getLastCoordinate());
-            };
+            // triggers update, no duplicates are created by add method design
+            addFeature(sketch);
+            setTooltipCoord(polygonCoordinates[polygonCoordinates.length - 2]);
+          }
+        : ({ target }) => {
+            addFeature(sketch);
+            setTooltipCoord(target.getLastCoordinate());
+          };
 
-        sketch.getGeometry().on("change", listener);
-        setIsDrawing(true);
-    });
+    sketch.getGeometry().on("change", listener);
+    setIsDrawing(true);
+  });
 
-    draw.on("drawend", function () {
-        sketch.getGeometry().un("change", listener);
-        sketch.set("isBeingDrawn", false);
-        sketch.set("styleId", `__measureStyle_draw_${styleIdCounter++}`);
-        sketch = null;
-        listener = null;
-        setIsDrawing(false);
-    });
+  draw.on("drawend", function () {
+    sketch.getGeometry().un("change", listener);
+    sketch.set("isBeingDrawn", false);
+    sketch.set("styleId", `__measureStyle_draw_${styleIdCounter++}`);
+    sketch = null;
+    listener = null;
+    setIsDrawing(false);
+  });
 
-    return draw;
+  return draw;
 }
 
 export default makeDraw;

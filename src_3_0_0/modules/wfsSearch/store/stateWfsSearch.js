@@ -24,28 +24,28 @@
  * @property {String[]} supportedMapModes Map mode in which this module can be used.
  */
 const state = {
-    type: "wfsSearch",
-    // defaults for config.json tool parameters
-    description: "common:modules.wfsSearch.description",
-    name: "common:modules.wfsSearch.name",
-    icon: "bi-search",
-    instances: [],
-    // state parameters
-    currentInstanceIndex: 0,
-    parsedSource: null,
-    requiredValues: null,
-    userHelp: "",
-    results: [],
-    searched: false,
-    selectedOptions: {},
-    service: null,
-    showResultList: false,
-    valuesReset: false,
-    zoomLevel: 5,
-    resultsPerPage: 0,
-    multiSelect: false,
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"]
+  type: "wfsSearch",
+  // defaults for config.json tool parameters
+  description: "common:modules.wfsSearch.description",
+  name: "common:modules.wfsSearch.name",
+  icon: "bi-search",
+  instances: [],
+  // state parameters
+  currentInstanceIndex: 0,
+  parsedSource: null,
+  requiredValues: null,
+  userHelp: "",
+  results: [],
+  searched: false,
+  selectedOptions: {},
+  service: null,
+  showResultList: false,
+  valuesReset: false,
+  zoomLevel: 5,
+  resultsPerPage: 0,
+  multiSelect: false,
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
 };
 
 export default state;

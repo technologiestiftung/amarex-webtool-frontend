@@ -1,4 +1,4 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateDraw from "./stateDraw";
 
 /**
@@ -6,5 +6,5 @@ import stateDraw from "./stateDraw";
  * @module modules/draw/store/gettersDraw
  */
 export default {
-    ...generateSimpleGetters(stateDraw)
+  ...generateSimpleGetters(stateDraw),
 };

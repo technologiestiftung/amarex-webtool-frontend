@@ -11,13 +11,13 @@
  *
  */
 const state = {
-    hasMouseMapInteractions: false,
-    description: "common:modules.scaleSwitcher.description",
-    icon: "bi-arrows-angle-contract",
-    name: "common:modules.scaleSwitcher.name",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
-    type: "scaleSwitcher"
+  hasMouseMapInteractions: false,
+  description: "common:modules.scaleSwitcher.description",
+  icon: "bi-arrows-angle-contract",
+  name: "common:modules.scaleSwitcher.name",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
+  type: "scaleSwitcher",
 };
 
 export default state;

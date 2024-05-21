@@ -4,9 +4,9 @@ import mutations from "./mutationsMaps";
 import state from "./stateMaps";
 
 export default {
-    namespaced: true,
-    actions,
-    getters,
-    mutations,
-    state: {...state}
+  namespaced: true,
+  actions,
+  getters,
+  mutations,
+  state: { ...state },
 };

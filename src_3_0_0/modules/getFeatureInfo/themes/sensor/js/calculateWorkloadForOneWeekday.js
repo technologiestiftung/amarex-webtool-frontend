@@ -16,39 +16,47 @@ import dayjs from "dayjs";
  * @param  {Object[]} [dataByActualTimeStep=[]] Within an hour.
  * @returns {Number} The workload.
  */
-export function calculateOneHour (actualState, actualStateAsNumber, actualTimeStep, nextTimeStep, targetResult, dataByActualTimeStep = []) {
-    const endTime = dayjs(nextTimeStep).toDate().getTime();
+export function calculateOneHour(
+  actualState,
+  actualStateAsNumber,
+  actualTimeStep,
+  nextTimeStep,
+  targetResult,
+  dataByActualTimeStep = [],
+) {
+  const endTime = dayjs(nextTimeStep).toDate().getTime();
 
-    let betweenRes = "",
-        timeDiff = 0,
-        currentState = actualState,
-        currentStateAsNumber = actualStateAsNumber,
-        actualPhenomenonTime = dayjs(actualTimeStep).toDate().getTime();
+  let betweenRes = "",
+    timeDiff = 0,
+    currentState = actualState,
+    currentStateAsNumber = actualStateAsNumber,
+    actualPhenomenonTime = dayjs(actualTimeStep).toDate().getTime();
 
-    dataByActualTimeStep.forEach(data => {
-        const state = data?.result || currentState;
-        let phenomenonTime,
-            res;
+  dataByActualTimeStep.forEach((data) => {
+    const state = data?.result || currentState;
+    let phenomenonTime, res;
 
-        if (state !== currentState) {
-            phenomenonTime = data?.phenomenonTime ? dayjs(data.phenomenonTime).toDate().getTime() : "";
+    if (state !== currentState) {
+      phenomenonTime = data?.phenomenonTime
+        ? dayjs(data.phenomenonTime).toDate().getTime()
+        : "";
 
-            res = (phenomenonTime - actualPhenomenonTime) * currentStateAsNumber;
-            timeDiff = timeDiff + res;
+      res = (phenomenonTime - actualPhenomenonTime) * currentStateAsNumber;
+      timeDiff = timeDiff + res;
 
-            // update the current status and time
-            actualPhenomenonTime = phenomenonTime;
-            currentState = state;
-            currentStateAsNumber = targetResult === currentState ? 1 : 0;
-        }
-    });
+      // update the current status and time
+      actualPhenomenonTime = phenomenonTime;
+      currentState = state;
+      currentStateAsNumber = targetResult === currentState ? 1 : 0;
+    }
+  });
 
-    // add last difference to next full hour
-    betweenRes = (endTime - actualPhenomenonTime) * currentStateAsNumber;
-    timeDiff = isNaN(betweenRes) ? timeDiff : timeDiff + betweenRes;
+  // add last difference to next full hour
+  betweenRes = (endTime - actualPhenomenonTime) * currentStateAsNumber;
+  timeDiff = isNaN(betweenRes) ? timeDiff : timeDiff + betweenRes;
 
-    // result in the unit hour, rounded to 3 decimal places
-    return Math.round(timeDiff / 3600) / 1000;
+  // result in the unit hour, rounded to 3 decimal places
+  return Math.round(timeDiff / 3600) / 1000;
 }
 
 /**
@@ -58,16 +66,22 @@ export function calculateOneHour (actualState, actualStateAsNumber, actualTimeSt
  * @param  {String} nextTimeStep The end time.
  * @returns {Object[]} The data by actual time step.
  */
-export function filterDataByActualTimeStep (dayData, actualTimeStep, nextTimeStep) {
-    if (Array.isArray(dayData) === false) {
-        return [];
-    }
+export function filterDataByActualTimeStep(
+  dayData,
+  actualTimeStep,
+  nextTimeStep,
+) {
+  if (Array.isArray(dayData) === false) {
+    return [];
+  }
 
-    return dayData.filter(data => {
-        const dataToCheck = data?.phenomenonTime ? dayjs(data.phenomenonTime).format("YYYY-MM-DDTHH:mm:ss") : "";
+  return dayData.filter((data) => {
+    const dataToCheck = data?.phenomenonTime
+      ? dayjs(data.phenomenonTime).format("YYYY-MM-DDTHH:mm:ss")
+      : "";
 
-        return dataToCheck >= actualTimeStep && dataToCheck < nextTimeStep;
-    });
+    return dataToCheck >= actualTimeStep && dataToCheck < nextTimeStep;
+  });
 }
 
 /**
@@ -77,35 +91,55 @@ export function filterDataByActualTimeStep (dayData, actualTimeStep, nextTimeSte
  * @param  {String} targetResult Result to draw.
  * @returns {Object} The calculated workload for one day.
  */
-export function calculateWorkloadforOneDay (emptyDay, dayData, targetResult) {
-    const dataFromDay = dayData || [],
-        startDate = dataFromDay.length > 0 && dataFromDay[0]?.phenomenonTime ? dayjs(dataFromDay[0].phenomenonTime).format("YYYY-MM-DD") : "",
-        day = emptyDay || {};
+export function calculateWorkloadforOneDay(emptyDay, dayData, targetResult) {
+  const dataFromDay = dayData || [],
+    startDate =
+      dataFromDay.length > 0 && dataFromDay[0]?.phenomenonTime
+        ? dayjs(dataFromDay[0].phenomenonTime).format("YYYY-MM-DD")
+        : "",
+    day = emptyDay || {};
 
-    let actualState = dataFromDay.length > 0 && dataFromDay[0]?.result ? dataFromDay[0].result : "",
-        actualStateAsNumber = targetResult === actualState ? 1 : 0;
+  let actualState =
+      dataFromDay.length > 0 && dataFromDay[0]?.result
+        ? dataFromDay[0].result
+        : "",
+    actualStateAsNumber = targetResult === actualState ? 1 : 0;
 
-    Object.keys(day).forEach(key => {
-        const i = parseFloat(key, 10),
-            actualTimeStep = dayjs(startDate).add(i, "hour").format("YYYY-MM-DDTHH:mm:ss"),
-            nextTimeStep = dayjs(startDate).add(i + 1, "hour").format("YYYY-MM-DDTHH:mm:ss"),
-            dataByActualTimeStep = filterDataByActualTimeStep(dataFromDay, actualTimeStep, nextTimeStep);
+  Object.keys(day).forEach((key) => {
+    const i = parseFloat(key, 10),
+      actualTimeStep = dayjs(startDate)
+        .add(i, "hour")
+        .format("YYYY-MM-DDTHH:mm:ss"),
+      nextTimeStep = dayjs(startDate)
+        .add(i + 1, "hour")
+        .format("YYYY-MM-DDTHH:mm:ss"),
+      dataByActualTimeStep = filterDataByActualTimeStep(
+        dataFromDay,
+        actualTimeStep,
+        nextTimeStep,
+      );
 
-        // if the requested period is in the future
-        if (dayjs(nextTimeStep).toDate().getTime() > dayjs().toDate().getTime()) {
-            day[i] = undefined;
-        }
-        else if (dataByActualTimeStep.length === 0) {
-            day[i] = actualStateAsNumber;
-        }
-        else {
-            day[i] = calculateOneHour(actualState, actualStateAsNumber, actualTimeStep, nextTimeStep, targetResult, dataByActualTimeStep);
-            actualState = dataByActualTimeStep[dataByActualTimeStep.length - 1].result;
-            actualStateAsNumber = targetResult === actualState ? 1 : 0;
-        }
-    });
+    // if the requested period is in the future
+    if (dayjs(nextTimeStep).toDate().getTime() > dayjs().toDate().getTime()) {
+      day[i] = undefined;
+    } else if (dataByActualTimeStep.length === 0) {
+      day[i] = actualStateAsNumber;
+    } else {
+      day[i] = calculateOneHour(
+        actualState,
+        actualStateAsNumber,
+        actualTimeStep,
+        nextTimeStep,
+        targetResult,
+        dataByActualTimeStep,
+      );
+      actualState =
+        dataByActualTimeStep[dataByActualTimeStep.length - 1].result;
+      actualStateAsNumber = targetResult === actualState ? 1 : 0;
+    }
+  });
 
-    return day;
+  return day;
 }
 
 /**
@@ -113,14 +147,14 @@ export function calculateWorkloadforOneDay (emptyDay, dayData, targetResult) {
  * The values are by initialize 0.
  * @return {Object} The day object.
  */
-export function createInitialDayPerHour () {
-    const dayObj = {};
+export function createInitialDayPerHour() {
+  const dayObj = {};
 
-    for (let i = 0; i < 24; i++) {
-        dayObj[i] = 0;
-    }
+  for (let i = 0; i < 24; i++) {
+    dayObj[i] = 0;
+  }
 
-    return dayObj;
+  return dayObj;
 }
 
 /**
@@ -130,24 +164,37 @@ export function createInitialDayPerHour () {
  * @param {Object} [processedHistoricalDataByWeekday=[]] Historical data sorted by weekday.
  * @returns {Object[]} The workload for one weekday.
  */
-export function calculateWorkloadForOneWeekday (targetResult, processedHistoricalDataByWeekday = []) {
-    const allData = [];
+export function calculateWorkloadForOneWeekday(
+  targetResult,
+  processedHistoricalDataByWeekday = [],
+) {
+  const allData = [];
 
-    processedHistoricalDataByWeekday.forEach(dayData => {
-        const zeroTime = dayjs(dayjs(dayData[0].phenomenonTime).format("YYYY-MM-DD")).format("YYYY-MM-DDTHH:mm:ss"),
-            firstTimeDayData = dayjs(dayData[0].phenomenonTime).format("YYYY-MM-DDTHH:mm:ss"),
-            emptyDayObj = createInitialDayPerHour();
-        let dayObj = {};
+  processedHistoricalDataByWeekday.forEach((dayData) => {
+    const zeroTime = dayjs(
+        dayjs(dayData[0].phenomenonTime).format("YYYY-MM-DD"),
+      ).format("YYYY-MM-DDTHH:mm:ss"),
+      firstTimeDayData = dayjs(dayData[0].phenomenonTime).format(
+        "YYYY-MM-DDTHH:mm:ss",
+      ),
+      emptyDayObj = createInitialDayPerHour();
+    let dayObj = {};
 
-        if (firstTimeDayData !== zeroTime && Array.isArray(dayData)) {
-            dayData.reverse();
-        }
+    if (firstTimeDayData !== zeroTime && Array.isArray(dayData)) {
+      dayData.reverse();
+    }
 
-        dayObj = calculateWorkloadforOneDay(emptyDayObj, dayData, targetResult);
-        allData.push(dayObj);
-    });
+    dayObj = calculateWorkloadforOneDay(emptyDayObj, dayData, targetResult);
+    allData.push(dayObj);
+  });
 
-    return allData;
+  return allData;
 }
 
-export default {calculateOneHour, filterDataByActualTimeStep, calculateWorkloadforOneDay, createInitialDayPerHour, calculateWorkloadForOneWeekday};
+export default {
+  calculateOneHour,
+  filterDataByActualTimeStep,
+  calculateWorkloadforOneDay,
+  createInitialDayPerHour,
+  calculateWorkloadForOneWeekday,
+};

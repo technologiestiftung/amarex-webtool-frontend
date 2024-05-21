@@ -15,41 +15,46 @@ import axios from "axios";
  * @param {String} [hitTemplate="default"] The template for rendering the hits.
  * @returns {void}
  */
-export default function SearchInterface (paging, searchInterfaceId, resultEvents = [], hitTemplate = "default") {
-    this.paging = paging;
-    this.searchInterfaceId = searchInterfaceId;
-    this.resultEvents = resultEvents;
-    this.hitTemplate = hitTemplate;
+export default function SearchInterface(
+  paging,
+  searchInterfaceId,
+  resultEvents = [],
+  hitTemplate = "default",
+) {
+  this.paging = paging;
+  this.searchInterfaceId = searchInterfaceId;
+  this.resultEvents = resultEvents;
+  this.hitTemplate = hitTemplate;
 
-    /**
-     * The current abor controller.
-     * @type {String}
-    */
-    this.currentController = null;
+  /**
+   * The current abor controller.
+   * @type {String}
+   */
+  this.currentController = null;
 
-    /**
-    * List with results of the search.
-    * @type {Object[]}
-    */
-    this.searchResults = [];
+  /**
+   * List with results of the search.
+   * @type {Object[]}
+   */
+  this.searchResults = [];
 
-    /**
-     * The search state. Can have the values: "aborted", "failed", "finished", "instantiated", "running".
-     *  @type {String}
-     */
-    this.searchState = "instantiated";
+  /**
+   * The search state. Can have the values: "aborted", "failed", "finished", "instantiated", "running".
+   *  @type {String}
+   */
+  this.searchState = "instantiated";
 
-    /**
-     * Timeout for request to a search interface.
-     * @type {Number}
-     */
-    this.timeout = this.timeout ?? 5000;
+  /**
+   * Timeout for request to a search interface.
+   * @type {Number}
+   */
+  this.timeout = this.timeout ?? 5000;
 
-    /**
-     * Total number of hits.
-     * @type {Number}
-     */
-    this.totalHits = 0;
+  /**
+   * Total number of hits.
+   * @type {Number}
+   */
+  this.totalHits = 0;
 }
 
 /**
@@ -59,7 +64,9 @@ export default function SearchInterface (paging, searchInterfaceId, resultEvents
  * @returns {void}
  */
 SearchInterface.prototype.createPossibleActions = function () {
-    throw new Error("This function must be overridden by the sub search interface!");
+  throw new Error(
+    "This function must be overridden by the sub search interface!",
+  );
 };
 
 /**
@@ -69,7 +76,9 @@ SearchInterface.prototype.createPossibleActions = function () {
  * @returns {void}
  */
 SearchInterface.prototype.search = function () {
-    throw new Error("This function must be overridden by the sub search interface!");
+  throw new Error(
+    "This function must be overridden by the sub search interface!",
+  );
 };
 
 /**
@@ -77,11 +86,11 @@ SearchInterface.prototype.search = function () {
  * @returns {void}
  */
 SearchInterface.prototype.abortRequest = function () {
-    if (this.currentController instanceof AbortController) {
-        this.searchState = "aborted";
-        this.currentController.abort();
-        this.currentController = null;
-    }
+  if (this.currentController instanceof AbortController) {
+    this.searchState = "aborted";
+    this.currentController.abort();
+    this.currentController = null;
+  }
 };
 
 /**
@@ -89,7 +98,7 @@ SearchInterface.prototype.abortRequest = function () {
  * @returns {void}
  */
 SearchInterface.prototype.clearSearchResults = function () {
-    this.searchResults = [];
+  this.searchResults = [];
 };
 
 /**
@@ -99,17 +108,21 @@ SearchInterface.prototype.clearSearchResults = function () {
  * @param {Object} extendedData Extended data for searchInterface.
  * @returns {Object} The normalized actions for SearchResult.
  */
-SearchInterface.prototype.normalizeResultEvents = function (resultEvents, searchResult, extendedData) {
-    const resultEventsAsObject = this.resultEventsToObject(resultEvents),
-        possibleActions = this.createPossibleActions(searchResult, extendedData);
+SearchInterface.prototype.normalizeResultEvents = function (
+  resultEvents,
+  searchResult,
+  extendedData,
+) {
+  const resultEventsAsObject = this.resultEventsToObject(resultEvents),
+    possibleActions = this.createPossibleActions(searchResult, extendedData);
 
-    Object.keys(resultEventsAsObject).forEach(event => {
-        Object.keys(resultEventsAsObject[event]).forEach(action => {
-            resultEventsAsObject[event][action] = possibleActions[action];
-        });
+  Object.keys(resultEventsAsObject).forEach((event) => {
+    Object.keys(resultEventsAsObject[event]).forEach((action) => {
+      resultEventsAsObject[event][action] = possibleActions[action];
     });
+  });
 
-    return resultEventsAsObject;
+  return resultEventsAsObject;
 };
 
 /**
@@ -118,15 +131,15 @@ SearchInterface.prototype.normalizeResultEvents = function (resultEvents, search
  * @returns {void}
  */
 SearchInterface.prototype.pushHitsToSearchResults = function (searchHits = []) {
-    this.totalHits = searchHits.length;
-    searchHits.forEach((searchHit, index) => {
-        const extendedSearchResult = Object.assign(searchHit, {
-            index: index,
-            searchInterfaceId: this.searchInterfaceId
-        });
-
-        this.pushHitToSearchResults(extendedSearchResult);
+  this.totalHits = searchHits.length;
+  searchHits.forEach((searchHit, index) => {
+    const extendedSearchResult = Object.assign(searchHit, {
+      index: index,
+      searchInterfaceId: this.searchInterfaceId,
     });
+
+    this.pushHitToSearchResults(extendedSearchResult);
+  });
 };
 
 /**
@@ -134,8 +147,10 @@ SearchInterface.prototype.pushHitsToSearchResults = function (searchHits = []) {
  * @param {Object} [searchResult={}] One search result of an search interface.
  * @returns {void}
  */
-SearchInterface.prototype.pushHitToSearchResults = function (searchResult = {}) {
-    this.searchResults.push(new SearchResult(searchResult));
+SearchInterface.prototype.pushHitToSearchResults = function (
+  searchResult = {},
+) {
+  this.searchResults.push(new SearchResult(searchResult));
 };
 
 /**
@@ -147,32 +162,35 @@ SearchInterface.prototype.pushHitToSearchResults = function (searchResult = {}) 
  * @param {String} contentType The content type for POST request defaulting to json.
  * @returns {Object[]} Parsed result with hits of request.
  */
-SearchInterface.prototype.requestSearch = async function (searchUrl, type, payload, contentType = "application/json;charset=UTF-8") {
-    let response = {},
-        resultData = {};
+SearchInterface.prototype.requestSearch = async function (
+  searchUrl,
+  type,
+  payload,
+  contentType = "application/json;charset=UTF-8",
+) {
+  let response = {},
+    resultData = {};
 
-    this.searchState = "running";
-    this.abortRequest();
-    this.currentController = new AbortController();
+  this.searchState = "running";
+  this.abortRequest();
+  this.currentController = new AbortController();
 
-    if (type === "GET") {
-        response = await this.sendGetRequest(searchUrl, contentType);
-    }
-    else if (type === "POST") {
-        response = await this.sendPostRequest(searchUrl, payload, contentType);
-    }
+  if (type === "GET") {
+    response = await this.sendGetRequest(searchUrl, contentType);
+  } else if (type === "POST") {
+    response = await this.sendPostRequest(searchUrl, payload, contentType);
+  }
 
-    if (response.status === 200) {
-        this.searchState = "finished";
-        resultData = response.data;
-    }
-    else {
-        this.searchState = "failed";
-        resultData.status = "error";
-        resultData.message = "error occured in xhr Request!" + response.statusText;
-    }
+  if (response.status === 200) {
+    this.searchState = "finished";
+    resultData = response.data;
+  } else {
+    this.searchState = "failed";
+    resultData.status = "error";
+    resultData.message = "error occured in xhr Request!" + response.statusText;
+  }
 
-    return resultData;
+  return resultData;
 };
 
 /**
@@ -181,14 +199,17 @@ SearchInterface.prototype.requestSearch = async function (searchUrl, type, paylo
  * @param {String} contentType The content type for the request, defaulting to json.
  * @returns {Promise} Result of GET request.
  */
-SearchInterface.prototype.sendGetRequest = function (searchUrl, contentType = "application/json;charset=UTF-8") {
-    return axios.get(searchUrl, {
-        headers: {
-            "Content-Type": contentType
-        },
-        signal: this.currentController.signal,
-        timeout: this.timeout
-    });
+SearchInterface.prototype.sendGetRequest = function (
+  searchUrl,
+  contentType = "application/json;charset=UTF-8",
+) {
+  return axios.get(searchUrl, {
+    headers: {
+      "Content-Type": contentType,
+    },
+    signal: this.currentController.signal,
+    timeout: this.timeout,
+  });
 };
 
 /**
@@ -198,14 +219,18 @@ SearchInterface.prototype.sendGetRequest = function (searchUrl, contentType = "a
  * @param {String} contentType The content type for the request, defaulting to json.
  * @returns {Promise} Result of POST request.
  */
-SearchInterface.prototype.sendPostRequest = function (searchUrl, payload, contentType = "application/json;charset=UTF-8") {
-    return axios.post(searchUrl, payload, {
-        headers: {
-            "Content-Type": contentType
-        },
-        signal: this.currentController.signal,
-        timeout: this.timeout
-    });
+SearchInterface.prototype.sendPostRequest = function (
+  searchUrl,
+  payload,
+  contentType = "application/json;charset=UTF-8",
+) {
+  return axios.post(searchUrl, payload, {
+    headers: {
+      "Content-Type": contentType,
+    },
+    signal: this.currentController.signal,
+    timeout: this.timeout,
+  });
 };
 
 /**
@@ -214,15 +239,15 @@ SearchInterface.prototype.sendPostRequest = function (searchUrl, payload, conten
  * @returns {Object} The result events as object.
  */
 SearchInterface.prototype.resultEventsToObject = function (resultEvents) {
-    const resultEventsAsObject = {};
+  const resultEventsAsObject = {};
 
-    Object.entries(resultEvents).forEach(([key, values]) => {
-        resultEventsAsObject[key] = {};
+  Object.entries(resultEvents).forEach(([key, values]) => {
+    resultEventsAsObject[key] = {};
 
-        values.forEach(value => {
-            resultEventsAsObject[key][value] = {};
-        });
+    values.forEach((value) => {
+      resultEventsAsObject[key][value] = {};
     });
+  });
 
-    return resultEventsAsObject;
+  return resultEventsAsObject;
 };

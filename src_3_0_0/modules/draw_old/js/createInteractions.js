@@ -1,4 +1,4 @@
-import {Select, Modify, Draw} from "ol/interaction.js";
+import { Select, Modify, Draw } from "ol/interaction.js";
 import createStyleModule from "./style/createStyle";
 import main from "../js/main";
 
@@ -8,33 +8,33 @@ import main from "../js/main";
  * @param {Object} styleSettings the settings of the current style
  * @returns {module:ol/interaction/Draw} draw interaction
  */
-function createDrawInteraction (state, styleSettings) {
-    return new Draw({
-        source: main.getApp().config.globalProperties.$layer.getSource(),
-        type: state.drawType.geometry,
-        style: createStyleModule.createStyle(state, styleSettings),
-        freehand: state.freeHand
-    });
+function createDrawInteraction(state, styleSettings) {
+  return new Draw({
+    source: main.getApp().config.globalProperties.$layer.getSource(),
+    type: state.drawType.geometry,
+    style: createStyleModule.createStyle(state, styleSettings),
+    freehand: state.freeHand,
+  });
 }
 /**
  * Creates a modify interaction and returns it.
  * @param  {module:ol/layer/Vector} layer The layer in which the features are drawn.
  * @returns {module:ol/interaction/Modify} The modify interaction.
  */
-function createModifyInteraction (layer) {
-    return new Modify({
-        source: layer.getSource()
-    });
+function createModifyInteraction(layer) {
+  return new Modify({
+    source: layer.getSource(),
+  });
 }
 /**
  * Creates a modifyAttributes interaction and returns it.
  * @param  {module:ol/layer/Vector} layer The layer in which the features are drawn.
  * @returns {module:ol/interaction/Modify} The modify interaction.
  */
-function createModifyAttributesInteraction (layer) {
-    return new Modify({
-        source: layer.getSource()
-    });
+function createModifyAttributesInteraction(layer) {
+  return new Modify({
+    source: layer.getSource(),
+  });
 }
 /**
  * Creates a select interaction (for deleting features) and returns it.
@@ -42,16 +42,16 @@ function createModifyAttributesInteraction (layer) {
  * @param {Number} [hitTolerance=0] - Hit-detection tolerance. Pixels inside the radius around the given position will be checked for features.
  * @returns {module:ol/interaction/Select} The select interaction.
  */
-function createSelectInteraction (layer, hitTolerance = 0) {
-    return new Select({
-        layers: [layer],
-        hitTolerance: hitTolerance
-    });
+function createSelectInteraction(layer, hitTolerance = 0) {
+  return new Select({
+    layers: [layer],
+    hitTolerance: hitTolerance,
+  });
 }
 
 export {
-    createDrawInteraction,
-    createModifyInteraction,
-    createModifyAttributesInteraction,
-    createSelectInteraction
+  createDrawInteraction,
+  createModifyInteraction,
+  createModifyAttributesInteraction,
+  createSelectInteraction,
 };

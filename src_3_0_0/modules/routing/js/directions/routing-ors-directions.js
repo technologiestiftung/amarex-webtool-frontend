@@ -1,9 +1,9 @@
 import axios from "axios";
 import state from "./../../store/stateRouting";
 import store from "../../../../app-store";
-import {RoutingDirections} from "../classes/routing-directions";
-import {RoutingDirectionsStep} from "../classes/routing-directions-step";
-import {RoutingDirectionsSegment} from "../classes/routing-directions-segment";
+import { RoutingDirections } from "../classes/routing-directions";
+import { RoutingDirectionsStep } from "../classes/routing-directions-step";
+import { RoutingDirectionsSegment } from "../classes/routing-directions-segment";
 import routingOrsSpeedProfile from "../speedprofiles/routing-ors-speedprofiles";
 import routingOrsAvoidOption from "../avoidoptions/routing-ors-avoidoptions";
 
@@ -13,17 +13,24 @@ import routingOrsAvoidOption from "../avoidoptions/routing-ors-avoidoptions";
  * @param {String} speedProfile set by the user
  * @returns {String} translated service value
  */
-function routingOrsPreference (preference, speedProfile) {
-    const preferenceConfigs = store.getters["Modules/Routing/directionsSettings"]?.customPreferences;
+function routingOrsPreference(preference, speedProfile) {
+  const preferenceConfigs =
+    store.getters["Modules/Routing/directionsSettings"]?.customPreferences;
 
-    if (preferenceConfigs && preferenceConfigs[speedProfile]?.includes(preference)) {
-        return preference.toLowerCase();
-    }
-    switch (preference) {
-        case "RECOMMENDED": return "recommended";
-        case "SHORTEST": return "shortest";
-        default: throw new Error("Fehlende Preference Übersetzung");
-    }
+  if (
+    preferenceConfigs &&
+    preferenceConfigs[speedProfile]?.includes(preference)
+  ) {
+    return preference.toLowerCase();
+  }
+  switch (preference) {
+    case "RECOMMENDED":
+      return "recommended";
+    case "SHORTEST":
+      return "shortest";
+    default:
+      throw new Error("Fehlende Preference Übersetzung");
+  }
 }
 
 /**
@@ -39,99 +46,101 @@ function routingOrsPreference (preference, speedProfile) {
  * @param {Boolean} [params.instructions] if the instructions should be requested
  * @returns {RoutingDirections} routingDirections
  */
-async function fetchRoutingOrsDirections ({
-    coordinates,
-    language,
-    transformCoordinatesToLocal,
-    speedProfile,
-    avoidSpeedProfileOptions,
-    preference,
-    avoidPolygons,
-    instructions
+async function fetchRoutingOrsDirections({
+  coordinates,
+  language,
+  transformCoordinatesToLocal,
+  speedProfile,
+  avoidSpeedProfileOptions,
+  preference,
+  avoidPolygons,
+  instructions,
 }) {
-    const url = getRoutingDirectionsSettingsUrl(speedProfile);
-    let result = null,
-        feature = null,
-        first = null,
-        second = null,
-        localCoordinates = null,
-        direction = null,
-        response = null;
+  const url = getRoutingDirectionsSettingsUrl(speedProfile);
+  let result = null,
+    feature = null,
+    first = null,
+    second = null,
+    localCoordinates = null,
+    direction = null,
+    response = null;
 
-    try {
-        response = await axios.post(url, {
-            coordinates: coordinates,
-            language: language,
-            options: {
-                ...avoidSpeedProfileOptions.length > 0 && {avoid_features: avoidSpeedProfileOptions.map(o => routingOrsAvoidOption(o.id, speedProfile))},
-                avoid_polygons: avoidPolygons
-            },
-            preference: routingOrsPreference(preference, speedProfile),
-            units: "m",
-            geometry: true,
-            instructions: instructions
-        });
-    }
-    catch (e) {
-        if (e.response?.status === 404) {
-            throw new Error(i18next.t("common:modules.routing.errors.noRouteFound"));
-        }
-        if (e.response?.data?.error) {
-            if (e.response.data.error.code === 2003) {
-                throw new Error(i18next.t("common:modules.routing.errors.avoidAreaBig"));
-            }
-        }
-        throw new Error(i18next.t("common:modules.routing.errors.errorRouteFetch"));
-    }
-
-    result = response.data;
-    feature = result.features[0];
-    first = await transformCoordinatesToLocal([
-        feature.bbox[0],
-        feature.bbox[1]
-    ]);
-    second = await transformCoordinatesToLocal([
-        feature.bbox[2],
-        feature.bbox[3]
-    ]);
-    localCoordinates = [];
-
-    for (const coords of feature.geometry.coordinates) {
-        localCoordinates.push(await transformCoordinatesToLocal(coords));
-    }
-    direction = new RoutingDirections({
-        bbox: [first[0], first[1], second[0], second[1]],
-        lineString: localCoordinates,
-        distance: feature.properties.summary.distance,
-        duration: feature.properties.summary.duration,
-        lineStringWaypointIndex: feature.properties.way_points
+  try {
+    response = await axios.post(url, {
+      coordinates: coordinates,
+      language: language,
+      options: {
+        ...(avoidSpeedProfileOptions.length > 0 && {
+          avoid_features: avoidSpeedProfileOptions.map((o) =>
+            routingOrsAvoidOption(o.id, speedProfile),
+          ),
+        }),
+        avoid_polygons: avoidPolygons,
+      },
+      preference: routingOrsPreference(preference, speedProfile),
+      units: "m",
+      geometry: true,
+      instructions: instructions,
     });
-
-    if (feature.properties.segments) {
-        // One Segment represents directions from one waypoint to another
-        for (const segment of feature.properties.segments) {
-            const directionSegment = new RoutingDirectionsSegment({
-                distance: segment.distance,
-                duration: segment.duration,
-                steps: []
-            });
-
-            for (const step of segment.steps) {
-                directionSegment.steps.push(
-                    new RoutingDirectionsStep({
-                        distance: step.distance,
-                        duration: step.duration,
-                        instruction: step.instruction,
-                        name: step.name,
-                        type: step.type,
-                        waypoints: step.way_points
-                    })
-                );
-            }
-            direction.segments.push(directionSegment);
-        }
+  } catch (e) {
+    if (e.response?.status === 404) {
+      throw new Error(i18next.t("common:modules.routing.errors.noRouteFound"));
     }
-    return direction;
+    if (e.response?.data?.error) {
+      if (e.response.data.error.code === 2003) {
+        throw new Error(
+          i18next.t("common:modules.routing.errors.avoidAreaBig"),
+        );
+      }
+    }
+    throw new Error(i18next.t("common:modules.routing.errors.errorRouteFetch"));
+  }
+
+  result = response.data;
+  feature = result.features[0];
+  first = await transformCoordinatesToLocal([feature.bbox[0], feature.bbox[1]]);
+  second = await transformCoordinatesToLocal([
+    feature.bbox[2],
+    feature.bbox[3],
+  ]);
+  localCoordinates = [];
+
+  for (const coords of feature.geometry.coordinates) {
+    localCoordinates.push(await transformCoordinatesToLocal(coords));
+  }
+  direction = new RoutingDirections({
+    bbox: [first[0], first[1], second[0], second[1]],
+    lineString: localCoordinates,
+    distance: feature.properties.summary.distance,
+    duration: feature.properties.summary.duration,
+    lineStringWaypointIndex: feature.properties.way_points,
+  });
+
+  if (feature.properties.segments) {
+    // One Segment represents directions from one waypoint to another
+    for (const segment of feature.properties.segments) {
+      const directionSegment = new RoutingDirectionsSegment({
+        distance: segment.distance,
+        duration: segment.duration,
+        steps: [],
+      });
+
+      for (const step of segment.steps) {
+        directionSegment.steps.push(
+          new RoutingDirectionsStep({
+            distance: step.distance,
+            duration: step.duration,
+            instruction: step.instruction,
+            name: step.name,
+            type: step.type,
+            waypoints: step.way_points,
+          }),
+        );
+      }
+      direction.segments.push(directionSegment);
+    }
+  }
+  return direction;
 }
 
 /**
@@ -139,24 +148,28 @@ async function fetchRoutingOrsDirections ({
  * @param {String} speedProfile current speedProfile
  * @returns {Object} the url
  */
-function getRoutingDirectionsSettingsUrl (speedProfile) {
-    const path = `v2/directions/${routingOrsSpeedProfile(speedProfile)}/geojson`;
-    let serviceUrl = store.getters.restServiceById(state.directionsSettings.serviceId).url,
-        url;
+function getRoutingDirectionsSettingsUrl(speedProfile) {
+  const path = `v2/directions/${routingOrsSpeedProfile(speedProfile)}/geojson`;
+  let serviceUrl = store.getters.restServiceById(
+      state.directionsSettings.serviceId,
+    ).url,
+    url;
 
-    if (serviceUrl.endsWith("/")) {
-        serviceUrl += path;
-    }
-    else {
-        serviceUrl = serviceUrl + "/" + path;
-    }
-    if (serviceUrl.startsWith("/")) {
-        url = new URL(serviceUrl, window.location.origin);
-    }
-    else {
-        url = new URL(serviceUrl);
-    }
-    return url;
+  if (serviceUrl.endsWith("/")) {
+    serviceUrl += path;
+  } else {
+    serviceUrl = serviceUrl + "/" + path;
+  }
+  if (serviceUrl.startsWith("/")) {
+    url = new URL(serviceUrl, window.location.origin);
+  } else {
+    url = new URL(serviceUrl);
+  }
+  return url;
 }
 
-export {fetchRoutingOrsDirections, getRoutingDirectionsSettingsUrl, routingOrsPreference};
+export {
+  fetchRoutingOrsDirections,
+  getRoutingDirectionsSettingsUrl,
+  routingOrsPreference,
+};

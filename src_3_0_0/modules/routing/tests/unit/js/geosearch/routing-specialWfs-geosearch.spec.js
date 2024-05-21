@@ -1,13 +1,16 @@
 import axios from "axios";
 import store from "../../../../../../app-store";
-import {expect} from "chai";
+import { expect } from "chai";
 import sinon from "sinon";
-import {RoutingGeosearchResult} from "../../../../js/classes/routing-geosearch-result";
-import {fetchRoutingSpecialWfsGeosearch, makeWFSRequest} from "../../../../js/geosearch/routing-specialWfs-geosearch";
+import { RoutingGeosearchResult } from "../../../../js/classes/routing-geosearch-result";
+import {
+  fetchRoutingSpecialWfsGeosearch,
+  makeWFSRequest,
+} from "../../../../js/geosearch/routing-specialWfs-geosearch";
 
 describe("src_3_0_0/modules/routing/js/geosearch/routing-specialWfs-geosearch.js", () => {
-    const makeWFSRequestStub = sinon.stub(),
-        sampleResponseData = `<?xml version='1.0' encoding="UTF-8"?>
+  const makeWFSRequestStub = sinon.stub(),
+    sampleResponseData = `<?xml version='1.0' encoding="UTF-8"?>
     <wfs:FeatureCollection
        xmlns:ms="http://mapserver.gis.umn.edu/mapserver"
        xmlns:gml="http://www.opengis.net/gml"
@@ -39,67 +42,70 @@ describe("src_3_0_0/modules/routing/js/geosearch/routing-specialWfs-geosearch.js
       </gml:featureMember>
     </wfs:FeatureCollection>`;
 
-    beforeEach(() => {
-        sinon.stub(i18next, "t").callsFake((...args) => args);
-        store.getters = {
-            restServiceById: () => ({url: "tmp"})
-        };
-        store.state.Modules.Routing.geosearch.propertyNames = ["ms:LABEL_TEXT"];
-        store.state.Modules.Routing.geosearch.typeName = "ms:strasse_nr";
-        store.state.Modules.Routing.geosearch.geometryName = "ms:msGeometry";
+  beforeEach(() => {
+    sinon.stub(i18next, "t").callsFake((...args) => args);
+    store.getters = {
+      restServiceById: () => ({ url: "tmp" }),
+    };
+    store.state.Modules.Routing.geosearch.propertyNames = ["ms:LABEL_TEXT"];
+    store.state.Modules.Routing.geosearch.typeName = "ms:strasse_nr";
+    store.state.Modules.Routing.geosearch.geometryName = "ms:msGeometry";
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  describe("should fetchRoutingSpecialWfsGeosearch", () => {
+    it("should process result correct", async () => {
+      makeWFSRequestStub.resolves({
+        status: 200,
+        data: sampleResponseData,
+      });
+      sinon.stub(axios, "post").callsFake(makeWFSRequestStub);
+
+      const result = await fetchRoutingSpecialWfsGeosearch("testsearch", {
+          restServiceById: () => ({ url: "tmp" }),
+          state: {
+            Modules: {
+              Routing: {
+                geosearch: {
+                  propertyNames: ["ms:LABEL_TEXT"],
+                  typeName: "ms:strasse_nr",
+                  geometryName: "ms:msGeometry",
+                },
+              },
+            },
+          },
+        }),
+        expectedResult = [
+          new RoutingGeosearchResult(
+            [726717.541907, 5434034.009161],
+            "Dachauplatz 8",
+            "25832",
+          ),
+        ];
+
+      expect(result).deep.to.equal(expectedResult);
     });
 
-    afterEach(() => {
-        sinon.restore();
+    it("should throw error with status", async () => {
+      sinon.stub(axios, "post").returns(
+        new Promise((_, reject) =>
+          reject({
+            status: 999,
+            message: "testerror",
+          }),
+        ),
+      );
+
+      try {
+        await makeWFSRequest("testsearch");
+        // should not reach here
+        expect(true).to.be.false;
+      } catch (error) {
+        expect(error.message).to.equal("testerror"); // Compare the error message
+      }
     });
-
-    describe("should fetchRoutingSpecialWfsGeosearch", () => {
-        it("should process result correct", async () => {
-            makeWFSRequestStub.resolves({
-                status: 200,
-                data: sampleResponseData
-            });
-            sinon.stub(axios, "post").callsFake(makeWFSRequestStub);
-
-            const result = await fetchRoutingSpecialWfsGeosearch("testsearch", {
-                    restServiceById: () => ({url: "tmp"}),
-                    state: {
-                        Modules: {
-                            Routing: {
-                                geosearch: {
-                                    propertyNames: ["ms:LABEL_TEXT"],
-                                    typeName: "ms:strasse_nr",
-                                    geometryName: "ms:msGeometry"
-                                }
-                            }
-                        }
-                    }
-                }),
-
-                expectedResult = [
-                    new RoutingGeosearchResult([726717.541907, 5434034.009161], "Dachauplatz 8", "25832")
-                ];
-
-            expect(result).deep.to.equal(expectedResult);
-        });
-
-
-        it("should throw error with status", async () => {
-            sinon.stub(axios, "post").returns(
-                new Promise((_, reject) => reject({
-                    status: 999,
-                    message: "testerror"
-                }))
-            );
-
-            try {
-                await makeWFSRequest("testsearch");
-                // should not reach here
-                expect(true).to.be.false;
-            }
-            catch (error) {
-                expect(error.message).to.equal("testerror"); // Compare the error message
-            }
-        });
-    });
+  });
 });

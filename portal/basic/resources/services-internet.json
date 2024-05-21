@@ -6,16 +6,16 @@
     "typ": "WFS",
     "featureType": "deetest_linie",
     "featurePrefix": "de.hh.up",
-    "outputFormat" : "image/png",
+    "outputFormat": "image/png",
     "version": "1.1.0",
     "featureNS": "https://registry.gdi-de.org/id/de.hh.up",
     "gfiAttributes": "showAll",
     "gfiTheme": "default",
-    "layerAttribution":"nicht vorhanden",
-	"legendURL":"",
-	"hitTolerance":"",
-	"datasets":[],
-	"urlIsVisible":true
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [],
+    "urlIsVisible": true
   },
   {
     "id": "lgvpolygon",
@@ -29,11 +29,11 @@
     "featureNS": "https://registry.gdi-de.org/id/de.hh.up",
     "gfiAttributes": "showAll",
     "gfiTheme": "default",
-    "layerAttribution":"nicht vorhanden",
-	"legendURL":"",
-	"hitTolerance":"",
-	"datasets":[],
-	"urlIsVisible":true
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [],
+    "urlIsVisible": true
   },
   {
     "id": "lgvpoint",
@@ -47,11 +47,11 @@
     "featureNS": "https://registry.gdi-de.org/id/de.hh.up",
     "gfiAttributes": "showAll",
     "gfiTheme": "default",
-    "layerAttribution":"nicht vorhanden",
-	"legendURL":"",
-	"hitTolerance":"",
-	"datasets":[],
-	"urlIsVisible":true
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [],
+    "urlIsVisible": true
   },
   {
     "id": "topplus_wmts",
@@ -65,10 +65,7 @@
     "layers": "web",
     "format": "image/png",
     "version": "1.0.0",
-    "origin": [
-      -3803165.98427,
-      8805908.08285
-    ],
+    "origin": [-3803165.98427, 8805908.08285],
     "isBaseLayer": true,
     "style": "default",
     "transparent": false,
@@ -122,12 +119,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/6D10BE89-636D-4359-8B27-4AB4DCA02F3A",
         "md_name": "Digitales Höhenmodell Hamburg DGM 1",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "Höhe"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["Höhe"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -163,12 +156,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/2BEDFB21-C533-4C67-AF0F-66A5213F9B7B",
         "md_name": "Digitale Orthophotos (belaubt) Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "Orthofotografie"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["Orthofotografie"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -204,12 +193,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -255,9 +240,7 @@
           "Bevölkerung und Gesellschaft",
           "Regionen und Städte"
         ],
-        "kategorie_inspire": [
-          "Versorgungswirtschaft und staatliche Dienste"
-        ],
+        "kategorie_inspire": ["Versorgungswirtschaft und staatliche Dienste"],
         "kategorie_organisation": "Behörde für Arbeit, Gesundheit, Soziales, Familie und Integration"
       }
     ],
@@ -294,12 +277,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -336,12 +315,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -378,12 +353,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -420,12 +391,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -460,13 +427,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/e085712c-1cce-49b6-a4c3-c28e58a76da4",
         "md_name": "100 Jahre Stadtgrün - Stadtpark und Volkspark",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Bildung, Kultur und Sport",
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Bildung, Kultur und Sport", "Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Behörde für Umwelt, Klima, Energie und Agrarwirtschaft (BUKEA)"
       }
     ],
@@ -494,13 +456,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/e085712c-1cce-49b6-a4c3-c28e58a76da4",
         "md_name": "100 Jahre Stadtgrün - Stadtpark und Volkspark",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Bildung, Kultur und Sport",
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Bildung, Kultur und Sport", "Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Behörde für Umwelt, Klima, Energie und Agrarwirtschaft (BUKEA)"
       }
     ],
@@ -544,12 +501,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/010d7370-5306-4b63-983b-59cdd6e94c3c",
         "md_name": "Krankenhäuser Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Gesundheit"
-        ],
-        "kategorie_inspire": [
-          "Versorgungswirtschaft und staatliche Dienste"
-        ],
+        "kategorie_opendata": ["Gesundheit"],
+        "kategorie_inspire": ["Versorgungswirtschaft und staatliche Dienste"],
         "kategorie_organisation": "Behörde für Arbeit, Gesundheit, Soziales, Familie und Integration"
       }
     ],
@@ -602,12 +555,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/010d7370-5306-4b63-983b-59cdd6e94c3c",
         "md_name": "Krankenhäuser Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Gesundheit"
-        ],
-        "kategorie_inspire": [
-          "Versorgungswirtschaft und staatliche Dienste"
-        ],
+        "kategorie_opendata": ["Gesundheit"],
+        "kategorie_inspire": ["Versorgungswirtschaft und staatliche Dienste"],
         "kategorie_organisation": "Behörde für Arbeit, Gesundheit, Soziales, Familie und Integration"
       }
     ],
@@ -635,12 +584,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/d0361a3c-27ed-4c5a-bcbe-08a4a3793f29",
         "md_name": "Naturschutzgebiete in Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "Schutzgebiete"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["Schutzgebiete"],
         "kategorie_organisation": "Behörde für Umwelt, Klima, Energie und Agrarwirtschaft (BUKEA)"
       }
     ],
@@ -680,12 +625,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/2e348904-17de-48fd-9376-8f6fd2750feb",
         "md_name": "ALKIS Verwaltungsgrenzen Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -814,12 +755,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/2535cb6b-0447-4c4a-9bcd-63c1ac3e0622",
         "md_name": "Hamburger Trinkwasserdatenbank (ZTEIS)",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "Gesundheit und Sicherheit"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["Gesundheit und Sicherheit"],
         "kategorie_organisation": "Behörde für Justiz und Verbraucherschutz (BJV)"
       }
     ],
@@ -854,12 +791,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/38c52173-45cf-41bc-bdf8-373de9d12947",
         "md_name": "Eventlotse Daten Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Bildung, Kultur und Sport"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Bildung, Kultur und Sport"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Hamburg Convention Bureau GmbH"
       }
     ],
@@ -902,12 +835,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/38c52173-45cf-41bc-bdf8-373de9d12947",
         "md_name": "Eventlotse Daten Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Bildung, Kultur und Sport"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Bildung, Kultur und Sport"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Hamburg Convention Bureau GmbH"
       }
     ],
@@ -998,9 +927,7 @@
           "Regionen und Städte",
           "Bevölkerung und Gesellschaft"
         ],
-        "kategorie_inspire": [
-          "Versorgungswirtschaft und staatliche Dienste"
-        ],
+        "kategorie_inspire": ["Versorgungswirtschaft und staatliche Dienste"],
         "kategorie_organisation": "Behörde für Schule und Berufsbildung"
       }
     ],
@@ -1038,12 +965,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/c8898da0-c19e-453e-9e48-0de68994a3cb",
         "md_name": "Bike + Ride Anlagen Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Verkehr"
-        ],
-        "kategorie_inspire": [
-          "Verkehrsnetze"
-        ],
+        "kategorie_opendata": ["Verkehr"],
+        "kategorie_inspire": ["Verkehrsnetze"],
         "kategorie_organisation": "Behörde für Verkehr und Mobilitätswende (BVM)"
       }
     ],
@@ -1080,12 +1003,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -1122,12 +1041,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -1164,12 +1079,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -1206,12 +1117,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/001719df-6619-40b7-aefe-32e8aaf49337",
         "md_name": "GeoBasisKarten Hamburg",
         "bbox": "466251.4292773354,5844577.894672247,661887.1257872104,6042030.30978004",
-        "kategorie_opendata": [
-          "Umwelt"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Umwelt"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Landesbetrieb Geoinformation und Vermessung"
       }
     ],
@@ -1258,12 +1165,8 @@
         "rs_id": "https://registry.gdi-de.org/id/de.hh/08d1158c-2b5b-49cb-91c3-0ca9fe22a955",
         "md_name": "StadtRAD-Stationen Hamburg",
         "bbox": "461468.96892897453,5916367.229806512,587010.9095989474,5980347.755797674",
-        "kategorie_opendata": [
-          "Verkehr"
-        ],
-        "kategorie_inspire": [
-          "kein INSPIRE-Thema"
-        ],
+        "kategorie_opendata": ["Verkehr"],
+        "kategorie_inspire": ["kein INSPIRE-Thema"],
         "kategorie_organisation": "Behörde für Verkehr und Mobilitätswende (BVM)"
       }
     ],
@@ -1272,9 +1175,7 @@
       "filter": "properties/serviceName%20eq%20%27HH_STA_StadtRad%27 and properties/layerName%20eq%20%27Fahrraeder%27",
       "expand": "Observations($orderby=phenomenonTime%20desc;$top=1),Thing($expand=Locations)"
     },
-    "related_wms_layers": [
-      "5741"
-    ],
+    "related_wms_layers": ["5741"],
     "epsg": "EPSG:4326",
     "gfiTheme": "default",
     "styleId": "18105",

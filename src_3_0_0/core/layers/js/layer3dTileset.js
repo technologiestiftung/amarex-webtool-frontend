@@ -1,4 +1,4 @@
-import {Tileset} from "@masterportal/masterportalapi/src";
+import { Tileset } from "@masterportal/masterportalapi/src";
 import Layer3d from "./layer3d";
 import layerCollection from "./layerCollection";
 
@@ -11,23 +11,25 @@ import layerCollection from "./layerCollection";
  * @param {Object} attributes The attributes of the layer configuration.
  * @returns {void}
  */
-export default function Layer3dTileset (attributes) {
-    const defaultAttributes = {
-        cesium3DTilesetDefaults: {
-            maximumScreenSpaceError: "6"
-        },
-        transparency: 0
-    };
+export default function Layer3dTileset(attributes) {
+  const defaultAttributes = {
+    cesium3DTilesetDefaults: {
+      maximumScreenSpaceError: "6",
+    },
+    transparency: 0,
+  };
 
-    this.hiddenObjects = {};
-    this.lastUpdatedSymbol = Symbol("_lastUpdated");
-    this.attributes = Object.assign(defaultAttributes, attributes);
-    Layer3d.call(this, this.attributes);
-    this.setFeatureVisibilityLastUpdated(Date.now());
-    if (this.attributes.hiddenFeatures && this.attributes.visibility === true) {
-        this.addToHiddenObjects(this.attributes.hiddenFeatures);
-    }
-    this.layer.tileset?.then(tileset => tileset.tileVisible?.addEventListener(this.applyStyle.bind(this)));
+  this.hiddenObjects = {};
+  this.lastUpdatedSymbol = Symbol("_lastUpdated");
+  this.attributes = Object.assign(defaultAttributes, attributes);
+  Layer3d.call(this, this.attributes);
+  this.setFeatureVisibilityLastUpdated(Date.now());
+  if (this.attributes.hiddenFeatures && this.attributes.visibility === true) {
+    this.addToHiddenObjects(this.attributes.hiddenFeatures);
+  }
+  this.layer.tileset?.then((tileset) =>
+    tileset.tileVisible?.addEventListener(this.applyStyle.bind(this)),
+  );
 }
 
 Layer3dTileset.prototype = Object.create(Layer3d.prototype);
@@ -39,9 +41,9 @@ Layer3dTileset.prototype = Object.create(Layer3d.prototype);
  * @returns {void}
  */
 Layer3dTileset.prototype.createLayer = function (attributes) {
-    this.setLayer(new Tileset(attributes));
-    this.setOpacity(attributes.transparency);
-    this.setVisible(attributes.visibility, mapCollection.getMap("3D"));
+  this.setLayer(new Tileset(attributes));
+  this.setOpacity(attributes.transparency);
+  this.setVisible(attributes.visibility, mapCollection.getMap("3D"));
 };
 
 /**
@@ -50,7 +52,7 @@ Layer3dTileset.prototype.createLayer = function (attributes) {
  * @returns {void}
  */
 Layer3dTileset.prototype.setOpacity = function (transparency = 0) {
-    this.getLayer()?.setOpacity((100 - transparency) / 100);
+  this.getLayer()?.setOpacity((100 - transparency) / 100);
 };
 
 /**
@@ -61,16 +63,15 @@ Layer3dTileset.prototype.setOpacity = function (transparency = 0) {
  * @returns {void}
  */
 Layer3dTileset.prototype.setVisible = function (visibility, map) {
-    this.getLayer()?.setVisible(visibility, map);
-    // this.setFeatureVisibilityLastUpdated(Date.now());
-    if (visibility) {
-        this.createLegend();
-    }
-    if (visibility === false && this.attributes.hiddenFeatures) {
-        this.showObjects(this.attributes.hiddenFeatures);
-    }
+  this.getLayer()?.setVisible(visibility, map);
+  // this.setFeatureVisibilityLastUpdated(Date.now());
+  if (visibility) {
+    this.createLegend();
+  }
+  if (visibility === false && this.attributes.hiddenFeatures) {
+    this.showObjects(this.attributes.hiddenFeatures);
+  }
 };
-
 
 /**
  * Sets values to the cesium layer.
@@ -78,10 +79,10 @@ Layer3dTileset.prototype.setVisible = function (visibility, map) {
  * @returns {void}
  */
 Layer3dTileset.prototype.updateLayerValues = function (attributes) {
-    if (this.get("visibility") !== attributes.visibility) {
-        this.setVisible(attributes.visibility, mapCollection.getMap("3D"));
-    }
-    this.setOpacity(attributes.transparency);
+  if (this.get("visibility") !== attributes.visibility) {
+    this.setVisible(attributes.visibility, mapCollection.getMap("3D"));
+  }
+  this.setOpacity(attributes.transparency);
 };
 
 /**
@@ -90,18 +91,21 @@ Layer3dTileset.prototype.updateLayerValues = function (attributes) {
  * @param {Boolean} allLayers if true, updates all layers.
  * @return {void}
  */
-Layer3dTileset.prototype.addToHiddenObjects = function (toHide, allLayers = false) {
-    let updateLayer = allLayers;
+Layer3dTileset.prototype.addToHiddenObjects = function (
+  toHide,
+  allLayers = false,
+) {
+  let updateLayer = allLayers;
 
-    toHide.forEach((id) => {
-        if (!this.hiddenObjects[id]) {
-            this.hiddenObjects[id] = new Set();
-            updateLayer = true;
-        }
-    });
-    if (updateLayer) {
-        this.setFeatureVisibilityLastUpdated(Date.now());
+  toHide.forEach((id) => {
+    if (!this.hiddenObjects[id]) {
+      this.hiddenObjects[id] = new Set();
+      updateLayer = true;
     }
+  });
+  if (updateLayer) {
+    this.setFeatureVisibilityLastUpdated(Date.now());
+  }
 };
 
 /**
@@ -110,18 +114,21 @@ Layer3dTileset.prototype.addToHiddenObjects = function (toHide, allLayers = fals
  * @return {void}
  */
 Layer3dTileset.prototype.showObjects = function (unHide) {
-    unHide.forEach((id) => {
-        if (this.hiddenObjects[id]) {
-            this.hiddenObjects[id].forEach((feature) => {
-                if (feature instanceof Cesium.Cesium3DTileFeature || feature instanceof Cesium.Cesium3DTilePointFeature) {
-                    if (this.featureExists(feature)) {
-                        feature.show = true;
-                    }
-                }
-            });
-            delete this.hiddenObjects[id];
+  unHide.forEach((id) => {
+    if (this.hiddenObjects[id]) {
+      this.hiddenObjects[id].forEach((feature) => {
+        if (
+          feature instanceof Cesium.Cesium3DTileFeature ||
+          feature instanceof Cesium.Cesium3DTilePointFeature
+        ) {
+          if (this.featureExists(feature)) {
+            feature.show = true;
+          }
         }
-    });
+      });
+      delete this.hiddenObjects[id];
+    }
+  });
 };
 
 /**
@@ -130,10 +137,12 @@ Layer3dTileset.prototype.showObjects = function (unHide) {
  * @return {Boolean} Feature exists
  */
 Layer3dTileset.prototype.featureExists = function (feature) {
-    return feature &&
-        feature.content &&
-        !feature.content.isDestroyed() &&
-        !feature.content.batchTable.isDestroyed();
+  return (
+    feature &&
+    feature.content &&
+    !feature.content.isDestroyed() &&
+    !feature.content.batchTable.isDestroyed()
+  );
 };
 
 /**
@@ -142,14 +151,13 @@ Layer3dTileset.prototype.featureExists = function (feature) {
  * @returns {void}
  */
 Layer3dTileset.prototype.applyStyle = function (tile) {
-    if (tile.content instanceof Cesium.Composite3DTileContent) {
-        for (let i = 0; i < tile.content.innerContents.length; i++) {
-            this.styleContent(tile.content.innerContents[i]);
-        }
+  if (tile.content instanceof Cesium.Composite3DTileContent) {
+    for (let i = 0; i < tile.content.innerContents.length; i++) {
+      this.styleContent(tile.content.innerContents[i]);
     }
-    else {
-        this.styleContent(tile.content);
-    }
+  } else {
+    this.styleContent(tile.content);
+  }
 };
 
 /**
@@ -157,15 +165,19 @@ Layer3dTileset.prototype.applyStyle = function (tile) {
  * @returns {void}
  */
 Layer3dTileset.prototype.updateHiddenFeatureList = function () {
-    const visibleTilesetLayer = layerCollection.getLayers().filter(layer => layer.get("typ") === "TileSet3D");
-    let allHiddenFeatures = [];
+  const visibleTilesetLayer = layerCollection
+    .getLayers()
+    .filter((layer) => layer.get("typ") === "TileSet3D");
+  let allHiddenFeatures = [];
 
-    visibleTilesetLayer.forEach(tileSetLayer => {
-        const hd = tileSetLayer.get("hiddenFeatures");
+  visibleTilesetLayer.forEach((tileSetLayer) => {
+    const hd = tileSetLayer.get("hiddenFeatures");
 
-        allHiddenFeatures = allHiddenFeatures.concat(hd || []);
-    });
-    visibleTilesetLayer.forEach(tileSetLayer => tileSetLayer.addToHiddenObjects(allHiddenFeatures, true));
+    allHiddenFeatures = allHiddenFeatures.concat(hd || []);
+  });
+  visibleTilesetLayer.forEach((tileSetLayer) =>
+    tileSetLayer.addToHiddenObjects(allHiddenFeatures, true),
+  );
 };
 
 /**
@@ -174,29 +186,32 @@ Layer3dTileset.prototype.updateHiddenFeatureList = function () {
  * @return {void}
  */
 Layer3dTileset.prototype.styleContent = function (content) {
-    if (this.get("hiddenFeatures")) {
-        this.updateHiddenFeatureList();
-    }
-    if (!content[this.lastUpdatedSymbol] || content[this.lastUpdatedSymbol] < this.get("featureVisibilityLastUpdated")) {
-        const batchSize = content.featuresLength;
+  if (this.get("hiddenFeatures")) {
+    this.updateHiddenFeatureList();
+  }
+  if (
+    !content[this.lastUpdatedSymbol] ||
+    content[this.lastUpdatedSymbol] < this.get("featureVisibilityLastUpdated")
+  ) {
+    const batchSize = content.featuresLength;
 
-        for (let batchId = 0; batchId < batchSize; batchId++) {
-            const feature = content.getFeature(batchId);
+    for (let batchId = 0; batchId < batchSize; batchId++) {
+      const feature = content.getFeature(batchId);
 
-            if (feature) {
-                let id = feature.getProperty("id");
+      if (feature) {
+        let id = feature.getProperty("id");
 
-                if (!id) {
-                    id = `${content.url}${batchId}`;
-                }
-                if (this.hiddenObjects[id]) {
-                    this.hiddenObjects[id].add(feature);
-                    feature.show = false;
-                }
-            }
+        if (!id) {
+          id = `${content.url}${batchId}`;
         }
-        content[this.lastUpdatedSymbol] = Date.now();
+        if (this.hiddenObjects[id]) {
+          this.hiddenObjects[id].add(feature);
+          feature.show = false;
+        }
+      }
     }
+    content[this.lastUpdatedSymbol] = Date.now();
+  }
 };
 
 /**
@@ -205,6 +220,5 @@ Layer3dTileset.prototype.styleContent = function (content) {
  * @returns {void}
  */
 Layer3dTileset.prototype.setFeatureVisibilityLastUpdated = function (value) {
-    this.set("featureVisibilityLastUpdated", value);
+  this.set("featureVisibilityLastUpdated", value);
 };
-

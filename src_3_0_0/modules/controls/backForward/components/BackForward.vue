@@ -1,5 +1,5 @@
 <script>
-import {mapGetters, mapMutations} from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import ControlIcon from "../../components/ControlIcon.vue";
 
 /**
@@ -8,61 +8,59 @@ import ControlIcon from "../../components/ControlIcon.vue";
  * @module modules/controls/BackForward
  */
 export default {
-    name: "BackForward",
-    components: {
-        ControlIcon
+  name: "BackForward",
+  components: {
+    ControlIcon,
+  },
+  computed: {
+    ...mapGetters("Controls/BackForward", [
+      "backAvailable",
+      "forthAvailable",
+      "iconBack",
+      "iconForward",
+      "supportedDevices",
+    ]),
+  },
+  mounted() {
+    mapCollection.getMap("2D").on("moveend", this.memorizeMap);
+  },
+  beforeUnmount() {
+    mapCollection.getMap("2D").un("moveend", this.memorizeMap);
+  },
+  methods: {
+    ...mapMutations("Controls/BackForward", [
+      "backward",
+      "forward",
+      "memorize",
+    ]),
+    memorizeMap() {
+      this.memorize(mapCollection.getMapView("2D"));
     },
-    computed: {
-        ...mapGetters("Controls/BackForward", [
-            "backAvailable",
-            "forthAvailable",
-            "iconBack",
-            "iconForward",
-            "supportedDevices"
-        ])
+    moveForward() {
+      this.forward(mapCollection.getMap("2D"));
     },
-    mounted () {
-        mapCollection.getMap("2D").on("moveend", this.memorizeMap);
+    moveBackward() {
+      this.backward(mapCollection.getMap("2D"));
     },
-    beforeUnmount () {
-        mapCollection.getMap("2D").un("moveend", this.memorizeMap);
-    },
-    methods: {
-        ...mapMutations("Controls/BackForward", [
-            "backward",
-            "forward",
-            "memorize"
-        ]),
-        memorizeMap () {
-            this.memorize(mapCollection.getMapView("2D"));
-        },
-        moveForward () {
-            this.forward(mapCollection.getMap("2D"));
-        },
-        moveBackward () {
-            this.backward(mapCollection.getMap("2D"));
-        }
-    }
+  },
 };
 </script>
 
 <template>
-    <div
-        id="back-forward-buttons"
-    >
-        <ControlIcon
-            class="forward"
-            :title="$t(`common:modules.controls.backForward.stepForward`)"
-            :disabled="!forthAvailable"
-            :icon-name="iconForward"
-            :on-click="moveForward"
-        />
-        <ControlIcon
-            class="backward"
-            :title="$t(`common:modules.controls.backForward.stepBackward`)"
-            :disabled="!backAvailable"
-            :icon-name="iconBack"
-            :on-click="moveBackward"
-        />
-    </div>
+  <div id="back-forward-buttons">
+    <ControlIcon
+      class="forward"
+      :title="$t(`common:modules.controls.backForward.stepForward`)"
+      :disabled="!forthAvailable"
+      :icon-name="iconForward"
+      :on-click="moveForward"
+    />
+    <ControlIcon
+      class="backward"
+      :title="$t(`common:modules.controls.backForward.stepBackward`)"
+      :disabled="!backAvailable"
+      :icon-name="iconBack"
+      :on-click="moveBackward"
+    />
+  </div>
 </template>

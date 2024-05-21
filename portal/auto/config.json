@@ -3,12 +3,7 @@
     "map": {
       "mapView": {
         "backgroundImage": "https://geodienste.hamburg.de/lgv-config/img/backgroundCanvas.jpeg",
-        "extent": [
-          442800,
-          5809000,
-          738000,
-          6102200
-        ],
+        "extent": [442800, 5809000, 738000, 6102200],
         "startResolution": 5.2916638091682096
       },
       "controls": {
@@ -27,7 +22,7 @@
     "tree": {
       "type": "auto",
       "addLayerButton": {
-        "active" :true,
+        "active": true,
         "searchBar": {
           "active": true,
           "searchInterfaceInstanceId": "elasticSearch_0",
@@ -155,16 +150,9 @@
             "searchParcels": true,
             "searchStreetKey": true,
             "resultEvents": {
-              "onClick": [
-                "setMarker",
-                "zoomToResult"
-              ],
-              "onHover": [
-                "setMarker"
-              ],
-              "buttons": [
-                "startRouting"
-              ]
+              "onClick": ["setMarker", "zoomToResult"],
+              "onHover": ["setMarker"],
+              "buttons": ["startRouting"]
             }
           },
           {
@@ -187,18 +175,9 @@
               "coordinate": "_source.geometry.coordinates"
             },
             "resultEvents": {
-              "onClick": [
-                "setMarker",
-                "zoomToResult"
-              ],
-              "onHover": [
-                "setMarker"
-              ],
-              "buttons": [
-                "startRouting",
-                "setMarker",
-                "zoomToResult"
-              ]
+              "onClick": ["setMarker", "zoomToResult"],
+              "onHover": ["setMarker"],
+              "buttons": ["startRouting", "setMarker", "zoomToResult"]
             }
           },
           {
@@ -210,10 +189,7 @@
               "id": "query",
               "params": {
                 "query_string": "",
-                "typ": [
-                  "sensorthings",
-                  "wms"
-                ],
+                "typ": ["sensorthings", "wms"],
                 "size": 30
               }
             },
@@ -224,19 +200,11 @@
               "id": "_source.id",
               "source": "_source",
               "layerId": "_source.id",
-              "toolTip": [
-                "_source.name",
-                "_source.datasets.md_name"
-              ]
+              "toolTip": ["_source.name", "_source.datasets.md_name"]
             },
             "resultEvents": {
-              "onClick": [
-                "addLayerToTopicTree"
-              ],
-              "buttons": [
-                "showInTree",
-                "showLayerInfo"
-              ]
+              "onClick": ["addLayerToTopicTree"],
+              "buttons": ["showInTree", "showLayerInfo"]
             }
           }
         ]
@@ -257,7 +225,7 @@
             "heightValueBuilding": "200",
             "zoomLevel": 5
           },
-        
+
           {
             "type": "openConfig"
           },
@@ -342,10 +310,7 @@
           "shortname": "Schriftplatte",
           "showInLayerTree": false,
           "preview": {
-            "center": [
-              564510.09,
-              5935255.24
-            ],
+            "center": [564510.09, 5935255.24],
             "zoomLevel": 3
           }
         },

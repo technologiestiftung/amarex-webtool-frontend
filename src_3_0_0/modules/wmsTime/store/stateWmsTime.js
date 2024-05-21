@@ -18,24 +18,24 @@
  * @property {Boolean} timeSlider.playing Whether the playback function is currently active in either of the TimeSlider windows.
  */
 const state = {
-    layerAppendix: "_secondLayer",
-    windowWidth: 1280,
-    visibility: true,
-    layerSwiper: {
-        active: false,
-        isMoving: false,
-        swiper: null,
-        targetLayer: null,
-        sourceLayer: null,
-        valueX: null
-    },
-    timeSlider: {
-        active: false,
-        currentLayerId: "",
-        objects: [],
-        playbackDelay: 1,
-        playing: false
-    }
+  layerAppendix: "_secondLayer",
+  windowWidth: 1280,
+  visibility: true,
+  layerSwiper: {
+    active: false,
+    isMoving: false,
+    swiper: null,
+    targetLayer: null,
+    sourceLayer: null,
+    valueX: null,
+  },
+  timeSlider: {
+    active: false,
+    currentLayerId: "",
+    objects: [],
+    playbackDelay: 1,
+    playing: false,
+  },
 };
 
 export default state;

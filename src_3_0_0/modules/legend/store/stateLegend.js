@@ -17,17 +17,17 @@
  */
 
 export default {
-    type: "legend",
-    icon: "bi-lightbulb",
-    hasMouseMapInteractions: false,
-    description: "common:modules.legend.description",
-    name: "common:modules.legend.name",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
-    sldVersion: "",
+  type: "legend",
+  icon: "bi-lightbulb",
+  hasMouseMapInteractions: false,
+  description: "common:modules.legend.description",
+  name: "common:modules.legend.name",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
+  sldVersion: "",
 
-    legends: [],
-    waitingLegendsInfos: [],
-    layerInfoLegend: {},
-    preparedLegend: null
+  legends: [],
+  waitingLegendsInfos: [],
+  layerInfoLegend: {},
+  preparedLegend: null,
 };

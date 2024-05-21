@@ -1,6 +1,10 @@
 import SearchInterface from "./searchInterface";
 import store from "../../../app-store";
-import {search, setGazetteerUrl, setShowGeographicIdentifier} from "@masterportal/masterportalapi/src/searchAddress";
+import {
+  search,
+  setGazetteerUrl,
+  setShowGeographicIdentifier,
+} from "@masterportal/masterportalapi/src/searchAddress";
 
 /**
  * The search interface to the gazetteer.
@@ -24,30 +28,43 @@ import {search, setGazetteerUrl, setShowGeographicIdentifier} from "@masterporta
  * @param {Boolean} [showGeographicIdentifier=false] Defines whether GeographicIdentifier should be displayed in the search result.
  * @returns {void}
  */
-export default function SearchInterfaceGazetteer ({serviceId, hitTemplate, resultEvents, searchAddress, searchDistricts, searchInterfaceId, searchHouseNumbers, searchParcels, searchStreetKey, searchStreets, showGeographicIdentifier} = {}) {
-    SearchInterface.call(this,
-        "client",
-        searchInterfaceId || "gazetteer",
-        resultEvents || {
-            onClick: ["setMarker", "zoomToResult"],
-            onHover: ["setMarker"],
-            buttons: ["startRouting"]
-        },
-        hitTemplate
-    );
+export default function SearchInterfaceGazetteer({
+  serviceId,
+  hitTemplate,
+  resultEvents,
+  searchAddress,
+  searchDistricts,
+  searchInterfaceId,
+  searchHouseNumbers,
+  searchParcels,
+  searchStreetKey,
+  searchStreets,
+  showGeographicIdentifier,
+} = {}) {
+  SearchInterface.call(
+    this,
+    "client",
+    searchInterfaceId || "gazetteer",
+    resultEvents || {
+      onClick: ["setMarker", "zoomToResult"],
+      onHover: ["setMarker"],
+      buttons: ["startRouting"],
+    },
+    hitTemplate,
+  );
 
-    this.serviceId = serviceId;
+  this.serviceId = serviceId;
 
-    this.showGeographicIdentifier = showGeographicIdentifier || false;
-    this.searchAddress = searchAddress || false;
-    this.searchDistricts = searchDistricts || false;
-    this.searchHouseNumbers = searchHouseNumbers || false;
-    this.searchParcels = searchParcels || false;
-    this.searchStreetKey = searchStreetKey || false;
-    this.searchStreets = searchStreets || false;
+  this.showGeographicIdentifier = showGeographicIdentifier || false;
+  this.searchAddress = searchAddress || false;
+  this.searchDistricts = searchDistricts || false;
+  this.searchHouseNumbers = searchHouseNumbers || false;
+  this.searchParcels = searchParcels || false;
+  this.searchStreetKey = searchStreetKey || false;
+  this.searchStreets = searchStreets || false;
 
-    setGazetteerUrl(store?.getters?.restServiceById(this.serviceId)?.url);
-    setShowGeographicIdentifier(this.showGeographicIdentifier);
+  setGazetteerUrl(store?.getters?.restServiceById(this.serviceId)?.url);
+  setShowGeographicIdentifier(this.showGeographicIdentifier);
 }
 
 SearchInterfaceGazetteer.prototype = Object.create(SearchInterface.prototype);
@@ -59,12 +76,12 @@ SearchInterfaceGazetteer.prototype = Object.create(SearchInterface.prototype);
  * @returns {void}
  */
 SearchInterfaceGazetteer.prototype.search = async function (searchInput) {
-    const searchResults = await this.startSearch(searchInput),
-        normalizedResults = this.normalizeResults(searchResults);
+  const searchResults = await this.startSearch(searchInput),
+    normalizedResults = this.normalizeResults(searchResults);
 
-    this.pushHitsToSearchResults(normalizedResults);
+  this.pushHitsToSearchResults(normalizedResults);
 
-    return this.searchResults;
+  return this.searchResults;
 };
 
 /**
@@ -73,32 +90,35 @@ SearchInterfaceGazetteer.prototype.search = async function (searchInput) {
  * @returns {void}
  */
 SearchInterfaceGazetteer.prototype.startSearch = async function (searchInput) {
-    let searchResults = [];
+  let searchResults = [];
 
-    try {
-        this.searchState = "running";
-        searchResults = search(searchInput, {
-            map: mapCollection.getMap("2D"),
-            searchAddress: this.searchAddress,
-            searchStreets: this.searchStreets,
-            searchDistricts: this.searchDistricts,
-            searchParcels: this.searchParcels,
-            searchStreetKey: this.searchStreetKey,
-            searchHouseNumbers: this.searchHouseNumbers
-        }, true);
+  try {
+    this.searchState = "running";
+    searchResults = search(
+      searchInput,
+      {
+        map: mapCollection.getMap("2D"),
+        searchAddress: this.searchAddress,
+        searchStreets: this.searchStreets,
+        searchDistricts: this.searchDistricts,
+        searchParcels: this.searchParcels,
+        searchStreetKey: this.searchStreetKey,
+        searchHouseNumbers: this.searchHouseNumbers,
+      },
+      true,
+    );
 
-        await searchResults;
-        this.searchState = "finished";
+    await searchResults;
+    this.searchState = "finished";
+  } catch (error) {
+    this.searchState = "aborted";
+    if (String(error) !== "AbortError: The user aborted a request.") {
+      this.searchState = "failed";
+      console.error(error);
     }
-    catch (error) {
-        this.searchState = "aborted";
-        if (String(error) !== "AbortError: The user aborted a request.") {
-            this.searchState = "failed";
-            console.error(error);
-        }
-    }
+  }
 
-    return searchResults;
+  return searchResults;
 };
 
 /**
@@ -107,21 +127,21 @@ SearchInterfaceGazetteer.prototype.startSearch = async function (searchInput) {
  * @returns {Object[]} The normalized search result.
  */
 SearchInterfaceGazetteer.prototype.normalizeResults = function (searchResults) {
-    const normalizedResults = [];
+  const normalizedResults = [];
 
-    searchResults.forEach(searchResult => {
-        const translatedType = this.getTranslationByType(searchResult.type);
+  searchResults.forEach((searchResult) => {
+    const translatedType = this.getTranslationByType(searchResult.type);
 
-        normalizedResults.push({
-            events: this.normalizeResultEvents(this.resultEvents, searchResult),
-            category: translatedType,
-            id: searchResult.name.replace(/ /g, "") + translatedType,
-            icon: "bi-signpost-split",
-            name: searchResult.name
-        });
+    normalizedResults.push({
+      events: this.normalizeResultEvents(this.resultEvents, searchResult),
+      category: translatedType,
+      id: searchResult.name.replace(/ /g, "") + translatedType,
+      icon: "bi-signpost-split",
+      name: searchResult.name,
     });
+  });
 
-    return normalizedResults;
+  return normalizedResults;
 };
 
 /**
@@ -130,16 +150,16 @@ SearchInterfaceGazetteer.prototype.normalizeResults = function (searchResults) {
  * @returns {String} The translation key.
  */
 SearchInterfaceGazetteer.prototype.getTranslationByType = function (type) {
-    const keys = {
-        addressAffixed: "common:modules.searchBar.type.address",
-        addressUnaffixed: "common:modules.searchBar.type.address",
-        district: "common:modules.searchBar.type.district",
-        houseNumbersForStreet: "common:modules.searchBar.type.address",
-        parcel: "common:modules.searchBar.type.parcel",
-        street: "common:modules.searchBar.type.street"
-    };
+  const keys = {
+    addressAffixed: "common:modules.searchBar.type.address",
+    addressUnaffixed: "common:modules.searchBar.type.address",
+    district: "common:modules.searchBar.type.district",
+    houseNumbersForStreet: "common:modules.searchBar.type.address",
+    parcel: "common:modules.searchBar.type.parcel",
+    street: "common:modules.searchBar.type.street",
+  };
 
-    return i18next.t(keys[type]);
+  return i18next.t(keys[type]);
 };
 
 /**
@@ -148,19 +168,24 @@ SearchInterfaceGazetteer.prototype.getTranslationByType = function (type) {
  * @param {Object} searchResult The search result of gazetter.
  * @returns {Object} The possible actions.
  */
-SearchInterfaceGazetteer.prototype.createPossibleActions = function (searchResult) {
-    const coords = [parseFloat(searchResult.geometry.coordinates[0]), parseFloat(searchResult.geometry.coordinates[1])];
+SearchInterfaceGazetteer.prototype.createPossibleActions = function (
+  searchResult,
+) {
+  const coords = [
+    parseFloat(searchResult.geometry.coordinates[0]),
+    parseFloat(searchResult.geometry.coordinates[1]),
+  ];
 
-    return {
-        setMarker: {
-            coordinates: coords
-        },
-        zoomToResult: {
-            coordinates: coords
-        },
-        startRouting: {
-            coordinates: coords,
-            name: searchResult.name
-        }
-    };
+  return {
+    setMarker: {
+      coordinates: coords,
+    },
+    zoomToResult: {
+      coordinates: coords,
+    },
+    startRouting: {
+      coordinates: coords,
+      name: searchResult.name,
+    },
+  };
 };

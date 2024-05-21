@@ -4,9 +4,9 @@ import getters from "./gettersLegend";
 import actions from "./actionsLegend";
 
 export default {
-    namespaced: true,
-    state,
-    actions,
-    mutations,
-    getters
+  namespaced: true,
+  state,
+  actions,
+  mutations,
+  getters,
 };

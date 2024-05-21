@@ -12,23 +12,23 @@ import store from "../../../app-store";
  */
 
 const layerUrlParams = {
-        LAYERS: setLayers,
-        MDID: setLayersByMetadataId
-    },
-    legacyLayerUrlParams = {
-        LAYERIDS: setLayerIds,
-        "MAP/LAYERIDS": setLayerIds,
-        "MAP/MDID": setLayersByMetadataId,
-        TRANSPARENCY: setLayerIds,
-        VISIBILITY: setLayerIds
-    };
+    LAYERS: setLayers,
+    MDID: setLayersByMetadataId,
+  },
+  legacyLayerUrlParams = {
+    LAYERIDS: setLayerIds,
+    "MAP/LAYERIDS": setLayerIds,
+    "MAP/MDID": setLayersByMetadataId,
+    TRANSPARENCY: setLayerIds,
+    VISIBILITY: setLayerIds,
+  };
 
 /**
  * Process the menu url params.
  * @returns {void}
  */
-function processLayerUrlParams () {
-    processUrlParams(layerUrlParams, legacyLayerUrlParams);
+function processLayerUrlParams() {
+  processUrlParams(layerUrlParams, legacyLayerUrlParams);
 }
 
 /**
@@ -36,11 +36,11 @@ function processLayerUrlParams () {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setLayers (params) {
-    const layers = JSON.parse(params.LAYERS);
+function setLayers(params) {
+  const layers = JSON.parse(params.LAYERS);
 
-    removeCurrentLayerFromLayerTree();
-    addLayerToLayerTree(layers);
+  removeCurrentLayerFromLayerTree();
+  addLayerToLayerTree(layers);
 }
 
 /**
@@ -48,20 +48,22 @@ function setLayers (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setLayerIds (params) {
-    const layerIds = (params.LAYERIDS || params["MAP/LAYERIDS"])?.split(","),
-        transparency = params.TRANSPARENCY?.split(","),
-        visibility = params.VISIBILITY?.split(",").map(value => value !== "false"),
-        layers = layerIds.map((id, index) => {
-            return {
-                id: id,
-                visibility: visibility ? visibility[index] : true,
-                transparency: transparency ? transparency[index] : 0
-            };
-        });
+function setLayerIds(params) {
+  const layerIds = (params.LAYERIDS || params["MAP/LAYERIDS"])?.split(","),
+    transparency = params.TRANSPARENCY?.split(","),
+    visibility = params.VISIBILITY?.split(",").map(
+      (value) => value !== "false",
+    ),
+    layers = layerIds.map((id, index) => {
+      return {
+        id: id,
+        visibility: visibility ? visibility[index] : true,
+        transparency: transparency ? transparency[index] : 0,
+      };
+    });
 
-    removeCurrentLayerFromLayerTree();
-    addLayerToLayerTree(layers);
+  removeCurrentLayerFromLayerTree();
+  addLayerToLayerTree(layers);
 }
 
 /**
@@ -69,47 +71,55 @@ function setLayerIds (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setLayersByMetadataId (params) {
-    const layerMetadataIds = (params.MDID || params["MAP/MDID"]).split(","),
-        baselayer = store.getters.layerConfigsByAttributes({baselayer: true})?.at(-1),
-        layers = [{
-            id: baselayer.id
-        }];
+function setLayersByMetadataId(params) {
+  const layerMetadataIds = (params.MDID || params["MAP/MDID"]).split(","),
+    baselayer = store.getters
+      .layerConfigsByAttributes({ baselayer: true })
+      ?.at(-1),
+    layers = [
+      {
+        id: baselayer.id,
+      },
+    ];
 
-    store.getters.allLayerConfigs.forEach(layerConfig => {
-        layerConfig?.datasets?.forEach(dataset => {
-            if (layerMetadataIds.includes(dataset.md_id)) {
-                layers.push({
-                    id: layerConfig.id
-                });
-            }
+  store.getters.allLayerConfigs.forEach((layerConfig) => {
+    layerConfig?.datasets?.forEach((dataset) => {
+      if (layerMetadataIds.includes(dataset.md_id)) {
+        layers.push({
+          id: layerConfig.id,
         });
+      }
     });
+  });
 
-    removeCurrentLayerFromLayerTree();
-    addLayerToLayerTree(layers);
+  removeCurrentLayerFromLayerTree();
+  addLayerToLayerTree(layers);
 }
 
 /**
  * Remove the current layers from layer tree.
  * @returns {void}
  */
-function removeCurrentLayerFromLayerTree () {
-    const currentLayerConfigs = store.getters.layerConfigsByAttributes({showInLayerTree: true}),
-        currentLayerIds = currentLayerConfigs.map(layer => layer.id);
+function removeCurrentLayerFromLayerTree() {
+  const currentLayerConfigs = store.getters.layerConfigsByAttributes({
+      showInLayerTree: true,
+    }),
+    currentLayerIds = currentLayerConfigs.map((layer) => layer.id);
 
-    currentLayerIds.forEach(layerId => {
-        store.dispatch("replaceByIdInLayerConfig", {
-            layerConfigs: [{
-                id: layerId,
-                layer: {
-                    id: layerId,
-                    showInLayerTree: false,
-                    visibility: false
-                }
-            }]
-        });
+  currentLayerIds.forEach((layerId) => {
+    store.dispatch("replaceByIdInLayerConfig", {
+      layerConfigs: [
+        {
+          id: layerId,
+          layer: {
+            id: layerId,
+            showInLayerTree: false,
+            visibility: false,
+          },
+        },
+      ],
     });
+  });
 }
 
 /**
@@ -117,31 +127,39 @@ function removeCurrentLayerFromLayerTree () {
  * @param {String[]} layers The layers.
  * @returns {void}
  */
-function addLayerToLayerTree (layers) {
-    layers.forEach((layer, index) => {
-        store.dispatch("addOrReplaceLayer", {
-            layerId: layer.id,
-            visibility: typeof layer.visibility === "boolean" ? layer.visibility : true,
-            transparency: layer.transparency || 0,
-            showInLayerTree: true,
-            zIndex: index
+function addLayerToLayerTree(layers) {
+  layers.forEach((layer, index) => {
+    store
+      .dispatch(
+        "addOrReplaceLayer",
+        {
+          layerId: layer.id,
+          visibility:
+            typeof layer.visibility === "boolean" ? layer.visibility : true,
+          transparency: layer.transparency || 0,
+          showInLayerTree: true,
+          zIndex: index,
         },
-        {root: true}).then((success) => {
-            if (!success) {
-                store.dispatch("Alerting/addSingleAlert", {
-                    content: i18next.t("common:core.layers.urlParamWarning", {layerId: layer.id}),
-                    category: "warning"
-                });
-            }
-        });
-    });
+        { root: true },
+      )
+      .then((success) => {
+        if (!success) {
+          store.dispatch("Alerting/addSingleAlert", {
+            content: i18next.t("common:core.layers.urlParamWarning", {
+              layerId: layer.id,
+            }),
+            category: "warning",
+          });
+        }
+      });
+  });
 }
 
 export default {
-    processLayerUrlParams,
-    setLayers,
-    setLayerIds,
-    setLayersByMetadataId,
-    removeCurrentLayerFromLayerTree,
-    addLayerToLayerTree
+  processLayerUrlParams,
+  setLayers,
+  setLayerIds,
+  setLayersByMetadataId,
+  removeCurrentLayerFromLayerTree,
+  addLayerToLayerTree,
 };

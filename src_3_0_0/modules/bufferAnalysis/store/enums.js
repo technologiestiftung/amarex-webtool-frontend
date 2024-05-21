@@ -8,6 +8,6 @@
  * @enum {Number}
  */
 export const ResultType = {
-    "OUTSIDE": 0,
-    "WITHIN": 1
+  OUTSIDE: 0,
+  WITHIN: 1,
 };
