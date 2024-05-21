@@ -252,7 +252,7 @@ const actions = {
         if (geometryType) {
           legendObj = legendDraw.prepare(geometryType, style, name);
         } else if (legendInfo?.name && legendInfo?.graphic) {
-        /** Style WMS */
+          /** Style WMS */
           legendObj = legendInfo;
         }
         if (Array.isArray(legendObj)) {

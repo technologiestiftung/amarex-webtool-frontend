@@ -76,14 +76,12 @@ describe("src_3_0_0/modules/wmsTime/store/actionsWmsTime.js", () => {
       dispatch = sinon.spy();
       id = "someId";
       state = Object.assign({}, initialState);
-      sinon
-        .stub(layerCollection, "getLayerById")
-        .returns({
-          name: "bester Layer der Welt",
-          values_: { id: "123" },
-          getSource: () => state.source,
-          attributes: { name: "bester Layer", time: true, url: "www.abc.de" },
-        });
+      sinon.stub(layerCollection, "getLayerById").returns({
+        name: "bester Layer der Welt",
+        values_: { id: "123" },
+        getSource: () => state.source,
+        attributes: { name: "bester Layer", time: true, url: "www.abc.de" },
+      });
     });
 
     it("should trigger the Parser to add a layer, add said layer to the tree", async () => {

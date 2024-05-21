@@ -81,12 +81,10 @@ describe("src_3_0_0/modules/featureLister/components/FeatureLister.vue", () => {
         };
       },
     });
-    sinon
-      .stub(getGfiFeatureModule, "getGfiFeature")
-      .returns({
-        getAttributesToShow: () => [{ key: "name", value: "Name" }],
-        getProperties: () => [{ key: "name", value: "Name" }],
-      });
+    sinon.stub(getGfiFeatureModule, "getGfiFeature").returns({
+      getAttributesToShow: () => [{ key: "name", value: "Name" }],
+      getProperties: () => [{ key: "name", value: "Name" }],
+    });
 
     store = createStore({
       modules: {

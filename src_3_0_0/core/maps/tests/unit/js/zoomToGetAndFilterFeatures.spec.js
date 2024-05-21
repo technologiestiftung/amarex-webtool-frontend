@@ -28,18 +28,16 @@ describe("src_3_0_0/core/maps/js/zoomToGetAndFilterFeatures.js", () => {
   });
 
   it("should call the axois request, if layer exists", () => {
-    const axiosSpy = sinon
-      .stub(axios, "get")
-      .callsFake(
-        () =>
-          new Promise((resolve) =>
-            resolve({
-              status: 200,
-              statusText: "OK",
-              data: exampleFeatureCollection,
-            }),
-          ),
-      );
+    const axiosSpy = sinon.stub(axios, "get").callsFake(
+      () =>
+        new Promise((resolve) =>
+          resolve({
+            status: 200,
+            statusText: "OK",
+            data: exampleFeatureCollection,
+          }),
+        ),
+    );
 
     sinon.stub(rawLayerList, "getLayerWhere").returns({ id: "id" });
 
@@ -49,18 +47,16 @@ describe("src_3_0_0/core/maps/js/zoomToGetAndFilterFeatures.js", () => {
 
   it("should return a Promise which resolves to Feature[] only including features including an allowed value for the given property", () => {
     sinon.stub(rawLayerList, "getLayerWhere").returns({ id: "id" });
-    sinon
-      .stub(axios, "get")
-      .callsFake(
-        () =>
-          new Promise((resolve) =>
-            resolve({
-              status: 200,
-              statusText: "OK",
-              data: exampleFeatureCollection,
-            }),
-          ),
-      );
+    sinon.stub(axios, "get").callsFake(
+      () =>
+        new Promise((resolve) =>
+          resolve({
+            status: 200,
+            statusText: "OK",
+            data: exampleFeatureCollection,
+          }),
+        ),
+    );
 
     getAndFilterFeatures(id, property, values).then((features) => {
       expect(features.length).to.equal(2);
