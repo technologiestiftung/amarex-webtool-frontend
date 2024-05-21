@@ -14,25 +14,25 @@ import Layer3dTerrain from "./layer3dTerrain";
 import Layer3dTileset from "./layer3dTileset";
 
 const layerTypes2d = {
-        GEOJSON: Layer2dVectorGeojson,
-        OAF: Layer2dVectorOaf,
-        SENSORTHINGS: Layer2dVectorSensorThings,
-        STATICIMAGE: Layer2dRasterStaticImage,
-        VECTORBASE: Layer2dVectorVectorbase,
-        VECTORTILE: Layer2dVectorTile,
-        WFS: Layer2dVectorWfs,
-        WMS: Layer2dRasterWms,
-        WMTS: Layer2dRasterWmts,
-        WMSTime: Layer2dRasterWmsTime
-    },
-    layerTypes3d = {
-        ENTITIES3D: Layer3dEntities,
-        TERRAIN3D: Layer3dTerrain,
-        TILESET3D: Layer3dTileset
-    },
-    layerTypesNotVisible3d = {
-        VECTORTILE: Layer2dVectorTile
-    };
+    GEOJSON: Layer2dVectorGeojson,
+    OAF: Layer2dVectorOaf,
+    SENSORTHINGS: Layer2dVectorSensorThings,
+    STATICIMAGE: Layer2dRasterStaticImage,
+    VECTORBASE: Layer2dVectorVectorbase,
+    VECTORTILE: Layer2dVectorTile,
+    WFS: Layer2dVectorWfs,
+    WMS: Layer2dRasterWms,
+    WMTS: Layer2dRasterWmts,
+    WMSTime: Layer2dRasterWmsTime,
+  },
+  layerTypes3d = {
+    ENTITIES3D: Layer3dEntities,
+    TERRAIN3D: Layer3dTerrain,
+    TILESET3D: Layer3dTileset,
+  },
+  layerTypesNotVisible3d = {
+    VECTORTILE: Layer2dVectorTile,
+  };
 
 /**
  * Creates layer instances.
@@ -40,62 +40,59 @@ const layerTypes2d = {
  * @param {String} mapMode The current map mode.
  * @returns {Layer} The layer instance.
  */
-function createLayer (layerConf, mapMode) {
-    let layer,
-        typ;
+function createLayer(layerConf, mapMode) {
+  let layer, typ;
 
-    if (layerConf?.typ?.toUpperCase() === "WMS" && layerConf?.time) {
-        typ = "WMSTime";
-    }
-    else {
-        typ = layerConf?.typ?.toUpperCase();
-    }
+  if (layerConf?.typ?.toUpperCase() === "WMS" && layerConf?.time) {
+    typ = "WMSTime";
+  } else {
+    typ = layerConf?.typ?.toUpperCase();
+  }
 
-    if (layerTypes2d[typ]) {
-        layer = new layerTypes2d[typ](layerConf);
-    }
-    else if (mapMode === "3D" && layerTypes3d[typ]) {
-        layer = new layerTypes3d[typ](layerConf);
-    }
+  if (layerTypes2d[typ]) {
+    layer = new layerTypes2d[typ](layerConf);
+  } else if (mapMode === "3D" && layerTypes3d[typ]) {
+    layer = new layerTypes3d[typ](layerConf);
+  }
 
-    return layer;
+  return layer;
 }
 
 /**
  * Return 3D layer types
  * @returns {Array} The 3D layer types as an array.
  */
-function getLayerTypes3d () {
-    return Object.keys(layerTypes3d);
+function getLayerTypes3d() {
+  return Object.keys(layerTypes3d);
 }
 
 /**
  * Return layer types not visible in 3D.
  * @returns {Array} layer types not visible in 3D.
  */
-function getLayerTypesNotVisibleIn3d () {
-    return Object.keys(layerTypesNotVisible3d);
+function getLayerTypesNotVisibleIn3d() {
+  return Object.keys(layerTypesNotVisible3d);
 }
 
 /**
  * Return vector layer types
  * @returns {Array} The vectorLayer types as an array.
  */
-function getVectorLayerTypes () {
-    const vectorLayerTypes = [];
+function getVectorLayerTypes() {
+  const vectorLayerTypes = [];
 
-    Object.keys(layerTypes2d).forEach(layerTyp => {
-        if (layerTypes2d[layerTyp].prototype instanceof Layer2dVector) {
-            vectorLayerTypes.push(layerTyp);
-        }
-    });
+  Object.keys(layerTypes2d).forEach((layerTyp) => {
+    if (layerTypes2d[layerTyp].prototype instanceof Layer2dVector) {
+      vectorLayerTypes.push(layerTyp);
+    }
+  });
 
-    return vectorLayerTypes;
+  return vectorLayerTypes;
 }
 
 export default {
-    createLayer,
-    getLayerTypes3d,
-    getLayerTypesNotVisibleIn3d,
-    getVectorLayerTypes
+  createLayer,
+  getLayerTypes3d,
+  getLayerTypesNotVisibleIn3d,
+  getVectorLayerTypes,
 };

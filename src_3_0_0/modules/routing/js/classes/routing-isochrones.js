@@ -3,39 +3,39 @@
  * @class RoutingIsochrones
  */
 class RoutingIsochrones {
-    /**
-     * creates new RoutingIsochrones
-     * @param {Array<{Number, Number, Number, Number}>} bbox of isochrones.
-     */
-    constructor (bbox) {
-        this.bbox = bbox;
-        this.areas = [];
-    }
+  /**
+   * creates new RoutingIsochrones
+   * @param {Array<{Number, Number, Number, Number}>} bbox of isochrones.
+   */
+  constructor(bbox) {
+    this.bbox = bbox;
+    this.areas = [];
+  }
 
-    /**
-     * BBOX of all areas.
-     * @returns {Array<{Number, Number, Number, Number}>} bbox of all areas.
-     */
-    getBbox () {
-        return this.bbox;
-    }
+  /**
+   * BBOX of all areas.
+   * @returns {Array<{Number, Number, Number, Number}>} bbox of all areas.
+   */
+  getBbox() {
+    return this.bbox;
+  }
 
-    /**
-     * Get all areas of isochrones.
-     * @returns {RoutingIsochronesArea} areas of isochrones.
-     */
-    getAreas () {
-        return this.areas;
-    }
+  /**
+   * Get all areas of isochrones.
+   * @returns {RoutingIsochronesArea} areas of isochrones.
+   */
+  getAreas() {
+    return this.areas;
+  }
 
-    /**
-     * Adds area.
-     * @param {RoutingIsochronesArea} area to add
-     * @returns {void}.
-     */
-    addArea (area) {
-        return this.areas.push(area);
-    }
+  /**
+   * Adds area.
+   * @param {RoutingIsochronesArea} area to add
+   * @returns {void}.
+   */
+  addArea(area) {
+    return this.areas.push(area);
+  }
 }
 
-export {RoutingIsochrones};
+export { RoutingIsochrones };

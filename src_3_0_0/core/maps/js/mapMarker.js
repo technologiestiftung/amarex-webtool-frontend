@@ -9,9 +9,15 @@ import store from "../../../app-store";
  * @param {Object} mapMarker The mapMarker config of config.json file.
  * @returns {void}
  */
-function initializeMapMarkers (mapMarker) {
-    store.dispatch("Maps/addLayer", createMapMarker("POINT", mapMarker?.pointStyleId));
-    store.dispatch("Maps/addLayer", createMapMarker("POLYGON", mapMarker?.polygonStyleId));
+function initializeMapMarkers(mapMarker) {
+  store.dispatch(
+    "Maps/addLayer",
+    createMapMarker("POINT", mapMarker?.pointStyleId),
+  );
+  store.dispatch(
+    "Maps/addLayer",
+    createMapMarker("POLYGON", mapMarker?.polygonStyleId),
+  );
 }
 
 /**
@@ -21,10 +27,10 @@ function initializeMapMarkers (mapMarker) {
  * @param {String} styleId The style id for the map marker style.
  * @returns {ol/layer/Vector} The vector layer for the map marker.
  */
-function createMapMarker (geometryType, styleId) {
-    const mapMarker = getCreateFunctionByType(geometryType)(styleId);
+function createMapMarker(geometryType, styleId) {
+  const mapMarker = getCreateFunctionByType(geometryType)(styleId);
 
-    return mapMarker;
+  return mapMarker;
 }
 
 /**
@@ -32,13 +38,13 @@ function createMapMarker (geometryType, styleId) {
  * @param {String} geometryType The geometry type of the map marker.
  * @returns {Function} The create function for the given geometry type.
  */
-function getCreateFunctionByType (geometryType) {
-    const markerTypes = {
-        POINT: createPointMarker,
-        POLYGON: createPolygonMarker
-    };
+function getCreateFunctionByType(geometryType) {
+  const markerTypes = {
+    POINT: createPointMarker,
+    POLYGON: createPolygonMarker,
+  };
 
-    return markerTypes[geometryType];
+  return markerTypes[geometryType];
 }
 
 /**
@@ -46,34 +52,33 @@ function getCreateFunctionByType (geometryType) {
  * @param {String} [styleId="defaultMapMarkerPoint"] The style id for the point map marker style.
  * @returns {ol/layer/Vector} The vector layer for the point map marker.
  */
-function createPointMarker (styleId = "defaultMapMarkerPoint") {
-    return new VectorLayer({
-        altitudeMode: "absolute",
-        alwaysOnTop: true,
-        id: "marker_point_layer",
-        name: "markerPoint",
-        source: new VectorSource(),
-        styleId: styleId,
-        visible: true
-    });
+function createPointMarker(styleId = "defaultMapMarkerPoint") {
+  return new VectorLayer({
+    altitudeMode: "absolute",
+    alwaysOnTop: true,
+    id: "marker_point_layer",
+    name: "markerPoint",
+    source: new VectorSource(),
+    styleId: styleId,
+    visible: true,
+  });
 }
-
 
 /**
  * Creates a vector layer for the polygon map marker.
  * @param {String} [styleId="defaultMapMarkerPolygon"] The style id for the polygon map marker style.
  * @returns {ol/layer/Vector} The vector layer for the polygon map marker.
  */
-function createPolygonMarker (styleId = "defaultMapMarkerPolygon") {
-    return new VectorLayer({
-        altitudeMode: "relativeToGround",
-        alwaysOnTop: true,
-        id: "marker_polygon_layer",
-        name: "markerPolygon",
-        source: new VectorSource(),
-        styleId: styleId,
-        visible: true
-    });
+function createPolygonMarker(styleId = "defaultMapMarkerPolygon") {
+  return new VectorLayer({
+    altitudeMode: "relativeToGround",
+    alwaysOnTop: true,
+    id: "marker_polygon_layer",
+    name: "markerPolygon",
+    source: new VectorSource(),
+    styleId: styleId,
+    visible: true,
+  });
 }
 
 /**
@@ -82,14 +87,19 @@ function createPolygonMarker (styleId = "defaultMapMarkerPolygon") {
  * @param {ol/Feature} feature The ol feature that is added to the map.
  * @returns {void}
  */
-function addFeatureToMapMarkerLayer (layerId, feature) {
-    const markerLayer = getMapmarkerLayerById(layerId),
-        styleId = markerLayer.get("styleId"),
-        styleObject = styleList.returnStyleObject(styleId),
-        featureStyle = createStyle.createStyle(styleObject, feature, false, Config.wfsImgPath);
+function addFeatureToMapMarkerLayer(layerId, feature) {
+  const markerLayer = getMapmarkerLayerById(layerId),
+    styleId = markerLayer.get("styleId"),
+    styleObject = styleList.returnStyleObject(styleId),
+    featureStyle = createStyle.createStyle(
+      styleObject,
+      feature,
+      false,
+      Config.wfsImgPath,
+    );
 
-    feature.setStyle(featureStyle);
-    markerLayer.getSource().addFeature(feature);
+  feature.setStyle(featureStyle);
+  markerLayer.getSource().addFeature(feature);
 }
 
 /**
@@ -97,10 +107,10 @@ function addFeatureToMapMarkerLayer (layerId, feature) {
  * @param {String} layerId The layer id of the map marker.
  * @returns {void}
  */
-function removeMapMarker (layerId) {
-    const markerLayer = getMapmarkerLayerById(layerId);
+function removeMapMarker(layerId) {
+  const markerLayer = getMapmarkerLayerById(layerId);
 
-    markerLayer.getSource().clear();
+  markerLayer.getSource().clear();
 }
 
 /**
@@ -108,15 +118,18 @@ function removeMapMarker (layerId) {
  * @param {String} layerId The layer id of the map marker.
  * @returns {ol/layer/Vector} The map marker layer.
  */
-function getMapmarkerLayerById (layerId) {
-    return mapCollection.getMap("2D")?.getLayers().getArray()?.find(layer => layer.get("id") === layerId);
+function getMapmarkerLayerById(layerId) {
+  return mapCollection
+    .getMap("2D")
+    ?.getLayers()
+    .getArray()
+    ?.find((layer) => layer.get("id") === layerId);
 }
 
-
 export default {
-    initializeMapMarkers,
-    createMapMarker,
-    addFeatureToMapMarkerLayer,
-    removeMapMarker,
-    getMapmarkerLayerById
+  initializeMapMarkers,
+  createMapMarker,
+  addFeatureToMapMarkerLayer,
+  removeMapMarker,
+  getMapmarkerLayerById,
 };

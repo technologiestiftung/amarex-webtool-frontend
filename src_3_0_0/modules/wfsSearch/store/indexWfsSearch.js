@@ -4,9 +4,9 @@ import getters from "./gettersWfsSearch";
 import mutations from "./mutationsWfsSearch";
 
 export default {
-    namespaced: true,
-    state,
-    actions,
-    mutations,
-    getters
+  namespaced: true,
+  state,
+  actions,
+  mutations,
+  getters,
 };

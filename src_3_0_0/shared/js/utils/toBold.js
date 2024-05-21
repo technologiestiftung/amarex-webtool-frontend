@@ -4,13 +4,17 @@
  * @example Title text; After the function ran, the text in front of and including the semicolon ("Title text") should be bold.
  * @returns {String} The modified string where everything before the semicolon gets displayed bold.
  */
-export default function toBold (value) {
-    const oldProfiles = value;
-    let newProfiles = "";
+export default function toBold(value) {
+  const oldProfiles = value;
+  let newProfiles = "";
 
-    oldProfiles.replaceAll("|", "<br>");
+  oldProfiles.replaceAll("|", "<br>");
 
-    newProfiles = oldProfiles.split("|").map(substring => substring.split(";")).map(([first, last]) => [`<b>${first}</b>`, last].join("; ")).join("<br>");
+  newProfiles = oldProfiles
+    .split("|")
+    .map((substring) => substring.split(";"))
+    .map(([first, last]) => [`<b>${first}</b>`, last].join("; "))
+    .join("<br>");
 
-    return newProfiles;
+  return newProfiles;
 }

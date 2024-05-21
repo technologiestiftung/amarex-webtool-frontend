@@ -5,23 +5,23 @@
  * @param {String} delimiter the delimiter to split with or undefined if no split should be made
  * @returns {String[]} a new list with unique value
  */
-export default function splitListWithDelimiter (list, delimiter) {
-    if (!Array.isArray(list) || typeof delimiter !== "string") {
-        return list;
+export default function splitListWithDelimiter(list, delimiter) {
+  if (!Array.isArray(list) || typeof delimiter !== "string") {
+    return list;
+  }
+  const result = {};
+
+  list.forEach((entry) => {
+    if (typeof entry !== "string") {
+      result[entry] = true;
+      return;
     }
-    const result = {};
+    const parts = entry.split(delimiter);
 
-    list.forEach(entry => {
-        if (typeof entry !== "string") {
-            result[entry] = true;
-            return;
-        }
-        const parts = entry.split(delimiter);
-
-        parts.forEach(part => {
-            result[part] = true;
-        });
+    parts.forEach((part) => {
+      result[part] = true;
     });
+  });
 
-    return Object.keys(result);
+  return Object.keys(result);
 }

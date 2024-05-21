@@ -1,8 +1,8 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateBaselayerSwitcher from "./stateBaselayerSwitcher";
 
 const getters = {
-    ...generateSimpleGetters(stateBaselayerSwitcher)
+  ...generateSimpleGetters(stateBaselayerSwitcher),
 };
 
 export default getters;

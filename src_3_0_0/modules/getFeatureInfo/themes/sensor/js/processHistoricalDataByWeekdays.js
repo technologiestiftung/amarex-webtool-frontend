@@ -11,11 +11,13 @@ import dayjs from "dayjs";
  * @param {Object} observation Observation for which a 0 o'clock observation should be created.
  * @returns {Object} The Observations with startDate.
  */
-export function createZeroTimeObservation (observation) {
-    const zeroTime = dayjs(dayjs(observation.phenomenonTime).format("YYYY-MM-DD")).format("YYYY-MM-DDTHH:mm:ss"),
-        zeroResult = observation.result;
+export function createZeroTimeObservation(observation) {
+  const zeroTime = dayjs(
+      dayjs(observation.phenomenonTime).format("YYYY-MM-DD"),
+    ).format("YYYY-MM-DDTHH:mm:ss"),
+    zeroResult = observation.result;
 
-    return {phenomenonTime: zeroTime, result: zeroResult};
+  return { phenomenonTime: zeroTime, result: zeroResult };
 }
 
 /**
@@ -23,18 +25,20 @@ export function createZeroTimeObservation (observation) {
  * @param {Object[]} historicalData Data from feature.
  * @returns {Object[]} The data with index.
  */
-export function addIndex (historicalData) {
-    const data = historicalData === undefined ? [] : historicalData;
+export function addIndex(historicalData) {
+  const data = historicalData === undefined ? [] : historicalData;
 
-    data.forEach(loadingPointData => {
-        const loading = loadingPointData?.Observations ? loadingPointData.Observations : [];
+  data.forEach((loadingPointData) => {
+    const loading = loadingPointData?.Observations
+      ? loadingPointData.Observations
+      : [];
 
-        loading.forEach((obs, index) => {
-            obs.index = index;
-        });
+    loading.forEach((obs, index) => {
+      obs.index = index;
     });
+  });
 
-    return data;
+  return data;
 }
 
 /**
@@ -44,72 +48,81 @@ export function addIndex (historicalData) {
  * @param {String} startDate Until this date the data will be used.
  * @returns {Object} The processed data.
  */
-export function processHistoricalDataByWeekdays (historicalObservations, startDate) {
-    const today = dayjs().format("YYYY-MM-DD"),
-        weekArray = [
-            [], [], [], [], [], [], []
-        ],
-        historicalDataWithIndex = addIndex(historicalObservations);
+export function processHistoricalDataByWeekdays(
+  historicalObservations,
+  startDate,
+) {
+  const today = dayjs().format("YYYY-MM-DD"),
+    weekArray = [[], [], [], [], [], [], []],
+    historicalDataWithIndex = addIndex(historicalObservations);
 
-    historicalDataWithIndex.forEach(historicalData => {
-        const observations = historicalData?.Observations ? historicalData.Observations : [],
-            lastObservation = observations[observations.length - 1];
-        let booleanLoop = true,
-            actualDay = today,
-            arrayIndex = 0;
+  historicalDataWithIndex.forEach((historicalData) => {
+    const observations = historicalData?.Observations
+        ? historicalData.Observations
+        : [],
+      lastObservation = observations[observations.length - 1];
+    let booleanLoop = true,
+      actualDay = today,
+      arrayIndex = 0;
 
-        if (observations.length !== 0) {
-            weekArray[arrayIndex].push([]);
+    if (observations.length !== 0) {
+      weekArray[arrayIndex].push([]);
 
-            // add start time with 0 o'clock if no observations are available before the start date.
-            if (dayjs(lastObservation?.phenomenonTime).format("YYYY-MM-DD") > dayjs(startDate).format("YYYY-MM-DD")) {
-                observations.push(createZeroTimeObservation(lastObservation));
-            }
+      // add start time with 0 o'clock if no observations are available before the start date.
+      if (
+        dayjs(lastObservation?.phenomenonTime).format("YYYY-MM-DD") >
+        dayjs(startDate).format("YYYY-MM-DD")
+      ) {
+        observations.push(createZeroTimeObservation(lastObservation));
+      }
+    }
+
+    observations.forEach((data) => {
+      const phenomenonDay = dayjs(data.phenomenonTime).format("YYYY-MM-DD");
+      let zeroTime, zeroResult, weekArrayIndexLength;
+
+      // until data has been processed
+      while (booleanLoop) {
+        weekArrayIndexLength = weekArray[arrayIndex].length - 1;
+
+        // when the last date is reached, the loop is no longer needed
+        if (dayjs(actualDay) < dayjs(startDate)) {
+          booleanLoop = false;
+          weekArray[arrayIndex].pop();
+          break;
+        } else if (phenomenonDay === actualDay) {
+          weekArray[arrayIndex][weekArrayIndexLength].push(data);
+          break;
         }
+        // dd object with 0 o'clock and the status of the current day
+        else {
+          zeroTime = dayjs(actualDay).format("YYYY-MM-DDTHH:mm:ss");
+          zeroResult = data.result;
+          weekArray[arrayIndex][weekArrayIndexLength].push({
+            phenomenonTime: zeroTime,
+            result: zeroResult,
+          });
 
-        observations.forEach(data => {
-            const phenomenonDay = dayjs(data.phenomenonTime).format("YYYY-MM-DD");
-            let zeroTime,
-                zeroResult,
-                weekArrayIndexLength;
+          // Then set current tag to previous tag and ArrayIndex to next array
+          actualDay = dayjs(actualDay).subtract(1, "days").format("YYYY-MM-DD");
 
-            // until data has been processed
-            while (booleanLoop) {
-                weekArrayIndexLength = weekArray[arrayIndex].length - 1;
+          if (arrayIndex >= 6) {
+            arrayIndex = 0;
+          } else {
+            arrayIndex++;
+          }
 
-                // when the last date is reached, the loop is no longer needed
-                if (dayjs(actualDay) < dayjs(startDate)) {
-                    booleanLoop = false;
-                    weekArray[arrayIndex].pop();
-                    break;
-                }
-                else if (phenomenonDay === actualDay) {
-                    weekArray[arrayIndex][weekArrayIndexLength].push(data);
-                    break;
-                }
-                // dd object with 0 o'clock and the status of the current day
-                else {
-                    zeroTime = dayjs(actualDay).format("YYYY-MM-DDTHH:mm:ss");
-                    zeroResult = data.result;
-                    weekArray[arrayIndex][weekArrayIndexLength].push({phenomenonTime: zeroTime, result: zeroResult});
-
-                    // Then set current tag to previous tag and ArrayIndex to next array
-                    actualDay = dayjs(actualDay).subtract(1, "days").format("YYYY-MM-DD");
-
-                    if (arrayIndex >= 6) {
-                        arrayIndex = 0;
-                    }
-                    else {
-                        arrayIndex++;
-                    }
-
-                    weekArray[arrayIndex].push([]);
-                }
-            }
-        });
+          weekArray[arrayIndex].push([]);
+        }
+      }
     });
+  });
 
-    return weekArray;
+  return weekArray;
 }
 
-export default {createZeroTimeObservation, addIndex, processHistoricalDataByWeekdays};
+export default {
+  createZeroTimeObservation,
+  addIndex,
+  processHistoricalDataByWeekdays,
+};

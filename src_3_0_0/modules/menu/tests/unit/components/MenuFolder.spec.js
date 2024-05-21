@@ -1,59 +1,73 @@
-import {createStore} from "vuex";
-import {config, shallowMount} from "@vue/test-utils";
+import { createStore } from "vuex";
+import { config, shallowMount } from "@vue/test-utils";
 import MenuFolder from "../../../components/MenuFolder.vue";
 import MenuContainerBodyRootItems from "../../../components/MenuContainerBodyRootItems.vue";
-import {expect} from "chai";
+import { expect } from "chai";
 import sinon from "sinon";
 
-config.global.mocks.$t = key => key;
+config.global.mocks.$t = (key) => key;
 
 describe("src_3_0_0/modules/menu/MenuFolder.vue", () => {
-    let store,
-        wrapper,
-        currentFolderPath,
-        side;
+  let store, wrapper, currentFolderPath, side;
 
-    beforeEach(() => {
-        side = "mainMenu";
-        currentFolderPath = [side, "sections", 0, 13];
-        store = createStore({
-            namespaces: true,
-            modules: {
-                Menu: {
-                    namespaced: true,
-                    getters: {
-                        currentComponentName: () => () => "currentComponentName",
-                        currentFolderPath: () => () => currentFolderPath
-                    }
-                }
-            }
-        });
+  beforeEach(() => {
+    side = "mainMenu";
+    currentFolderPath = [side, "sections", 0, 13];
+    store = createStore({
+      namespaces: true,
+      modules: {
+        Menu: {
+          namespaced: true,
+          getters: {
+            currentComponentName: () => () => "currentComponentName",
+            currentFolderPath: () => () => currentFolderPath,
+          },
+        },
+      },
+    });
+  });
+
+  afterEach(sinon.restore);
+
+  it("renders MenuContainerBodyRootItems in mainMenu", () => {
+    wrapper = shallowMount(MenuFolder, {
+      global: {
+        plugins: [store],
+      },
+      propsData: { side },
     });
 
+    expect(wrapper.findComponent(MenuContainerBodyRootItems).exists()).to.be
+      .true;
+    expect(
+      wrapper
+        .find("menu-container-body-root-items-stub")
+        .attributes("idappendix"),
+    ).to.be.equals("mainMenu");
+    expect(
+      wrapper.find("menu-container-body-root-items-stub").attributes("path"),
+    ).to.be.equals(currentFolderPath.join(",") + ",elements");
+  });
 
-    afterEach(sinon.restore);
+  it("renders MenuContainerBodyRootItems in secondaryMenu", () => {
+    side = "secondaryMenu";
 
-    it("renders MenuContainerBodyRootItems in mainMenu", () => {
-        wrapper = shallowMount(MenuFolder, {global: {
-            plugins: [store]
-        }, propsData: {side}
-        });
-
-        expect(wrapper.findComponent(MenuContainerBodyRootItems).exists()).to.be.true;
-        expect(wrapper.find("menu-container-body-root-items-stub").attributes("idappendix")).to.be.equals("mainMenu");
-        expect(wrapper.find("menu-container-body-root-items-stub").attributes("path")).to.be.equals(currentFolderPath.join(",") + ",elements");
+    wrapper = shallowMount(MenuFolder, {
+      global: {
+        plugins: [store],
+      },
+      propsData: { side },
     });
 
-    it("renders MenuContainerBodyRootItems in secondaryMenu", () => {
-        side = "secondaryMenu";
-
-        wrapper = shallowMount(MenuFolder, {global: {
-            plugins: [store]
-        }, propsData: {side}
-        });
-
-        expect(wrapper.findComponent(MenuContainerBodyRootItems).exists()).to.be.true;
-        expect(wrapper.find("menu-container-body-root-items-stub").attributes("idappendix")).to.be.equals("secondaryMenu");
-        expect(wrapper.find("menu-container-body-root-items-stub").attributes("path")).to.be.equals(currentFolderPath.join(",") + ",elements");
-    });
+    expect(wrapper.findComponent(MenuContainerBodyRootItems).exists()).to.be
+      .true;
+    expect(
+      wrapper
+        .find("menu-container-body-root-items-stub")
+        .attributes("idappendix"),
+    ).to.be.equals("secondaryMenu");
+    expect(
+      wrapper.find("menu-container-body-root-items-stub").attributes("path"),
+    ).to.be.equals(currentFolderPath.join(",") + ",elements");
+  });
 });

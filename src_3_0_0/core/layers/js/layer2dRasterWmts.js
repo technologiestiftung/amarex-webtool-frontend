@@ -1,4 +1,4 @@
-import {wmts} from "@masterportal/masterportalapi";
+import { wmts } from "@masterportal/masterportalapi";
 import getNestedValues from "../../../shared/js/utils/getNestedValues";
 import Layer2dRaster from "./layer2dRaster";
 
@@ -10,13 +10,13 @@ import Layer2dRaster from "./layer2dRaster";
  * @param {Object} attributes The attributes of the layer configuration.
  * @returns {void}
  */
-export default function Layer2dRasterWmts (attributes) {
-    const defaultAttributes = {
-        optionsFromCapabilities: false
-    };
+export default function Layer2dRasterWmts(attributes) {
+  const defaultAttributes = {
+    optionsFromCapabilities: false,
+  };
 
-    this.attributes = Object.assign(defaultAttributes, attributes);
-    Layer2dRaster.call(this, this.attributes);
+  this.attributes = Object.assign(defaultAttributes, attributes);
+  Layer2dRaster.call(this, this.attributes);
 }
 
 Layer2dRasterWmts.prototype = Object.create(Layer2dRaster.prototype);
@@ -28,10 +28,10 @@ Layer2dRasterWmts.prototype = Object.create(Layer2dRaster.prototype);
  * @returns {void}
  */
 Layer2dRasterWmts.prototype.createLayer = function (attributes) {
-    const rawLayerAttributes = this.getRawLayerAttributes(attributes),
-        layerParams = this.getLayerParams(attributes);
+  const rawLayerAttributes = this.getRawLayerAttributes(attributes),
+    layerParams = this.getLayerParams(attributes);
 
-    this.setLayer(wmts.createLayer(rawLayerAttributes, layerParams));
+  this.setLayer(wmts.createLayer(rawLayerAttributes, layerParams));
 };
 
 /**
@@ -40,7 +40,7 @@ Layer2dRasterWmts.prototype.createLayer = function (attributes) {
  * @returns {Object} The raw layer attributes.
  */
 Layer2dRasterWmts.prototype.getRawLayerAttributes = function (attributes) {
-    return attributes;
+  return attributes;
 };
 
 /**
@@ -49,10 +49,10 @@ Layer2dRasterWmts.prototype.getRawLayerAttributes = function (attributes) {
  * @returns {Obeject} The layer params.
  */
 Layer2dRasterWmts.prototype.getLayerParams = function (attributes) {
-    return {
-        opacity: (100 - attributes.transparency) / 100,
-        zIndex: attributes.zIndex
-    };
+  return {
+    opacity: (100 - attributes.transparency) / 100,
+    zIndex: attributes.zIndex,
+  };
 };
 
 /**
@@ -64,40 +64,34 @@ Layer2dRasterWmts.prototype.getLayerParams = function (attributes) {
  * @returns {void}
  */
 Layer2dRasterWmts.prototype.createLegend = async function () {
-    let legend = this.inspectLegendUrl();
+  let legend = this.inspectLegendUrl();
 
-    if ((this.get("optionsFromCapabilities") === undefined) && (legend === true)) {
-        console.error("WMTS: No legendURL is specified for the layer!");
-    }
-    else if (this.get("optionsFromCapabilities") && !this.get("legendURL")) {
-        try {
-            const capabilitiesUrl = this.get("capabilitiesUrl"),
-                result = await wmts.getWMTSCapabilities(capabilitiesUrl);
+  if (this.get("optionsFromCapabilities") === undefined && legend === true) {
+    console.error("WMTS: No legendURL is specified for the layer!");
+  } else if (this.get("optionsFromCapabilities") && !this.get("legendURL")) {
+    try {
+      const capabilitiesUrl = this.get("capabilitiesUrl"),
+        result = await wmts.getWMTSCapabilities(capabilitiesUrl);
 
-            result.Contents.Layer.forEach((layer) => {
-                if (layer.Identifier === this.get("layers")) {
-                    const getLegend = getNestedValues(layer, "LegendURL", true);
+      result.Contents.Layer.forEach((layer) => {
+        if (layer.Identifier === this.get("layers")) {
+          const getLegend = getNestedValues(layer, "LegendURL", true);
 
-                    if (getLegend !== null && getLegend !== undefined) {
-                        legend = getLegend[0]?.[0]?.href;
-                        if (legend) {
-                            legend = [legend];
-                        }
-                    }
-                    else {
-                        legend = null;
-                        console.warn("no legend url found for layer " + this.get("layers"));
-                    }
-
-                }
-            });
+          if (getLegend !== null && getLegend !== undefined) {
+            legend = getLegend[0]?.[0]?.href;
+            if (legend) {
+              legend = [legend];
+            }
+          } else {
+            legend = null;
+            console.warn("no legend url found for layer " + this.get("layers"));
+          }
         }
-        catch (error) {
-            wmts.showErrorMessage(error, this.get("name"));
-        }
+      });
+    } catch (error) {
+      wmts.showErrorMessage(error, this.get("name"));
     }
+  }
 
-    return legend;
+  return legend;
 };
-
-

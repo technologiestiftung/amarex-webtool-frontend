@@ -3,8 +3,12 @@
  * @param {String} str Incoming string to test against RegExp.
  * @returns {Boolean}  true if incoming string matches RegExp for website links or html files.
  */
-export function isUrl (str) {
-    return (/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/i).test(str) || (/[^/]+(?:\.html)$/i).test(str);
+export function isUrl(str) {
+  return (
+    /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/i.test(
+      str,
+    ) || /[^/]+(?:\.html)$/i.test(str)
+  );
 }
 
 /**
@@ -13,10 +17,10 @@ export function isUrl (str) {
  * @param {String} value the string to check
  * @returns {Boolean}  true if the input is recognized as link, false otherwise
  */
-export function isWebLink (value) {
-    const regExp = new RegExp(/^(https?:\/\/|s?ftp:\/\/|file:\/\/|\/\/)/i);
+export function isWebLink(value) {
+  const regExp = new RegExp(/^(https?:\/\/|s?ftp:\/\/|file:\/\/|\/\/)/i);
 
-    return regExp.test(value);
+  return regExp.test(value);
 }
 
-export default {isUrl, isWebLink};
+export default { isUrl, isWebLink };

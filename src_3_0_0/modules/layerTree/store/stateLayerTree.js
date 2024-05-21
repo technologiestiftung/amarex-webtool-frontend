@@ -9,10 +9,10 @@
  * @property {Number} [touchStartThreshold=3] This option sets the minimum pointer movement that must occur before the delayed sorting is cancelled.
  */
 export default {
-    menuSide: "mainMenu",
-    type: "layerTree",
-    delay: "500",
-    delayOnTouchOnly: true,
-    removeOnSpill: true,
-    touchStartThreshold: 3
+  menuSide: "mainMenu",
+  type: "layerTree",
+  delay: "500",
+  delayOnTouchOnly: true,
+  removeOnSpill: true,
+  touchStartThreshold: 3,
 };

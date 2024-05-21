@@ -9,13 +9,13 @@
  * @property {Number} position The counter of memories.
  */
 const state = {
-    iconBack: "skip-start-fill",
-    iconForward: "skip-end-fill",
-    supportedDevices: ["Desktop"],
-    supportedMapModes: ["2D"],
+  iconBack: "skip-start-fill",
+  iconForward: "skip-end-fill",
+  supportedDevices: ["Desktop"],
+  supportedMapModes: ["2D"],
 
-    memory: [],
-    position: null
+  memory: [],
+  position: null,
 };
 
 export default state;

@@ -8,10 +8,10 @@
  * @property {String[]} [supportedMapModes=["2D", "3D"]] Map mode in which this module can be used.
  */
 const state = {
-    icon: "bi-cursor",
-    showAlways: false,
-    supportedDevices: ["Desktop", "Mobile"],
-    supportedMapModes: ["2D", "3D"]
+  icon: "bi-cursor",
+  showAlways: false,
+  supportedDevices: ["Desktop", "Mobile"],
+  supportedMapModes: ["2D", "3D"],
 };
 
 export default state;

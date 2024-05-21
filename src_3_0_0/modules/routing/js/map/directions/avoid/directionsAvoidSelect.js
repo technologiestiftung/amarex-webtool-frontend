@@ -1,8 +1,8 @@
-import {Select} from "ol/interaction.js";
+import { Select } from "ol/interaction.js";
 import directionsAvoidLayer from "./directionsAvoidLayer";
-import {click} from "ol/events/condition";
+import { click } from "ol/events/condition";
 
 export default new Select({
-    condition: click,
-    layers: [directionsAvoidLayer]
+  condition: click,
+  layers: [directionsAvoidLayer],
 });

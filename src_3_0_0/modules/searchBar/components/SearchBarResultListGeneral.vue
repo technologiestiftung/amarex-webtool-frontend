@@ -1,5 +1,5 @@
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 import SearchBarResultListGeneralItem from "./SearchBarResultListGeneralItem.vue";
 
 /**
@@ -8,39 +8,35 @@ import SearchBarResultListGeneralItem from "./SearchBarResultListGeneralItem.vue
  * @vue-props {Object[]} resultItems - The result items.
  */
 export default {
-    name: "SearchBarResultListGeneral",
-    components: {
-        SearchBarResultListGeneralItem
+  name: "SearchBarResultListGeneral",
+  components: {
+    SearchBarResultListGeneralItem,
+  },
+  props: {
+    resultItems: {
+      type: Array,
+      required: true,
     },
-    props: {
-        resultItems: {
-            type: Array,
-            required: true
-        }
-    },
-    computed: {
-        ...mapGetters("Modules/SearchBar", [
-            "searchInput",
-            "searchResults",
-            "selectedSearchResults"
-        ])
-    }
+  },
+  computed: {
+    ...mapGetters("Modules/SearchBar", [
+      "searchInput",
+      "searchResults",
+      "selectedSearchResults",
+    ]),
+  },
 };
 </script>
 
 <template lang="html">
+  <div class="results-general-container">
     <div
-        class="results-general-container"
+      v-for="(item, index) in resultItems"
+      :key="item.id + '-' + index"
     >
-        <div
-            v-for="(item, index) in resultItems"
-            :key="item.id + '-' + index"
-        >
-            <p :id="'searchInputLi' + item.id">
-                <SearchBarResultListGeneralItem
-                    :search-result="item"
-                />
-            </p>
-        </div>
+      <p :id="'searchInputLi' + item.id">
+        <SearchBarResultListGeneralItem :search-result="item" />
+      </p>
     </div>
+  </div>
 </template>

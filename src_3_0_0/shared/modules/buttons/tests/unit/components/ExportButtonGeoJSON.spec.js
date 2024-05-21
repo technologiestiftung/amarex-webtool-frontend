@@ -1,28 +1,30 @@
-import {config, shallowMount} from "@vue/test-utils";
-import {expect} from "chai";
+import { config, shallowMount } from "@vue/test-utils";
+import { expect } from "chai";
 import ExportButtonGeoJSON from "../../../components/ExportButtonGeoJSON.vue";
 
-config.global.mocks.$t = key => key;
+config.global.mocks.$t = (key) => key;
 
 describe("src_3_0_0/shared/modules/buttons/components/exportButtonGeoJSON.vue", () => {
-    before(() => {
-        i18next.init({
-            lng: "cimode",
-            debug: false
-        });
+  before(() => {
+    i18next.init({
+      lng: "cimode",
+      debug: false,
     });
-    describe("createFilename", () => {
-        const wrapper = shallowMount(ExportButtonGeoJSON, {
-            propsData: {}
-        });
+  });
+  describe("createFilename", () => {
+    const wrapper = shallowMount(ExportButtonGeoJSON, {
+      propsData: {},
+    });
 
-        expect(wrapper.vm.createFilename("prefix", "YYYY")).to.equal("prefix" + String(new Date().getFullYear()));
+    expect(wrapper.vm.createFilename("prefix", "YYYY")).to.equal(
+      "prefix" + String(new Date().getFullYear()),
+    );
+  });
+  describe("template", () => {
+    const wrapper = shallowMount(ExportButtonGeoJSON, {
+      propsData: {},
     });
-    describe("template", () => {
-        const wrapper = shallowMount(ExportButtonGeoJSON, {
-            propsData: {}
-        });
 
-        expect(wrapper.find("button").exists()).to.be.true;
-    });
+    expect(wrapper.find("button").exists()).to.be.true;
+  });
 });

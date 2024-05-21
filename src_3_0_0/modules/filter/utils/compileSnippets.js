@@ -1,5 +1,5 @@
 import isObject from "../../../shared/js/utils/isObject";
-import {getDefaultOperatorBySnippetType} from "./getDefaultOperatorBySnippetType.js";
+import { getDefaultOperatorBySnippetType } from "./getDefaultOperatorBySnippetType.js";
 
 /**
  * Clones, checks and modifies the given original snippets to match the needs for LayerFilterSnippet.
@@ -10,42 +10,49 @@ import {getDefaultOperatorBySnippetType} from "./getDefaultOperatorBySnippetType
  * @param {Function} onerror a callback function(error) with error type of Error to be called on error
  * @returns {void}
  */
-function compileSnippets (originalSnippets, api, FilterApi, onfinish, onerror) {
-    if (!Array.isArray(originalSnippets)) {
-        if (typeof onfinish === "function") {
-            onfinish([]);
-        }
-        return;
+function compileSnippets(originalSnippets, api, FilterApi, onfinish, onerror) {
+  if (!Array.isArray(originalSnippets)) {
+    if (typeof onfinish === "function") {
+      onfinish([]);
     }
-    let snippets = JSON.parse(JSON.stringify(originalSnippets));
+    return;
+  }
+  let snippets = JSON.parse(JSON.stringify(originalSnippets));
 
-    snippets = removeInvalidSnippets(snippets);
-    convertStringSnippetsIntoObjects(snippets);
-    addParent(snippets);
-    snippets = getFlatArrayOfParentsAndChildren(snippets);
+  snippets = removeInvalidSnippets(snippets);
+  convertStringSnippetsIntoObjects(snippets);
+  addParent(snippets);
+  snippets = getFlatArrayOfParentsAndChildren(snippets);
 
-    createSnippetsIfNoSnippetsAreGiven(snippets, api, () => {
-        addSnippetIds(snippets);
-        addSnippetAdjustment(snippets);
-        addSnippetApi(snippets, () => new FilterApi());
-        addSnippetMultiselect(snippets);
+  createSnippetsIfNoSnippetsAreGiven(
+    snippets,
+    api,
+    () => {
+      addSnippetIds(snippets);
+      addSnippetAdjustment(snippets);
+      addSnippetApi(snippets, () => new FilterApi());
+      addSnippetMultiselect(snippets);
 
-        if (typeof api?.getAttrTypes === "function" && !checkSnippetTypeConsistency(snippets)) {
-            api.getAttrTypes(attrTypes => {
-                addSnippetTypes(snippets, attrTypes);
-                addSnippetOperator(snippets);
-                if (typeof onfinish === "function") {
-                    onfinish(snippets);
-                }
-            }, onerror);
+      if (
+        typeof api?.getAttrTypes === "function" &&
+        !checkSnippetTypeConsistency(snippets)
+      ) {
+        api.getAttrTypes((attrTypes) => {
+          addSnippetTypes(snippets, attrTypes);
+          addSnippetOperator(snippets);
+          if (typeof onfinish === "function") {
+            onfinish(snippets);
+          }
+        }, onerror);
+      } else {
+        addSnippetOperator(snippets);
+        if (typeof onfinish === "function") {
+          onfinish(snippets);
         }
-        else {
-            addSnippetOperator(snippets);
-            if (typeof onfinish === "function") {
-                onfinish(snippets);
-            }
-        }
-    }, onerror);
+      }
+    },
+    onerror,
+  );
 }
 
 /**
@@ -56,35 +63,37 @@ function compileSnippets (originalSnippets, api, FilterApi, onfinish, onerror) {
  * @param {Function} onerror a callback function(error) with error type of Error to be called on error
  * @returns {void}
  */
-function createSnippetsIfNoSnippetsAreGiven (snippets, api, onsuccess, onerror) {
-    if (!snippets.length) {
-        if (typeof api?.getAttrTypes !== "function") {
-            api.getAttrTypes(attrTypes => {
-                if (!isObject(attrTypes)) {
-                    if (typeof onsuccess === "function") {
-                        onsuccess();
-                    }
-                    return;
-                }
-                Object.entries(attrTypes).forEach(([attrName, type]) => {
-                    snippets.push({
-                        attrName,
-                        type: getDefaultSnippetTypeByDataType(type),
-                        title: true
-                    });
-                });
-                if (typeof onsuccess === "function") {
-                    onsuccess();
-                }
-            }, onerror);
+function createSnippetsIfNoSnippetsAreGiven(snippets, api, onsuccess, onerror) {
+  if (!snippets.length) {
+    if (typeof api?.getAttrTypes !== "function") {
+      api.getAttrTypes((attrTypes) => {
+        if (!isObject(attrTypes)) {
+          if (typeof onsuccess === "function") {
+            onsuccess();
+          }
+          return;
         }
-        else if (typeof onerror === "function") {
-            onerror(new Error("createSnippetsIfNoSnippetsAreGiven: the given api has no function getAttrTypes."));
+        Object.entries(attrTypes).forEach(([attrName, type]) => {
+          snippets.push({
+            attrName,
+            type: getDefaultSnippetTypeByDataType(type),
+            title: true,
+          });
+        });
+        if (typeof onsuccess === "function") {
+          onsuccess();
         }
+      }, onerror);
+    } else if (typeof onerror === "function") {
+      onerror(
+        new Error(
+          "createSnippetsIfNoSnippetsAreGiven: the given api has no function getAttrTypes.",
+        ),
+      );
     }
-    else if (typeof onsuccess === "function") {
-        onsuccess();
-    }
+  } else if (typeof onsuccess === "function") {
+    onsuccess();
+  }
 }
 
 /**
@@ -92,23 +101,23 @@ function createSnippetsIfNoSnippetsAreGiven (snippets, api, onsuccess, onerror) 
  * @param {Array} snippets a list of snippets with a potential object string mix
  * @returns {Object[]|String[]} a list of snippets with a object and string mix
  */
-function removeInvalidSnippets (snippets) {
-    if (!Array.isArray(snippets)) {
-        return [];
+function removeInvalidSnippets(snippets) {
+  if (!Array.isArray(snippets)) {
+    return [];
+  }
+  const result = [];
+
+  snippets.forEach((snippet) => {
+    if (!isObject(snippet) && typeof snippet !== "string") {
+      return;
     }
-    const result = [];
+    result.push(snippet);
 
-    snippets.forEach(snippet => {
-        if (!isObject(snippet) && typeof snippet !== "string") {
-            return;
-        }
-        result.push(snippet);
-
-        if (Array.isArray(snippet.children)) {
-            snippet.children = removeInvalidSnippets(snippet.children);
-        }
-    });
-    return result;
+    if (Array.isArray(snippet.children)) {
+      snippet.children = removeInvalidSnippets(snippet.children);
+    }
+  });
+  return result;
 }
 
 /**
@@ -116,18 +125,18 @@ function removeInvalidSnippets (snippets) {
  * @param {Object[]|String[]} snippets a list of snippets a with potential object string mix
  * @returns {void}
  */
-function convertStringSnippetsIntoObjects (snippets) {
-    snippets.forEach((snippet, idx) => {
-        if (typeof snippet === "string") {
-            snippets[idx] = {
-                attrName: snippet
-            };
-        }
+function convertStringSnippetsIntoObjects(snippets) {
+  snippets.forEach((snippet, idx) => {
+    if (typeof snippet === "string") {
+      snippets[idx] = {
+        attrName: snippet,
+      };
+    }
 
-        if (Array.isArray(snippet.children)) {
-            convertStringSnippetsIntoObjects(snippet.children);
-        }
-    });
+    if (Array.isArray(snippet.children)) {
+      convertStringSnippetsIntoObjects(snippet.children);
+    }
+  });
 }
 
 /**
@@ -136,13 +145,13 @@ function convertStringSnippetsIntoObjects (snippets) {
  * @param {Object} [parent=null] the parent snippet to set
  * @returns {void}
  */
-function addParent (children, parent = null) {
-    children.forEach(child => {
-        child.parent = parent;
-        if (Array.isArray(child.children)) {
-            addParent(child.children, child);
-        }
-    });
+function addParent(children, parent = null) {
+  children.forEach((child) => {
+    child.parent = parent;
+    if (Array.isArray(child.children)) {
+      addParent(child.children, child);
+    }
+  });
 }
 
 /**
@@ -150,16 +159,18 @@ function addParent (children, parent = null) {
  * @param {Object[]} rootSnippets the list of root snippets
  * @returns {void}
  */
-function getFlatArrayOfParentsAndChildren (rootSnippets) {
-    let result = [];
+function getFlatArrayOfParentsAndChildren(rootSnippets) {
+  let result = [];
 
-    rootSnippets.forEach(snippet => {
-        result.push(snippet);
-        if (Array.isArray(snippet.children)) {
-            result = result.concat(getFlatArrayOfParentsAndChildren(snippet.children));
-        }
-    });
-    return result;
+  rootSnippets.forEach((snippet) => {
+    result.push(snippet);
+    if (Array.isArray(snippet.children)) {
+      result = result.concat(
+        getFlatArrayOfParentsAndChildren(snippet.children),
+      );
+    }
+  });
+  return result;
 }
 
 /**
@@ -167,10 +178,10 @@ function getFlatArrayOfParentsAndChildren (rootSnippets) {
  * @param {Object[]} snippets the list of snippets
  * @returns {void}
  */
-function addSnippetIds (snippets) {
-    snippets.forEach((snippet, snippetId) => {
-        snippet.snippetId = snippetId;
-    });
+function addSnippetIds(snippets) {
+  snippets.forEach((snippet, snippetId) => {
+    snippet.snippetId = snippetId;
+  });
 }
 
 /**
@@ -178,10 +189,10 @@ function addSnippetIds (snippets) {
  * @param {Object[]} snippets the list of snippets
  * @returns {void}
  */
-function addSnippetAdjustment (snippets) {
-    snippets.forEach(snippet => {
-        snippet.adjustment = {};
-    });
+function addSnippetAdjustment(snippets) {
+  snippets.forEach((snippet) => {
+    snippet.adjustment = {};
+  });
 }
 
 /**
@@ -190,13 +201,17 @@ function addSnippetAdjustment (snippets) {
  * @param {Function} createNewFilterAPI - Factory method for creating a new filter api.
  * @returns {void}
  */
-function addSnippetApi (snippets, createNewFilterAPI) {
-    snippets.forEach(snippet => {
-        if (isObject(snippet) && isObject(snippet.service) && typeof createNewFilterAPI === "function") {
-            snippet.api = createNewFilterAPI();
-            snippet.api.setService(snippet.service);
-        }
-    });
+function addSnippetApi(snippets, createNewFilterAPI) {
+  snippets.forEach((snippet) => {
+    if (
+      isObject(snippet) &&
+      isObject(snippet.service) &&
+      typeof createNewFilterAPI === "function"
+    ) {
+      snippet.api = createNewFilterAPI();
+      snippet.api.setService(snippet.service);
+    }
+  });
 }
 
 /**
@@ -204,19 +219,18 @@ function addSnippetApi (snippets, createNewFilterAPI) {
  * @param {Object[]} snippets the list of snippets
  * @returns {void}
  */
-function addSnippetMultiselect (snippets) {
-    snippets.forEach(snippet => {
-        if (!Object.prototype.hasOwnProperty.call(snippet, "multiselect")) {
-            if (snippet?.matchingMode === "AND") {
-                snippet.multiselect = false;
-                delete snippet.matchingMode;
-            }
-            else {
-                snippet.multiselect = true;
-                delete snippet.matchingMode;
-            }
-        }
-    });
+function addSnippetMultiselect(snippets) {
+  snippets.forEach((snippet) => {
+    if (!Object.prototype.hasOwnProperty.call(snippet, "multiselect")) {
+      if (snippet?.matchingMode === "AND") {
+        snippet.multiselect = false;
+        delete snippet.matchingMode;
+      } else {
+        snippet.multiselect = true;
+        delete snippet.matchingMode;
+      }
+    }
+  });
 }
 
 /**
@@ -224,12 +238,15 @@ function addSnippetMultiselect (snippets) {
  * @param {Object[]} snippets the list of snippets
  * @returns {void}
  */
-function addSnippetOperator (snippets) {
-    snippets.forEach(snippet => {
-        if (!Object.prototype.hasOwnProperty.call(snippet, "operator")) {
-            snippet.operator = getDefaultOperatorBySnippetType(snippet.type, snippet.delimiter);
-        }
-    });
+function addSnippetOperator(snippets) {
+  snippets.forEach((snippet) => {
+    if (!Object.prototype.hasOwnProperty.call(snippet, "operator")) {
+      snippet.operator = getDefaultOperatorBySnippetType(
+        snippet.type,
+        snippet.delimiter,
+      );
+    }
+  });
 }
 
 /**
@@ -238,15 +255,17 @@ function addSnippetOperator (snippets) {
  * @param {Object} attrTypes an object with key value pairs representing the attrName type combination
  * @returns {void}
  */
-function addSnippetTypes (snippets, attrTypes) {
-    if (!isObject(attrTypes)) {
-        return;
+function addSnippetTypes(snippets, attrTypes) {
+  if (!isObject(attrTypes)) {
+    return;
+  }
+  snippets.forEach((snippet) => {
+    if (!snippet.type) {
+      snippet.type = getDefaultSnippetTypeByDataType(
+        attrTypes[snippet.attrName],
+      );
     }
-    snippets.forEach(snippet => {
-        if (!snippet.type) {
-            snippet.type = getDefaultSnippetTypeByDataType(attrTypes[snippet.attrName]);
-        }
-    });
+  });
 }
 
 /**
@@ -254,15 +273,15 @@ function addSnippetTypes (snippets, attrTypes) {
  * @param {Object[]} snippets an array of snippet
  * @returns {Boolean} true if all types are set, false if any snippet is missing a type
  */
-function checkSnippetTypeConsistency (snippets) {
-    const len = snippets.length;
+function checkSnippetTypeConsistency(snippets) {
+  const len = snippets.length;
 
-    for (let i = 0; i < len; i++) {
-        if (!snippets[i].type) {
-            return false;
-        }
+  for (let i = 0; i < len; i++) {
+    if (!snippets[i].type) {
+      return false;
     }
-    return true;
+  }
+  return true;
 }
 
 /**
@@ -270,33 +289,33 @@ function checkSnippetTypeConsistency (snippets) {
  * @param {String} dataType the data type e.g. string, number or boolean
  * @returns {String} the type of the snippet to use for the given dataType
  */
-function getDefaultSnippetTypeByDataType (dataType) {
-    switch (dataType) {
-        case "boolean":
-            return "checkbox";
-        case "string":
-            return "dropdown";
-        case "number":
-            return "sliderRange";
-        case "dateTime":
-            return "dateRange";
-        default:
-            return "text";
-    }
+function getDefaultSnippetTypeByDataType(dataType) {
+  switch (dataType) {
+    case "boolean":
+      return "checkbox";
+    case "string":
+      return "dropdown";
+    case "number":
+      return "sliderRange";
+    case "dateTime":
+      return "dateRange";
+    default:
+      return "text";
+  }
 }
 
 export {
-    compileSnippets,
-    removeInvalidSnippets,
-    convertStringSnippetsIntoObjects,
-    addParent,
-    getFlatArrayOfParentsAndChildren,
-    addSnippetIds,
-    addSnippetAdjustment,
-    addSnippetApi,
-    addSnippetMultiselect,
-    addSnippetOperator,
-    addSnippetTypes,
-    checkSnippetTypeConsistency,
-    getDefaultSnippetTypeByDataType
+  compileSnippets,
+  removeInvalidSnippets,
+  convertStringSnippetsIntoObjects,
+  addParent,
+  getFlatArrayOfParentsAndChildren,
+  addSnippetIds,
+  addSnippetAdjustment,
+  addSnippetApi,
+  addSnippetMultiselect,
+  addSnippetOperator,
+  addSnippetTypes,
+  checkSnippetTypeConsistency,
+  getDefaultSnippetTypeByDataType,
 };

@@ -6,11 +6,11 @@
  * @param {String[]} resolutions The resolutions.
  * @returns {void}
  */
-export function setResolutions (view, resolutions) {
-    if (resolutions) {
-        view.set("resolutions", resolutions);
-        view.resolutions_ = resolutions;
-    }
+export function setResolutions(view, resolutions) {
+  if (resolutions) {
+    view.set("resolutions", resolutions);
+    view.resolutions_ = resolutions;
+  }
 }
 
 /**
@@ -19,19 +19,16 @@ export function setResolutions (view, resolutions) {
  * @param {Object} mapViewSettings The map view settings.
  * @returns {void}
  */
-export function setValues (view, mapViewSettings) {
-    for (const [key, value] of Object.entries(mapViewSettings)) {
-        if (key === "startCenter") {
-            view.setCenter(value);
-        }
-        else if (key === "startResolution") {
-            view.setResolution(value);
-        }
-        else if (key === "startZoomLevel") {
-            view.setZoom(value);
-        }
-        else {
-            view.set(key, value);
-        }
+export function setValues(view, mapViewSettings) {
+  for (const [key, value] of Object.entries(mapViewSettings)) {
+    if (key === "startCenter") {
+      view.setCenter(value);
+    } else if (key === "startResolution") {
+      view.setResolution(value);
+    } else if (key === "startZoomLevel") {
+      view.setZoom(value);
+    } else {
+      view.set(key, value);
     }
+  }
 }

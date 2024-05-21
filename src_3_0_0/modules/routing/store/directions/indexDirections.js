@@ -4,9 +4,9 @@ import getters from "./gettersDirections";
 import state from "./stateDirections";
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters,
 };

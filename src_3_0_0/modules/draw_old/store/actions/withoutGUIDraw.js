@@ -1,8 +1,8 @@
-import {fromCircle} from "ol/geom/Polygon.js";
+import { fromCircle } from "ol/geom/Polygon.js";
 import createStyleModule from "../../js/style/createStyle";
 import Feature from "ol/Feature";
 import crs from "@masterportal/masterportalapi/src/crs";
-import {GeoJSON} from "ol/format.js";
+import { GeoJSON } from "ol/format.js";
 import MultiLine from "ol/geom/MultiLineString.js";
 import MultiPoint from "ol/geom/MultiPoint.js";
 import MultiPolygon from "ol/geom/MultiPolygon.js";
@@ -16,15 +16,15 @@ import main from "../../js/main";
  * @param {String} cursor If a cursor has been added through the RemoteInterface, it gets removed.
  * @returns {void}
  */
-function cancelDrawWithoutGUI ({commit, dispatch}, cursor) {
-    commit("setWithoutGUI", true);
-    dispatch("manipulateInteraction", {interaction: "draw", active: false});
-    dispatch("manipulateInteraction", {interaction: "modify", active: false});
-    dispatch("manipulateInteraction", {interaction: "delete", active: false});
+function cancelDrawWithoutGUI({ commit, dispatch }, cursor) {
+  commit("setWithoutGUI", true);
+  dispatch("manipulateInteraction", { interaction: "draw", active: false });
+  dispatch("manipulateInteraction", { interaction: "modify", active: false });
+  dispatch("manipulateInteraction", { interaction: "delete", active: false });
 
-    if (typeof cursor?.cursor !== "undefined") {
-        document.querySelector("#map").classList.remove("no-cursor");
-    }
+  if (typeof cursor?.cursor !== "undefined") {
+    document.querySelector("#map").classList.remove("no-cursor");
+  }
 }
 /**
  * Creates and returns a GeoJSON of all drawn features without GUI.
@@ -39,112 +39,145 @@ function cancelDrawWithoutGUI ({commit, dispatch}, cursor) {
  * @param {module:ol/Feature} payload.currentFeature Last drawn feature (drawend event).
  * @returns {String} GeoJSON with all drawn features; If the Tool hasn't been initialized yet, no layer was created and thus an empty Object is returned.
  */
-function downloadFeaturesWithoutGUI ({rootState}, payload) {
-    let circularPolygon,
-        features,
-        featuresConverted = {"type": "FeatureCollection", "features": []},
-        featureType,
-        multiGeom,
-        singleGeom,
-        targetProjection = null;
-    const featureArray = [],
-        format = new GeoJSON(),
-        mapProjection = crs.getMapProjection(mapCollection.getMap(rootState.Maps.mode)),
-        multiLine = new MultiLine([]),
-        multiPoint = new MultiPoint([]),
-        multiPolygon = new MultiPolygon([]);
+function downloadFeaturesWithoutGUI({ rootState }, payload) {
+  let circularPolygon,
+    features,
+    featuresConverted = { type: "FeatureCollection", features: [] },
+    featureType,
+    multiGeom,
+    singleGeom,
+    targetProjection = null;
+  const featureArray = [],
+    format = new GeoJSON(),
+    mapProjection = crs.getMapProjection(
+      mapCollection.getMap(rootState.Maps.mode),
+    ),
+    multiLine = new MultiLine([]),
+    multiPoint = new MultiPoint([]),
+    multiPolygon = new MultiPolygon([]);
 
-    if (payload?.prmObject?.transformWGS) {
-        targetProjection = "EPSG:4326";
+  if (payload?.prmObject?.transformWGS) {
+    targetProjection = "EPSG:4326";
+  }
+  if (payload?.prmObject?.targetProjection !== undefined) {
+    targetProjection = payload.prmObject.targetProjection;
+  }
+
+  if (
+    main.getApp().config.globalProperties.$layer !== undefined &&
+    main.getApp().config.globalProperties.$layer !== null
+  ) {
+    features = main
+      .getApp()
+      .config.globalProperties.$layer.getSource()
+      .getFeatures();
+
+    if (
+      payload?.currentFeature !== undefined &&
+      features.every(
+        (feature) =>
+          feature.get("styleId") !== payload?.currentFeature.get("styleId"),
+      )
+    ) {
+      features.push(payload.currentFeature);
     }
-    if (payload?.prmObject?.targetProjection !== undefined) {
-        targetProjection = payload.prmObject.targetProjection;
+    if (payload?.prmObject?.geomType === "multiGeometry") {
+      features.forEach((item) => {
+        featureType = item.getGeometry().getType();
+
+        if (featureType === "Polygon") {
+          multiPolygon.appendPolygon(
+            targetProjection !== null
+              ? item
+                  .getGeometry()
+                  .clone()
+                  .transform(mapProjection, targetProjection)
+              : item.getGeometry(),
+          );
+        } else if (featureType === "Point") {
+          multiPoint.appendPoint(
+            targetProjection !== null
+              ? item
+                  .getGeometry()
+                  .clone()
+                  .transform(mapProjection, targetProjection)
+              : item.getGeometry(),
+          );
+        } else if (featureType === "LineString") {
+          multiLine.appendLineString(
+            targetProjection !== null
+              ? item
+                  .getGeometry()
+                  .clone()
+                  .transform(mapProjection, targetProjection)
+              : item.getGeometry(),
+          );
+        }
+        // Circles can't be added to a featureCollection directly and have to be converted to a Polygon before
+        else if (featureType === "Circle") {
+          circularPolygon = fromCircle(
+            targetProjection !== null
+              ? item
+                  .getGeometry()
+                  .clone()
+                  .transform(mapProjection, targetProjection)
+              : item.getGeometry(),
+            64,
+          );
+          multiPolygon.appendPolygon(circularPolygon);
+        } else if (
+          featureType === "MultiPolygon" ||
+          featureType === "MultiPoint" ||
+          featureType === "MultiLineString"
+        ) {
+          if (targetProjection !== null) {
+            multiGeom = item.clone();
+            multiGeom.getGeometry().transform(mapProjection, targetProjection);
+          } else {
+            multiGeom = item;
+          }
+          featureArray.push(multiGeom);
+        }
+      });
+
+      if (multiPolygon.getCoordinates().length > 0) {
+        featureArray.push(new Feature(multiPolygon));
+      }
+      if (multiPoint.getCoordinates().length > 0) {
+        featureArray.push(new Feature(multiPoint));
+      }
+      if (multiLine.getCoordinates().length > 0) {
+        featureArray.push(new Feature(multiLine));
+      }
+      // NOTE: Text written through the Draw Tool is not included in the FeatureCollection. If text is needed, the FeatureCollection should be created differently.
+      // NOTE: Text content can be accessed with item.getStyle().getText().getText().
+      featuresConverted = format.writeFeaturesObject(featureArray);
+    } else {
+      features.forEach((item) => {
+        featureType = item.getGeometry().getType();
+
+        if (targetProjection !== null) {
+          singleGeom = item.clone();
+          singleGeom.getGeometry().transform(mapProjection, targetProjection);
+        } else {
+          singleGeom = item;
+        }
+
+        // Circles can't be added to a featureCollection directly and have to be converted to a Polygon before
+        if (featureType === "Circle") {
+          featureArray.push(
+            new Feature(fromCircle(singleGeom.getGeometry(), 64)),
+          );
+        } else {
+          featureArray.push(singleGeom);
+        }
+      });
+      // NOTE: Text written through the Draw Tool is not included in the FeatureCollection. If text is needed, the FeatureCollection should be created differently.
+      // NOTE: Text content can be accessed with item.getStyle().getText().getText().
+      featuresConverted = format.writeFeaturesObject(featureArray);
     }
-
-    if (main.getApp().config.globalProperties.$layer !== undefined && main.getApp().config.globalProperties.$layer !== null) {
-        features = main.getApp().config.globalProperties.$layer.getSource().getFeatures();
-
-        if (payload?.currentFeature !== undefined && features.every(feature => feature.get("styleId") !== payload?.currentFeature.get("styleId"))) {
-            features.push(payload.currentFeature);
-        }
-        if (payload?.prmObject?.geomType === "multiGeometry") {
-            features.forEach(item => {
-                featureType = item.getGeometry().getType();
-
-                if (featureType === "Polygon") {
-                    multiPolygon.appendPolygon(targetProjection !== null
-                        ? item.getGeometry().clone().transform(mapProjection, targetProjection)
-                        : item.getGeometry());
-                }
-                else if (featureType === "Point") {
-                    multiPoint.appendPoint(targetProjection !== null
-                        ? item.getGeometry().clone().transform(mapProjection, targetProjection)
-                        : item.getGeometry());
-                }
-                else if (featureType === "LineString") {
-                    multiLine.appendLineString(targetProjection !== null
-                        ? item.getGeometry().clone().transform(mapProjection, targetProjection)
-                        : item.getGeometry());
-                }
-                // Circles can't be added to a featureCollection directly and have to be converted to a Polygon before
-                else if (featureType === "Circle") {
-                    circularPolygon = fromCircle(targetProjection !== null
-                        ? item.getGeometry().clone().transform(mapProjection, targetProjection)
-                        : item.getGeometry(),
-                    64);
-                    multiPolygon.appendPolygon(circularPolygon);
-                }
-                else if (featureType === "MultiPolygon" || featureType === "MultiPoint" || featureType === "MultiLineString") {
-                    if (targetProjection !== null) {
-                        multiGeom = item.clone();
-                        multiGeom.getGeometry().transform(mapProjection, targetProjection);
-                    }
-                    else {
-                        multiGeom = item;
-                    }
-                    featureArray.push(multiGeom);
-                }
-            });
-
-            if (multiPolygon.getCoordinates().length > 0) {
-                featureArray.push(new Feature(multiPolygon));
-            }
-            if (multiPoint.getCoordinates().length > 0) {
-                featureArray.push(new Feature(multiPoint));
-            }
-            if (multiLine.getCoordinates().length > 0) {
-                featureArray.push(new Feature(multiLine));
-            }
-            // NOTE: Text written through the Draw Tool is not included in the FeatureCollection. If text is needed, the FeatureCollection should be created differently.
-            // NOTE: Text content can be accessed with item.getStyle().getText().getText().
-            featuresConverted = format.writeFeaturesObject(featureArray);
-        }
-        else {
-            features.forEach(item => {
-                featureType = item.getGeometry().getType();
-
-                if (targetProjection !== null) {
-                    singleGeom = item.clone();
-                    singleGeom.getGeometry().transform(mapProjection, targetProjection);
-                }
-                else {
-                    singleGeom = item;
-                }
-
-                // Circles can't be added to a featureCollection directly and have to be converted to a Polygon before
-                if (featureType === "Circle") {
-                    featureArray.push(new Feature(fromCircle(singleGeom.getGeometry(), 64)));
-                }
-                else {
-                    featureArray.push(singleGeom);
-                }
-            });
-            // NOTE: Text written through the Draw Tool is not included in the FeatureCollection. If text is needed, the FeatureCollection should be created differently.
-            // NOTE: Text content can be accessed with item.getStyle().getText().getText().
-            featuresConverted = format.writeFeaturesObject(featureArray);
-        }
-    }
-    return JSON.stringify(featuresConverted);
+  }
+  return JSON.stringify(featuresConverted);
 }
 /**
  * Sends the generated GeoJSON to the RemoteInterface to communicate with an iFrame.
@@ -153,8 +186,8 @@ function downloadFeaturesWithoutGUI ({rootState}, payload) {
  * @param {String} geomType singleGeometry (default) or multiGeometry ("multiGeometry")
  * @returns {void}
  */
-function downloadViaRemoteInterface () {
-    /*
+function downloadViaRemoteInterface() {
+  /*
     dispatch("downloadFeaturesWithoutGUI", geomType).then(result => {
         Radio.trigger("RemoteInterface", "postMessage", {
             "downloadViaRemoteInterface": "function identifier",
@@ -171,8 +204,8 @@ function downloadViaRemoteInterface () {
  * @param {Object} context actions context object.
  * @returns {void}
  */
-function editFeaturesWithoutGUI ({dispatch}) {
-    dispatch("toggleInteraction", "modify");
+function editFeaturesWithoutGUI({ dispatch }) {
+  dispatch("toggleInteraction", "modify");
 }
 /**
  * Initializes the drawing functionality without GUI.
@@ -190,87 +223,118 @@ function editFeaturesWithoutGUI ({dispatch}) {
  * @param {Boolean} prmObject.zoomToExtent The map will be zoomed to the extent of the GeoJson if set to true.
  * @returns {String} GeoJSON of all Features as a String
  */
-async function initializeWithoutGUI ({state, commit, dispatch, getters, rootState}, {drawType, color, opacity, maxFeatures, initialJSON, transformWGS, zoomToExtent}) {
-    const drawTypeId = getDrawId(drawType);
-    let featJSON,
-        newColor,
-        format;
+async function initializeWithoutGUI(
+  { state, commit, dispatch, getters, rootState },
+  {
+    drawType,
+    color,
+    opacity,
+    maxFeatures,
+    initialJSON,
+    transformWGS,
+    zoomToExtent,
+  },
+) {
+  const drawTypeId = getDrawId(drawType);
+  let featJSON, newColor, format;
 
-    commit("setFreeHand", false);
-    commit("setWithoutGUI", true);
+  commit("setFreeHand", false);
+  commit("setWithoutGUI", true);
 
-    if (["Point", "LineString", "Polygon", "Circle"].indexOf(drawType) > -1) {
-        const {styleSettings} = getters;
-        let layerExists = false;
+  if (["Point", "LineString", "Polygon", "Circle"].indexOf(drawType) > -1) {
+    const { styleSettings } = getters;
+    let layerExists = false;
 
-        commit("setDrawType", {id: drawTypeId, geometry: drawType});
+    commit("setDrawType", { id: drawTypeId, geometry: drawType });
 
-        if (color) {
-            styleSettings.color = color;
-            styleSettings.colorContour = color;
+    if (color) {
+      styleSettings.color = color;
+      styleSettings.colorContour = color;
 
-            setters.setStyleSettings({getters, commit}, styleSettings);
-        }
-        if (opacity) {
-            newColor = styleSettings.color;
-            newColor[3] = parseFloat(opacity);
-
-            styleSettings.color = newColor;
-            styleSettings.opacity = opacity;
-
-            setters.setStyleSettings({getters, commit}, styleSettings);
-        }
-
-        layerExists = dispatch("Maps/checkLayer", main.getApp().config.globalProperties.$layer, {root: true});
-
-        if (!layerExists) {
-            dispatch("Maps/addLayer", main.getApp().config.globalProperties.$layer, {root: true});
-        }
-
-        dispatch("createDrawInteractionAndAddToMap", {active: true, maxFeatures});
-        dispatch("createSelectInteractionAndAddToMap", false);
-        dispatch("createModifyInteractionAndAddToMap", false);
-        dispatch("createModifyAttributesInteractionAndAddToMap", false);
-
-        if (initialJSON) {
-            try {
-                if (transformWGS) {
-                    const mapProjection = crs.getMapProjection(mapCollection.getMap(rootState.Maps.mode));
-
-                    format = new GeoJSON({
-                        defaultDataProjection: "EPSG:4326"
-                    });
-                    // read GeoJSON and transform the coordiantes from WGS84 to the projection of the map
-                    featJSON = format.readFeatures(initialJSON, {
-                        dataProjection: "EPSG:4326",
-                        featureProjection: mapProjection
-                    });
-                }
-                else {
-                    featJSON = format.readFeatures(initialJSON);
-                }
-
-                if (featJSON.length > 0) {
-                    main.getApp().config.globalProperties.$layer.setStyle(createStyleModule.createStyle(state, styleSettings));
-                    main.getApp().config.globalProperties.$layer.getSource().addFeatures(featJSON);
-                }
-                if (featJSON.length > 0 && zoomToExtent) {
-                    dispatch("Maps/zoomToExtent", {extent: main.getApp().config.globalProperties.$layer.getSource().getExtent()}, {root: true});
-                }
-            }
-            catch (e) {
-                // The given JSON was invalid
-                const alert = {
-                    category: "error",
-                    content: i18next.t("common:modules.draw_old.geometryDrawFailed"),
-                    displayClass: "error",
-                    multipleAlert: true
-                };
-
-                dispatch("Alerting/addSingleAlert", alert, {root: true});
-            }
-        }
+      setters.setStyleSettings({ getters, commit }, styleSettings);
     }
+    if (opacity) {
+      newColor = styleSettings.color;
+      newColor[3] = parseFloat(opacity);
+
+      styleSettings.color = newColor;
+      styleSettings.opacity = opacity;
+
+      setters.setStyleSettings({ getters, commit }, styleSettings);
+    }
+
+    layerExists = dispatch(
+      "Maps/checkLayer",
+      main.getApp().config.globalProperties.$layer,
+      { root: true },
+    );
+
+    if (!layerExists) {
+      dispatch("Maps/addLayer", main.getApp().config.globalProperties.$layer, {
+        root: true,
+      });
+    }
+
+    dispatch("createDrawInteractionAndAddToMap", { active: true, maxFeatures });
+    dispatch("createSelectInteractionAndAddToMap", false);
+    dispatch("createModifyInteractionAndAddToMap", false);
+    dispatch("createModifyAttributesInteractionAndAddToMap", false);
+
+    if (initialJSON) {
+      try {
+        if (transformWGS) {
+          const mapProjection = crs.getMapProjection(
+            mapCollection.getMap(rootState.Maps.mode),
+          );
+
+          format = new GeoJSON({
+            defaultDataProjection: "EPSG:4326",
+          });
+          // read GeoJSON and transform the coordiantes from WGS84 to the projection of the map
+          featJSON = format.readFeatures(initialJSON, {
+            dataProjection: "EPSG:4326",
+            featureProjection: mapProjection,
+          });
+        } else {
+          featJSON = format.readFeatures(initialJSON);
+        }
+
+        if (featJSON.length > 0) {
+          main
+            .getApp()
+            .config.globalProperties.$layer.setStyle(
+              createStyleModule.createStyle(state, styleSettings),
+            );
+          main
+            .getApp()
+            .config.globalProperties.$layer.getSource()
+            .addFeatures(featJSON);
+        }
+        if (featJSON.length > 0 && zoomToExtent) {
+          dispatch(
+            "Maps/zoomToExtent",
+            {
+              extent: main
+                .getApp()
+                .config.globalProperties.$layer.getSource()
+                .getExtent(),
+            },
+            { root: true },
+          );
+        }
+      } catch (e) {
+        // The given JSON was invalid
+        const alert = {
+          category: "error",
+          content: i18next.t("common:modules.draw_old.geometryDrawFailed"),
+          displayClass: "error",
+          multipleAlert: true,
+        };
+
+        dispatch("Alerting/addSingleAlert", alert, { root: true });
+      }
+    }
+  }
 }
 /**
  * Find the correct id for the translation of the given drawType.
@@ -279,25 +343,25 @@ async function initializeWithoutGUI ({state, commit, dispatch, getters, rootStat
  * @param {String} drawType Type of the draw interaction.
  * @returns {String} The translation key for the given draw interaction
  */
-function getDrawId (drawType) {
-    switch (drawType) {
-        case "Circle":
-            return "drawCircle";
-        case "LineString":
-            return "drawLine";
-        case "Point":
-            return "drawSymbol";
-        case "Polygon":
-            return "drawArea";
-        default:
-            return "draw";
-    }
+function getDrawId(drawType) {
+  switch (drawType) {
+    case "Circle":
+      return "drawCircle";
+    case "LineString":
+      return "drawLine";
+    case "Point":
+      return "drawSymbol";
+    case "Polygon":
+      return "drawArea";
+    default:
+      return "draw";
+  }
 }
 
 export {
-    cancelDrawWithoutGUI,
-    downloadFeaturesWithoutGUI,
-    downloadViaRemoteInterface,
-    editFeaturesWithoutGUI,
-    initializeWithoutGUI
+  cancelDrawWithoutGUI,
+  downloadFeaturesWithoutGUI,
+  downloadViaRemoteInterface,
+  editFeaturesWithoutGUI,
+  initializeWithoutGUI,
 };

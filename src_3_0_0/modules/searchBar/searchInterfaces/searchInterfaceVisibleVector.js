@@ -5,7 +5,7 @@ import SearchInterface from "./searchInterface";
 
 import Cluster from "ol/source/Cluster";
 import * as olExtent from "ol/extent";
-import {Icon} from "ol/style.js";
+import { Icon } from "ol/style.js";
 
 /**
  * The search interface to the visible vector.
@@ -20,19 +20,26 @@ import {Icon} from "ol/style.js";
  * @param {String} [searchInterfaceId="visibleVector"] The id of the service interface.
  * @returns {void}
  */
-export default function SearchInterfaceVisibleVector ({hitTemplate, resultEvents, searchInterfaceId} = {}) {
-    SearchInterface.call(this,
-        "client",
-        searchInterfaceId || "visibleVector",
-        resultEvents || {
-            onClick: ["openGetFeatureInfo", "setMarker", "zoomToResult"],
-            onHover: ["setMarker"]
-        },
-        hitTemplate
-    );
+export default function SearchInterfaceVisibleVector({
+  hitTemplate,
+  resultEvents,
+  searchInterfaceId,
+} = {}) {
+  SearchInterface.call(
+    this,
+    "client",
+    searchInterfaceId || "visibleVector",
+    resultEvents || {
+      onClick: ["openGetFeatureInfo", "setMarker", "zoomToResult"],
+      onHover: ["setMarker"],
+    },
+    hitTemplate,
+  );
 }
 
-SearchInterfaceVisibleVector.prototype = Object.create(SearchInterface.prototype);
+SearchInterfaceVisibleVector.prototype = Object.create(
+  SearchInterface.prototype,
+);
 
 /**
  * Search in visible vector search interface.
@@ -41,18 +48,27 @@ SearchInterfaceVisibleVector.prototype = Object.create(SearchInterface.prototype
  * @returns {void}
  */
 SearchInterfaceVisibleVector.prototype.search = async function (searchInput) {
-    this.searchState = "running";
+  this.searchState = "running";
 
-    const vectorLayerTypes = layerFactory.getVectorLayerTypes(),
-        visibleVectorLayerConfigs = store.getters.visibleLayerConfigs.filter(layerConfig => {
-            return vectorLayerTypes.includes(layerConfig.typ) && layerConfig.searchField && layerConfig.searchField !== "";
-        }),
-        foundFeatures = this.findMatchingFeatures(visibleVectorLayerConfigs, searchInput);
+  const vectorLayerTypes = layerFactory.getVectorLayerTypes(),
+    visibleVectorLayerConfigs = store.getters.visibleLayerConfigs.filter(
+      (layerConfig) => {
+        return (
+          vectorLayerTypes.includes(layerConfig.typ) &&
+          layerConfig.searchField &&
+          layerConfig.searchField !== ""
+        );
+      },
+    ),
+    foundFeatures = this.findMatchingFeatures(
+      visibleVectorLayerConfigs,
+      searchInput,
+    );
 
-    this.pushHitsToSearchResults(foundFeatures);
+  this.pushHitsToSearchResults(foundFeatures);
 
-    this.searchState = "finished";
-    return this.searchResults;
+  this.searchState = "finished";
+  return this.searchResults;
 };
 
 /**
@@ -62,28 +78,36 @@ SearchInterfaceVisibleVector.prototype.search = async function (searchInput) {
  * @param {String} searchInput The search input.
  * @returns {ol/Feature[]} Array of features containing searched input.
  */
-SearchInterfaceVisibleVector.prototype.findMatchingFeatures = function (visibleVectorLayerConfigs, searchInput) {
-    const foundFeatures = [];
+SearchInterfaceVisibleVector.prototype.findMatchingFeatures = function (
+  visibleVectorLayerConfigs,
+  searchInput,
+) {
+  const foundFeatures = [];
 
-    visibleVectorLayerConfigs.forEach(layerConfig => {
-        const layer = layerCollection.getLayerById(layerConfig.id),
-            layerSource = layer.getLayerSource() instanceof Cluster ? layer.getLayerSource().getSource() : layer.getLayerSource(),
-            searchFields = Array.isArray(layerConfig.searchField) ? layerConfig.searchField : [layerConfig.searchField],
-            features = layerSource.getFeatures();
+  visibleVectorLayerConfigs.forEach((layerConfig) => {
+    const layer = layerCollection.getLayerById(layerConfig.id),
+      layerSource =
+        layer.getLayerSource() instanceof Cluster
+          ? layer.getLayerSource().getSource()
+          : layer.getLayerSource(),
+      searchFields = Array.isArray(layerConfig.searchField)
+        ? layerConfig.searchField
+        : [layerConfig.searchField],
+      features = layerSource.getFeatures();
 
-        searchFields.forEach(searchField => {
-            features.forEach(feature => {
-                const upperSearchField = String(feature.get(searchField)).toUpperCase(),
-                    upperSearchInput = searchInput.toUpperCase();
+    searchFields.forEach((searchField) => {
+      features.forEach((feature) => {
+        const upperSearchField = String(feature.get(searchField)).toUpperCase(),
+          upperSearchInput = searchInput.toUpperCase();
 
-                if (upperSearchField.indexOf(upperSearchInput) !== -1) {
-                    foundFeatures.push(this.normalizeResult(feature, layer, searchField));
-                }
-            });
-        });
+        if (upperSearchField.indexOf(upperSearchInput) !== -1) {
+          foundFeatures.push(this.normalizeResult(feature, layer, searchField));
+        }
+      });
     });
+  });
 
-    return foundFeatures;
+  return foundFeatures;
 };
 
 /**
@@ -93,16 +117,20 @@ SearchInterfaceVisibleVector.prototype.findMatchingFeatures = function (visibleV
  * @param {String} searchField The search field.
  * @returns {Object} The normalized search result.
  */
-SearchInterfaceVisibleVector.prototype.normalizeResult = function (feature, layer, searchField) {
-    return {
-        events: this.normalizeResultEvents(this.resultEvents, feature, layer),
-        category: layer.attributes.name,
-        displayedInfo: this.getAdditionalInfo(feature, layer),
-        imagePath: this.getImageSource(feature, layer),
-        id: feature.ol_uid,
-        name: feature.get(searchField),
-        toolTip: feature.get(searchField)
-    };
+SearchInterfaceVisibleVector.prototype.normalizeResult = function (
+  feature,
+  layer,
+  searchField,
+) {
+  return {
+    events: this.normalizeResultEvents(this.resultEvents, feature, layer),
+    category: layer.attributes.name,
+    displayedInfo: this.getAdditionalInfo(feature, layer),
+    imagePath: this.getImageSource(feature, layer),
+    id: feature.ol_uid,
+    name: feature.get(searchField),
+    toolTip: feature.get(searchField),
+  };
 };
 
 /**
@@ -111,8 +139,11 @@ SearchInterfaceVisibleVector.prototype.normalizeResult = function (feature, laye
  * @param {Object} layer The vector layer.
  * @returns {mixed} found additional info
  */
-SearchInterfaceVisibleVector.prototype.getAdditionalInfo = function (feature, layer) {
-    return feature.get(layer.attributes.additionalInfoField) || "";
+SearchInterfaceVisibleVector.prototype.getAdditionalInfo = function (
+  feature,
+  layer,
+) {
+  return feature.get(layer.attributes.additionalInfoField) || "";
 };
 
 /**
@@ -121,21 +152,26 @@ SearchInterfaceVisibleVector.prototype.getAdditionalInfo = function (feature, la
  * @param {Object} layer The vector layer.
  * @return {String} Image source of image style.
  */
-SearchInterfaceVisibleVector.prototype.getImageSource = function (feature, layer) {
-    let imageSource = "";
+SearchInterfaceVisibleVector.prototype.getImageSource = function (
+  feature,
+  layer,
+) {
+  let imageSource = "";
 
-    if (feature.getGeometry().getType() === "Point" || feature.getGeometry().getType() === "MultiPoint") {
-        const layerStyle = layer.attributes.style(feature);
+  if (
+    feature.getGeometry().getType() === "Point" ||
+    feature.getGeometry().getType() === "MultiPoint"
+  ) {
+    const layerStyle = layer.attributes.style(feature);
 
-        if (Array.isArray(layerStyle)) {
-            imageSource = this.getImageSourceFromStyle(layerStyle[0]);
-        }
-        else {
-            imageSource = this.getImageSourceFromStyle(layerStyle);
-        }
+    if (Array.isArray(layerStyle)) {
+      imageSource = this.getImageSourceFromStyle(layerStyle[0]);
+    } else {
+      imageSource = this.getImageSourceFromStyle(layerStyle);
     }
+  }
 
-    return imageSource;
+  return imageSource;
 };
 
 /**
@@ -143,8 +179,12 @@ SearchInterfaceVisibleVector.prototype.getImageSource = function (feature, layer
  * @param {Style} layerStyle Style of layer.
  * @returns {String} Image source of image style.
  */
-SearchInterfaceVisibleVector.prototype.getImageSourceFromStyle = function (layerStyle) {
-    return layerStyle.getImage() instanceof Icon ? layerStyle.getImage().getSrc() : "";
+SearchInterfaceVisibleVector.prototype.getImageSourceFromStyle = function (
+  layerStyle,
+) {
+  return layerStyle.getImage() instanceof Icon
+    ? layerStyle.getImage().getSrc()
+    : "";
 };
 
 /**
@@ -154,27 +194,30 @@ SearchInterfaceVisibleVector.prototype.getImageSourceFromStyle = function (layer
  * @param {Object} layer The vector layer.
  * @returns {Object} The possible actions.
  */
-SearchInterfaceVisibleVector.prototype.createPossibleActions = function (feature, layer) {
-    const centerCoordinate = this.getCoordinates(feature);
+SearchInterfaceVisibleVector.prototype.createPossibleActions = function (
+  feature,
+  layer,
+) {
+  const centerCoordinate = this.getCoordinates(feature);
 
-    return {
-        openGetFeatureInfo: {
-            feature: feature,
-            layer: layer
-        },
-        setMarker: {
-            coordinates: centerCoordinate,
-            feature: feature,
-            layer: layer
-        },
-        zoomToResult: {
-            coordinates: centerCoordinate
-        },
-        startRouting: {
-            coordinates: centerCoordinate,
-            name: centerCoordinate.toString()
-        }
-    };
+  return {
+    openGetFeatureInfo: {
+      feature: feature,
+      layer: layer,
+    },
+    setMarker: {
+      coordinates: centerCoordinate,
+      feature: feature,
+      layer: layer,
+    },
+    zoomToResult: {
+      coordinates: centerCoordinate,
+    },
+    startRouting: {
+      coordinates: centerCoordinate,
+      name: centerCoordinate.toString(),
+    },
+  };
 };
 
 /**
@@ -184,14 +227,16 @@ SearchInterfaceVisibleVector.prototype.createPossibleActions = function (feature
  * @returns {Array} the center coordinates of the feature
  */
 SearchInterfaceVisibleVector.prototype.getCoordinates = function (feature) {
-    let centerCoordinate = olExtent.getCenter(feature.getGeometry().getExtent());
+  let centerCoordinate = olExtent.getCenter(feature.getGeometry().getExtent());
 
-    if (feature.getGeometry().getType() === "MultiPolygon") {
-        if (!feature.getGeometry().intersectsCoordinate(centerCoordinate)) {
-            centerCoordinate = this.getRandomCoordinate(feature.getGeometry().getCoordinates());
-        }
+  if (feature.getGeometry().getType() === "MultiPolygon") {
+    if (!feature.getGeometry().intersectsCoordinate(centerCoordinate)) {
+      centerCoordinate = this.getRandomCoordinate(
+        feature.getGeometry().getCoordinates(),
+      );
     }
-    return centerCoordinate;
+  }
+  return centerCoordinate;
 };
 
 /**
@@ -199,13 +244,13 @@ SearchInterfaceVisibleVector.prototype.getCoordinates = function (feature) {
  * @param {Array} coordinates - the coordinates within a polygon.
  * @returns {Array} - returns a random coordinate.
  */
-SearchInterfaceVisibleVector.prototype.getRandomCoordinate = function (coordinates) {
-    if (Array.isArray(coordinates) && coordinates[coordinates.length - 1]) {
-        const randomIndex = Math.floor(Math.random() * coordinates.length);
+SearchInterfaceVisibleVector.prototype.getRandomCoordinate = function (
+  coordinates,
+) {
+  if (Array.isArray(coordinates) && coordinates[coordinates.length - 1]) {
+    const randomIndex = Math.floor(Math.random() * coordinates.length);
 
-        return this.getRandomCoordinate(coordinates[randomIndex]);
-    }
-    return coordinates;
+    return this.getRandomCoordinate(coordinates[randomIndex]);
+  }
+  return coordinates;
 };
-
-

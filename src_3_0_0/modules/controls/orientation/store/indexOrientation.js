@@ -3,8 +3,8 @@ import mutations from "./mutationsOrientation";
 import state from "./stateOrientation";
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    getters
+  namespaced: true,
+  state,
+  mutations,
+  getters,
 };

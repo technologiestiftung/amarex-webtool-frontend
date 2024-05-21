@@ -4,9 +4,9 @@ import actions from "./actionsCoordToolkit";
 import state from "./stateCoordToolkit";
 
 export default {
-    namespaced: true,
-    state: {...state},
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state: { ...state },
+  mutations,
+  actions,
+  getters,
 };

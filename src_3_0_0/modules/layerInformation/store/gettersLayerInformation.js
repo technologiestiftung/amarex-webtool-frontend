@@ -1,5 +1,5 @@
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
-import {isUrl} from "../../../shared/js/utils/urlHelper";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
+import { isUrl } from "../../../shared/js/utils/urlHelper";
 import stateLayerInformation from "./stateLayerInformation";
 
 /**
@@ -7,28 +7,28 @@ import stateLayerInformation from "./stateLayerInformation";
  * @module modules/layerInformation/store/gettersLayerInformation
  */
 export default {
-    ...generateSimpleGetters(stateLayerInformation),
+  ...generateSimpleGetters(stateLayerInformation),
 
-    /**
-     * Provides state for urlParams.
-     * @param {Object} state state of the app-store.
-     * @returns {Object} state for urlParams
-     */
-    urlParams: state => {
-        const layerInfoCopy = {...state.layerInfo},
-            layerInfoEncoded = {};
+  /**
+   * Provides state for urlParams.
+   * @param {Object} state state of the app-store.
+   * @returns {Object} state for urlParams
+   */
+  urlParams: (state) => {
+    const layerInfoCopy = { ...state.layerInfo },
+      layerInfoEncoded = {};
 
-        Object.entries(layerInfoCopy).forEach(([key, value]) => {
-            let encoded = value;
+    Object.entries(layerInfoCopy).forEach(([key, value]) => {
+      let encoded = value;
 
-            if (isUrl(value)) {
-                encoded = encodeURIComponent(value);
-            }
-            layerInfoEncoded[key] = encoded;
-        });
+      if (isUrl(value)) {
+        encoded = encodeURIComponent(value);
+      }
+      layerInfoEncoded[key] = encoded;
+    });
 
-        return {
-            layerInfo: layerInfoEncoded
-        };
-    }
+    return {
+      layerInfo: layerInfoEncoded,
+    };
+  },
 };

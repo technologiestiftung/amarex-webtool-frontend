@@ -1,9 +1,8 @@
-
-import {generateSimpleGetters} from "../../../shared/js/utils/generators";
+import { generateSimpleGetters } from "../../../shared/js/utils/generators";
 import stateAbimo from "./stateAbimo";
 
 const getters = {
-    ...generateSimpleGetters(stateAbimo)
+  ...generateSimpleGetters(stateAbimo),
 };
 
 export default getters;

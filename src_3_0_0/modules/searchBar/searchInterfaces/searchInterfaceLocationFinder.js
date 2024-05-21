@@ -20,25 +20,35 @@ import store from "../../../app-store";
  * @param {String} [searchInterfaceId="locationFinder"] The id of the service interface.
  * @returns {void}
  */
-export default function SearchInterfaceLocationFinder ({serviceId, classes, epsg, hitTemplate, resultEvents, searchInterfaceId} = {}) {
-    SearchInterface.call(this,
-        "client",
-        searchInterfaceId || "locationFinder",
-        resultEvents || {
-            onClick: ["setMarker", "zoomToResult"],
-            onHover: ["setMarker"],
-            buttons: ["startRouting"]
-        },
-        hitTemplate
-    );
+export default function SearchInterfaceLocationFinder({
+  serviceId,
+  classes,
+  epsg,
+  hitTemplate,
+  resultEvents,
+  searchInterfaceId,
+} = {}) {
+  SearchInterface.call(
+    this,
+    "client",
+    searchInterfaceId || "locationFinder",
+    resultEvents || {
+      onClick: ["setMarker", "zoomToResult"],
+      onHover: ["setMarker"],
+      buttons: ["startRouting"],
+    },
+    hitTemplate,
+  );
 
-    this.serviceId = serviceId;
+  this.serviceId = serviceId;
 
-    this.classes = classes || [];
-    this.epsg = epsg || store.getters["Maps/projectionCode"];
+  this.classes = classes || [];
+  this.epsg = epsg || store.getters["Maps/projectionCode"];
 }
 
-SearchInterfaceLocationFinder.prototype = Object.create(SearchInterface.prototype);
+SearchInterfaceLocationFinder.prototype = Object.create(
+  SearchInterface.prototype,
+);
 
 /**
  * Search in location finder search interface.
@@ -47,24 +57,31 @@ SearchInterfaceLocationFinder.prototype = Object.create(SearchInterface.prototyp
  * @returns {void}
  */
 SearchInterfaceLocationFinder.prototype.search = async function (searchInput) {
-    const searchUrl = `${store?.getters?.restServiceById(this.serviceId)?.url}/Lookup?query=${searchInput}&sref=${this.epsg}`,
-        extendedSearchUrl = this.classes.length > 0 ? `${searchUrl}&filter=type:${this.classes.map(item => item.name).join(",")}` : searchUrl,
-        resultData = await this.requestSearch(extendedSearchUrl, "GET"),
-        epsgCode = "EPSG:" + resultData.sref;
+  const searchUrl = `${store?.getters?.restServiceById(this.serviceId)?.url}/Lookup?query=${searchInput}&sref=${this.epsg}`,
+    extendedSearchUrl =
+      this.classes.length > 0
+        ? `${searchUrl}&filter=type:${this.classes.map((item) => item.name).join(",")}`
+        : searchUrl,
+    resultData = await this.requestSearch(extendedSearchUrl, "GET"),
+    epsgCode = "EPSG:" + resultData.sref;
 
-    if (!resultData?.ok) {
-        this.handleServerError(resultData);
-    }
-    else if (!crs.getProjection(epsgCode)) {
-        this.showError({
-            statusText: i18next.t("common:modules.searchBar.locationFinder.unknownProjection") + " (" + epsgCode + ")"
-        });
-    }
-    else if (Array.isArray(resultData.locs)) {
-        this.pushHitsToSearchResults(this.normalizeResults(resultData.locs, epsgCode));
-    }
+  if (!resultData?.ok) {
+    this.handleServerError(resultData);
+  } else if (!crs.getProjection(epsgCode)) {
+    this.showError({
+      statusText:
+        i18next.t("common:modules.searchBar.locationFinder.unknownProjection") +
+        " (" +
+        epsgCode +
+        ")",
+    });
+  } else if (Array.isArray(resultData.locs)) {
+    this.pushHitsToSearchResults(
+      this.normalizeResults(resultData.locs, epsgCode),
+    );
+  }
 
-    return this.searchResults;
+  return this.searchResults;
 };
 
 /**
@@ -72,16 +89,20 @@ SearchInterfaceLocationFinder.prototype.search = async function (searchInput) {
  * @param {Object} resultData The result data.
  * @returns {void}
  */
-SearchInterfaceLocationFinder.prototype.handleServerError = function (resultData) {
-    let statusText = i18next.t("common:modules.searchBar.locationFinder.serverError");
+SearchInterfaceLocationFinder.prototype.handleServerError = function (
+  resultData,
+) {
+  let statusText = i18next.t(
+    "common:modules.searchBar.locationFinder.serverError",
+  );
 
-    if (resultData.info) {
-        statusText = `${statusText}: ${resultData.info}`;
-    }
+  if (resultData.info) {
+    statusText = `${statusText}: ${resultData.info}`;
+  }
 
-    this.showError({
-        statusText: statusText
-    });
+  this.showError({
+    statusText: statusText,
+  });
 };
 
 /**
@@ -90,13 +111,16 @@ SearchInterfaceLocationFinder.prototype.handleServerError = function (resultData
  * @returns {void}
  */
 SearchInterfaceLocationFinder.prototype.showError = function (err) {
-    let msg = err.msg && err.msg !== "" ? err.msg : i18next.t("common:modules.searchBar.locationFinder.errorMsg");
+  let msg =
+    err.msg && err.msg !== ""
+      ? err.msg
+      : i18next.t("common:modules.searchBar.locationFinder.errorMsg");
 
-    if (err.statusText && err.statusText !== "") {
-        msg += ": " + err.statusText;
-    }
+  if (err.statusText && err.statusText !== "") {
+    msg += ": " + err.statusText;
+  }
 
-    console.error(msg);
+  console.error(msg);
 };
 
 /**
@@ -105,16 +129,22 @@ SearchInterfaceLocationFinder.prototype.showError = function (err) {
  * @param {String} epsgCode The EPSG-code of the coordinate reference system.
  * @returns {Object[]} The normalized search result.
  */
-SearchInterfaceLocationFinder.prototype.normalizeResults = function (searchResults, epsgCode) {
-    const normalizedResults = [];
+SearchInterfaceLocationFinder.prototype.normalizeResults = function (
+  searchResults,
+  epsgCode,
+) {
+  const normalizedResults = [];
 
-    searchResults.forEach(searchResult => {
-        const classDefinition = this.classes.find(item => item.name === searchResult.type) || {};
+  searchResults.forEach((searchResult) => {
+    const classDefinition =
+      this.classes.find((item) => item.name === searchResult.type) || {};
 
-        normalizedResults.push(this.normalizeResult(searchResult, {classDefinition, epsgCode}));
-    });
+    normalizedResults.push(
+      this.normalizeResult(searchResult, { classDefinition, epsgCode }),
+    );
+  });
 
-    return normalizedResults;
+  return normalizedResults;
 };
 
 /**
@@ -126,14 +156,21 @@ SearchInterfaceLocationFinder.prototype.normalizeResults = function (searchResul
  * @param {String} epsgCode The EPSG-code of the coordinate reference system.
  * @returns {Object[]} The normalized search result.
  */
-SearchInterfaceLocationFinder.prototype.normalizeResult = function (searchResult, extendedData) {
-    return {
-        events: this.normalizeResultEvents(this.resultEvents, searchResult, extendedData),
-        category: searchResult.type,
-        id: "locationFinder_" + searchResult.id,
-        icon: extendedData?.classDefinition?.icon || "bi-signpost-2",
-        name: searchResult.name
-    };
+SearchInterfaceLocationFinder.prototype.normalizeResult = function (
+  searchResult,
+  extendedData,
+) {
+  return {
+    events: this.normalizeResultEvents(
+      this.resultEvents,
+      searchResult,
+      extendedData,
+    ),
+    category: searchResult.type,
+    id: "locationFinder_" + searchResult.id,
+    icon: extendedData?.classDefinition?.icon || "bi-signpost-2",
+    name: searchResult.name,
+  };
 };
 
 /**
@@ -145,21 +182,27 @@ SearchInterfaceLocationFinder.prototype.normalizeResult = function (searchResult
  * @param {Number} extendedData.epsgCode The EPSG-code of the coordinate reference system.
  * @returns {Object} The possible actions.
  */
-SearchInterfaceLocationFinder.prototype.createPossibleActions = function (searchResult, extendedData) {
-    const coordinates = this.processCoordinatesForActions(searchResult, extendedData);
+SearchInterfaceLocationFinder.prototype.createPossibleActions = function (
+  searchResult,
+  extendedData,
+) {
+  const coordinates = this.processCoordinatesForActions(
+    searchResult,
+    extendedData,
+  );
 
-    return {
-        setMarker: {
-            coordinates: coordinates
-        },
-        zoomToResult: {
-            coordinates: coordinates
-        },
-        startRouting: {
-            coordinates: coordinates,
-            name: searchResult.name
-        }
-    };
+  return {
+    setMarker: {
+      coordinates: coordinates,
+    },
+    zoomToResult: {
+      coordinates: coordinates,
+    },
+    startRouting: {
+      coordinates: coordinates,
+      name: searchResult.name,
+    },
+  };
 };
 
 /**
@@ -170,17 +213,38 @@ SearchInterfaceLocationFinder.prototype.createPossibleActions = function (search
  * @param {Number} extendedData.epsgCode The EPSG-code of the coordinate reference system.
  * @returns {Object} The coordinates for actions.
  */
-SearchInterfaceLocationFinder.prototype.processCoordinatesForActions = function (searchResult, extendedData) {
+SearchInterfaceLocationFinder.prototype.processCoordinatesForActions =
+  function (searchResult, extendedData) {
     const map = mapCollection.getMap("2D"),
-        epsgCode = extendedData.epsgCode;
-    let coordinates = crs.transformFromMapProjection(map, epsgCode, [parseFloat(searchResult.cx), parseFloat(searchResult.cy)]);
+      epsgCode = extendedData.epsgCode;
+    let coordinates = crs.transformFromMapProjection(map, epsgCode, [
+      parseFloat(searchResult.cx),
+      parseFloat(searchResult.cy),
+    ]);
 
     if (extendedData.classDefinition?.zoom === "bbox") {
-        const min = crs.transformFromMapProjection(map, epsgCode, [parseFloat(searchResult.xmin), parseFloat(searchResult.ymin)]),
-            max = crs.transformFromMapProjection(map, epsgCode, [parseFloat(searchResult.xmax), parseFloat(searchResult.ymax)]);
+      const min = crs.transformFromMapProjection(map, epsgCode, [
+          parseFloat(searchResult.xmin),
+          parseFloat(searchResult.ymin),
+        ]),
+        max = crs.transformFromMapProjection(map, epsgCode, [
+          parseFloat(searchResult.xmax),
+          parseFloat(searchResult.ymax),
+        ]);
 
-        coordinates = [min[0], min[1], max[0], min[1], max[0], max[1], min[0], max[1], min[0], min[1]];
+      coordinates = [
+        min[0],
+        min[1],
+        max[0],
+        min[1],
+        max[0],
+        max[1],
+        min[0],
+        max[1],
+        min[0],
+        min[1],
+      ];
     }
 
     return coordinates;
-};
+  };

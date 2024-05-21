@@ -32,43 +32,43 @@ import source from "../js/measureSource";
  * @property {Number[]} tooltipCoord coordinates to show the tooltip at
  */
 const state = {
-    // defaults for config.json tool parameters
-    description: "common:modules.measure.description",
-    name: "common:modules.measure.name",
-    hasMouseMapInteractions: true,
-    icon: "bi-arrows-angle-expand",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D"],
-    type: "measure",
+  // defaults for config.json tool parameters
+  description: "common:modules.measure.description",
+  name: "common:modules.measure.name",
+  hasMouseMapInteractions: true,
+  icon: "bi-arrows-angle-expand",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D"],
+  type: "measure",
 
-    // tool-specific config.json parameters
-    earthRadius: 6378137,
-    measurementAccuracy: "meter",
+  // tool-specific config.json parameters
+  earthRadius: 6378137,
+  measurementAccuracy: "meter",
 
-    // measure form state and UI
-    lines: {},
-    polygons: {},
-    geometryValues: ["LineString", "Polygon"],
-    lineStringUnits: ["m", "km"],
-    polygonUnits: ["m²", "km²"],
-    selectedGeometry: "LineString",
-    selectedLineStringUnit: "0",
-    selectedPolygonUnit: "0",
-    unlisteners: [],
-    isDrawing: false,
+  // measure form state and UI
+  lines: {},
+  polygons: {},
+  geometryValues: ["LineString", "Polygon"],
+  lineStringUnits: ["m", "km"],
+  polygonUnits: ["m²", "km²"],
+  selectedGeometry: "LineString",
+  selectedLineStringUnit: "0",
+  selectedPolygonUnit: "0",
+  unlisteners: [],
+  isDrawing: false,
 
-    // measure layer and ol
-    interaction: null,
+  // measure layer and ol
+  interaction: null,
+  source,
+  layer: new VectorLayer({
     source,
-    layer: new VectorLayer({
-        source,
-        style,
-        id: "measureLayer",
-        name: "measureLayer",
-        alwaysOnTop: true
-    }),
-    featureId: null,
-    tooltipCoord: []
+    style,
+    id: "measureLayer",
+    name: "measureLayer",
+    alwaysOnTop: true,
+  }),
+  featureId: null,
+  tooltipCoord: [],
 };
 
 export default state;

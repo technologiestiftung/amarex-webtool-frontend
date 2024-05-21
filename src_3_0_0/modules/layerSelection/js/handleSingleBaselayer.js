@@ -5,20 +5,20 @@
  * @param {Array} layerConfigs to add visible baselayers to
  * @returns {void}
  */
-function checkAndAdd (singleBaselayer, visibleBaselayerConfigs, layerConfigs) {
-    if (singleBaselayer) {
-        visibleBaselayerConfigs.forEach(baselayerConf => {
-            layerConfigs.push({
-                id: baselayerConf.id,
-                layer: {
-                    id: baselayerConf.id,
-                    visibility: false
-                }
-            });
-        });
-    }
+function checkAndAdd(singleBaselayer, visibleBaselayerConfigs, layerConfigs) {
+  if (singleBaselayer) {
+    visibleBaselayerConfigs.forEach((baselayerConf) => {
+      layerConfigs.push({
+        id: baselayerConf.id,
+        layer: {
+          id: baselayerConf.id,
+          visibility: false,
+        },
+      });
+    });
+  }
 }
 
 export default {
-    checkAndAdd
+  checkAndAdd,
 };

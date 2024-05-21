@@ -1,15 +1,14 @@
 import store from "../../../app-store";
 import * as webgl from "@masterportal/masterportalapi/src/renderer/webgl";
 
-
 /**
  * Hides all features by removing them from the layer source. Overrides <LayerType>.hideAllFeatures
  * @public
  * @override
  * @returns {void}
  */
-function hideAllFeatures () {
-    this.getLayerSource().clear();
+function hideAllFeatures() {
+  this.getLayerSource().clear();
 }
 
 /**
@@ -18,9 +17,9 @@ function hideAllFeatures () {
  * @override
  * @returns {void}
  */
-function showAllFeatures () {
-    this.hideAllFeatures();
-    this.getLayerSource().addFeatures(this.features);
+function showAllFeatures() {
+  this.hideAllFeatures();
+  this.getLayerSource().addFeatures(this.features);
 }
 
 /**
@@ -30,11 +29,13 @@ function showAllFeatures () {
  * @override
  * @return {void}
  */
-function showFeaturesByIds (featureIdList) {
-    const featuresToShow = featureIdList.map(id => this.features.find(feature => feature.getId() === id));
+function showFeaturesByIds(featureIdList) {
+  const featuresToShow = featureIdList.map((id) =>
+    this.features.find((feature) => feature.getId() === id),
+  );
 
-    this.hideAllFeatures();
-    this.getLayerSource().addFeatures(featuresToShow);
+  this.hideAllFeatures();
+  this.getLayerSource().addFeatures(featuresToShow);
 }
 
 /**
@@ -48,28 +49,29 @@ function showFeaturesByIds (featureIdList) {
  *       otherwise icons will be rendered as black quads
  * @returns {void}
  */
-function visibilityChanged (newValue) {
-    const map = mapCollection.getMap("2D");
+function visibilityChanged(newValue) {
+  const map = mapCollection.getMap("2D");
 
-    if (this.isDisposed()) {
-        // recreate layer instance if buffer has been disposed
-        this.setLayer(webgl.createLayer({
-            ...this.attributes,
-            source: this.source,
-            style: this.getLayer().get("style")// pass style from the previous layer instance
-        }));
-    }
-    if (this.attributes.type === "WFS") {
-        this.getLayer().getSource().refresh();
-    }
-    if (!newValue) {
-        // dispose WebGL buffer if layer removed
-        this.getLayer().dispose();
-        map.removeLayer(this.getLayer());
-    }
-    else if (!map.getLayers().getArray().includes(this.getLayer())) {
-        store.dispatch("Maps/addLayer", this.getLayer());
-    }
+  if (this.isDisposed()) {
+    // recreate layer instance if buffer has been disposed
+    this.setLayer(
+      webgl.createLayer({
+        ...this.attributes,
+        source: this.source,
+        style: this.getLayer().get("style"), // pass style from the previous layer instance
+      }),
+    );
+  }
+  if (this.attributes.type === "WFS") {
+    this.getLayer().getSource().refresh();
+  }
+  if (!newValue) {
+    // dispose WebGL buffer if layer removed
+    this.getLayer().dispose();
+    map.removeLayer(this.getLayer());
+  } else if (!map.getLayers().getArray().includes(this.getLayer())) {
+    store.dispatch("Maps/addLayer", this.getLayer());
+  }
 }
 
 /**
@@ -78,8 +80,8 @@ function visibilityChanged (newValue) {
  * @readonly
  * @returns {Boolean} true / false
  */
-function isDisposed () {
-    return this.layer ? this.layer.disposed : true;
+function isDisposed() {
+  return this.layer ? this.layer.disposed : true;
 }
 
 /**
@@ -87,11 +89,11 @@ function isDisposed () {
  * If renderer is webgl don't do anything
  * @returns {void}
  */
-function setStyle () {
-    /**
-     * execute empty
-     * @todo enable future update of style?
-     */
+function setStyle() {
+  /**
+   * execute empty
+   * @todo enable future update of style?
+   */
 }
 
 /**
@@ -100,25 +102,25 @@ function setStyle () {
  * @param {Layer} layerObject - the layer instance to modify
  * @returns {void}
  */
-function setLayerProperties (layerObject) {
-    // set this.source as persistent, if layer is disposed
-    layerObject.source = layerObject.layer.getSource();
-    // override layer methods
-    layerObject.isDisposed = isDisposed;
-    layerObject.visibilityChanged = visibilityChanged;
-    layerObject.setStyle = setStyle;
-    // todo inka: these functions are not implemented in layers at the moment - delete?
-    layerObject.hideAllFeatures = hideAllFeatures;
-    layerObject.showAllFeatures = showAllFeatures;
-    layerObject.showFeaturesByIds = showFeaturesByIds;
+function setLayerProperties(layerObject) {
+  // set this.source as persistent, if layer is disposed
+  layerObject.source = layerObject.layer.getSource();
+  // override layer methods
+  layerObject.isDisposed = isDisposed;
+  layerObject.visibilityChanged = visibilityChanged;
+  layerObject.setStyle = setStyle;
+  // todo inka: these functions are not implemented in layers at the moment - delete?
+  layerObject.hideAllFeatures = hideAllFeatures;
+  layerObject.showAllFeatures = showAllFeatures;
+  layerObject.showFeaturesByIds = showFeaturesByIds;
 }
 
 export default {
-    setLayerProperties,
-    hideAllFeatures,
-    showAllFeatures,
-    showFeaturesByIds,
-    visibilityChanged,
-    isDisposed,
-    setStyle
+  setLayerProperties,
+  hideAllFeatures,
+  showAllFeatures,
+  showFeaturesByIds,
+  visibilityChanged,
+  isDisposed,
+  setStyle,
 };

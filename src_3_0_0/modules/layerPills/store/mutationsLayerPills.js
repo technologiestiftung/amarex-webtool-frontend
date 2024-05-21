@@ -1,8 +1,8 @@
-import {generateSimpleMutations} from "../../../shared/js/utils/generators";
+import { generateSimpleMutations } from "../../../shared/js/utils/generators";
 import stateLayerPills from "./stateLayerPills";
 
 const mutations = {
-    ...generateSimpleMutations(stateLayerPills)
+  ...generateSimpleMutations(stateLayerPills),
 };
 
 export default mutations;

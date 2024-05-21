@@ -7,10 +7,10 @@
  * @property {String[]} supportedMapModes Map mode in which this module can be used.
  */
 const state = {
-    iconArrow: "arrows-fullscreen",
-    iconExit: "fullscreen-exit",
-    supportedDevices: ["Desktop"],
-    supportedMapModes: ["2D", "3D"]
+  iconArrow: "arrows-fullscreen",
+  iconExit: "fullscreen-exit",
+  supportedDevices: ["Desktop"],
+  supportedMapModes: ["2D", "3D"],
 };
 
 export default state;

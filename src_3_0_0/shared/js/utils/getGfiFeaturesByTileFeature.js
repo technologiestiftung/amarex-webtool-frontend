@@ -1,4 +1,4 @@
-import {createGfiFeature} from "./getWmsFeaturesByMimeType";
+import { createGfiFeature } from "./getWmsFeaturesByMimeType";
 
 /**
  * gets an array of gfiFeatures for 3d tile features, using ./getWmsFeaturesByMimeType->createGfiFeature
@@ -6,50 +6,69 @@ import {createGfiFeature} from "./getWmsFeaturesByMimeType";
  * @param {Object} tileFeature anything that is expected to be a 3d tile feature
  * @returns {Object[]}  an array of objects; objects are generated using ./getWmsFeaturesByMimeType->createGfiFeature
  */
-function getGfiFeaturesByTileFeature (tileFeature) {
-    if (tileFeature === null || typeof tileFeature !== "object") {
-        return [];
+function getGfiFeaturesByTileFeature(tileFeature) {
+  if (tileFeature === null || typeof tileFeature !== "object") {
+    return [];
+  }
+  const layerModel = getLayerModelFromTileFeature(tileFeature),
+    result = [];
+
+  if (isCesium3dTileFeature(tileFeature)) {
+    const gfiFeature = getGfiFeatureByCesium3DTileFeature(
+      tileFeature,
+      layerModel ? layerModel.attributes : undefined,
+    );
+
+    if (gfiFeature) {
+      result.push(gfiFeature);
     }
-    const layerModel = getLayerModelFromTileFeature(tileFeature),
-        result = [];
+  } else if (
+    layerModel &&
+    tileFeature &&
+    tileFeature.primitive &&
+    tileFeature.primitive.olFeature
+  ) {
+    const gfiFeatures = getGfiFeaturesByOlFeature(
+      tileFeature.primitive.olFeature,
+      layerModel.attributes,
+    );
 
-    if (isCesium3dTileFeature(tileFeature)) {
-        const gfiFeature = getGfiFeatureByCesium3DTileFeature(tileFeature, layerModel ? layerModel.attributes : undefined);
-
-        if (gfiFeature) {
-            result.push(gfiFeature);
+    if (Array.isArray(gfiFeatures)) {
+      gfiFeatures.forEach((singleFeature) => {
+        if (singleFeature) {
+          result.push(singleFeature);
         }
+      });
     }
-    else if (layerModel && tileFeature && tileFeature.primitive && tileFeature.primitive.olFeature) {
-        const gfiFeatures = getGfiFeaturesByOlFeature(tileFeature.primitive.olFeature, layerModel.attributes);
+  } else if (
+    layerModel &&
+    tileFeature &&
+    tileFeature.primitive &&
+    isCesiumEntity(tileFeature.primitive.id)
+  ) {
+    const gfiFeature = getGfiFeatureByCesiumEntity(
+      tileFeature,
+      layerModel.attributes,
+    );
 
-        if (Array.isArray(gfiFeatures)) {
-            gfiFeatures.forEach(singleFeature => {
-                if (singleFeature) {
-                    result.push(singleFeature);
-                }
-            });
-        }
+    if (gfiFeature) {
+      result.push(gfiFeature);
     }
-    else if (layerModel && tileFeature && tileFeature.primitive && isCesiumEntity(tileFeature.primitive.id)) {
-        const gfiFeature = getGfiFeatureByCesiumEntity(tileFeature, layerModel.attributes);
+  }
 
-        if (gfiFeature) {
-            result.push(gfiFeature);
-        }
-    }
-
-    return result;
+  return result;
 }
-
 
 /**
  * checks if the given feature is of instance Cesium.Cesium3DTileFeature or Cesium.Cesium3DTilePointFeature
  * @param {*} feature anything to check
  * @returns {Boolean}  returns true if the feature is of instance Cesium.Cesium3DTileFeature or Cesium.Cesium3DTilePointFeature
  */
-function isCesium3dTileFeature (feature) {
-    return feature instanceof Cesium.Cesium3DTileFeature || feature instanceof Cesium.Cesium3DTilePointFeature;
+function isCesium3dTileFeature(feature) {
+  return (
+    feature instanceof Cesium.Cesium3DTileFeature ||
+    feature instanceof Cesium.Cesium3DTilePointFeature
+  );
 }
 
 /**
@@ -57,8 +76,8 @@ function isCesium3dTileFeature (feature) {
  * @param {*} entity anything to check
  * @returns {Boolean}  returns true if the entity is of instance Cesium.Entity
  */
-function isCesiumEntity (entity) {
-    return entity instanceof Cesium.Entity;
+function isCesiumEntity(entity) {
+  return entity instanceof Cesium.Entity;
 }
 
 /**
@@ -71,33 +90,43 @@ function isCesiumEntity (entity) {
  * @param {Object} [properties.attributes] if set, the data of the feature as simple key/value pairs
  * @returns {Object}  an object{getTheme, getTitle, getAttributesToShow, getProperties, getGfiUrl}
  */
-function getGfiFeature (layerAttributes, properties) {
-    const layerName = layerAttributes && layerAttributes.name ? layerAttributes.name : "common:shared.js.utils.buildings",
-        gfiTheme = layerAttributes && layerAttributes.gfiTheme ? layerAttributes.gfiTheme : "buildings_3d",
-        attributesToShow = layerAttributes && layerAttributes.gfiAttributes ? layerAttributes.gfiAttributes : properties?.attributes,
-        featureProperties = properties?.attributes ? properties.attributes : properties,
+function getGfiFeature(layerAttributes, properties) {
+  const layerName =
+      layerAttributes && layerAttributes.name
+        ? layerAttributes.name
+        : "common:shared.js.utils.buildings",
+    gfiTheme =
+      layerAttributes && layerAttributes.gfiTheme
+        ? layerAttributes.gfiTheme
+        : "buildings_3d",
+    attributesToShow =
+      layerAttributes && layerAttributes.gfiAttributes
+        ? layerAttributes.gfiAttributes
+        : properties?.attributes,
+    featureProperties = properties?.attributes
+      ? properties.attributes
+      : properties,
+    layer = {
+      get: (key) => {
+        if (key === "name") {
+          return properties?.attributes?.Objektart
+            ? properties.attributes.Objektart
+            : layerName;
+        } else if (key === "gfiTheme") {
+          return gfiTheme;
+        } else if (key === "gfiAttributes") {
+          return attributesToShow;
+        }
+        return null;
+      },
+    },
+    feature = {
+      getProperties: () => {
+        return featureProperties;
+      },
+    };
 
-        layer = {
-            get: (key) => {
-                if (key === "name") {
-                    return properties?.attributes?.Objektart ? properties.attributes.Objektart : layerName;
-                }
-                else if (key === "gfiTheme") {
-                    return gfiTheme;
-                }
-                else if (key === "gfiAttributes") {
-                    return attributesToShow;
-                }
-                return null;
-            }
-        },
-        feature = {
-            getProperties: () => {
-                return featureProperties;
-            }
-        };
-
-    return createGfiFeature(layer, "", feature);
+  return createGfiFeature(layer, "", feature);
 }
 
 /**
@@ -108,34 +137,45 @@ function getGfiFeature (layerAttributes, properties) {
  * @param {Function} [isCesiumEntityOpt=null] a function(entity) to check if something is of instance Cesium.Entity (for testing only)
  * @returns {(Object[]|undefined)}  a model that matches the attributes gotten by tileFeature or undefined
  */
-function getLayerModelFromTileFeature (tileFeature, getModelByAttributesOpt = null, isCesium3dTileFeatureOpt = null, isCesiumEntityOpt = null) {
-    let filter = null;
+function getLayerModelFromTileFeature(
+  tileFeature,
+  getModelByAttributesOpt = null,
+  isCesium3dTileFeatureOpt = null,
+  isCesiumEntityOpt = null,
+) {
+  let filter = null;
 
-    if (tileFeature === null || typeof tileFeature !== "object") {
-        return undefined;
-    }
-    else if (
-        typeof isCesium3dTileFeatureOpt === "function" ? isCesium3dTileFeatureOpt(tileFeature) : isCesium3dTileFeature(tileFeature)
-        && typeof tileFeature.tileset === "object"
-        && tileFeature?.tileset?.layerReferenceId
-    ) {
-        filter = {id: tileFeature.tileset.layerReferenceId};
-    }
-    else if (!tileFeature?.primitive || tileFeature.primitive === null || typeof tileFeature.primitive !== "object") {
-        return undefined;
-    }
-    else if (tileFeature.primitive.olLayer) {
-        filter = {id: tileFeature.primitive.olLayer.get("id")};
-    }
-    else if (typeof isCesiumEntityOpt === "function" ? isCesiumEntityOpt(tileFeature.primitive.id) : isCesiumEntity(tileFeature.primitive.id)) {
-        filter = {id: tileFeature.primitive.id.layerReferenceId};
-    }
+  if (tileFeature === null || typeof tileFeature !== "object") {
+    return undefined;
+  } else if (
+    typeof isCesium3dTileFeatureOpt === "function"
+      ? isCesium3dTileFeatureOpt(tileFeature)
+      : isCesium3dTileFeature(tileFeature) &&
+        typeof tileFeature.tileset === "object" &&
+        tileFeature?.tileset?.layerReferenceId
+  ) {
+    filter = { id: tileFeature.tileset.layerReferenceId };
+  } else if (
+    !tileFeature?.primitive ||
+    tileFeature.primitive === null ||
+    typeof tileFeature.primitive !== "object"
+  ) {
+    return undefined;
+  } else if (tileFeature.primitive.olLayer) {
+    filter = { id: tileFeature.primitive.olLayer.get("id") };
+  } else if (
+    typeof isCesiumEntityOpt === "function"
+      ? isCesiumEntityOpt(tileFeature.primitive.id)
+      : isCesiumEntity(tileFeature.primitive.id)
+  ) {
+    filter = { id: tileFeature.primitive.id.layerReferenceId };
+  }
 
-    if (typeof getModelByAttributesOpt === "function") {
-        return getModelByAttributesOpt(filter);
-    }
+  if (typeof getModelByAttributesOpt === "function") {
+    return getModelByAttributesOpt(filter);
+  }
 
-    return filter.id;
+  return filter.id;
 }
 
 /**
@@ -145,30 +185,34 @@ function getLayerModelFromTileFeature (tileFeature, getModelByAttributesOpt = nu
  * @param {Function} [getGfiFeatureOpt=null] a function(attributes, properties) to get the gfiFeature with (instead of getGfiFeature; for testing only)
  * @returns {Object}  an object{getTheme, getTitle, getAttributesToShow, getProperties, getGfiUrl}
  */
-function getGfiFeatureByCesium3DTileFeature (tileFeature, attributes, getGfiFeatureOpt = null) {
-    if (
-        tileFeature === null
-        || typeof tileFeature !== "object"
-        || typeof tileFeature.getPropertyIds !== "function"
-        || typeof tileFeature.getProperty !== "function"
-        || !Array.isArray(tileFeature.getPropertyIds())
-    ) {
-        return undefined;
-    }
+function getGfiFeatureByCesium3DTileFeature(
+  tileFeature,
+  attributes,
+  getGfiFeatureOpt = null,
+) {
+  if (
+    tileFeature === null ||
+    typeof tileFeature !== "object" ||
+    typeof tileFeature.getPropertyIds !== "function" ||
+    typeof tileFeature.getProperty !== "function" ||
+    !Array.isArray(tileFeature.getPropertyIds())
+  ) {
+    return undefined;
+  }
 
-    const properties = {};
+  const properties = {};
 
-    tileFeature.getPropertyIds().forEach(propertyName => {
-        properties[propertyName] = tileFeature.getProperty(propertyName);
-    });
-    if (properties.attributes && properties.id) {
-        properties.attributes.gmlid = properties.id;
-    }
+  tileFeature.getPropertyIds().forEach((propertyName) => {
+    properties[propertyName] = tileFeature.getProperty(propertyName);
+  });
+  if (properties.attributes && properties.id) {
+    properties.attributes.gmlid = properties.id;
+  }
 
-    if (typeof getGfiFeatureOpt === "function") {
-        return getGfiFeatureOpt(attributes, properties);
-    }
-    return getGfiFeature(attributes, properties);
+  if (typeof getGfiFeatureOpt === "function") {
+    return getGfiFeatureOpt(attributes, properties);
+  }
+  return getGfiFeature(attributes, properties);
 }
 
 /**
@@ -178,27 +222,31 @@ function getGfiFeatureByCesium3DTileFeature (tileFeature, attributes, getGfiFeat
  * @param {Function} [getGfiFeatureOpt=null] a function(attributes, properties) to get the gfiFeature with (instead of getGfiFeature; for testing only)
  * @returns {Object}  an object{getTheme, getTitle, getAttributesToShow, getProperties, getGfiUrl}
  */
-function getGfiFeatureByCesiumEntity (tileFeature, attributes, getGfiFeatureOpt = null) {
-    if (
-        tileFeature === null
-        || typeof tileFeature !== "object"
-        || tileFeature.primitive === null
-        || typeof tileFeature.primitive !== "object"
-        || tileFeature.primitive.id === null
-        || typeof tileFeature.primitive.id !== "object"
-    ) {
-        return undefined;
-    }
+function getGfiFeatureByCesiumEntity(
+  tileFeature,
+  attributes,
+  getGfiFeatureOpt = null,
+) {
+  if (
+    tileFeature === null ||
+    typeof tileFeature !== "object" ||
+    tileFeature.primitive === null ||
+    typeof tileFeature.primitive !== "object" ||
+    tileFeature.primitive.id === null ||
+    typeof tileFeature.primitive.id !== "object"
+  ) {
+    return undefined;
+  }
 
-    const properties = tileFeature.primitive.id.attributes;
+  const properties = tileFeature.primitive.id.attributes;
 
-    // useConfigName is only used intern in masterportal for translations
-    delete properties?.useConfigName;
+  // useConfigName is only used intern in masterportal for translations
+  delete properties?.useConfigName;
 
-    if (typeof getGfiFeatureOpt === "function") {
-        return getGfiFeatureOpt(attributes, properties);
-    }
-    return getGfiFeature(attributes, properties);
+  if (typeof getGfiFeatureOpt === "function") {
+    return getGfiFeatureOpt(attributes, properties);
+  }
+  return getGfiFeature(attributes, properties);
 }
 
 /**
@@ -208,28 +256,32 @@ function getGfiFeatureByCesiumEntity (tileFeature, attributes, getGfiFeatureOpt 
  * @param {Function} [getGfiFeatureOpt=null] a function(attributes, properties) to get the gfiFeature with (instead of getGfiFeature; for testing only)
  * @returns {Object}  an object{getTheme, getTitle, getAttributesToShow, getProperties, getGfiUrl}
  */
-function getGfiFeatureByOlFeature (olFeature, attributes, getGfiFeatureOpt = null) {
-    // do not confuse with getGfiFeaturesByOlFeature!
-    if (
-        olFeature === null
-        || typeof olFeature !== "object"
-        || typeof olFeature.getProperties !== "function"
-        || typeof olFeature.getProperty !== "function"
-        || !Array.isArray(olFeature.getProperties())
-    ) {
-        return undefined;
-    }
+function getGfiFeatureByOlFeature(
+  olFeature,
+  attributes,
+  getGfiFeatureOpt = null,
+) {
+  // do not confuse with getGfiFeaturesByOlFeature!
+  if (
+    olFeature === null ||
+    typeof olFeature !== "object" ||
+    typeof olFeature.getProperties !== "function" ||
+    typeof olFeature.getProperty !== "function" ||
+    !Array.isArray(olFeature.getProperties())
+  ) {
+    return undefined;
+  }
 
-    const properties = {};
+  const properties = {};
 
-    olFeature.getProperties().forEach(propertyName => {
-        properties[propertyName] = olFeature.getProperty(propertyName);
-    });
+  olFeature.getProperties().forEach((propertyName) => {
+    properties[propertyName] = olFeature.getProperty(propertyName);
+  });
 
-    if (typeof getGfiFeatureOpt === "function") {
-        return getGfiFeatureOpt(attributes, properties);
-    }
-    return getGfiFeature(attributes, properties);
+  if (typeof getGfiFeatureOpt === "function") {
+    return getGfiFeatureOpt(attributes, properties);
+  }
+  return getGfiFeature(attributes, properties);
 }
 
 /**
@@ -239,63 +291,70 @@ function getGfiFeatureByOlFeature (olFeature, attributes, getGfiFeatureOpt = nul
  * @param {Function} [getGfiFeatureByOlFeatureOpt=null] a function(feature, attributes) to get the gfiFeature by olFeature with (instead of getGfiFeatureByOlFeature; for testing only)
  * @returns {Object[]}  an array of object{getTheme, getTitle, getAttributesToShow, getProperties, getGfiUrl}
  */
-function getGfiFeaturesByOlFeature (olFeature, attributes, getGfiFeatureByOlFeatureOpt = null) {
-    // do not confuse with getGfiFeatureByOlFeature!
-    if (
-        olFeature === null
-        || typeof olFeature !== "object"
-        || typeof olFeature.getProperties !== "function"
-        || (typeof olFeature.getProperty !== "function" && typeof olFeature.get !== "function")
-        || olFeature.getProperties() === null
-        || typeof olFeature.getProperties() !== "object"
-    ) {
-        return undefined;
+function getGfiFeaturesByOlFeature(
+  olFeature,
+  attributes,
+  getGfiFeatureByOlFeatureOpt = null,
+) {
+  // do not confuse with getGfiFeatureByOlFeature!
+  if (
+    olFeature === null ||
+    typeof olFeature !== "object" ||
+    typeof olFeature.getProperties !== "function" ||
+    (typeof olFeature.getProperty !== "function" &&
+      typeof olFeature.get !== "function") ||
+    olFeature.getProperties() === null ||
+    typeof olFeature.getProperties() !== "object"
+  ) {
+    return undefined;
+  }
+
+  const result = [];
+
+  if (
+    Object.prototype.hasOwnProperty.call(
+      olFeature.getProperties(),
+      "features",
+    ) &&
+    Array.isArray(olFeature.get("features"))
+  ) {
+    // clustered feature
+    olFeature.get("features").forEach((feature) => {
+      let gfiFeature = null;
+
+      if (typeof getGfiFeatureByOlFeatureOpt === "function") {
+        gfiFeature = getGfiFeatureByOlFeatureOpt(feature, attributes);
+      } else {
+        gfiFeature = getGfiFeatureByOlFeature(feature, attributes);
+      }
+
+      if (gfiFeature) {
+        result.push(gfiFeature);
+      }
+    });
+  } else {
+    let gfiFeature = null;
+
+    if (typeof getGfiFeatureByOlFeatureOpt === "function") {
+      gfiFeature = getGfiFeatureByOlFeatureOpt(olFeature, attributes);
+    } else {
+      gfiFeature = getGfiFeatureByOlFeature(olFeature, attributes);
     }
 
-    const result = [];
-
-    if (Object.prototype.hasOwnProperty.call(olFeature.getProperties(), "features") && Array.isArray(olFeature.get("features"))) {
-        // clustered feature
-        olFeature.get("features").forEach(feature => {
-            let gfiFeature = null;
-
-            if (typeof getGfiFeatureByOlFeatureOpt === "function") {
-                gfiFeature = getGfiFeatureByOlFeatureOpt(feature, attributes);
-            }
-            else {
-                gfiFeature = getGfiFeatureByOlFeature(feature, attributes);
-            }
-
-            if (gfiFeature) {
-                result.push(gfiFeature);
-            }
-        });
+    if (gfiFeature) {
+      result.push(gfiFeature);
     }
-    else {
-        let gfiFeature = null;
+  }
 
-        if (typeof getGfiFeatureByOlFeatureOpt === "function") {
-            gfiFeature = getGfiFeatureByOlFeatureOpt(olFeature, attributes);
-        }
-        else {
-            gfiFeature = getGfiFeatureByOlFeature(olFeature, attributes);
-        }
-
-        if (gfiFeature) {
-            result.push(gfiFeature);
-        }
-    }
-
-    return result;
+  return result;
 }
 
 export default {
-    getGfiFeaturesByTileFeature,
-    getGfiFeature,
-    getLayerModelFromTileFeature,
-    getGfiFeatureByCesium3DTileFeature,
-    getGfiFeatureByCesiumEntity,
-    getGfiFeatureByOlFeature,
-    getGfiFeaturesByOlFeature
+  getGfiFeaturesByTileFeature,
+  getGfiFeature,
+  getLayerModelFromTileFeature,
+  getGfiFeatureByCesium3DTileFeature,
+  getGfiFeatureByCesiumEntity,
+  getGfiFeatureByOlFeature,
+  getGfiFeaturesByOlFeature,
 };
-

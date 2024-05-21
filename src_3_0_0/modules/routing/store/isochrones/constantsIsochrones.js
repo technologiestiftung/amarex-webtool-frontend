@@ -1,5 +1,3 @@
-const isochronesMethodeOptions = [
-    "TIME", "DISTANCE"
-];
+const isochronesMethodeOptions = ["TIME", "DISTANCE"];
 
-export {isochronesMethodeOptions};
+export { isochronesMethodeOptions };

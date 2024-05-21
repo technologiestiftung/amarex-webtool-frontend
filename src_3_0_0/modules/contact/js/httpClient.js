@@ -10,24 +10,29 @@ import convertJsonToPost from "../../../shared/js/utils/convertJsonToPost";
  * @param {Function} onError Function call to trigger further dispatchments on error.
  * @returns {void}
  */
-function httpClient (url, data, onSuccess, onError) {
-
-    axios.post(url, convertJsonToPost(data))
-        .then(response => {
-            if (response.status !== 200 || Object.prototype.hasOwnProperty.call(response.data, "success") && response.data.success === false) {
-                console.error(`An error occurred sending an email. Server response: ${response.data.message}`);
-                console.error(response);
-                onError();
-            }
-            else {
-                onSuccess();
-            }
-        })
-        .catch(err => {
-            console.error("An error occurred sending an email.");
-            console.error(err);
-            onError();
-        });
+function httpClient(url, data, onSuccess, onError) {
+  axios
+    .post(url, convertJsonToPost(data))
+    .then((response) => {
+      if (
+        response.status !== 200 ||
+        (Object.prototype.hasOwnProperty.call(response.data, "success") &&
+          response.data.success === false)
+      ) {
+        console.error(
+          `An error occurred sending an email. Server response: ${response.data.message}`,
+        );
+        console.error(response);
+        onError();
+      } else {
+        onSuccess();
+      }
+    })
+    .catch((err) => {
+      console.error("An error occurred sending an email.");
+      console.error(err);
+      onError();
+    });
 }
 
-export default {httpClient};
+export default { httpClient };

@@ -16,21 +16,21 @@ import Overlay from "ol/Overlay.js";
  * @property {String} type The type of the mouseHover component.
  */
 export default {
-    configPaths: ["portalConfig.map.mouseHover"],
-    overlay: new Overlay({
-        id: "mousehover-overlay",
-        element: document.createElement("DIV"),
-        offset: [1, -2],
-        positioning: "bottom-left"
-    }),
-    numFeaturesToShow: 2,
-    infoText: "common:modules.mouseHover.infoText",
-    layersFromConfig: [],
-    mouseHoverLayers: [],
-    mouseHoverInfos: [],
-    infoBox: null,
-    hoverPosition: null,
-    pleaseZoom: false,
-    isActive: true,
-    type: "mouseHover"
+  configPaths: ["portalConfig.map.mouseHover"],
+  overlay: new Overlay({
+    id: "mousehover-overlay",
+    element: document.createElement("DIV"),
+    offset: [1, -2],
+    positioning: "bottom-left",
+  }),
+  numFeaturesToShow: 2,
+  infoText: "common:modules.mouseHover.infoText",
+  layersFromConfig: [],
+  mouseHoverLayers: [],
+  mouseHoverInfos: [],
+  infoBox: null,
+  hoverPosition: null,
+  pleaseZoom: false,
+  isActive: true,
+  type: "mouseHover",
 };

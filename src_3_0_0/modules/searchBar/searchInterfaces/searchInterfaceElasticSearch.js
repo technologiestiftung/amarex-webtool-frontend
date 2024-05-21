@@ -30,29 +30,45 @@ import store from "../../../app-store";
  * @extends SearchInterface
  * @returns {void}
  */
-export default function SearchInterfaceElasticSearch ({hitMap, serviceId, epsg, hitIcon, hitTemplate, hitType, payload, responseEntryPath, resultEvents, searchInterfaceId, searchStringAttribute, requestType} = {}) {
-    SearchInterface.call(this,
-        "request",
-        searchInterfaceId || "elasticSearch",
-        resultEvents || {
-            onClick: ["addLayerToTopicTree"],
-            buttons: ["showInTree", "showLayerInfo"]
-        },
-        hitTemplate
-    );
+export default function SearchInterfaceElasticSearch({
+  hitMap,
+  serviceId,
+  epsg,
+  hitIcon,
+  hitTemplate,
+  hitType,
+  payload,
+  responseEntryPath,
+  resultEvents,
+  searchInterfaceId,
+  searchStringAttribute,
+  requestType,
+} = {}) {
+  SearchInterface.call(
+    this,
+    "request",
+    searchInterfaceId || "elasticSearch",
+    resultEvents || {
+      onClick: ["addLayerToTopicTree"],
+      buttons: ["showInTree", "showLayerInfo"],
+    },
+    hitTemplate,
+  );
 
-    this.hitMap = hitMap;
-    this.serviceId = serviceId;
-    this.epsg = epsg || "EPSG:25832";
-    this.hitIcon = hitIcon || "bi-list-ul";
-    this.hitType = hitType || "common:modules.searchBar.type.subject";
-    this.payload = payload || {};
-    this.responseEntryPath = responseEntryPath || "";
-    this.searchStringAttribute = searchStringAttribute || "searchString";
-    this.requestType = requestType || "POST";
+  this.hitMap = hitMap;
+  this.serviceId = serviceId;
+  this.epsg = epsg || "EPSG:25832";
+  this.hitIcon = hitIcon || "bi-list-ul";
+  this.hitType = hitType || "common:modules.searchBar.type.subject";
+  this.payload = payload || {};
+  this.responseEntryPath = responseEntryPath || "";
+  this.searchStringAttribute = searchStringAttribute || "searchString";
+  this.requestType = requestType || "POST";
 }
 
-SearchInterfaceElasticSearch.prototype = Object.create(SearchInterface.prototype);
+SearchInterfaceElasticSearch.prototype = Object.create(
+  SearchInterface.prototype,
+);
 
 /**
  * Search in elasticSearch search interface.
@@ -61,21 +77,28 @@ SearchInterfaceElasticSearch.prototype = Object.create(SearchInterface.prototype
  * @returns {void}
  */
 SearchInterfaceElasticSearch.prototype.search = async function (searchInput) {
-    const searchStringAttribute = this.searchStringAttribute,
-        payload = this.appendSearchStringToPayload(this.payload, searchStringAttribute, searchInput),
-        payloadWithIgnoreIds = this.addIgnoreIdsToPayload(payload, store.getters.treeConfig),
-        requestConfig = {
-            serviceId: this.serviceId,
-            requestType: this.requestType,
-            payload: payloadWithIgnoreIds,
-            responseEntryPath: this.responseEntryPath
-        },
-        result = await this.initializeSearch(requestConfig),
-        normalizedResults = this.normalizeResults(result.hits);
+  const searchStringAttribute = this.searchStringAttribute,
+    payload = this.appendSearchStringToPayload(
+      this.payload,
+      searchStringAttribute,
+      searchInput,
+    ),
+    payloadWithIgnoreIds = this.addIgnoreIdsToPayload(
+      payload,
+      store.getters.treeConfig,
+    ),
+    requestConfig = {
+      serviceId: this.serviceId,
+      requestType: this.requestType,
+      payload: payloadWithIgnoreIds,
+      responseEntryPath: this.responseEntryPath,
+    },
+    result = await this.initializeSearch(requestConfig),
+    normalizedResults = this.normalizeResults(result.hits);
 
-    this.pushHitsToSearchResults(normalizedResults);
+  this.pushHitsToSearchResults(normalizedResults);
 
-    return this.searchResults;
+  return this.searchResults;
 };
 
 /**
@@ -86,17 +109,24 @@ SearchInterfaceElasticSearch.prototype.search = async function (searchInput) {
  * @param {String} searchString Search string to be added using the searchStringAttribute.
  * @returns {Object} The payload with the search string.
  */
-SearchInterfaceElasticSearch.prototype.appendSearchStringToPayload = function (payload, searchStringAttribute, searchString) {
-    Object.keys(payload).forEach(key => {
-        if (typeof payload[key] === "object") {
-            payload[key] = this.appendSearchStringToPayload(payload[key], searchStringAttribute, searchString);
-        }
-        else if (key === searchStringAttribute) {
-            payload[searchStringAttribute] = searchString;
-        }
-    });
+SearchInterfaceElasticSearch.prototype.appendSearchStringToPayload = function (
+  payload,
+  searchStringAttribute,
+  searchString,
+) {
+  Object.keys(payload).forEach((key) => {
+    if (typeof payload[key] === "object") {
+      payload[key] = this.appendSearchStringToPayload(
+        payload[key],
+        searchStringAttribute,
+        searchString,
+      );
+    } else if (key === searchStringAttribute) {
+      payload[searchStringAttribute] = searchString;
+    }
+  });
 
-    return payload;
+  return payload;
 };
 
 /**
@@ -106,15 +136,18 @@ SearchInterfaceElasticSearch.prototype.appendSearchStringToPayload = function (p
  * @param {Object} configTree Tree configuration from config.js.
  * @returns {Object} Payload with ignore ids.
  */
-SearchInterfaceElasticSearch.prototype.addIgnoreIdsToPayload = function (payload, configTree) {
-    if (configTree?.layerIDsToIgnore?.length > 0) {
-        payload.params.id = configTree.layerIDsToIgnore;
-    }
-    if (configTree?.metaIDsToIgnore?.length > 0) {
-        payload.params["datasets.md_id"] = configTree.metaIDsToIgnore;
-    }
+SearchInterfaceElasticSearch.prototype.addIgnoreIdsToPayload = function (
+  payload,
+  configTree,
+) {
+  if (configTree?.layerIDsToIgnore?.length > 0) {
+    payload.params.id = configTree.layerIDsToIgnore;
+  }
+  if (configTree?.metaIDsToIgnore?.length > 0) {
+    payload.params["datasets.md_id"] = configTree.metaIDsToIgnore;
+  }
 
-    return payload;
+  return payload;
 };
 
 /**
@@ -127,24 +160,25 @@ SearchInterfaceElasticSearch.prototype.addIgnoreIdsToPayload = function (payload
  * @param {String} requestConfig.responseEntryPath="" The path of the hits in the response JSON. The different levels of the response JSON are marked with "."
  * @returns {Object} The result object of the request.
  */
-SearchInterfaceElasticSearch.prototype.initializeSearch = async function (requestConfig) {
-    const restService = store?.getters?.restServiceById(this.serviceId),
-        url = restService ? restService.url : requestConfig.url;
-    let result = {
-        status: "success",
-        message: "",
-        hits: []
-    };
+SearchInterfaceElasticSearch.prototype.initializeSearch = async function (
+  requestConfig,
+) {
+  const restService = store?.getters?.restServiceById(this.serviceId),
+    url = restService ? restService.url : requestConfig.url;
+  let result = {
+    status: "success",
+    message: "",
+    hits: [],
+  };
 
-    if (url) {
-        result = await this.sendRequest(url, requestConfig, result);
-    }
-    else {
-        result.status = "error";
-        result.message = `Cannot retrieve url by rest-service with id: ${this.serviceId} ! Please check the configuration for rest-services!`;
-        result.hits = [];
-    }
-    return result;
+  if (url) {
+    result = await this.sendRequest(url, requestConfig, result);
+  } else {
+    result.status = "error";
+    result.message = `Cannot retrieve url by rest-service with id: ${this.serviceId} ! Please check the configuration for rest-services!`;
+    result.hits = [];
+  }
+  return result;
 };
 
 /**
@@ -157,22 +191,28 @@ SearchInterfaceElasticSearch.prototype.initializeSearch = async function (reques
  * @param {Object[]} result.hits Array of result hits.
  * @returns {Object} Parsed result of request.
  */
-SearchInterfaceElasticSearch.prototype.sendRequest = async function (url, requestConfig, result) {
-    const requestType = requestConfig.requestType || "POST",
-        payload = requestConfig.payload || undefined,
-        urlWithPayload = requestType === "GET" ? `${url}?source_content_type=application/json&source=${
-            JSON.stringify(payload)
-        }` : url;
-    let resultData = result;
+SearchInterfaceElasticSearch.prototype.sendRequest = async function (
+  url,
+  requestConfig,
+  result,
+) {
+  const requestType = requestConfig.requestType || "POST",
+    payload = requestConfig.payload || undefined,
+    urlWithPayload =
+      requestType === "GET"
+        ? `${url}?source_content_type=application/json&source=${JSON.stringify(
+            payload,
+          )}`
+        : url;
+  let resultData = result;
 
-    if (requestType === "GET") {
-        resultData = await this.requestSearch(urlWithPayload, "GET");
-    }
-    else if (requestType === "POST") {
-        resultData = await this.requestSearch(url, "POST", payload);
-    }
+  if (requestType === "GET") {
+    resultData = await this.requestSearch(urlWithPayload, "GET");
+  } else if (requestType === "POST") {
+    resultData = await this.requestSearch(url, "POST", payload);
+  }
 
-    return resultData.hits;
+  return resultData.hits;
 };
 
 /**
@@ -180,21 +220,29 @@ SearchInterfaceElasticSearch.prototype.sendRequest = async function (url, reques
  * @param {Object[]} searchResults The search results of gazetter.
  * @returns {Object[]} The normalized search result.
  */
-SearchInterfaceElasticSearch.prototype.normalizeResults = function (searchResults) {
-    const normalizedResults = [];
+SearchInterfaceElasticSearch.prototype.normalizeResults = function (
+  searchResults,
+) {
+  const normalizedResults = [];
 
-    searchResults.forEach(searchResult => {
-        normalizedResults.push({
-            events: this.normalizeResultEvents(this.resultEvents, searchResult),
-            category: this.hitType.startsWith("common:") ? i18next.t(this.hitType) : i18next.t(this.getTranslationByType(this.getResultByPath(searchResult, this.hitType))),
-            icon: this.hitIcon,
-            id: this.getResultByPath(searchResult, this.hitMap?.id),
-            name: this.getResultByPath(searchResult, this.hitMap?.name),
-            toolTip: this.getResultByPath(searchResult, this.hitMap?.toolTip)
-        });
+  searchResults.forEach((searchResult) => {
+    normalizedResults.push({
+      events: this.normalizeResultEvents(this.resultEvents, searchResult),
+      category: this.hitType.startsWith("common:")
+        ? i18next.t(this.hitType)
+        : i18next.t(
+            this.getTranslationByType(
+              this.getResultByPath(searchResult, this.hitType),
+            ),
+          ),
+      icon: this.hitIcon,
+      id: this.getResultByPath(searchResult, this.hitMap?.id),
+      name: this.getResultByPath(searchResult, this.hitMap?.name),
+      toolTip: this.getResultByPath(searchResult, this.hitMap?.toolTip),
     });
+  });
 
-    return normalizedResults;
+  return normalizedResults;
 };
 
 /**
@@ -203,15 +251,15 @@ SearchInterfaceElasticSearch.prototype.normalizeResults = function (searchResult
  * @returns {String} The translation key.
  */
 SearchInterfaceElasticSearch.prototype.getTranslationByType = function (type) {
-    const keys = {
-        District: "common:modules.searchBar.type.district",
-        Address: "common:modules.searchBar.type.address",
-        parcel: "common:modules.searchBar.type.parcel",
-        Street: "common:modules.searchBar.type.street",
-        County: "common:modules.searchBar.type.county"
-    };
+  const keys = {
+    District: "common:modules.searchBar.type.district",
+    Address: "common:modules.searchBar.type.address",
+    parcel: "common:modules.searchBar.type.parcel",
+    Street: "common:modules.searchBar.type.street",
+    County: "common:modules.searchBar.type.county",
+  };
 
-    return i18next.t(keys[type]);
+  return i18next.t(keys[type]);
 };
 
 /**
@@ -220,35 +268,41 @@ SearchInterfaceElasticSearch.prototype.getTranslationByType = function (type) {
  * @param {Object} searchResult The search result of elastic search.
  * @returns {Object} The possible actions.
  */
-SearchInterfaceElasticSearch.prototype.createPossibleActions = function (searchResult) {
-    let coordinates = this.getResultByPath(searchResult, this.hitMap?.coordinate);
+SearchInterfaceElasticSearch.prototype.createPossibleActions = function (
+  searchResult,
+) {
+  let coordinates = this.getResultByPath(searchResult, this.hitMap?.coordinate);
 
-    if (coordinates) {
-        coordinates = crs.transformToMapProjection(mapCollection.getMap("2D"), this.epsg, [parseFloat(coordinates[0]), parseFloat(coordinates[1])]);
-    }
+  if (coordinates) {
+    coordinates = crs.transformToMapProjection(
+      mapCollection.getMap("2D"),
+      this.epsg,
+      [parseFloat(coordinates[0]), parseFloat(coordinates[1])],
+    );
+  }
 
-    return {
-        addLayerToTopicTree: {
-            layerId: this.getResultByPath(searchResult, this.hitMap?.layerId),
-            source: this.getResultByPath(searchResult, this.hitMap?.source)
-        },
-        setMarker: {
-            coordinates: coordinates
-        },
-        zoomToResult: {
-            coordinates: coordinates
-        },
-        startRouting: {
-            coordinates: coordinates,
-            name: this.getResultByPath(searchResult, this.hitMap?.name)
-        },
-        showInTree: {
-            layerId: this.getResultByPath(searchResult, this.hitMap?.layerId)
-        },
-        showLayerInfo: {
-            layerId: this.getResultByPath(searchResult, this.hitMap?.layerId)
-        }
-    };
+  return {
+    addLayerToTopicTree: {
+      layerId: this.getResultByPath(searchResult, this.hitMap?.layerId),
+      source: this.getResultByPath(searchResult, this.hitMap?.source),
+    },
+    setMarker: {
+      coordinates: coordinates,
+    },
+    zoomToResult: {
+      coordinates: coordinates,
+    },
+    startRouting: {
+      coordinates: coordinates,
+      name: this.getResultByPath(searchResult, this.hitMap?.name),
+    },
+    showInTree: {
+      layerId: this.getResultByPath(searchResult, this.hitMap?.layerId),
+    },
+    showLayerInfo: {
+      layerId: this.getResultByPath(searchResult, this.hitMap?.layerId),
+    },
+  };
 };
 
 /**
@@ -257,27 +311,29 @@ SearchInterfaceElasticSearch.prototype.createPossibleActions = function (searchR
  * @param {String|String[]} mappingAttribute The mapping attribute.
  * @returns {String} The found result.
  */
-SearchInterfaceElasticSearch.prototype.getResultByPath = function (searchResult, mappingAttribute) {
-    if (typeof mappingAttribute !== "undefined") {
-        let result = searchResult;
+SearchInterfaceElasticSearch.prototype.getResultByPath = function (
+  searchResult,
+  mappingAttribute,
+) {
+  if (typeof mappingAttribute !== "undefined") {
+    let result = searchResult;
 
-        if (Array.isArray(mappingAttribute)) {
-            result = this.getResultByPathArray(searchResult, mappingAttribute);
+    if (Array.isArray(mappingAttribute)) {
+      result = this.getResultByPathArray(searchResult, mappingAttribute);
+    } else {
+      const splittedAttribute = mappingAttribute?.split(".") || [];
+
+      splittedAttribute.forEach((attribute) => {
+        if (typeof result[attribute] !== "undefined") {
+          result = result[attribute];
         }
-        else {
-            const splittedAttribute = mappingAttribute?.split(".") || [];
-
-            splittedAttribute.forEach(attribute => {
-                if (typeof result[attribute] !== "undefined") {
-                    result = result[attribute];
-                }
-            });
-        }
-
-        return result;
+      });
     }
 
-    return "";
+    return result;
+  }
+
+  return "";
 };
 
 /**
@@ -286,19 +342,27 @@ SearchInterfaceElasticSearch.prototype.getResultByPath = function (searchResult,
  * @param {String[]} mappingAttributes The mapping attributes.
  * @returns {String} The found result.
  */
-SearchInterfaceElasticSearch.prototype.getResultByPathArray = function (searchResult, mappingAttributes) {
-    let result;
+SearchInterfaceElasticSearch.prototype.getResultByPathArray = function (
+  searchResult,
+  mappingAttributes,
+) {
+  let result;
 
-    mappingAttributes.forEach(singleAttribute => {
-        const splittedAttribute = singleAttribute?.split(".") || [];
-        let singleResult = searchResult;
+  mappingAttributes.forEach((singleAttribute) => {
+    const splittedAttribute = singleAttribute?.split(".") || [];
+    let singleResult = searchResult;
 
-        splittedAttribute.forEach(attribute => {
-            singleResult = Array.isArray(singleResult[attribute]) ? singleResult[attribute][0] : singleResult[attribute];
-        });
-
-        result = typeof result !== "undefined" ? result + " - " + singleResult : singleResult;
+    splittedAttribute.forEach((attribute) => {
+      singleResult = Array.isArray(singleResult[attribute])
+        ? singleResult[attribute][0]
+        : singleResult[attribute];
     });
 
-    return result;
+    result =
+      typeof result !== "undefined"
+        ? result + " - " + singleResult
+        : singleResult;
+  });
+
+  return result;
 };

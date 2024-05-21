@@ -7,10 +7,10 @@
  * @property {String[]} supportedMapModes Map mode in which this module can be used.
  */
 const state = {
-    iconIn: "bi-plus-lg",
-    iconOut: "bi-dash-lg",
-    supportedDevices: ["Desktop"],
-    supportedMapModes: ["2D", "3D"]
+  iconIn: "bi-plus-lg",
+  iconOut: "bi-dash-lg",
+  supportedDevices: ["Desktop"],
+  supportedMapModes: ["2D", "3D"],
 };
 
 export default state;

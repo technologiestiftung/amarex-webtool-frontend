@@ -31,7 +31,8 @@
     "extends": [
         "eslint:recommended",
         "plugin:vue/vue3-recommended", // --> vue3
-        "plugin:vuejs-accessibility/recommended"
+        "plugin:vuejs-accessibility/recommended",
+        "prettier"
     ],
     "rules": {
         // Possible Problems - These rules relate to possible logic errors in code:

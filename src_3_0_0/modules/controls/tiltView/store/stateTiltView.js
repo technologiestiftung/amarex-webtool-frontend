@@ -7,10 +7,10 @@
  * @property {String[]} supportedMapModes Map mode in which this module can be used.
  */
 const state = {
-    tiltDownIcon: "bi-caret-down-square",
-    tiltUpIcon: "bi-caret-up-square",
-    supportedDevices: ["Desktop"],
-    supportedMapModes: ["3D"]
+  tiltDownIcon: "bi-caret-down-square",
+  tiltUpIcon: "bi-caret-up-square",
+  supportedDevices: ["Desktop"],
+  supportedMapModes: ["3D"],
 };
 
 export default state;

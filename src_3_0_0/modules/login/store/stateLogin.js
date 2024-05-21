@@ -23,24 +23,24 @@
  * @property {Boolean} [deactivateGFI] - If true, component activation deactivates the GFI (GetFeatureInfo) component.
  */
 const state = {
-    icon: "bi-door-open",
-    description: "common:modules.login.description",
-    hasMouseMapInteractions: false,
-    name: "common:modules.login.login",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
-    type: "login",
+  icon: "bi-door-open",
+  description: "common:modules.login.description",
+  hasMouseMapInteractions: false,
+  name: "common:modules.login.login",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
+  type: "login",
 
-    active: false,
-    loggedIn: false,
-    username: undefined,
-    screenName: undefined,
-    email: undefined,
-    accessToken: undefined,
-    refreshToken: undefined,
-    iconLogin: "bi-door-open",
-    iconLogout: "bi-door-closed",
-    iconLogged: "bi-person-circle"
+  active: false,
+  loggedIn: false,
+  username: undefined,
+  screenName: undefined,
+  email: undefined,
+  accessToken: undefined,
+  refreshToken: undefined,
+  iconLogin: "bi-door-open",
+  iconLogout: "bi-door-closed",
+  iconLogged: "bi-person-circle",
 };
 
 export default state;

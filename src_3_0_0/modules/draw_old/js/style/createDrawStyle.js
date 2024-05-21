@@ -1,4 +1,4 @@
-import {Circle, Fill, Stroke, Style} from "ol/style.js";
+import { Circle, Fill, Stroke, Style } from "ol/style.js";
 
 /**
  * Creates and returns a feature style for simple points, lines or polygon.
@@ -11,21 +11,29 @@ import {Circle, Fill, Stroke, Style} from "ol/style.js";
  * @param {Number} zIndex Determines in which order features are rendered on the view.
  * @returns {module:ol/style/Style} style for features.
  */
-export function createDrawStyle (color, colorContour, drawGeometryType, pointSize, strokeWidth, zIndex) {
-    return new Style({
-        image: new Circle({
-            radius: drawGeometryType === "Point" ? pointSize / 2 : 0,
-            fill: drawGeometryType === "Point"
-                ? new Fill({color: color})
-                : new Fill({color: colorContour})
-        }),
-        fill: new Fill({
-            color: color
-        }),
-        stroke: new Stroke({
-            color: colorContour,
-            width: strokeWidth
-        }),
-        zIndex: zIndex
-    });
+export function createDrawStyle(
+  color,
+  colorContour,
+  drawGeometryType,
+  pointSize,
+  strokeWidth,
+  zIndex,
+) {
+  return new Style({
+    image: new Circle({
+      radius: drawGeometryType === "Point" ? pointSize / 2 : 0,
+      fill:
+        drawGeometryType === "Point"
+          ? new Fill({ color: color })
+          : new Fill({ color: colorContour }),
+    }),
+    fill: new Fill({
+      color: color,
+    }),
+    stroke: new Stroke({
+      color: colorContour,
+      width: strokeWidth,
+    }),
+    zIndex: zIndex,
+  });
 }

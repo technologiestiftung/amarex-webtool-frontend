@@ -7,30 +7,36 @@
  * @param {Object} [optionsOpt.replacements={"_": " "}] an object with key/value pairs for alternative replacements (e.g. {"_": " ", "+": " "})
  * @returns {String}  a new string with the given replacements, the very first letter may be uppercase based on options
  */
-export default function beautifyKey (value, optionsOpt = null) {
-    if (typeof value !== "string") {
-        return "";
-    }
+export default function beautifyKey(value, optionsOpt = null) {
+  if (typeof value !== "string") {
+    return "";
+  }
 
-    const options = Object.assign({
-        uppercase: true,
-        replacements: {"_": " "}
-    }, optionsOpt);
-    let result = value;
+  const options = Object.assign(
+    {
+      uppercase: true,
+      replacements: { _: " " },
+    },
+    optionsOpt,
+  );
+  let result = value;
 
-    if (typeof options.replacements === "object" && options.replacements !== null) {
-        Object.keys(options.replacements).forEach(key => {
-            if (typeof options.replacements[key] !== "string") {
-                return;
-            }
+  if (
+    typeof options.replacements === "object" &&
+    options.replacements !== null
+  ) {
+    Object.keys(options.replacements).forEach((key) => {
+      if (typeof options.replacements[key] !== "string") {
+        return;
+      }
 
-            result = result.split(key).join(options.replacements[key]);
-        });
-    }
+      result = result.split(key).join(options.replacements[key]);
+    });
+  }
 
-    if (options.uppercase) {
-        result = result.charAt(0).toUpperCase() + result.substring(1);
-    }
+  if (options.uppercase) {
+    result = result.charAt(0).toUpperCase() + result.substring(1);
+  }
 
-    return result;
+  return result;
 }

@@ -19,35 +19,35 @@ import directionsAvoidSelectInteraction from "../../js/map/directions/avoid/dire
 import stateRouting from "../stateRouting";
 
 export default {
-    // Map State
-    directionsWaypointsSource,
-    directionsWaypointsLayer,
+  // Map State
+  directionsWaypointsSource,
+  directionsWaypointsLayer,
 
-    directionsRouteSource,
-    directionsRouteLayer,
+  directionsRouteSource,
+  directionsRouteLayer,
 
-    directionsAvoidSource,
-    directionsAvoidLayer,
-    // Draw Parameter
-    directionsWaypointsModifyInteraction,
-    directionsWaypointsSnapInteraction,
-    directionsWaypointsDrawInteraction,
+  directionsAvoidSource,
+  directionsAvoidLayer,
+  // Draw Parameter
+  directionsWaypointsModifyInteraction,
+  directionsWaypointsSnapInteraction,
+  directionsWaypointsDrawInteraction,
 
-    directionsRouteModifyInteraction,
-    directionsRouteSnapInteraction,
+  directionsRouteModifyInteraction,
+  directionsRouteSnapInteraction,
 
-    directionsAvoidModifyInteraction,
-    directionsAvoidSnapInteraction,
-    directionsAvoidDrawInteraction,
-    directionsAvoidSelectInteraction,
+  directionsAvoidModifyInteraction,
+  directionsAvoidSnapInteraction,
+  directionsAvoidDrawInteraction,
+  directionsAvoidSelectInteraction,
 
-    // Directions Parameter
-    waypoints: [],
-    routingAvoidFeaturesOptions: [],
-    // Routing Directions Result
-    routingDirections: null,
-    mapListenerAdded: false,
-    isLoadingDirections: false,
-    mapInteractionMode: "WAYPOINTS",
-    settings: stateRouting.directionsSettings
+  // Directions Parameter
+  waypoints: [],
+  routingAvoidFeaturesOptions: [],
+  // Routing Directions Result
+  routingDirections: null,
+  mapListenerAdded: false,
+  isLoadingDirections: false,
+  mapInteractionMode: "WAYPOINTS",
+  settings: stateRouting.directionsSettings,
 };

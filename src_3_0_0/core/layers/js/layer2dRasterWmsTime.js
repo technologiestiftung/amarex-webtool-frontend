@@ -19,15 +19,14 @@ dayjs.extend(utc);
  * @param {Object} attrs Attributes of the layer.
  * @returns {void}
  */
-export default function Layer2dRasterWmsTimeLayer (attrs) {
+export default function Layer2dRasterWmsTimeLayer(attrs) {
+  const defaults = {
+    keyboardMovement: 5,
+    time: true,
+  };
 
-    const defaults = {
-        keyboardMovement: 5,
-        time: true
-    };
-
-    // call the super-layer
-    WMSLayer.call(this, Object.assign(defaults, attrs));
+  // call the super-layer
+  WMSLayer.call(this, Object.assign(defaults, attrs));
 }
 
 // Link prototypes and add prototype methods, means WMSTimeLayer uses all methods and properties of WMSLayer
@@ -40,23 +39,27 @@ Layer2dRasterWmsTimeLayer.prototype = Object.create(WMSLayer.prototype);
  * @param {Object} increment Distance between each value inside the array.
  * @returns {Object} Steps and step increments.
  */
-Layer2dRasterWmsTimeLayer.prototype.createTimeRange = function (min, max, increment) {
-    let start = dayjs.utc(min);
-    const increments = Object.entries(increment),
-        end = dayjs.utc(max),
-        timeRange = [],
-        format = detectIso8601Precision(min),
-        suffix = min.endsWith("Z") ? "Z" : "";
+Layer2dRasterWmsTimeLayer.prototype.createTimeRange = function (
+  min,
+  max,
+  increment,
+) {
+  let start = dayjs.utc(min);
+  const increments = Object.entries(increment),
+    end = dayjs.utc(max),
+    timeRange = [],
+    format = detectIso8601Precision(min),
+    suffix = min.endsWith("Z") ? "Z" : "";
 
-    while (start.valueOf() <= end.valueOf()) {
-        timeRange.push(start.format(format) + suffix);
-        /* eslint-disable no-loop-func */
-        increments.forEach(([units, difference]) => {
-            start = start.add(Number(difference), units);
-        });
-        /* eslint-enable no-loop-func */
-    }
-    return timeRange;
+  while (start.valueOf() <= end.valueOf()) {
+    timeRange.push(start.format(format) + suffix);
+    /* eslint-disable no-loop-func */
+    increments.forEach(([units, difference]) => {
+      start = start.add(Number(difference), units);
+    });
+    /* eslint-enable no-loop-func */
+  }
+  return timeRange;
 };
 
 /**
@@ -65,29 +68,33 @@ Layer2dRasterWmsTimeLayer.prototype.createTimeRange = function (min, max, increm
  * @param {String?} configuredDefault default specified by config (preferred usage)
  * @returns {String} default to use
  */
-Layer2dRasterWmsTimeLayer.prototype.determineDefault = function (timeRange, extentDefault, configuredDefault) {
-    if (configuredDefault && configuredDefault !== "current") {
-        if (timeRange.includes(configuredDefault)) {
-            return configuredDefault;
-        }
-
-        console.error(
-            `Configured WMS-T default ${configuredDefault} is not within timeRange:`,
-            timeRange,
-            "Falling back to WMS-T default value."
-        );
+Layer2dRasterWmsTimeLayer.prototype.determineDefault = function (
+  timeRange,
+  extentDefault,
+  configuredDefault,
+) {
+  if (configuredDefault && configuredDefault !== "current") {
+    if (timeRange.includes(configuredDefault)) {
+      return configuredDefault;
     }
 
-    if (configuredDefault === "current" || extentDefault === "current") {
-        const now = dayjs(),
-            firstGreater = timeRange.find(
-                timestamp => dayjs(timestamp).diff(now) >= 0
-            );
+    console.error(
+      `Configured WMS-T default ${configuredDefault} is not within timeRange:`,
+      timeRange,
+      "Falling back to WMS-T default value.",
+    );
+  }
 
-        return firstGreater || timeRange[timeRange.length - 1];
-    }
+  if (configuredDefault === "current" || extentDefault === "current") {
+    const now = dayjs(),
+      firstGreater = timeRange.find(
+        (timestamp) => dayjs(timestamp).diff(now) >= 0,
+      );
 
-    return extentDefault || timeRange[0];
+    return firstGreater || timeRange[timeRange.length - 1];
+  }
+
+  return extentDefault || timeRange[0];
 };
 
 /**
@@ -105,34 +112,34 @@ Layer2dRasterWmsTimeLayer.prototype.determineDefault = function (timeRange, exte
  * @returns {Object} An object containing the range of possible time values.
  */
 Layer2dRasterWmsTimeLayer.prototype.extractExtentValues = function (extent) {
-    let step;
-    const extentValue = extent.value,
-        timeRange = extentValue
-            .replaceAll(" ", "")
-            .split(",")
-            .map(entry => entry.split("/"))
-            .map(entry => {
-                // CASE 1 & 2
-                if (entry.length === 1) {
-                    return entry;
-                }
-                // CASE 3 & 4
-                const [min, max, resolution] = entry,
-                    increment = this.getIncrementsFromResolution(resolution),
-                    singleTimeRange = this.createTimeRange(min, max, increment);
+  let step;
+  const extentValue = extent.value,
+    timeRange = extentValue
+      .replaceAll(" ", "")
+      .split(",")
+      .map((entry) => entry.split("/"))
+      .map((entry) => {
+        // CASE 1 & 2
+        if (entry.length === 1) {
+          return entry;
+        }
+        // CASE 3 & 4
+        const [min, max, resolution] = entry,
+          increment = this.getIncrementsFromResolution(resolution),
+          singleTimeRange = this.createTimeRange(min, max, increment);
 
-                if (!step || this.incrementIsSmaller(step, increment)) {
-                    step = increment;
-                }
-                return singleTimeRange;
-            })
-            .flat(1)
-            .sort((first, second) => first > second);
+        if (!step || this.incrementIsSmaller(step, increment)) {
+          step = increment;
+        }
+        return singleTimeRange;
+      })
+      .flat(1)
+      .sort((first, second) => first > second);
 
-    return {
-        timeRange: [...new Set(timeRange)], // dedupe
-        step
-    };
+  return {
+    timeRange: [...new Set(timeRange)], // dedupe
+    step,
+  };
 };
 
 /**
@@ -142,37 +149,39 @@ Layer2dRasterWmsTimeLayer.prototype.extractExtentValues = function (extent) {
  * @returns {HTMLCollection} If found, the HTMLCollection with given name, otherwise undefined.
  */
 Layer2dRasterWmsTimeLayer.prototype.findNode = function (element, nodeName) {
-    return [...element.children].find(el => el.nodeName === nodeName);
+  return [...element.children].find((el) => el.nodeName === nodeName);
 };
 
 /**
  * @param {String} resolution in WMS-T format, e.g. "P1900YT5M"; see specification
  * @returns {Object} map of increments for start date
  */
-Layer2dRasterWmsTimeLayer.prototype.getIncrementsFromResolution = function (resolution) {
-    const increments = {},
-        shorthandsLeft = {
-            Y: "year",
-            M: "month",
-            D: "day"
-        },
-        shorthandsRight = {
-            H: "hour",
-            M: "minute",
-            S: "second"
-        },
-        [leftHand, rightHand] = resolution.split("T");
+Layer2dRasterWmsTimeLayer.prototype.getIncrementsFromResolution = function (
+  resolution,
+) {
+  const increments = {},
+    shorthandsLeft = {
+      Y: "year",
+      M: "month",
+      D: "day",
+    },
+    shorthandsRight = {
+      H: "hour",
+      M: "minute",
+      S: "second",
+    },
+    [leftHand, rightHand] = resolution.split("T");
 
-    [...leftHand.matchAll(/(\d+)[^0-9]/g)].forEach(([hit, increment]) => {
-        increments[shorthandsLeft[hit.slice(-1)]] = increment;
+  [...leftHand.matchAll(/(\d+)[^0-9]/g)].forEach(([hit, increment]) => {
+    increments[shorthandsLeft[hit.slice(-1)]] = increment;
+  });
+
+  if (rightHand) {
+    [...rightHand.matchAll(/(\d+)[^0-9]/g)].forEach(([hit, increment]) => {
+      increments[shorthandsRight[hit.slice(-1)]] = increment;
     });
-
-    if (rightHand) {
-        [...rightHand.matchAll(/(\d+)[^0-9]/g)].forEach(([hit, increment]) => {
-            increments[shorthandsRight[hit.slice(-1)]] = increment;
-        });
-    }
-    return increments;
+  }
+  return increments;
 };
 
 /**
@@ -181,7 +190,10 @@ Layer2dRasterWmsTimeLayer.prototype.getIncrementsFromResolution = function (reso
  * @returns {Object} The raw layer attributes with TIME.
  */
 Layer2dRasterWmsTimeLayer.prototype.getRawLayerAttributes = function (attrs) {
-    return Object.assign({TIME: this.prepareTime(attrs)}, WMSLayer.prototype.getRawLayerAttributes.call(this, attrs));
+  return Object.assign(
+    { TIME: this.prepareTime(attrs) },
+    WMSLayer.prototype.getRawLayerAttributes.call(this, attrs),
+  );
 };
 
 /**
@@ -190,19 +202,29 @@ Layer2dRasterWmsTimeLayer.prototype.getRawLayerAttributes = function (attrs) {
  * @param {Object} increment increment to consider
  * @returns {Boolean} whether increment is smaller
  */
-Layer2dRasterWmsTimeLayer.prototype.incrementIsSmaller = function (step, increment) {
-    const compareStrings = [step, increment].map(
-        ({years, months, days, minutes, hours, seconds}) => "P" +
-            (years || "").padStart(4, "0") + "Y" +
-            (months || "").padStart(2, "0") + "M" +
-            (days || "").padStart(2, "0") + "D" +
-            "T" +
-            (minutes || "").padStart(2, "0") + "H" +
-            (hours || "").padStart(2, "0") + "M" +
-            (seconds || "").padStart(2, "0") + "S"
-    );
+Layer2dRasterWmsTimeLayer.prototype.incrementIsSmaller = function (
+  step,
+  increment,
+) {
+  const compareStrings = [step, increment].map(
+    ({ years, months, days, minutes, hours, seconds }) =>
+      "P" +
+      (years || "").padStart(4, "0") +
+      "Y" +
+      (months || "").padStart(2, "0") +
+      "M" +
+      (days || "").padStart(2, "0") +
+      "D" +
+      "T" +
+      (minutes || "").padStart(2, "0") +
+      "H" +
+      (hours || "").padStart(2, "0") +
+      "M" +
+      (seconds || "").padStart(2, "0") +
+      "S",
+  );
 
-    return compareStrings[0] > compareStrings[1];
+  return compareStrings[0] > compareStrings[1];
 };
 
 /**
@@ -212,9 +234,23 @@ Layer2dRasterWmsTimeLayer.prototype.incrementIsSmaller = function (step, increme
  * @param {String} layers The layers of wms time.
  * @returns {Promise} A promise which will resolve the parsed GetCapabilities object.
  */
-Layer2dRasterWmsTimeLayer.prototype.requestCapabilities = function (url, version, layers) {
-    return axios.get(encodeURI(`${url}?service=WMS&version=${version}&layers=${layers}&request=GetCapabilities`))
-        .then(response => handleAxiosResponse(response, "WMS, createLayerSource, requestCapabilities"));
+Layer2dRasterWmsTimeLayer.prototype.requestCapabilities = function (
+  url,
+  version,
+  layers,
+) {
+  return axios
+    .get(
+      encodeURI(
+        `${url}?service=WMS&version=${version}&layers=${layers}&request=GetCapabilities`,
+      ),
+    )
+    .then((response) =>
+      handleAxiosResponse(
+        response,
+        "WMS, createLayerSource, requestCapabilities",
+      ),
+    );
 };
 
 /**
@@ -224,8 +260,10 @@ Layer2dRasterWmsTimeLayer.prototype.requestCapabilities = function (url, version
  * @returns {Object} An Object containing the attributes of the time node as well as its value.
  */
 Layer2dRasterWmsTimeLayer.prototype.retrieveAttributeValues = function (node) {
-    return [...node.attributes]
-        .reduce((acc, att) => ({...acc, [att.name]: att.value}), {value: node.innerHTML});
+  return [...node.attributes].reduce(
+    (acc, att) => ({ ...acc, [att.name]: att.value }),
+    { value: node.innerHTML },
+  );
 };
 
 /**
@@ -236,56 +274,77 @@ Layer2dRasterWmsTimeLayer.prototype.retrieveAttributeValues = function (node) {
  * @returns {Promise<number>} If the functions resolves, the initial value for the time dimension is returned.
  */
 Layer2dRasterWmsTimeLayer.prototype.prepareTime = function (attrs) {
-    const time = typeof attrs.time === "object" ? attrs.time : {};
+  const time = typeof attrs.time === "object" ? attrs.time : {};
 
-    if (!time.dimensionName) {
-        time.dimensionName = "time";
-    }
+  if (!time.dimensionName) {
+    time.dimensionName = "time";
+  }
 
-    if (!time.extentName) {
-        time.extentName = "time";
-    }
+  if (!time.extentName) {
+    time.extentName = "time";
+  }
 
-    // @deprecated
-    if (typeof time.default === "number") {
-        console.warn(
-            `WMS-T has '"default": ${time.default}' configured as number.
+  // @deprecated
+  if (typeof time.default === "number") {
+    console.warn(
+      `WMS-T has '"default": ${time.default}' configured as number.
             Using number is deprecated, this field is now a string.
             Please use '"default": "${time.default}"' instead.
-            This value is converted, but this breaks in next major release.`
+            This value is converted, but this breaks in next major release.`,
+    );
+    time.default = String(time.default);
+  }
+
+  return this.requestCapabilities(attrs.url, attrs.version, attrs.layers)
+    .then((xmlCapabilities) => {
+      const { dimension, extent } = this.retrieveTimeData(
+        xmlCapabilities,
+        attrs.layers,
+        time,
+      );
+
+      if (!dimension || !extent) {
+        throw Error(
+          i18next.t(
+            "common:modules.core.modelList.layer.wms.invalidTimeLayer",
+            { id: this.id },
+          ),
         );
-        time.default = String(time.default);
-    }
+      } else if (dimension.units !== "ISO8601") {
+        throw Error(
+          `WMS-T layer ${this.id} specifies time dimension in unit ${dimension.units}. Only ISO8601 is supported.`,
+        );
+      } else {
+        const { step, timeRange } = this.extractExtentValues(extent),
+          defaultValue = this.determineDefault(
+            timeRange,
+            extent.default,
+            time.default,
+          ),
+          timeData = { defaultValue, step, timeRange };
 
-    return this.requestCapabilities(attrs.url, attrs.version, attrs.layers)
-        .then(xmlCapabilities => {
-            const {dimension, extent} = this.retrieveTimeData(xmlCapabilities, attrs.layers, time);
-
-            if (!dimension || !extent) {
-                throw Error(i18next.t("common:modules.core.modelList.layer.wms.invalidTimeLayer", {id: this.id}));
-            }
-            else if (dimension.units !== "ISO8601") {
-                throw Error(`WMS-T layer ${this.id} specifies time dimension in unit ${dimension.units}. Only ISO8601 is supported.`);
-            }
-            else {
-                const {step, timeRange} = this.extractExtentValues(extent),
-                    defaultValue = this.determineDefault(timeRange, extent.default, time.default),
-                    timeData = {defaultValue, step, timeRange};
-
-                attrs.time = {...time, ...timeData};
-                timeData.layerId = attrs.id;
-                store.commit("Modules/WmsTime/addTimeSliderObject", {keyboardMovement: attrs.keyboardMovement, ...timeData});
-
-                return defaultValue;
-            }
-        })
-        .catch(error => {
-            this.removeLayer(attrs.id);
-            // remove layer from project completely
-            layerCollection.removeLayerById(attrs.id);
-
-            console.error(i18next.t("common:modules.core.modelList.layer.wms.errorTimeLayer", {error, id: attrs.id}));
+        attrs.time = { ...time, ...timeData };
+        timeData.layerId = attrs.id;
+        store.commit("Modules/WmsTime/addTimeSliderObject", {
+          keyboardMovement: attrs.keyboardMovement,
+          ...timeData,
         });
+
+        return defaultValue;
+      }
+    })
+    .catch((error) => {
+      this.removeLayer(attrs.id);
+      // remove layer from project completely
+      layerCollection.removeLayerById(attrs.id);
+
+      console.error(
+        i18next.t("common:modules.core.modelList.layer.wms.errorTimeLayer", {
+          error,
+          id: attrs.id,
+        }),
+      );
+    });
 };
 
 /**
@@ -294,16 +353,18 @@ Layer2dRasterWmsTimeLayer.prototype.prepareTime = function (attrs) {
  * @returns {void}
  */
 Layer2dRasterWmsTimeLayer.prototype.removeLayer = function (layerId) {
-    // If the swiper is active, two WMS-T are currently active
-    if (store.getters["Modules/WmsTime/layerSwiper"].active) {
-        if (!layerId.endsWith(store.getters["Modules/WmsTime/layerAppendix"])) {
-            this.setIsSelected(true);
-        }
-        store.dispatch("Modules/WmsTime/toggleSwiper", layerId);
+  // If the swiper is active, two WMS-T are currently active
+  if (store.getters["Modules/WmsTime/layerSwiper"].active) {
+    if (!layerId.endsWith(store.getters["Modules/WmsTime/layerAppendix"])) {
+      this.setIsSelected(true);
     }
-    else {
-        store.commit("Modules/WmsTime/setTimeSliderActive", {active: false, currentLayerId: ""});
-    }
+    store.dispatch("Modules/WmsTime/toggleSwiper", layerId);
+  } else {
+    store.commit("Modules/WmsTime/setTimeSliderActive", {
+      active: false,
+      currentLayerId: "",
+    });
+  }
 };
 
 /**
@@ -313,18 +374,26 @@ Layer2dRasterWmsTimeLayer.prototype.removeLayer = function (layerId) {
  * @param {Object} timeSpecification may contain "dimensionName" and "extentName"
  * @returns {Object} dimension and extent of layer
  */
-Layer2dRasterWmsTimeLayer.prototype.retrieveTimeData = function (xmlCapabilities, layerName, timeSpecification) {
-    const {dimensionName, extentName} = timeSpecification,
-        xmlDocument = new DOMParser().parseFromString(xmlCapabilities, "text/xml"),
-        layerNode = [
-            ...xmlDocument.querySelectorAll("Layer > Name")
-        ].filter(node => node.textContent === layerName)[0].parentNode,
-        xmlDimension = layerNode.querySelector(`Dimension[name="${dimensionName}"]`),
-        xmlExtent = layerNode.querySelector(`Extent[name="${extentName}"]`),
-        dimension = xmlDimension ? this.retrieveAttributeValues(xmlDimension) : null,
-        extent = xmlExtent ? this.retrieveAttributeValues(xmlExtent) : null;
+Layer2dRasterWmsTimeLayer.prototype.retrieveTimeData = function (
+  xmlCapabilities,
+  layerName,
+  timeSpecification,
+) {
+  const { dimensionName, extentName } = timeSpecification,
+    xmlDocument = new DOMParser().parseFromString(xmlCapabilities, "text/xml"),
+    layerNode = [...xmlDocument.querySelectorAll("Layer > Name")].filter(
+      (node) => node.textContent === layerName,
+    )[0].parentNode,
+    xmlDimension = layerNode.querySelector(
+      `Dimension[name="${dimensionName}"]`,
+    ),
+    xmlExtent = layerNode.querySelector(`Extent[name="${extentName}"]`),
+    dimension = xmlDimension
+      ? this.retrieveAttributeValues(xmlDimension)
+      : null,
+    extent = xmlExtent ? this.retrieveAttributeValues(xmlExtent) : null;
 
-    return {dimension, extent};
+  return { dimension, extent };
 };
 
 /**
@@ -333,8 +402,8 @@ Layer2dRasterWmsTimeLayer.prototype.retrieveTimeData = function (xmlCapabilities
  * @returns {void}
  */
 Layer2dRasterWmsTimeLayer.prototype.setIsVisibleInMap = function (newValue) {
-    store.commit("Modules/WmsTime/setVisibility", newValue);
-    Layer2dRaster.prototype.setIsVisibleInMap.call(this, newValue);
+  store.commit("Modules/WmsTime/setVisibility", newValue);
+  Layer2dRaster.prototype.setIsVisibleInMap.call(this, newValue);
 };
 
 /**
@@ -344,7 +413,7 @@ Layer2dRasterWmsTimeLayer.prototype.setIsVisibleInMap = function (newValue) {
  * @returns {void}
  */
 Layer2dRasterWmsTimeLayer.prototype.updateTime = function (id, newValue) {
-    if (id === this.get("id")) {
-        this.getLayerSource().updateParams({"TIME": newValue});
-    }
+  if (id === this.get("id")) {
+    this.getLayerSource().updateParams({ TIME: newValue });
+  }
 };

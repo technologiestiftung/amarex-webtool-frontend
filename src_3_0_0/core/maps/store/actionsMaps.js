@@ -12,13 +12,13 @@ import * as removeHighlightFeature from "../js/removeHighlighting.js";
  * Actions with the Map and MapView.
  */
 export default {
-    ...actionsMapsAttributesMapper,
-    ...actionsMapsFeatureViaUrl,
-    ...actionsMapsInteractions,
-    ...actionsMapsLayers,
-    ...actionsMapsMapMode,
-    ...actionsMapsMarker,
-    ...actionsMapsZoomTo,
-    ...highlightFeature,
-    ...removeHighlightFeature
+  ...actionsMapsAttributesMapper,
+  ...actionsMapsFeatureViaUrl,
+  ...actionsMapsInteractions,
+  ...actionsMapsLayers,
+  ...actionsMapsMapMode,
+  ...actionsMapsMarker,
+  ...actionsMapsZoomTo,
+  ...highlightFeature,
+  ...removeHighlightFeature,
 };

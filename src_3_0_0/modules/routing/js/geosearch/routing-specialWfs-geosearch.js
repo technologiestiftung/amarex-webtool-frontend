@@ -1,5 +1,5 @@
 import axios from "axios";
-import {RoutingGeosearchResult} from "../classes/routing-geosearch-result";
+import { RoutingGeosearchResult } from "../classes/routing-geosearch-result";
 import state from "../../store/stateRouting";
 import store from "../../../../app-store";
 
@@ -8,20 +8,19 @@ import store from "../../../../app-store";
  * @param {String} search text to search with
  * @returns {RoutingGeosearchResult[]} routingGeosearchResults
  */
-async function fetchRoutingSpecialWfsGeosearch (search) {
-    const postData = buildWFSPostData(search),
-        serviceUrl = store.getters.restServiceById(state.geosearch.serviceId).url,
-        sendObject = {
-            geometryName: state.geosearch.geometryName,
-            propertyNames: state.geosearch.propertyNames,
-            searchString: search,
-            typeName: state.geosearch.typeName,
-            url: serviceUrl
-        },
+async function fetchRoutingSpecialWfsGeosearch(search) {
+  const postData = buildWFSPostData(search),
+    serviceUrl = store.getters.restServiceById(state.geosearch.serviceId).url,
+    sendObject = {
+      geometryName: state.geosearch.geometryName,
+      propertyNames: state.geosearch.propertyNames,
+      searchString: search,
+      typeName: state.geosearch.typeName,
+      url: serviceUrl,
+    },
+    searchResults = await makeWFSRequest(serviceUrl, sendObject, postData);
 
-        searchResults = await makeWFSRequest(serviceUrl, sendObject, postData);
-
-    return searchResults.map((d) => parseRoutingSpecialWfsGeosearchResult(d));
+  return searchResults.map((d) => parseRoutingSpecialWfsGeosearchResult(d));
 }
 
 /**
@@ -29,41 +28,39 @@ async function fetchRoutingSpecialWfsGeosearch (search) {
  * @param {String} search text to search with
  * @returns {String} postData XML POST data
  */
-function buildWFSPostData (search) {
-    let postData =
-        `<?xml version='1.0' encoding='UTF-8'?><wfs:GetFeature service='WFS'
+function buildWFSPostData(search) {
+  let postData = `<?xml version='1.0' encoding='UTF-8'?><wfs:GetFeature service='WFS'
         xmlns:wfs='http://www.opengis.net/wfs' xmlns:ogc='http://www.opengis.net/ogc' xmlns:gml='http://www.opengis.net/gml'
         traverseXlinkDepth='*' version='1.1.0'>`;
 
-    postData += `<wfs:Query typeName='${state.geosearch.typeName}'>`;
+  postData += `<wfs:Query typeName='${state.geosearch.typeName}'>`;
 
-    for (const propertyName of state.geosearch.propertyNames) {
-        postData += `<wfs:PropertyName>${propertyName}</wfs:PropertyName>`;
-    }
+  for (const propertyName of state.geosearch.propertyNames) {
+    postData += `<wfs:PropertyName>${propertyName}</wfs:PropertyName>`;
+  }
 
-    postData += `<wfs:PropertyName>${state.geosearch.geometryName}</wfs:PropertyName>`;
-    postData += `<wfs:maxFeatures>${state.geosearch.limit}</wfs:maxFeatures>`;
-    postData += "<ogc:Filter>";
+  postData += `<wfs:PropertyName>${state.geosearch.geometryName}</wfs:PropertyName>`;
+  postData += `<wfs:maxFeatures>${state.geosearch.limit}</wfs:maxFeatures>`;
+  postData += "<ogc:Filter>";
 
-    if (state.geosearch.propertyNames.length > 1) {
-        postData += "<ogc:Or>";
-    }
+  if (state.geosearch.propertyNames.length > 1) {
+    postData += "<ogc:Or>";
+  }
 
-    for (const propertyName of state.geosearch.propertyNames) {
-        postData +=
-            `<ogc:PropertyIsLike matchCase='false' wildCard='*' singleChar='#' escapeChar='!'>
+  for (const propertyName of state.geosearch.propertyNames) {
+    postData += `<ogc:PropertyIsLike matchCase='false' wildCard='*' singleChar='#' escapeChar='!'>
             <ogc:PropertyName>${propertyName}</ogc:PropertyName>
             <ogc:Literal>*${search}*</ogc:Literal>
             </ogc:PropertyIsLike>`;
-    }
+  }
 
-    if (state.geosearch.propertyNames.length > 1) {
-        postData += "</ogc:Or>";
-    }
+  if (state.geosearch.propertyNames.length > 1) {
+    postData += "</ogc:Or>";
+  }
 
-    postData += "</ogc:Filter></wfs:Query></wfs:GetFeature>";
+  postData += "</ogc:Filter></wfs:Query></wfs:GetFeature>";
 
-    return postData;
+  return postData;
 }
 
 /**
@@ -73,19 +70,18 @@ function buildWFSPostData (search) {
  * @param {Object} postData wfsPostData
  * @returns {Object} searchResults
  */
-async function makeWFSRequest (serviceUrl, sendObject, postData) {
-    try {
-        const response = await axios.post(serviceUrl, postData, {
-                headers: {"Content-Type": "text/xml"}
-            }),
-            searchResults = await prepareValues(response.data, sendObject);
+async function makeWFSRequest(serviceUrl, sendObject, postData) {
+  try {
+    const response = await axios.post(serviceUrl, postData, {
+        headers: { "Content-Type": "text/xml" },
+      }),
+      searchResults = await prepareValues(response.data, sendObject);
 
-        return searchResults;
-    }
-    catch (error) {
-        console.error(error);
-        throw error;
-    }
+    return searchResults;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 /**
@@ -96,34 +92,35 @@ async function makeWFSRequest (serviceUrl, sendObject, postData) {
  * @param {Object} definition Definition from config
  * @returns {array} resultList of prepared values
  */
-function prepareValues (data, definition) {
-    const parser = new DOMParser(),
-        xmlDoc = parser.parseFromString(data, "text/xml"),
-        typeName = definition.typeName,
-        elements = xmlDoc.getElementsByTagNameNS("*", typeName.split(":")[1]),
-        resultList = [];
+function prepareValues(data, definition) {
+  const parser = new DOMParser(),
+    xmlDoc = parser.parseFromString(data, "text/xml"),
+    typeName = definition.typeName,
+    elements = xmlDoc.getElementsByTagNameNS("*", typeName.split(":")[1]),
+    resultList = [];
 
-    for (let i = 0; i < elements.length; i++) {
-        const element = elements[i],
-            identifierElement = element.getElementsByTagName("ms:LABEL_TEXT")[0],
-            geometryElement = element.getElementsByTagName("gml:Point")[0];
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i],
+      identifierElement = element.getElementsByTagName("ms:LABEL_TEXT")[0],
+      geometryElement = element.getElementsByTagName("gml:Point")[0];
 
-        if (identifierElement && geometryElement) {
-            const identifier = identifierElement.textContent,
-                coordinatesText = geometryElement.getElementsByTagName("gml:pos")[0].textContent,
-                coordinates = coordinatesText.trim().split(" ").map(Number),
-                epsg = geometryElement.getAttribute("srsName");
+    if (identifierElement && geometryElement) {
+      const identifier = identifierElement.textContent,
+        coordinatesText =
+          geometryElement.getElementsByTagName("gml:pos")[0].textContent,
+        coordinates = coordinatesText.trim().split(" ").map(Number),
+        epsg = geometryElement.getAttribute("srsName");
 
-            resultList.push({identifier, coordinates, epsg});
-        }
-        else {
-            console.error("Missing properties in specialWFS-Response. Ignoring Feature...");
-        }
+      resultList.push({ identifier, coordinates, epsg });
+    } else {
+      console.error(
+        "Missing properties in specialWFS-Response. Ignoring Feature...",
+      );
     }
+  }
 
-    return resultList;
+  return resultList;
 }
-
 
 /**
  * Parses Response from SpecialWfs to RoutingGeosearchResult
@@ -133,12 +130,15 @@ function prepareValues (data, definition) {
  * @param {String} [geosearchResult.epsg] geosearchResult epsg
  * @returns {RoutingGeosearchResult} routingGeosearchResult
  */
-function parseRoutingSpecialWfsGeosearchResult (geosearchResult) {
-    return new RoutingGeosearchResult(
-        [Number(geosearchResult.coordinates[0]), Number(geosearchResult.coordinates[1])],
-        geosearchResult.identifier,
-        geosearchResult.epsg.split("EPSG:").pop()
-    );
+function parseRoutingSpecialWfsGeosearchResult(geosearchResult) {
+  return new RoutingGeosearchResult(
+    [
+      Number(geosearchResult.coordinates[0]),
+      Number(geosearchResult.coordinates[1]),
+    ],
+    geosearchResult.identifier,
+    geosearchResult.epsg.split("EPSG:").pop(),
+  );
 }
 
-export {fetchRoutingSpecialWfsGeosearch, makeWFSRequest};
+export { fetchRoutingSpecialWfsGeosearch, makeWFSRequest };

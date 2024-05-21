@@ -8,30 +8,39 @@ import wfs from "@masterportal/masterportalapi/src/layer/wfs";
  * @param {TransactionLayer} layer Layer to retrieve information for.
  * @returns {FeatureProperty[]} If layer.gfiAttributes !== "ignore", then an array of prepared feature properties; else and empty array.
  */
-async function prepareFeatureProperties (layer) {
-    if (layer.gfiAttributes === "ignore") {
-        return [];
-    }
-    let properties;
+async function prepareFeatureProperties(layer) {
+  if (layer.gfiAttributes === "ignore") {
+    return [];
+  }
+  let properties;
 
-    try {
-        properties = await wfs.receivePossibleProperties(layer.url, layer.version, layer.featureType, layer.isSecured);
-    }
-    catch (e) {
-        console.error(e);
-    }
+  try {
+    properties = await wfs.receivePossibleProperties(
+      layer.url,
+      layer.version,
+      layer.featureType,
+      layer.isSecured,
+    );
+  } catch (e) {
+    console.error(e);
+  }
 
-    if (!properties) {
-        return [];
-    }
+  if (!properties) {
+    return [];
+  }
 
-    return layer.gfiAttributes === "showAll"
-        ? properties
-        : properties
-            .reduce((array, property) => layer.gfiAttributes[property.key] !== undefined
-                ? [...array, {...property, label: layer.gfiAttributes[property.key]}]
-                : array,
-            [properties.find(({type}) => type === "geometry")]);
+  return layer.gfiAttributes === "showAll"
+    ? properties
+    : properties.reduce(
+        (array, property) =>
+          layer.gfiAttributes[property.key] !== undefined
+            ? [
+                ...array,
+                { ...property, label: layer.gfiAttributes[property.key] },
+              ]
+            : array,
+        [properties.find(({ type }) => type === "geometry")],
+      );
 }
 
-export default {prepareFeatureProperties};
+export default { prepareFeatureProperties };

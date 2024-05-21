@@ -4,9 +4,9 @@ import getters from "./gettersStyleVT";
 import mutations from "./mutationsStyleVT";
 
 export default {
-    namespaced: true,
-    state,
-    actions,
-    mutations,
-    getters
+  namespaced: true,
+  state,
+  actions,
+  mutations,
+  getters,
 };

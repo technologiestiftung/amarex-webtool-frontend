@@ -9,17 +9,16 @@ const badPathSymbol = Symbol("Path could not be resolved.");
  * @param {String[]} path The path of keys / indices to traverse through the object.
  * @returns {?*} The value(s) to be retrieved from the given object.
  */
-function idx (object, path) {
-    return path.reduce(
-        (acc, currentVal) => {
-            return acc && Object.prototype.hasOwnProperty.call(acc, currentVal) ? acc[currentVal] : badPathSymbol;
-        },
-        object
-    );
+function idx(object, path) {
+  return path.reduce((acc, currentVal) => {
+    return acc && Object.prototype.hasOwnProperty.call(acc, currentVal)
+      ? acc[currentVal]
+      : badPathSymbol;
+  }, object);
 }
 
 // TODO: Change export back to ES-Syntax when surrounding configuration is settled
 module.exports = {
-    badPathSymbol,
-    idx
+  badPathSymbol,
+  idx,
 };

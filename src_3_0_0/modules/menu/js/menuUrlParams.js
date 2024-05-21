@@ -14,19 +14,19 @@ import processUrlParams from "../../../shared/js/utils/processUrlParams";
  */
 
 const menuUrlParams = {
-        MENU: setAttributesToComponent
-    },
-    legacyMenuUrlParams = {
-        ISINITOPEN: isInitOpen,
-        STARTUPMODUL: isInitOpen
-    };
+    MENU: setAttributesToComponent,
+  },
+  legacyMenuUrlParams = {
+    ISINITOPEN: isInitOpen,
+    STARTUPMODUL: isInitOpen,
+  };
 
 /**
  * Process the menu url params.
  * @returns {void}
  */
-function processMenuUrlParams () {
-    processUrlParams(menuUrlParams, legacyMenuUrlParams);
+function processMenuUrlParams() {
+  processUrlParams(menuUrlParams, legacyMenuUrlParams);
 }
 
 /**
@@ -34,40 +34,61 @@ function processMenuUrlParams () {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function setAttributesToComponent (params) {
-    const menuParams = changeCase.upperCaseKeys(JSON.parse(params.MENU));
+function setAttributesToComponent(params) {
+  const menuParams = changeCase.upperCaseKeys(JSON.parse(params.MENU));
 
-    Object.keys(menuParams).forEach(menuSide => {
-        const menuSideParams = changeCase.upperCaseKeys(menuParams[menuSide]),
-            {currentComponent, side} = getCurrentComponent(menuSideParams.CURRENTCOMPONENT),
-            attributes = menuSideParams.ATTRIBUTES;
+  Object.keys(menuParams).forEach((menuSide) => {
+    const menuSideParams = changeCase.upperCaseKeys(menuParams[menuSide]),
+      { currentComponent, side } = getCurrentComponent(
+        menuSideParams.CURRENTCOMPONENT,
+      ),
+      attributes = menuSideParams.ATTRIBUTES;
 
-        if (side) {
-            const type = changeCase.upperFirst(currentComponent.type);
+    if (side) {
+      const type = changeCase.upperFirst(currentComponent.type);
 
-            store.dispatch("Menu/activateCurrentComponent", {currentComponent, type, side});
+      store.dispatch("Menu/activateCurrentComponent", {
+        currentComponent,
+        type,
+        side,
+      });
 
-            if (attributes) {
-                store.dispatch("Menu/updateComponentState", {type, attributes});
+      if (attributes) {
+        store.dispatch("Menu/updateComponentState", { type, attributes });
+      }
+    } else if (
+      menuSideParams.CURRENTCOMPONENT === "layerInformation" &&
+      attributes
+    ) {
+      const layerId = attributes.layerInfo.id,
+        layerConfig = store.getters.layerConfigById(layerId);
+
+      store.dispatch("Menu/updateComponentState", {
+        type: "LayerInformation",
+        attributes,
+      });
+      if (store.getters.styleListLoaded) {
+        store.dispatch(
+          "Modules/LayerInformation/startLayerInformation",
+          layerConfig,
+          { root: true },
+        );
+      } else {
+        store.watch(
+          (state, getters) => getters.styleListLoaded,
+          (value) => {
+            if (value) {
+              store.dispatch(
+                "Modules/LayerInformation/startLayerInformation",
+                layerConfig,
+                { root: true },
+              );
             }
-        }
-        else if (menuSideParams.CURRENTCOMPONENT === "layerInformation" && attributes) {
-            const layerId = attributes.layerInfo.id,
-                layerConfig = store.getters.layerConfigById(layerId);
-
-            store.dispatch("Menu/updateComponentState", {type: "LayerInformation", attributes});
-            if (store.getters.styleListLoaded) {
-                store.dispatch("Modules/LayerInformation/startLayerInformation", layerConfig, {root: true});
-            }
-            else {
-                store.watch((state, getters) => getters.styleListLoaded, value => {
-                    if (value) {
-                        store.dispatch("Modules/LayerInformation/startLayerInformation", layerConfig, {root: true});
-                    }
-                });
-            }
-        }
-    });
+          },
+        );
+      }
+    }
+  });
 }
 
 /**
@@ -75,14 +96,20 @@ function setAttributesToComponent (params) {
  * @param {Object} params The found params.
  * @returns {void}
  */
-function isInitOpen (params) {
-    const {currentComponent, side} = getCurrentComponent(params.ISINITOPEN || params.STARTUPMODUL);
+function isInitOpen(params) {
+  const { currentComponent, side } = getCurrentComponent(
+    params.ISINITOPEN || params.STARTUPMODUL,
+  );
 
-    if (side) {
-        const type = changeCase.upperFirst(currentComponent.type);
+  if (side) {
+    const type = changeCase.upperFirst(currentComponent.type);
 
-        store.dispatch("Menu/activateCurrentComponent", {currentComponent, type, side});
-    }
+    store.dispatch("Menu/activateCurrentComponent", {
+      currentComponent,
+      type,
+      side,
+    });
+  }
 }
 
 /**
@@ -90,22 +117,26 @@ function isInitOpen (params) {
  * @param {String} searchType The search type.
  * @returns {Object} The current component and the related menu side.
  */
-function getCurrentComponent (searchType) {
-    const mainMenuComponent = findInSections(store.getters["Menu/mainMenu"]?.sections, searchType),
-        secondaryMenuComponent = findInSections(store.getters["Menu/secondaryMenu"]?.sections, searchType);
-    let side,
-        currentComponent;
+function getCurrentComponent(searchType) {
+  const mainMenuComponent = findInSections(
+      store.getters["Menu/mainMenu"]?.sections,
+      searchType,
+    ),
+    secondaryMenuComponent = findInSections(
+      store.getters["Menu/secondaryMenu"]?.sections,
+      searchType,
+    );
+  let side, currentComponent;
 
-    if (mainMenuComponent) {
-        currentComponent = mainMenuComponent;
-        side = "mainMenu";
-    }
-    else if (secondaryMenuComponent) {
-        currentComponent = secondaryMenuComponent;
-        side = "secondaryMenu";
-    }
+  if (mainMenuComponent) {
+    currentComponent = mainMenuComponent;
+    side = "mainMenu";
+  } else if (secondaryMenuComponent) {
+    currentComponent = secondaryMenuComponent;
+    side = "secondaryMenu";
+  }
 
-    return {currentComponent, side};
+  return { currentComponent, side };
 }
 
 /**
@@ -114,18 +145,18 @@ function getCurrentComponent (searchType) {
  * @param {String} searchType The search type.
  * @returns {Object} The found object.
  */
-function findInSections (sections, searchType) {
-    let currentComponent;
+function findInSections(sections, searchType) {
+  let currentComponent;
 
-    sections.forEach(elements => {
-        const element = findElement(elements, searchType);
+  sections.forEach((elements) => {
+    const element = findElement(elements, searchType);
 
-        if (element) {
-            currentComponent = element;
-        }
-    });
+    if (element) {
+      currentComponent = element;
+    }
+  });
 
-    return currentComponent;
+  return currentComponent;
 }
 
 /**
@@ -134,32 +165,31 @@ function findInSections (sections, searchType) {
  * @param {String} searchType The search type.
  * @returns {Object} The found object.
  */
-function findElement (elements, searchType) {
-    let currentComponent;
+function findElement(elements, searchType) {
+  let currentComponent;
 
-    elements.forEach(element => {
-        const type = element.type.toUpperCase();
+  elements.forEach((element) => {
+    const type = element.type.toUpperCase();
 
-        if (currentComponent) {
-            return;
-        }
+    if (currentComponent) {
+      return;
+    }
 
-        if (type === searchType.toUpperCase()) {
-            currentComponent = element;
-        }
-        else if (type === "FOLDER") {
-            currentComponent = findElement(element.elements, searchType);
-        }
-    });
+    if (type === searchType.toUpperCase()) {
+      currentComponent = element;
+    } else if (type === "FOLDER") {
+      currentComponent = findElement(element.elements, searchType);
+    }
+  });
 
-    return currentComponent;
+  return currentComponent;
 }
 
 export default {
-    processMenuUrlParams,
-    setAttributesToComponent,
-    isInitOpen,
-    getCurrentComponent,
-    findInSections,
-    findElement
+  processMenuUrlParams,
+  setAttributesToComponent,
+  isInitOpen,
+  getCurrentComponent,
+  findInSections,
+  findElement,
 };

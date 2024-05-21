@@ -1,7 +1,7 @@
 import GeoJSONWriter from "jsts/org/locationtech/jts/io/GeoJSONWriter";
 import OL3Parser from "jsts/org/locationtech/jts/io/OL3Parser";
-import {Fill, Stroke, Style} from "ol/style";
-import {ResultType} from "./enums";
+import { Fill, Stroke, Style } from "ol/style";
+import { ResultType } from "./enums";
 
 /**
  * User type definition
@@ -27,36 +27,36 @@ import {ResultType} from "./enums";
  * @property {String} timerId timerId for debounce buffer radius input
  */
 const state = {
-    description: "common:modules.bufferAnalysis.description",
-    icon: "bi-arrows-angle-expand",
-    name: "common:modules.bufferAnalysis.name",
-    type: "bufferAnalysis",
-    supportedDevices: ["Desktop", "Mobile", "Table"],
-    supportedMapModes: ["2D", "3D"],
+  description: "common:modules.bufferAnalysis.description",
+  icon: "bi-arrows-angle-expand",
+  name: "common:modules.bufferAnalysis.name",
+  type: "bufferAnalysis",
+  supportedDevices: ["Desktop", "Mobile", "Table"],
+  supportedMapModes: ["2D", "3D"],
 
-    bufferLayer: {},
-    bufferRadius: 0,
-    bufferStyle: new Style({
-        fill: new Fill({
-            color: ["255", "230", "65", "0.3"]
-        }),
-        stroke: new Stroke({
-            color: ["255", "50", "0", "0.5"],
-            width: 2
-        })
+  bufferLayer: {},
+  bufferRadius: 0,
+  bufferStyle: new Style({
+    fill: new Fill({
+      color: ["255", "230", "65", "0.3"],
     }),
-    geoJSONWriter: new GeoJSONWriter(),
-    inputBufferRadius: 0,
-    intersections: [],
-    jstsParser: new OL3Parser(),
-    resultFeatures: [],
-    resultLayer: {},
-    resultType: ResultType.OUTSIDE,
-    savedUrl: null,
-    selectOptions: [],
-    selectedSourceLayer: null,
-    selectedTargetLayer: null,
-    timerId: null
+    stroke: new Stroke({
+      color: ["255", "50", "0", "0.5"],
+      width: 2,
+    }),
+  }),
+  geoJSONWriter: new GeoJSONWriter(),
+  inputBufferRadius: 0,
+  intersections: [],
+  jstsParser: new OL3Parser(),
+  resultFeatures: [],
+  resultLayer: {},
+  resultType: ResultType.OUTSIDE,
+  savedUrl: null,
+  selectOptions: [],
+  selectedSourceLayer: null,
+  selectedTargetLayer: null,
+  timerId: null,
 };
 
 export default state;
