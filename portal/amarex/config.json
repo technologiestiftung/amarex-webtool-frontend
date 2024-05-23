@@ -123,6 +123,12 @@
             "type": "selectFeatures"
           },
           {
+            "type": "appFileImport"
+          },
+          {
+            "type": "addWMS"
+          },
+          {
             "type": "exporterAddon"
           }
         ]

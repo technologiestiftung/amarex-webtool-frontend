@@ -1,38 +1,39 @@
+import GraphicalSelect from "../../shared/modules/graphicalSelect/components/GraphicalSelect.vue";
+import LayerPreview from "../../shared/modules/layerPreview/components/LayerPreview.vue";
 import AbimoMeasure from "../abimo/components/AbimoMeasure.vue";
 import About from "../about/components/AboutModule.vue";
 import AddWMS from "../addWMS/components/AddWMS.vue";
+import AppFileImport from "../appFileImport/components/AppFileImport.vue";
 import BaselayerSwitcher from "../baselayerSwitcher/components/BaselayerSwitcher.vue";
 import BufferAnalysis from "../bufferAnalysis/components/BufferAnalysis.vue";
 import Contact from "../contact/components/ContactFormular.vue";
 import CoordToolkit from "../coordToolkit/components/CoordToolkit.vue";
-import CustomMenuElement from "../menu/components/CustomMenuElement.vue";
 import Draw from "../draw/components/DrawModule.vue";
 import Draw_old from "../draw_old/components/DrawItem.vue";
 import FeatureLister from "../featureLister/components/FeatureLister.vue";
 import FileImport from "../fileImport/components/FileImport.vue";
 import FilterGeneral from "../filter/components/FilterGeneral.vue";
-import Folder from "../menu/components/MenuFolder.vue";
-import GraphicalSelect from "../../shared/modules/graphicalSelect/components/GraphicalSelect.vue";
 import Language from "../language/components/LanguageItem.vue";
 import LayerClusterToggler from "../layerClusterToggler/components/LayerClusterToggler.vue";
 import LayerInformation from "../layerInformation/components/LayerInformation.vue";
 import LayerPills from "../layerPills/components/LayerPills.vue";
-import LayerPreview from "../../shared/modules/layerPreview/components/LayerPreview.vue";
 import LayerSelection from "../layerSelection/components/LayerSelection.vue";
 import LayerSlider from "../layerSlider/components/LayerSlider.vue";
 import LayerTree from "../layerTree/components/LayerTree.vue";
 import Legend from "../legend/components/LegendContainer.vue";
 import LoginComponent from "../login/components/LoginComponent.vue";
 import Measure from "../measure/components/MeasureInMap.vue";
+import CustomMenuElement from "../menu/components/CustomMenuElement.vue";
+import Folder from "../menu/components/MenuFolder.vue";
 import MouseHover from "../mouseHover/components/MouseHover.vue";
 import NewsView from "../news/components/NewsView.vue";
 import OpenConfig from "../openConfig/components/OpenConfig.vue";
 import PortalFooter from "../portalFooter/components/PortalFooter.vue";
 import PrintMap from "../print/components/PrintMap.vue";
 import Routing from "../routing/components/RoutingTemplate.vue";
+import ScaleSwitcher from "../scaleSwitcher/components/ScaleSwitcher.vue";
 import SearchBar from "../searchBar/components/SearchBar.vue";
 import SearchBarResultList from "../searchBar/components/SearchBarResultList.vue";
-import ScaleSwitcher from "../scaleSwitcher/components/ScaleSwitcher.vue";
 import SelectFeatures from "../selectFeatures/components/SelectFeatures.vue";
 import Shadow from "../shadow/components/ShadowTool.vue";
 import ShareView from "../shareView/components/ShareView.vue";
@@ -47,6 +48,7 @@ const getters = {
       abimo: AbimoMeasure,
       about: About,
       addWMS: AddWMS,
+      appFileImport: AppFileImport,
       baselayerSwitcher: BaselayerSwitcher,
       bufferAnalysis: BufferAnalysis,
       contact: Contact,
@@ -94,3 +96,4 @@ const getters = {
 };
 
 export default getters;
+
