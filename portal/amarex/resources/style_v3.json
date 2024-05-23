@@ -184,35 +184,23 @@
           "properties": {
             "delta_w": [
               0,
-              100
-            ]
-          }
-        }
-      },
-      {
-        "style": {
-          "polygonStrokeWidth": 4,
-          "polygonStrokeDash": [
-            10,
-            5
-          ]
-        }
-      },
-      {
-        "conditions": {
-          "properties": {
-            "delta_w": [
-              0,
-              50
+              20
             ]
           }
         },
         "style": {
+          "polygonStrokeWidth": 6,
           "polygonStrokeColor": [
-            0,
-            255,
-            0,
+            36,
+            65,
+            209,
             1
+          ],
+          "polygonFillColor": [
+            36,
+            65,
+            209,
+            0.0
           ]
         }
       },
@@ -220,17 +208,99 @@
         "conditions": {
           "properties": {
             "delta_w": [
-              51,
+              20,
+              40
+            ]
+          }
+        },
+        "style": {
+          "polygonStrokeWidth": 6,
+          "polygonStrokeColor": [
+            127,
+            148,
+            247,
+            1
+          ],
+          "polygonFillColor": [
+            127,
+            148,
+            247,
+            0.0
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "delta_w": [
+              40,
+              60
+            ]
+          }
+        },
+        "style": {
+          "polygonStrokeWidth": 6,
+          "polygonStrokeColor": [
+            240,
+            151,
+            130,
+            1
+          ],
+          "polygonFillColor": [
+            240,
+            151,
+            130,
+            0.0
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "delta_w": [
+              60,
+              80
+            ]
+          }
+        },
+        "style": {
+          "polygonStrokeWidth": 6,
+          "polygonStrokeColor": [
+            203,
+            78,
+            90,
+            1
+          ],
+          "polygonFillColor": [
+            203,
+            78,
+            90,
+            0.0
+          ]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "delta_w": [
+              80,
               100
             ]
           }
         },
         "style": {
-          "polygonFillColor": [
-            255,
-            0,
-            0,
+          "polygonStrokeWidth": 6,
+          "polygonStrokeColor": [
+            138,
+            26,
+            39,
             1
+          ],
+          "polygonFillColor": [
+            138,
+            26,
+            39,
+            0.0
           ]
         }
       }
