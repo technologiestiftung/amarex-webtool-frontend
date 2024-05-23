@@ -121,6 +121,9 @@
           },
           {
             "type": "selectFeatures"
+          },
+          {
+            "type": "ExporterAddon"
           }
         ]
       ]
@@ -149,3 +152,4 @@
     }
   }
 }
+
