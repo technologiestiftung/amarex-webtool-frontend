@@ -123,7 +123,7 @@
             "type": "selectFeatures"
           },
           {
-            "type": "ExporterAddon"
+            "type": "exporterAddon"
           }
         ]
       ]
