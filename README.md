@@ -7,6 +7,7 @@ Amarex Webtool Frontend
 We are developing a web-based tool that maps the effects of rainwater management on climate impacts in urban areas in a simplified form. This is intended to support the early consideration of climate adaptation in urban strategies and planning. As a potentially important criterion for climate adaptation, the long-term deviation of the urban water balance from the natural state is examined.
 
 This is the [project-page](https://www.amarex-projekt.de)
+Here is a link to our current [staging instance](https://amarex-webtool-frontend.netlify.app/amarex/)
 
 ## Getting Started
 
