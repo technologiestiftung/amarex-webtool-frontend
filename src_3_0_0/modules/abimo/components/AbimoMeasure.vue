@@ -162,20 +162,20 @@ export default {
       console.warn(JSON.stringify(obj));
     },
     calculatePercentages(feature) {
-      const verdunstun = Math.floor(parseFloat(feature.values_.verdunstun));
-      const ri = Math.floor(parseFloat(feature.values_.ri));
-      const row = Math.floor(parseFloat(feature.values_.row));
+      const evaporation = Math.floor(parseFloat(feature.values_.verdunstun));
+      const rinse = Math.floor(parseFloat(feature.values_.ri));
+      const runoff = Math.floor(parseFloat(feature.values_.row));
 
-      const total = verdunstun + ri + row;
+      const total = evaporation + rinse + runoff;
 
-      const verdunstunPercentage = (verdunstun / total) * 100 - 0.5;
-      const riPercentage = (ri / total) * 100 - 0.5;
-      const rowPercentage = (row / total) * 100 - 0.5;
+      const evaporationPercentage = (evaporation / total) * 100 - 0.5;
+      const rinsePercentage = (rinse / total) * 100 - 0.5;
+      const runoffPercentage = (runoff / total) * 100 - 0.5;
 
       return {
-        verdunstunPercentage,
-        riPercentage,
-        rowPercentage,
+        evaporationPercentage,
+        rinsePercentage,
+        runoffPercentage,
       };
     },
     async applyMeasures() {
@@ -351,3 +351,4 @@ li {
   margin-right: 8px;
 }
 </style>
+
