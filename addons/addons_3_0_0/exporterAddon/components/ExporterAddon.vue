@@ -20,28 +20,46 @@ export default {
   },
   methods: {
     async prepareConfigForDownload() {
+      const targetPath = "config.json";
       const layers = await this.allLayerConfigs;
-      const layerConfig = {
-        baselayer: { elements: [] },
-        subjectlayer: { elements: [] },
-      };
 
-      layers.forEach((layer) => {
-        const layerData = {
-          id: layer.id,
-          visibility: layer.visibility,
-        };
+      try {
+        const response = await fetch(targetPath);
+        const config = await response.json();
 
-        if (layer.baselayer) {
-          layerConfig.baselayer.elements.push(layerData);
-        } else {
-          layerConfig.subjectlayer.elements.push(layerData);
-        }
-      });
+        // Update baselayer elements with existing baselayers
+        config.layerConfig.baselayer.elements =
+          config.layerConfig.baselayer.elements.map((layerElement) => {
+            const foundLayer = layers.find(
+              (layer) => layer.id === layerElement.id && layer.baselayer,
+            );
+            return foundLayer
+              ? {
+                  id: foundLayer.id,
+                  visibility: foundLayer.visibility,
+                }
+              : layerElement;
+          });
 
-      this.configToExport = { layerConfig };
+        // Update subjectlayer elements with existing subjectlayers
+        config.layerConfig.subjectlayer.elements =
+          config.layerConfig.subjectlayer.elements.map((layerElement) => {
+            const foundLayer = layers.find(
+              (layer) => layer.id === layerElement.id && !layer.baselayer,
+            );
+            return foundLayer
+              ? {
+                  id: foundLayer.id,
+                  visibility: foundLayer.visibility,
+                }
+              : layerElement;
+          });
+
+        this.configToExport = config;
+      } catch (error) {
+        console.error(error);
+      }
     },
-
     forceFileDownload(zip, zipName) {
       zip
         .generateAsync({ type: "blob" })
@@ -54,9 +72,12 @@ export default {
           link.click();
           window.URL.revokeObjectURL(url);
         })
-        .catch(() => console.log("error occured"));
+        .catch((error) => console.log(error));
     },
     async downloadWithFetch(files, zipName) {
+
+      await this.prepareConfigForDownload();
+
       const zip = new JSZip();
       const fetchPromises = files.map(async (file) => {
         const response = await fetch(file.src);
