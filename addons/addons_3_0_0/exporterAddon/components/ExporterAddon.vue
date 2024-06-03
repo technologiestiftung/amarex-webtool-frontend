@@ -2,6 +2,9 @@
 import { mapGetters } from "vuex";
 import JSZip from "jszip";
 import sanitizeSelector from "../../../../src/utils/sanitizeSelector";
+import exportLayerAsGeoJSON from "../utils/download";
+import layerCollection from "../../../../src_3_0_0/core/layers/js/layerCollection";
+import VectorLayer from "ol/layer/Vector";
 
 /**
  * ExporterAddon
@@ -10,6 +13,9 @@ import sanitizeSelector from "../../../../src/utils/sanitizeSelector";
  */
 export default {
   name: "ExporterAddon",
+  components: {
+    // LayerDownloader,
+  },
   data() {
     return {
       configToExport: null,
@@ -18,7 +24,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["allLayerConfigs"]),
+    ...mapGetters(["allLayerConfigs", "Maps/projectionCode"]),
   },
   methods: {
     /**
@@ -29,6 +35,8 @@ export default {
     async prepareConfigForDownload() {
       const targetPath = "config.json";
       const layers = await this.allLayerConfigs;
+
+      // todo: add portalConfig
 
       try {
         const response = await fetch(targetPath);
@@ -60,6 +68,45 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    /**
+     * Prepare config for download
+     * @function prepareConfigForDownload
+     * @returns {Promise}
+     */
+    async prepareLayerForDownload() {
+      // const layers = await this.allLayerConfigs;
+      // console.log("[LayerDownloader] layers::", layers);
+
+      const _layerCollection = layerCollection.getLayers();
+      const projectionCode = this.$store.getters["Maps/projectionCode"];
+
+      console.log("[LayerDownloader] _layerCollection::", _layerCollection);
+
+      this.fileSources = []; // Reset the fileSources array
+
+      _layerCollection.forEach((layer, index) => {
+        console.log(
+          "[LayerDownloader]  _layerCollection layer::",
+          layer.attributes.id,
+        );
+
+        if (layer.layer instanceof VectorLayer) {
+          console.log("[LayerDownloader] we have a vector layer::");
+
+          // todo: check for Layer2dVectorGeojson
+
+          const geoJSONData = exportLayerAsGeoJSON(layer.layer, projectionCode);
+          const fileName = `${layer.attributes.id}.geojson`;
+
+          this.fileSources.push({
+            title: fileName,
+            src: URL.createObjectURL(
+              new Blob([geoJSONData], { type: "application/json" }),
+            ),
+          });
+        }
+      });
     },
     /**
      * updates the layerObject with the foundLayer
@@ -147,6 +194,14 @@ export default {
       >
         Download Project ZIP
       </button>
+
+      <button
+        class="btn btn-primary"
+        @click="prepareLayerForDownload()"
+      >
+        Prepare Layer for Download
+      </button>
+      <!-- <LayerDownloader /> -->
     </div>
   </div>
 </template>
