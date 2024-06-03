@@ -1,6 +1,7 @@
 <script>
 import { mapGetters } from "vuex";
 import JSZip from "jszip";
+import sanitizeSelector from "../../../../src/utils/sanitizeSelector";
 
 /**
  * ExporterAddon
@@ -13,6 +14,7 @@ export default {
     return {
       configToExport: null,
       fileSources: [],
+      projectTitle: "",
     };
   },
   computed: {
@@ -113,7 +115,7 @@ export default {
       zip.file("config.json", configJson);
 
       await Promise.all(fetchPromises);
-      this.forceFileDownload(zip, zipName);
+      this.forceFileDownload(zip, sanitizeSelector(zipName));
     },
   },
 };
@@ -122,17 +124,28 @@ export default {
 <template lang="html">
   <div
     id="exporter-addon"
-    class="ExporterAddon-root"
+    class="ExporterAddon-root mb-3"
   >
-    Exporter Addon
-
     <div class="d-flex flex-column gap-3">
-      <button @click="prepareConfigForDownload()">
-        Get Config to Download
-      </button>
-
-      <button @click="downloadWithFetch(fileSources, 'amarex-download')">
-        Download ZIP
+      <label
+        for="projectTitle"
+        class="form-label"
+        >Projekt Titel</label
+      >
+      <input
+        v-model="projectTitle"
+        id="projectTitle"
+        type="text"
+        class="form-control"
+        placeholder="Gib einen Projekttitel ein"
+      />
+      <button
+        class="btn btn-primary"
+        @click="
+          downloadWithFetch(fileSources, projectTitle || 'amarex-download')
+        "
+      >
+        Download Project ZIP
       </button>
     </div>
   </div>
