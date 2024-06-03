@@ -6,8 +6,9 @@
  * @property {String} icon Icon of the exporter addon.
  */
 export default {
-  description: "ExporterAddon Description",
-  name: "Exporter Addon",
+  description: "Lade dein Projekt herunter.",
+  name: "Project Downloader",
   icon: "bi-box-arrow-in-down",
 };
+
 
