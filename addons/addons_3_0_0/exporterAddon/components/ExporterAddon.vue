@@ -19,6 +19,11 @@ export default {
     ...mapGetters(["allLayerConfigs"]),
   },
   methods: {
+    /**
+     * Prepare config for download
+     * @function prepareConfigForDownload
+     * @returns {Promise}
+     */
     async prepareConfigForDownload() {
       const targetPath = "config.json";
       const layers = await this.allLayerConfigs;
@@ -27,31 +32,25 @@ export default {
         const response = await fetch(targetPath);
         const config = await response.json();
 
-        // Update baselayer elements with existing baselayers
+        // Update baselayer elements
         config.layerConfig.baselayer.elements =
           config.layerConfig.baselayer.elements.map((layerElement) => {
             const foundLayer = layers.find(
               (layer) => layer.id === layerElement.id && layer.baselayer,
             );
             return foundLayer
-              ? {
-                  id: foundLayer.id,
-                  visibility: foundLayer.visibility,
-                }
+              ? this.updateLayerObject(layerElement, foundLayer)
               : layerElement;
           });
 
-        // Update subjectlayer elements with existing subjectlayers
+        // Update subjectlayer elements
         config.layerConfig.subjectlayer.elements =
           config.layerConfig.subjectlayer.elements.map((layerElement) => {
             const foundLayer = layers.find(
               (layer) => layer.id === layerElement.id && !layer.baselayer,
             );
             return foundLayer
-              ? {
-                  id: foundLayer.id,
-                  visibility: foundLayer.visibility,
-                }
+              ? this.updateLayerObject(layerElement, foundLayer)
               : layerElement;
           });
 
@@ -59,6 +58,31 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    /**
+     * updates the layerObject with the foundLayer
+     * @param {Object} layerElement
+     * @param {Object} foundLayer
+     * @returns {Object}
+     */
+    updateLayerObject(layerElement, foundLayer) {
+      const updatedLayerObject = { ...layerElement };
+
+      // Iterate over the keys in foundLayer
+      Object.keys(foundLayer).forEach((key) => {
+        if (layerElement[key] !== foundLayer[key]) {
+          updatedLayerObject[key] = foundLayer[key];
+        }
+      });
+
+      // todo: clarify iterate over the keys in layerElement that are not present in foundLayer
+      Object.keys(layerElement).forEach((key) => {
+        if (!Object.prototype.hasOwnProperty.call(foundLayer, key)) {
+          updatedLayerObject[key] = layerElement[key];
+        }
+      });
+
+      return updatedLayerObject;
     },
     forceFileDownload(zip, zipName) {
       zip
@@ -75,7 +99,6 @@ export default {
         .catch((error) => console.log(error));
     },
     async downloadWithFetch(files, zipName) {
-
       await this.prepareConfigForDownload();
 
       const zip = new JSZip();
