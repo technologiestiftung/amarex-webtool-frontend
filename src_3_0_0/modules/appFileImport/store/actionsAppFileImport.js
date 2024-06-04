@@ -828,6 +828,12 @@ export default {
   async addLayerConfig({ dispatch, state }, fileName) {
     const fileId = `${sanitizeSelector(fileName)}_${uniqueId("importedFile_")}`;
 
+    const fileNameSplit = fileName.split("."),
+      fileExtension =
+        fileNameSplit.length > 0
+          ? fileNameSplit[fileNameSplit.length - 1].toLowerCase()
+          : "";
+
     if (!layerCollection.getLayerById(fileId)) {
       await dispatch(
         "addLayerToLayerConfig",
@@ -836,7 +842,10 @@ export default {
             id: fileId,
             name: fileName,
             showInLayerTree: true,
-            typ: "VECTORBASE",
+            typ:
+              fileExtension === "geojson" || fileExtension === "json"
+                ? "GeoJSON"
+                : "VECTORBASE",
             type: "layer",
             visibility: true,
           },
