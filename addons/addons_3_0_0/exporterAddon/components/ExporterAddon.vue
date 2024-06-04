@@ -2,8 +2,9 @@
 import { mapGetters } from "vuex";
 import JSZip from "jszip";
 import sanitizeSelector from "../../../../src/utils/sanitizeSelector";
-import exportLayerAsGeoJSON from "../utils/download";
+import { exportLayerAsGeoJSON } from "../utils/download";
 import layerCollection from "../../../../src_3_0_0/core/layers/js/layerCollection";
+import mapCollection from "../../../../src_3_0_0/core/maps/js/mapCollection";
 import VectorLayer from "ol/layer/Vector";
 
 /**
@@ -13,9 +14,6 @@ import VectorLayer from "ol/layer/Vector";
  */
 export default {
   name: "ExporterAddon",
-  components: {
-    // LayerDownloader,
-  },
   data() {
     return {
       configToExport: null,
@@ -35,12 +33,16 @@ export default {
     async prepareConfigForDownload() {
       const targetPath = "config.json";
       const layers = await this.allLayerConfigs;
+      const mapView = await mapCollection.getMapView("2D");
 
       // todo: add portalConfig
 
       try {
         const response = await fetch(targetPath);
         const config = await response.json();
+
+        const startCenter = mapView.getCenter();
+        config.portalConfig.map.mapView.startCenter = startCenter;
 
         // Update baselayer elements
         config.layerConfig.baselayer.elements =
@@ -64,41 +66,46 @@ export default {
               : layerElement;
           });
 
+        // Add all WMS and WFS layers that are not from the original config to subjectlayer elements
+        const missingWMSandWFSLayers = layers.filter((layer) => {
+          const isWMSorWFS = layer.typ === "WMS" || layer.typ === "WFS";
+          const isNotInConfig = !config.layerConfig.subjectlayer.elements.some(
+            (layerElement) => layerElement.id === layer.id,
+          );
+          return isWMSorWFS && isNotInConfig;
+        });
+
+        missingWMSandWFSLayers.forEach((layer) => {
+          const newLayerObject = { ...layer };
+          config.layerConfig.subjectlayer.elements.push(newLayerObject);
+        });
+
         this.configToExport = config;
       } catch (error) {
         console.error(error);
       }
     },
     /**
-     * Prepare config for download
-     * @function prepareConfigForDownload
+     * Prepare VectorLayer for download
+     * @function prepareVectorLayerForDownload
      * @returns {Promise}
      */
-    async prepareLayerForDownload() {
-      // const layers = await this.allLayerConfigs;
-      // console.log("[LayerDownloader] layers::", layers);
-
+    async prepareVectorLayerForDownload() {
       const _layerCollection = layerCollection.getLayers();
       const projectionCode = this.$store.getters["Maps/projectionCode"];
 
-      console.log("[LayerDownloader] _layerCollection::", _layerCollection);
-
       this.fileSources = []; // Reset the fileSources array
 
+      // todo: only download layers that are not in initial config
       _layerCollection.forEach((layer, index) => {
-        console.log(
-          "[LayerDownloader]  _layerCollection layer::",
-          layer.attributes.id,
-        );
+        const fileName = `${layer.attributes.id}.geojson`;
 
-        if (layer.layer instanceof VectorLayer) {
-          console.log("[LayerDownloader] we have a vector layer::");
-
-          // todo: check for Layer2dVectorGeojson
-
+        if (
+          layer.layer instanceof VectorLayer &&
+          (layer.attributes.typ === "GeoJSON" ||
+            layer.attributes.typ === "GEOJSON")
+        ) {
           const geoJSONData = exportLayerAsGeoJSON(layer.layer, projectionCode);
-          const fileName = `${layer.attributes.id}.geojson`;
-
           this.fileSources.push({
             title: fileName,
             src: URL.createObjectURL(
@@ -147,11 +154,12 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    async downloadWithFetch(files, zipName) {
+    async downloadWithFetch(zipName) {
+      await this.prepareVectorLayerForDownload();
       await this.prepareConfigForDownload();
 
       const zip = new JSZip();
-      const fetchPromises = files.map(async (file) => {
+      const fetchPromises = this.fileSources.map(async (file) => {
         const response = await fetch(file.src);
         const buffer = await response.arrayBuffer();
         zip.file(file.title, buffer);
@@ -188,20 +196,10 @@ export default {
       />
       <button
         class="btn btn-primary"
-        @click="
-          downloadWithFetch(fileSources, projectTitle || 'amarex-download')
-        "
+        @click="downloadWithFetch(projectTitle || 'amarex-download')"
       >
         Download Project ZIP
       </button>
-
-      <button
-        class="btn btn-primary"
-        @click="prepareLayerForDownload()"
-      >
-        Prepare Layer for Download
-      </button>
-      <!-- <LayerDownloader /> -->
     </div>
   </div>
 </template>
