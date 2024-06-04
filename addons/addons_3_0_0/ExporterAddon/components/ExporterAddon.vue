@@ -42,6 +42,9 @@ export default {
         const response = await fetch(targetPath);
         const config = await response.json();
 
+        const startCenter = mapView.getCenter();
+        config.portalConfig.map.mapView.startCenter = startCenter;
+
         // Update baselayer elements
         config.layerConfig.baselayer.elements =
           config.layerConfig.baselayer.elements.map((layerElement) => {
@@ -63,20 +66,6 @@ export default {
               ? this.updateLayerObject(layerElement, foundLayer)
               : layerElement;
           });
-
-        // Add all WMS and WFS layers that are not from the original config to subjectlayer elements
-        const missingWMSandWFSLayers = layers.filter((layer) => {
-          const isWMSorWFS = layer.typ === "WMS" || layer.typ === "WFS";
-          const isNotInConfig = !config.layerConfig.subjectlayer.elements.some(
-            (layerElement) => layerElement.id === layer.id,
-          );
-          return isWMSorWFS && isNotInConfig;
-        });
-
-        missingWMSandWFSLayers.forEach((layer) => {
-          const newLayerObject = { ...layer };
-          config.layerConfig.subjectlayer.elements.push(newLayerObject);
-        });
 
         this.configToExport = config;
       } catch (error) {
