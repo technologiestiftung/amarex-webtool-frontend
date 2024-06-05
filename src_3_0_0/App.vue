@@ -195,7 +195,7 @@ export default {
     class="masterportal-container"
   >
     <div v-if="allConfigsLoaded && addonsLoaded">
-      <Alerting />
+      <!-- <Alerting /> -->
     </div>
     <MenuContainer
       v-if="
