@@ -124,7 +124,9 @@ export default {
               this.fileSources.push({
                 title: `${layer.attributes.id}.kml`,
                 src: URL.createObjectURL(
-                  new Blob([KMLData], { type: "application/vnd.google-earth.kmz" }),
+                  new Blob([KMLData], {
+                    type: "application/vnd.google-earth.kmz",
+                  }),
                 ),
               });
             }
