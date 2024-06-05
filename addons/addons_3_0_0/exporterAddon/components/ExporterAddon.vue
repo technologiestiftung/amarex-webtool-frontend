@@ -2,7 +2,7 @@
 import { mapGetters } from "vuex";
 import JSZip from "jszip";
 import sanitizeSelector from "../../../../src/utils/sanitizeSelector";
-import { exportLayerAsGeoJSON } from "../utils/download";
+import { exportLayerAsGeoJSON, exportLayerAsKML } from "../utils/download";
 import layerCollection from "../../../../src_3_0_0/core/layers/js/layerCollection";
 import mapCollection from "../../../../src_3_0_0/core/maps/js/mapCollection";
 import VectorLayer from "ol/layer/Vector";
@@ -34,8 +34,6 @@ export default {
       const targetPath = "config.json";
       const layers = await this.allLayerConfigs;
       const mapView = await mapCollection.getMapView("2D");
-
-      // todo: add portalConfig
 
       try {
         const response = await fetch(targetPath);
@@ -93,30 +91,51 @@ export default {
     async prepareVectorLayerForDownload() {
       const _layerCollection = layerCollection.getLayers();
       const projectionCode = this.$store.getters["Maps/projectionCode"];
-
       this.fileSources = []; // Reset the fileSources array
 
-      // todo: only download layers that are not in initial config
-      _layerCollection.forEach((layer, index) => {
-        const fileName = `${layer.attributes.id}.geojson`;
+      // todo: clarify check if layer is visible
+      try {
+        _layerCollection.forEach((layer) => {
+          if (
+            layer.layer instanceof VectorLayer &&
+            // layer.attributes.visibility === true &&
+            (layer.attributes.typ === "GeoJSON" ||
+              layer.attributes.typ === "GEOJSON") &&
+            !this.configToExport.layerConfig.subjectlayer.elements.some(
+              (layerElement) => layerElement.id === layer.attributes.id,
+            )
+          ) {
+            const geoJSONData = exportLayerAsGeoJSON(
+              layer.layer,
+              projectionCode,
+            );
 
-        if (
-          layer.layer instanceof VectorLayer &&
-          (layer.attributes.typ === "GeoJSON" ||
-            layer.attributes.typ === "GEOJSON")
-        ) {
-          const geoJSONData = exportLayerAsGeoJSON(layer.layer, projectionCode);
-          this.fileSources.push({
-            title: fileName,
-            src: URL.createObjectURL(
-              new Blob([geoJSONData], { type: "application/json" }),
-            ),
-          });
-        }
-      });
+            if (geoJSONData) {
+              this.fileSources.push({
+                title: `${layer.attributes.id}.geojson`,
+                src: URL.createObjectURL(
+                  new Blob([geoJSONData], { type: "application/json" }),
+                ),
+              });
+            }
+          } else if (layer.layer instanceof VectorLayer) {
+            const KMLData = exportLayerAsKML(layer.layer, projectionCode);
+            if (KMLData) {
+              this.fileSources.push({
+                title: `${layer.attributes.id}.kml`,
+                src: URL.createObjectURL(
+                  new Blob([KMLData], { type: "application/vnd.google-earth.kmz" }),
+                ),
+              });
+            }
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
     /**
-     * updates the layerObject with the foundLayer
+     * Updates the layerObject with the foundLayer
      * @param {Object} layerElement
      * @param {Object} foundLayer
      * @returns {Object}
@@ -124,14 +143,14 @@ export default {
     updateLayerObject(layerElement, foundLayer) {
       const updatedLayerObject = { ...layerElement };
 
-      // Iterate over the keys in foundLayer
+      // Update keys in layerElement with values from foundLayer
       Object.keys(foundLayer).forEach((key) => {
         if (layerElement[key] !== foundLayer[key]) {
           updatedLayerObject[key] = foundLayer[key];
         }
       });
 
-      // todo: clarify iterate over the keys in layerElement that are not present in foundLayer
+      // Add keys in layerElement that are not present in foundLayer
       Object.keys(layerElement).forEach((key) => {
         if (!Object.prototype.hasOwnProperty.call(foundLayer, key)) {
           updatedLayerObject[key] = layerElement[key];
@@ -155,19 +174,19 @@ export default {
         .catch((error) => console.log(error));
     },
     async downloadWithFetch(zipName) {
-      await this.prepareVectorLayerForDownload();
       await this.prepareConfigForDownload();
-
+      await this.prepareVectorLayerForDownload();
       const zip = new JSZip();
+
+      // Create config.json
+      const configJson = JSON.stringify(this.configToExport);
+      zip.file("config.json", configJson);
+
       const fetchPromises = this.fileSources.map(async (file) => {
         const response = await fetch(file.src);
         const buffer = await response.arrayBuffer();
         zip.file(file.title, buffer);
       });
-
-      // create config.json
-      const configJson = JSON.stringify(this.configToExport);
-      zip.file("config.json", configJson);
 
       await Promise.all(fetchPromises);
       this.forceFileDownload(zip, sanitizeSelector(zipName));
