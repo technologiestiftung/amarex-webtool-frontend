@@ -37,6 +37,18 @@
     "maxScale": "25000"
   },
   {
+    "id": "delta_w_wfs",
+    "styleId": "delta_w",
+    "name": "DeltaW",
+    "crs": "EPSG:25833",
+    "url": "https://technologiestiftung-berlin.webgis1.com/geoserver/SmartWater/wfs",
+    "typ": "WFS",
+    "featureType": "SmartWater:deltaw_2020",
+    "featureNS": "http://geoserver.org",
+    "datasets": false,
+    "gfiAttributes": "showAll"
+  },
+  {
     "id": "planung_abimo",
     "styleId": "abimo",
     "name": "Planung Abimo",
