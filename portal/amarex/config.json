@@ -110,7 +110,13 @@
           }
         ]
       },
-      "sections": [[]]
+      "sections": [
+        [
+          {
+            "type": "openConfig"
+          }
+        ]
+      ]
     },
     "secondaryMenu": {
       "expanded": false,
@@ -130,6 +136,9 @@
           },
           {
             "type": "exporterAddon"
+          },
+          {
+            "type": "projectUploader"
           }
         ]
       ]
@@ -162,4 +171,5 @@
     }
   }
 }
+
 

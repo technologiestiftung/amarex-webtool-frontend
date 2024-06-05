@@ -1,5 +1,9 @@
 {
   "exporterAddon": {
     "type": "tool"
+  },
+  "projectUploader": {
+    "type": "tool"
   }
 }
+
