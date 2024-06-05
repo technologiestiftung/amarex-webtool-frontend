@@ -2,7 +2,7 @@
 import { mapGetters } from "vuex";
 import JSZip from "jszip";
 import sanitizeSelector from "../../../../src/utils/sanitizeSelector";
-import { exportLayerAsGeoJSON, exportLayerAsKML } from "../utils/download";
+import { exportLayerAsGeoJSON } from "../utils/download";
 import layerCollection from "../../../../src_3_0_0/core/layers/js/layerCollection";
 import mapCollection from "../../../../src_3_0_0/core/maps/js/mapCollection";
 import VectorLayer from "ol/layer/Vector";
@@ -98,9 +98,6 @@ export default {
         _layerCollection.forEach((layer) => {
           if (
             layer.layer instanceof VectorLayer &&
-            // layer.attributes.visibility === true &&
-            (layer.attributes.typ === "GeoJSON" ||
-              layer.attributes.typ === "GEOJSON") &&
             !this.configToExport.layerConfig.subjectlayer.elements.some(
               (layerElement) => layerElement.id === layer.attributes.id,
             )
@@ -115,18 +112,6 @@ export default {
                 title: `${layer.attributes.id}.geojson`,
                 src: URL.createObjectURL(
                   new Blob([geoJSONData], { type: "application/json" }),
-                ),
-              });
-            }
-          } else if (layer.layer instanceof VectorLayer) {
-            const KMLData = exportLayerAsKML(layer.layer, projectionCode);
-            if (KMLData) {
-              this.fileSources.push({
-                title: `${layer.attributes.id}.kml`,
-                src: URL.createObjectURL(
-                  new Blob([KMLData], {
-                    type: "application/vnd.google-earth.kmz",
-                  }),
                 ),
               });
             }
