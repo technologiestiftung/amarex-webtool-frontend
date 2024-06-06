@@ -39,8 +39,8 @@ export default {
         const response = await fetch(targetPath);
         const config = await response.json();
 
-        const startCenter = mapView.getCenter();
-        config.portalConfig.map.mapView.startCenter = startCenter;
+        config.portalConfig.map.mapView.startCenter = mapView.getCenter();
+        config.portalConfig.map.mapView.startZoomLevel = mapView.getZoom();
 
         // Update baselayer elements
         config.layerConfig.baselayer.elements =
@@ -182,6 +182,7 @@ export default {
 };
 </script>
 
+// todo: add locals
 <template lang="html">
   <div
     id="exporter-addon"
