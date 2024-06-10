@@ -1,4 +1,4 @@
-import component from "./components/projectUploader.vue";
+import component from "./components/ProjectUploader.vue";
 import store from "./store/indexProjectUploader";
 
 export default {
