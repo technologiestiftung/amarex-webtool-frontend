@@ -1,9 +1,11 @@
 {
   "exporterAddon": {
-    "type": "tool"
+    "type": "tool",
+    "vue": true
   },
   "projectUploader": {
-    "type": "tool"
+    "type": "tool",
+    "vue": true
   }
 }
 
