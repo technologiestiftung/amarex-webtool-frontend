@@ -52,25 +52,5 @@ function exportLayerAsGeoJSON(layer, sourceProjectionCode) {
   return geoJSONString;
 }
 
-/**
- * Export layer as KML
- * @param {VectorLayer} layer - The vector layer to export
- * @param {string} sourceProjectionCode - The source projection code
- * @returns {string} - The KML string
- */
-function exportLayerAsKML(layer, sourceProjectionCode) {
-  const source = layer.getSource();
-  const features = source.getFeatures();
-
-  const kmlFormatter = new KML({
-    featureProjection: sourceProjectionCode,
-  });
-  const kmlString = kmlFormatter.writeFeatures(features, {
-    featureProjection: "EPSG:4326",
-  });
-
-  return kmlString;
-}
-
-export { exportLayerAsGeoJSON, exportLayerAsKML };
+export { exportLayerAsGeoJSON };
 
