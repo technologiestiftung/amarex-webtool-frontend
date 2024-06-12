@@ -1,0 +1,186 @@
+<script>
+import { mapGetters } from "vuex";
+import JSZip from "jszip";
+import sanitizeSelector from "../../../../src/utils/sanitizeSelector";
+import { exportLayerAsGeoJSON } from "../utils/download";
+import layerCollection from "../../../../src_3_0_0/core/layers/js/layerCollection";
+import mapCollection from "../../../../src_3_0_0/core/maps/js/mapCollection";
+import VectorLayer from "ol/layer/Vector";
+
+/**
+ * ProjectDownloader
+ * @description Exporter Addon
+ * @module addons/ProjectDownloader
+ */
+export default {
+  name: "ProjectDownloader",
+  data() {
+    return {
+      configToExport: null,
+      fileSources: [],
+      projectTitle: "",
+    };
+  },
+  computed: {
+    ...mapGetters([
+      "allLayerConfigs",
+      "Maps/projectionCode",
+      "layerConfig",
+      "portalConfig",
+    ]),
+  },
+  methods: {
+    /**
+     * Prepare config for download
+     * @function prepareConfigForDownload
+     * @returns {Promise}
+     */
+    async prepareConfigForDownload() {
+      const _layerConfig = await this.layerConfig;
+      const _portalConfig = await this.portalConfig;
+      const mapView = await mapCollection.getMapView("2D");
+
+      try {
+        _portalConfig.map.mapView.startZoomLevel = mapView.getZoom();
+        _portalConfig.map.mapView.startCenter = mapView.getCenter();
+
+        this.configToExport = {
+          portalConfig: _portalConfig,
+          layerConfig: _layerConfig,
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    /**
+     * Prepare VectorLayer for download
+     * @function prepareVectorLayerForDownload
+     * @returns {Promise}
+     */
+    async prepareVectorLayerForDownload() {
+      const _layerCollection = layerCollection.getLayers();
+      const projectionCode = this.$store.getters["Maps/projectionCode"];
+      this.fileSources = []; // Reset the fileSources array
+
+      try {
+        _layerCollection.forEach((layer) => {
+          if (
+            layer.layer instanceof VectorLayer &&
+            (layer.attributes.typ !== "WFS" || layer.attributes.typ !== "WMS")
+          ) {
+            const geoJSONData = exportLayerAsGeoJSON(
+              layer.layer,
+              projectionCode,
+            );
+
+            if (geoJSONData) {
+              this.fileSources.push({
+                title: `${layer.attributes.id}.geojson`,
+                src: URL.createObjectURL(
+                  new Blob([geoJSONData], { type: "application/json" }),
+                ),
+              });
+            }
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    /**
+     * Updates the layerObject with the foundLayer
+     * @param {Object} layerElement
+     * @param {Object} foundLayer
+     * @returns {Object}
+     */
+    updateLayerObject(layerElement, foundLayer) {
+      const updatedLayerObject = { ...layerElement };
+
+      // Update keys in layerElement with values from foundLayer
+      Object.keys(foundLayer).forEach((key) => {
+        if (layerElement[key] !== foundLayer[key]) {
+          updatedLayerObject[key] = foundLayer[key];
+        }
+      });
+
+      // Add keys in layerElement that are not present in foundLayer
+      Object.keys(layerElement).forEach((key) => {
+        if (!Object.prototype.hasOwnProperty.call(foundLayer, key)) {
+          updatedLayerObject[key] = layerElement[key];
+        }
+      });
+
+      return updatedLayerObject;
+    },
+    forceFileDownload(zip, zipName) {
+      zip
+        .generateAsync({ type: "blob" })
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", `${zipName}.zip`);
+          document.body.appendChild(link);
+          link.click();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => console.log(error));
+    },
+    async downloadWithFetch(zipName) {
+      await this.prepareConfigForDownload();
+      await this.prepareVectorLayerForDownload();
+      const zip = new JSZip();
+
+      // Create config.json
+      const configJson = JSON.stringify(this.configToExport);
+      zip.file("config.json", configJson);
+
+      const fetchPromises = this.fileSources.map(async (file) => {
+        const response = await fetch(file.src);
+        const buffer = await response.arrayBuffer();
+        zip.file(file.title, buffer);
+      });
+
+      await Promise.all(fetchPromises);
+      this.forceFileDownload(zip, sanitizeSelector(zipName));
+    },
+  },
+};
+</script>
+
+// todo: add locals
+<template lang="html">
+  <div
+    id="exporter-addon"
+    class="ProjectDownloader-root mb-3"
+  >
+    <div class="d-flex flex-column gap-3">
+      <label
+        for="projectTitle"
+        class="form-label"
+        >Projekt Titel</label
+      >
+      <input
+        v-model="projectTitle"
+        id="projectTitle"
+        type="text"
+        class="form-control"
+        placeholder="Gib einen Projekttitel ein"
+      />
+      <button
+        class="btn btn-primary"
+        @click="downloadWithFetch(projectTitle || 'amarex-download')"
+      >
+        Download Project ZIP
+      </button>
+    </div>
+  </div>
+</template>
+
+<style lang="scss">
+.ProjectDownloader-root {
+  width: 100%;
+  height: 100px;
+}
+</style>
+

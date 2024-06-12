@@ -135,7 +135,7 @@
             "type": "addWMS"
           },
           {
-            "type": "exporterAddon"
+            "type": "projectDownloader"
           },
           {
             "type": "projectUploader"
@@ -171,5 +171,4 @@
     }
   }
 }
-
 
