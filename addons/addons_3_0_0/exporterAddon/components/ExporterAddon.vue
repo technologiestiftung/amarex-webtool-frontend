@@ -22,7 +22,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["allLayerConfigs", "Maps/projectionCode"]),
+    ...mapGetters([
+      "allLayerConfigs",
+      "Maps/projectionCode",
+      "layerConfig",
+      "portalConfig",
+    ]),
   },
   methods: {
     /**
@@ -31,54 +36,18 @@ export default {
      * @returns {Promise}
      */
     async prepareConfigForDownload() {
-      const targetPath = "config.json";
-      const layers = await this.allLayerConfigs;
+      const _layerConfig = await this.layerConfig;
+      const _portalConfig = await this.portalConfig;
       const mapView = await mapCollection.getMapView("2D");
 
       try {
-        const response = await fetch(targetPath);
-        const config = await response.json();
+        _portalConfig.map.mapView.startZoomLevel = mapView.getZoom();
+        _portalConfig.map.mapView.startCenter = mapView.getCenter();
 
-        config.portalConfig.map.mapView.startCenter = mapView.getCenter();
-        config.portalConfig.map.mapView.startZoomLevel = mapView.getZoom();
-
-        // Update baselayer elements
-        config.layerConfig.baselayer.elements =
-          config.layerConfig.baselayer.elements.map((layerElement) => {
-            const foundLayer = layers.find(
-              (layer) => layer.id === layerElement.id && layer.baselayer,
-            );
-            return foundLayer
-              ? this.updateLayerObject(layerElement, foundLayer)
-              : layerElement;
-          });
-
-        // Update subjectlayer elements
-        config.layerConfig.subjectlayer.elements =
-          config.layerConfig.subjectlayer.elements.map((layerElement) => {
-            const foundLayer = layers.find(
-              (layer) => layer.id === layerElement.id && !layer.baselayer,
-            );
-            return foundLayer
-              ? this.updateLayerObject(layerElement, foundLayer)
-              : layerElement;
-          });
-
-        // Add all WMS and WFS layers that are not from the original config to subjectlayer elements
-        const missingWMSandWFSLayers = layers.filter((layer) => {
-          const isWMSorWFS = layer.typ === "WMS" || layer.typ === "WFS";
-          const isNotInConfig = !config.layerConfig.subjectlayer.elements.some(
-            (layerElement) => layerElement.id === layer.id,
-          );
-          return isWMSorWFS && isNotInConfig;
-        });
-
-        missingWMSandWFSLayers.forEach((layer) => {
-          const newLayerObject = { ...layer };
-          config.layerConfig.subjectlayer.elements.push(newLayerObject);
-        });
-
-        this.configToExport = config;
+        this.configToExport = {
+          portalConfig: _portalConfig,
+          layerConfig: _layerConfig,
+        };
       } catch (error) {
         console.error(error);
       }
@@ -93,14 +62,11 @@ export default {
       const projectionCode = this.$store.getters["Maps/projectionCode"];
       this.fileSources = []; // Reset the fileSources array
 
-      // todo: clarify check if layer is visible
       try {
         _layerCollection.forEach((layer) => {
           if (
             layer.layer instanceof VectorLayer &&
-            !this.configToExport.layerConfig.subjectlayer.elements.some(
-              (layerElement) => layerElement.id === layer.attributes.id,
-            )
+            (layer.attributes.typ !== "WFS" || layer.attributes.typ !== "WMS")
           ) {
             const geoJSONData = exportLayerAsGeoJSON(
               layer.layer,
