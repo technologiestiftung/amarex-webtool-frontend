@@ -9,7 +9,7 @@ import VectorLayer from "ol/layer/Vector";
 
 /**
  * ProjectDownloader
- * @description Exporter Addon
+ * @description Project Downloader
  * @module addons/ProjectDownloader
  */
 export default {
@@ -36,17 +36,17 @@ export default {
      * @returns {Promise}
      */
     async prepareConfigForDownload() {
-      const _layerConfig = await this.layerConfig;
-      const _portalConfig = await this.portalConfig;
+      const layerConfig = this.layerConfig;
+      const portalConfig = this.portalConfig;
       const mapView = await mapCollection.getMapView("2D");
 
       try {
-        _portalConfig.map.mapView.startZoomLevel = mapView.getZoom();
-        _portalConfig.map.mapView.startCenter = mapView.getCenter();
+        portalConfig.map.mapView.startZoomLevel = mapView.getZoom();
+        portalConfig.map.mapView.startCenter = mapView.getCenter();
 
         this.configToExport = {
-          portalConfig: _portalConfig,
-          layerConfig: _layerConfig,
+          portalConfig,
+          layerConfig,
         };
       } catch (error) {
         console.error(error);
@@ -58,12 +58,12 @@ export default {
      * @returns {Promise}
      */
     async prepareVectorLayerForDownload() {
-      const _layerCollection = layerCollection.getLayers();
+      const layerCollectionData = layerCollection.getLayers();
       const projectionCode = this.$store.getters["Maps/projectionCode"];
       this.fileSources = []; // Reset the fileSources array
 
       try {
-        _layerCollection.forEach((layer) => {
+        layerCollectionData.forEach((layer) => {
           if (
             layer.layer instanceof VectorLayer &&
             (layer.attributes.typ !== "WFS" || layer.attributes.typ !== "WMS")
