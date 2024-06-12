@@ -4,6 +4,10 @@ import FlatButton from "../../../../src_3_0_0/shared/modules/buttons/components/
 import IconButton from "../../../../src_3_0_0/shared/modules/buttons/components/IconButton.vue";
 import FileUpload from "../../../../src_3_0_0/shared/modules/inputs/components/FileUpload.vue";
 import JSZip from "jszip";
+import layerCollection from "../../../../src_3_0_0/core/layers/js/layerCollection.js";
+
+// TODO:
+// add locals
 
 /**
  * Project Uploader
@@ -28,7 +32,10 @@ export default {
       "importedFileNames",
       "enableZoomToExtend",
       "featureExtents",
+      "addLayerConfig",
     ]),
+
+    ...mapGetters(["Maps/projectionCode", "layerConfig", "portalConfig"]),
     dropZoneAdditionalClass: function () {
       return this.dzIsDropHovering ? "dzReady" : "";
     },
@@ -48,15 +55,14 @@ export default {
   },
   methods: {
     ...mapActions("Modules/ProjectUploader", [
-      "addLayerConfig",
       "importFile",
       "importGeoJSON",
       "openDrawTool",
+      "processConfigJsonOnload",
     ]),
     ...mapActions("Maps", ["zoomToExtent"]),
     ...mapActions("Alerting", ["addSingleAlert"]),
     ...mapMutations("Modules/ProjectUploader", ["setFeatureExtents"]),
-    ...mapActions("Modules/OpenConfig", ["processConfigJsonOnload"]),
 
     /**
      * Sets the focus to the first control
@@ -125,8 +131,6 @@ export default {
         }
       };
     },
-
-    // NOTE: Events
     triggerClickOnFileInput(event) {
       if (event.which === 32 || event.which === 13) {
         this.$refs["upload-input-file"].click();
@@ -142,8 +146,7 @@ export default {
     },
     onDrop(event) {
       event.preventDefault();
-      const files = event.dataTransfer.files;
-      this.processFiles(files);
+      this.processFiles(event.dataTransfer.files);
     },
     /**
      * Checks if the file is valid
@@ -151,12 +154,8 @@ export default {
      * @returns {boolean} true, if the file is valid
      */
     checkValid(file) {
-      if (
-        file.name.includes(".json") ||
-        file.name.includes(".geojson") ||
-        file.name.includes(".kml") ||
-        file.name.includes(".gpx")
-      ) {
+      const validExtensions = [".json", ".geojson", ".kml", ".gpx"];
+      if (validExtensions.some((ext) => file.name.includes(ext))) {
         return true;
       }
       this.addSingleAlert({
@@ -174,16 +173,11 @@ export default {
         let fileContent = await file.text();
         const parsedJson = JSON.parse(fileContent);
 
-        if (!fileContent) {
-          console.error("File content is undefined or empty.");
-          return false;
-        }
         const isValid =
           typeof parsedJson === "object" &&
           parsedJson !== null &&
           "portalConfig" in parsedJson &&
           "layerConfig" in parsedJson;
-
         return isValid;
       } catch (error) {
         console.error("Error parsing JSON file:", error);
@@ -191,7 +185,25 @@ export default {
       }
     },
 
-    // NOTE: Remove
+    /**
+     * Finds first config file
+     * @returns {File | null}
+     */
+    async findFirstConfigFile() {
+      const validConfigFiles = await Promise.all(
+        this.uploadedFiles.map(async (file) => {
+          const isValid = await this.isValidConfigFile(file);
+          return isValid ? file : null;
+        }),
+      );
+      return validConfigFiles.find((file) => file !== null) || null;
+    },
+
+    /**
+     * Removes the file
+     * @param {File} file file to remove
+     * @returns {void}
+     */
     removeFile(file) {
       if (this.uploadedFiles.includes(file)) {
         const index = this.importedFileNames[file];
@@ -203,95 +215,69 @@ export default {
       }
     },
 
-    // NOTE: addFiles
-    async addFiles() {
-      const fileChecks = await Promise.all(
-        this.uploadedFiles.map(async (file) => ({
-          file,
-          isValidConfig: await this.isValidConfigFile(file),
-        })),
-      );
-      fileChecks.sort((a, b) => {
-        if (a.isValidConfig && !b.isValidConfig) return -1;
-        if (!a.isValidConfig && b.isValidConfig) return 1;
-        return 0;
-      });
-
-      for (const { file, isValidConfig } of fileChecks) {
-        if (!this.checkValid(file)) return;
-        const reader = new FileReader();
-
-        if (isValidConfig) {
-          reader.onload = (evt) => {
-            this.processConfigJsonOnload(evt);
-            this.addSingleAlert({
-              category: "succes",
-              content: this.$t("common:modules.openConfig.loadFileSuccess", {
-                targetFileName: file.name,
-              }),
-            });
-          };
-        } else {
-          reader.onload = async (f) => {
-            await this.addLayerConfig(file.name).then((layer) => {
-              if (layer) {
-                if (layer.attributes.typ === "GeoJSON") {
-                  this.importGeoJSON({
-                    raw: f.target.result,
-                    layer: layer.layer,
-                    filename: file.name,
-                  });
-                } else {
-                  this.importFile({
-                    raw: f.target.result,
-                    layer: layer.layer,
-                    filename: file.name,
-                  });
-                }
-              }
-            });
-          };
-        }
-        reader.readAsText(file);
-      }
-
-      // reset uploaded files
-      this.uploadedFiles = [];
+    /**
+     * Adds the project
+     * @returns {void}
+     */
+    async addProject() {
+      await this.addConfig();
+      await this.addFiles();
     },
 
     /**
-     * Loads the config.json file
-     * @param {Event} event The file input event.
+     * Adds the config
      * @returns {void}
      */
-    loadFile(event) {
-      const targetFile = event.target.files[0];
+    async addConfig() {
+      const configFile = await this.findFirstConfigFile();
 
-      if (targetFile?.type === "application/json") {
+      if (configFile) {
+        if (!this.checkValid(configFile)) return;
         const reader = new FileReader();
 
         reader.onload = (evt) => {
           this.processConfigJsonOnload(evt);
-          this.addSingleAlert({
-            category: "succes",
-            content: this.$t("common:modules.openConfig.loadFileSuccess", {
-              targetFileName: targetFile?.name,
-            }),
-          });
         };
-        reader.readAsText(event.target.files[0]);
-      } else {
-        this.addSingleAlert({
-          category: "error",
-          content: this.$t("common:modules.openConfig.loadFileFailed", {
-            targetFileName: targetFile?.name,
-            targetFileFormat: targetFile?.name.split(".")[1],
-          }),
-        });
+        reader.readAsText(configFile);
       }
     },
 
-    // NOTE: Modify
+    /**
+     * Adds files to the project
+     * @returns {Promise<void>}
+     */
+    async addFiles() {
+      this.uploadedFiles.forEach(async (file) => {
+        if (!this.checkValid(file)) return;
+
+        const isValidConfig = await this.isValidConfigFile(file);
+        const reader = new FileReader();
+
+        if (!isValidConfig) {
+          const fileName = file.name.split(".")[0];
+          const layer = await layerCollection.getLayerById(fileName);
+
+          reader.onload = async (event) => {
+            if (layer) {
+              const raw = event.target.result;
+              const importAction =
+                layer.attributes.typ.toUpperCase() === "GEOJSON"
+                  ? this.importGeoJSON
+                  : this.importFile;
+
+              importAction({
+                raw,
+                layer: layer.layer,
+                filename: file.name,
+              });
+            }
+          };
+        }
+        reader.readAsText(file);
+        this.uploadedFiles = [];
+      });
+    },
+
     /**
      * Check if there are still features from the imported file.
      * If there are no features existed from the same imported file, the file name will be removed.
@@ -389,7 +375,7 @@ export default {
       <FlatButton
         v-if="fileUploaded"
         :aria-label="$t('common:modules.appFileImport.importFiles')"
-        :interaction="() => addFiles()"
+        :interaction="() => addProject()"
         :text="$t('common:modules.appFileImport.importFiles')"
         :icon="'bi-upload'"
       />

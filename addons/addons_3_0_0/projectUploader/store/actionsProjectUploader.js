@@ -11,7 +11,10 @@ import getRandomRGB from "../../../../src/utils/getRandomRGB.js";
 import sanitizeSelector from "../../../../src/utils/sanitizeSelector.js";
 import layerCollection from "../../../../src_3_0_0/core/layers/js/layerCollection.js";
 import { createDrawStyle } from "../../../../src_3_0_0/modules/draw_old/js/style/createDrawStyle.js";
-import { treeSubjectsKey } from "../../../../src_3_0_0/shared/js/utils/constants.js";
+import {
+  treeSubjectsKey,
+  treeTopicConfigKey,
+} from "../../../../src_3_0_0/shared/js/utils/constants.js";
 import isObject from "../../../../src_3_0_0/shared/js/utils/isObject.js";
 import { uniqueId } from "../../../../src_3_0_0/shared/js/utils/uniqueId.js";
 
@@ -879,4 +882,30 @@ export default {
       dispatch("Menu/toggleMenu", menuSide, { root: true });
     }
   },
+
+  /**
+   * Processes the config.json on file load.
+   * @param {Object} param.commit the commit
+   * @param {Object} param.dispatch the dispatch
+   * @param {Progressevent} event Event contains the loaded file.
+   * @returns {void}
+   */
+  processConfigJsonOnload({ commit, dispatch }, event) {
+    const configJson = JSON.parse(event.target.result);
+
+    layerCollection.clear();
+    commit("setPortalConfig", configJson.portalConfig, { root: true });
+    Object.keys(configJson[treeTopicConfigKey]).forEach((topic) => {
+      commit(
+        "setLayerConfigByParentKey",
+        {
+          layerConfigs: configJson[treeTopicConfigKey][topic],
+          parentKey: topic,
+        },
+        { root: true },
+      );
+    });
+    dispatch("extendLayers", null, { root: true });
+  },
 };
+
