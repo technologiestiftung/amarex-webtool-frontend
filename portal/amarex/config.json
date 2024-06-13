@@ -110,7 +110,13 @@
           }
         ]
       },
-      "sections": [[]]
+      "sections": [
+        [
+          {
+            "type": "openConfig"
+          }
+        ]
+      ]
     },
     "secondaryMenu": {
       "expanded": false,
@@ -127,6 +133,12 @@
           },
           {
             "type": "addWMS"
+          },
+          {
+            "type": "projectDownloader"
+          },
+          {
+            "type": "projectUploader"
           }
         ]
       ]
@@ -159,3 +171,4 @@
     }
   }
 }
+

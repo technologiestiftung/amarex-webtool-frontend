@@ -33,7 +33,8 @@
     "featureType": "SmartWater:abimo_2020",
     "featureNS": "http://geoserver.org",
     "datasets": false,
-    "gfiAttributes": "showAll"
+    "gfiAttributes": "showAll",
+    "maxScale": "25000"
   },
   {
     "id": "delta_w_wfs",
@@ -45,7 +46,8 @@
     "featureType": "SmartWater:deltaw_2020",
     "featureNS": "http://geoserver.org",
     "datasets": false,
-    "gfiAttributes": "showAll"
+    "gfiAttributes": "showAll",
+    "maxScale": "25000"
   },
   {
     "id": "planung_abimo",
@@ -56,3 +58,4 @@
     "gfiAttributes": "showAll"
   }
 ]
+

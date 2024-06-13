@@ -1,0 +1,66 @@
+{
+  "addons": {
+    "projectDownloader": {
+      "alertingMessages": {
+        "featureError": "Ein Feature in dieser Datei konnte nicht gelesen werden.",
+        "formatError": "Die Datei \"{{filename}}\" konnte nicht gelesen werden. Bitte prüfen Sie, ob die Datei das Format *.kml. *.gpx, *.geojson oder *.json hat.",
+        "missingFileContent": "Fehler beim Lesen der Datei \"{{filename}}\". Bitte überprüfen Sie den Dateityp sowie den Inhalt der Datei. Falls die Datei fehlerfrei ist, wenden Sie sich bitte an den Support.",
+        "missingFormat": "Das Dateiformat {{format}} wird nicht unterstützt. Bitte wenden Sie sich an den Support.",
+        "success": "Die Datei \"{{filename}}\" wurde erfolgreich importiert.",
+        "successPartly": "Die Datei \"{{filename}}\" wurde teilweise importiert."
+      },
+      "captions": {
+        "drawTool": "$t(common:modules.draw.name) öffnen",
+        "introDrawTool": "Importierte Geometrien können im Nachhinein verändert werden. Nutzen Sie hierfür das Werkzeug \"$t(modules.draw.name)\".",
+        "introFormats": "Es können KML-Dateien (*.kml), GPX-Dateien (*.gpx) oder GeoJson-Dateien (*.geojson, *.json) importiert werden.",
+        "introInfo": "Importieren Sie Ihre gewünschte Datei einfach per Drag and Drop oder alternativ mit dem Öffnen-Dialog des Browsers.",
+        "supportedFiletypes": {
+          "auto": "Automatische Erkennung",
+          "geojson": "GeoJson-Datei (*.geojson, *.json)",
+          "gpx": "GPX-Datei (*.gpx)",
+          "kml": "KML-Datei (*.kml)"
+        }
+      },
+      "description": "Importiere Geodaten aus verschiedenen Dateiformaten",
+      "fileZoom": "Auf Features dieser Datei \"{{filename}}\" zoomen",
+      "importFiles": "Projekte herunterladen",
+      "name": "Projekt Downloader",
+      "removeAttachment": "Datei entfernen",
+      "successfullyImportedLabel": "Erfolgreich importiert:",
+      "zoom": "Zoomen",
+      "placeholder": "Gib einen Projekttitel ein",
+      "label": "Projekt Titel"
+    },
+    "projectUploader": {
+      "alertingMessages": {
+        "featureError": "Ein Feature in dieser Datei konnte nicht gelesen werden.",
+        "formatError": "Die Datei \"{{filename}}\" konnte nicht gelesen werden. Bitte prüfen Sie, ob die Datei das Format *.kml. *.gpx, *.geojson oder *.json hat.",
+        "missingFileContent": "Fehler beim Lesen der Datei \"{{filename}}\". Bitte überprüfen Sie den Dateityp sowie den Inhalt der Datei. Falls die Datei fehlerfrei ist, wenden Sie sich bitte an den Support.",
+        "missingFormat": "Das Dateiformat {{format}} wird nicht unterstützt. Bitte wenden Sie sich an den Support.",
+        "success": "Die Datei \"{{filename}}\" wurde erfolgreich importiert.",
+        "successPartly": "Die Datei \"{{filename}}\" wurde teilweise importiert."
+      },
+      "captions": {
+        "drawTool": "$t(common:modules.draw.name) öffnen",
+        "introDrawTool": "Importierte Geometrien können im Nachhinein verändert werden. Nutzen Sie hierfür das Werkzeug \"$t(modules.draw.name)\".",
+        "introFormats": "Es können KML-Dateien (*.kml), GPX-Dateien (*.gpx) oder GeoJson-Dateien (*.geojson, *.json) importiert werden.",
+        "introInfo": "Importieren Sie Ihre gewünschte Datei einfach per Drag and Drop oder alternativ mit dem Öffnen-Dialog des Browsers.",
+        "supportedFiletypes": {
+          "auto": "Automatische Erkennung",
+          "geojson": "GeoJson-Datei (*.geojson, *.json)",
+          "gpx": "GPX-Datei (*.gpx)",
+          "kml": "KML-Datei (*.kml)"
+        }
+      },
+      "description": "Importiere Geodaten aus verschiedenen Dateiformaten",
+      "fileZoom": "Auf Features dieser Datei \"{{filename}}\" zoomen",
+      "importFiles": "Ausgewählte Dateien importieren",
+      "name": "Datei-Import",
+      "removeAttachment": "Datei entfernen",
+      "successfullyImportedLabel": "Erfolgreich importiert:",
+      "zoom": "Zoomen"
+    }
+  }
+}
+
+
