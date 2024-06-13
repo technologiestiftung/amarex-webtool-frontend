@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       fileUploaded: false,
-      uploadedFiles: [],
+      filesToUpload: [],
       selectedFiles: {},
     };
   },
@@ -46,7 +46,7 @@ export default {
     this.modifyImportedFileExtent(this.featureExtents, this.importedFileNames);
   },
   watch: {
-    uploadedFiles: {
+    filesToUpload: {
       handler(newValue) {
         // console.log("Watcher Uploaded Files:", newValue);
       },
@@ -84,12 +84,11 @@ export default {
     async processFiles(files) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        console.log("[ProjectUploader] file::", file);
         if (file.type.includes("zip")) {
           await this.processZipFile(file);
         } else {
           if (this.checkValid(file)) {
-            this.uploadedFiles.push(file);
+            this.filesToUpload.push(file);
             this.fileUploaded = true;
           }
         }
@@ -103,7 +102,7 @@ export default {
       );
       for (const fileInZip of filesInZip) {
         const fileContent = await fileInZip.async("blob");
-        this.uploadedFiles.push(
+        this.filesToUpload.push(
           new File([fileContent], fileInZip.name, {
             type: fileInZip.contentType,
           }),
@@ -170,7 +169,7 @@ export default {
      */
     async findFirstConfigFile() {
       const validConfigFiles = await Promise.all(
-        this.uploadedFiles.map(async (file) => {
+        this.filesToUpload.map(async (file) => {
           const isValid = await this.isValidConfigFile(file);
           return isValid ? file : null;
         }),
@@ -184,11 +183,11 @@ export default {
      * @returns {void}
      */
     removeFile(file) {
-      if (this.uploadedFiles.includes(file)) {
+      if (this.filesToUpload.includes(file)) {
         const index = this.importedFileNames[file];
 
-        this.uploadedFiles.splice(index, 1);
-        if (this.uploadedFiles.length === 0) {
+        this.filesToUpload.splice(index, 1);
+        if (this.filesToUpload.length === 0) {
           this.fileUploaded = false;
         }
       }
@@ -226,7 +225,7 @@ export default {
      * @returns {Promise<void>}
      */
     async addFiles() {
-      this.uploadedFiles.forEach(async (file) => {
+      this.filesToUpload.forEach(async (file) => {
         if (!this.checkValid(file)) return;
 
         const isValidConfig = await this.isValidConfigFile(file);
@@ -253,7 +252,7 @@ export default {
           };
         }
         reader.readAsText(file);
-        this.uploadedFiles = [];
+        this.filesToUpload = [];
       });
     },
 
@@ -332,7 +331,7 @@ export default {
     >
       <div v-if="fileUploaded">
         <div
-          v-for="file in uploadedFiles"
+          v-for="file in filesToUpload"
           :key="file"
           :class="enableZoomToExtend ? 'hasZoom' : ''"
           class="row d-flex mb-1"
