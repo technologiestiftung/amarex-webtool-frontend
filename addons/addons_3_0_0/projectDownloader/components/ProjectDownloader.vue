@@ -87,31 +87,6 @@ export default {
         console.error(error);
       }
     },
-    /**
-     * Updates the layerObject with the foundLayer
-     * @param {Object} layerElement
-     * @param {Object} foundLayer
-     * @returns {Object}
-     */
-    updateLayerObject(layerElement, foundLayer) {
-      const updatedLayerObject = { ...layerElement };
-
-      // Update keys in layerElement with values from foundLayer
-      Object.keys(foundLayer).forEach((key) => {
-        if (layerElement[key] !== foundLayer[key]) {
-          updatedLayerObject[key] = foundLayer[key];
-        }
-      });
-
-      // Add keys in layerElement that are not present in foundLayer
-      Object.keys(layerElement).forEach((key) => {
-        if (!Object.prototype.hasOwnProperty.call(foundLayer, key)) {
-          updatedLayerObject[key] = layerElement[key];
-        }
-      });
-
-      return updatedLayerObject;
-    },
     forceFileDownload(zip, zipName) {
       zip
         .generateAsync({ type: "blob" })
