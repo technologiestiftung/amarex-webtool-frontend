@@ -84,17 +84,14 @@ export default {
     async processFiles(files) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
+        console.log("[ProjectUploader] file::", file);
         if (file.type.includes("zip")) {
           await this.processZipFile(file);
-        } else if (file.type.includes("directory")) {
-          await this.processDirectory(file);
         } else {
-          Array.from(files).forEach((file) => {
-            if (this.checkValid(file)) {
-              this.uploadedFiles.push(file);
-              this.fileUploaded = true;
-            }
-          });
+          if (this.checkValid(file)) {
+            this.uploadedFiles.push(file);
+            this.fileUploaded = true;
+          }
         }
       }
       this.fileUploaded = true;
@@ -112,24 +109,6 @@ export default {
           }),
         );
       }
-    },
-    async processDirectory(directory) {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(directory);
-      reader.onload = async () => {
-        const zip = await JSZip.loadAsync(reader.result);
-        const filesInDirectory = Object.values(zip.files).filter(
-          (file) => !file.dir && file.name.indexOf("__") !== 0,
-        );
-        for (const fileInDirectory of filesInDirectory) {
-          const fileContent = await fileInDirectory.async("blob");
-          this.uploadedFiles.push(
-            new File([fileContent], fileInDirectory.name, {
-              type: fileInDirectory.contentType,
-            }),
-          );
-        }
-      };
     },
     triggerClickOnFileInput(event) {
       if (event.which === 32 || event.which === 13) {

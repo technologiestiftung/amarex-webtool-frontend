@@ -66,7 +66,7 @@ export default {
         layerCollectionData.forEach((layer) => {
           if (
             layer.layer instanceof VectorLayer &&
-            (layer.attributes.typ !== "WFS" || layer.attributes.typ !== "WMS")
+            (layer.attributes.typ !== "WFS" || "WMS")
           ) {
             const geoJSONData = exportLayerAsGeoJSON(
               layer.layer,
