@@ -45,14 +45,6 @@ export default {
     this.modifyImportedFileNames(this.importedFileNames);
     this.modifyImportedFileExtent(this.featureExtents, this.importedFileNames);
   },
-  watch: {
-    filesToUpload: {
-      handler(newValue) {
-        // console.log("Watcher Uploaded Files:", newValue);
-      },
-      deep: true,
-    },
-  },
   methods: {
     ...mapActions("Modules/ProjectUploader", [
       "importFile",
