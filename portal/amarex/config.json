@@ -9,8 +9,16 @@
       },
       "mapView": {
         "backgroundImage": "",
-        "startCenter": [387481, 5816672],
-        "extent": [310000, 5760000, 440000, 5865000],
+        "startCenter": [
+          387481,
+          5816672
+        ],
+        "extent": [
+          310000,
+          5760000,
+          440000,
+          5865000
+        ],
         "epsg": "EPSG:25833",
         "startZoomLevel": 6,
         "options": [
@@ -101,7 +109,9 @@
           {
             "type": "visibleVector",
             "resultEvents": {
-              "onHover": ["setMarker"]
+              "onHover": [
+                "setMarker"
+              ]
             }
           },
           {
@@ -110,7 +120,9 @@
           }
         ]
       },
-      "sections": [[]]
+      "sections": [
+        []
+      ]
     },
     "secondaryMenu": {
       "expanded": false,
@@ -149,6 +161,10 @@
         },
         {
           "id": "abimo_2020_wfs",
+          "visibility": false
+        },
+        {
+          "id": "rabimo_input_2020",
           "visibility": false
         },
         {

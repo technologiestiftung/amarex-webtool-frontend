@@ -26,11 +26,24 @@
   {
     "id": "abimo_2020_wfs",
     "styleId": "abimo",
-    "name": "Abimo 2020",
+    "name": "Wasserhaushalt 2020",
     "crs": "EPSG:25833",
     "url": "https://technologiestiftung-berlin.webgis1.com/geoserver/SmartWater/wfs",
     "typ": "WFS",
-    "featureType": "SmartWater:abimo_2020",
+    "featureType": "SmartWater:abimo_results_2020",
+    "featureNS": "http://geoserver.org",
+    "datasets": false,
+    "gfiAttributes": "showAll",
+    "maxScale": "25000"
+  },
+  {
+    "id": "rabimo_input_2020",
+    "styleId": "paved",
+    "name": "Versiegelt",
+    "crs": "EPSG:25833",
+    "url": "https://technologiestiftung-berlin.webgis1.com/geoserver/SmartWater/wfs",
+    "typ": "WFS",
+    "featureType": "SmartWater:rabimo_input_2020",
     "featureNS": "http://geoserver.org",
     "datasets": false,
     "gfiAttributes": "showAll"
