@@ -156,19 +156,19 @@
     "subjectlayer": {
       "elements": [
         {
+          "id": "delta_w_wfs",
+          "visibility": false
+        },
+        {
           "id": "planung_abimo",
           "visibility": true
         },
         {
-          "id": "abimo_2020_wfs",
-          "visibility": false
-        },
-        {
           "id": "rabimo_input_2020",
-          "visibility": false
+          "visibility": true
         },
         {
-          "id": "delta_w_wfs",
+          "id": "abimo_2020_wfs",
           "visibility": true
         }
       ]
