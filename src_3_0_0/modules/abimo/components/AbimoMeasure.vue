@@ -17,18 +17,23 @@ export default {
       features: [],
       sliders: [
         {
-          id: "slider1",
-          label: "Versickerungsmulde",
+          id: "green_roof",
+          label: "Dachbegrünung",
           value: 0,
         },
         {
           id: "slider2",
-          label: "Gründach",
+          label: "Versickerungsmulde",
           value: 0,
         },
         {
           id: "slider3",
-          label: "Rigolen",
+          label: "Rigolensystem",
+          value: 0,
+        },
+        {
+          id: "not_pvd",
+          label: "Unversiegelte Fläche",
           value: 0,
         },
       ],
@@ -41,11 +46,19 @@ export default {
   },
   mounted() {
     this.createInteractions();
-    this.layer = mapCollection
+    this.layer_abimo_altered = mapCollection
       .getMap("2D")
       .getLayers()
       .getArray()
       .find((layer) => layer.get("id") === "planung_abimo");
+
+    this.layer_rabimo_input = mapCollection
+      .getMap("2D")
+      .getLayers()
+      .getArray()
+      .find((layer) => layer.get("id") === "rabimo_input_2020");
+
+    console.log(this.layer_rabimo_input);
   },
   methods: {
     ...mapActions("Maps", {
@@ -70,10 +83,16 @@ export default {
       // Add the interaction to the components methods
       this.selectInteraction = selectInteraction;
 
-      // Checks for condition "is selected" and adds/removes the feature accordingly
+      // Checks for condition "is selected" loads data from abimo and rabimo_input and creates a merged feature out of them
       selectInteraction.on("select", (event) => {
         event.selected.forEach((feature) => {
-          this.features.push(feature);
+          const featureCode = feature.values_.code;
+          const inputFeature = this.getInputFeature(featureCode);
+          const mergedFeatures = {
+            ...abimoFeature,
+            values_: { ...feature.values_, ...inputFeature },
+          };
+          this.features.push(mergedFeatures);
         });
         event.deselected.forEach((feature) => {
           this.features = this.features.filter(
@@ -84,6 +103,22 @@ export default {
       // registers interaction in module - check masterportal docu
       this.addInteractionToMap(selectInteraction);
     },
+    getInputFeature(featureCode) {
+      // features are stored in an Object IDed with numbers. This function returns each ID in an array to iterate over them
+      const featureKeys = Object.keys(
+        this.layer_rabimo_input.values_.source.featuresRtree_.items_,
+      );
+
+      // This function returns the featureKey with the same code
+      const equivalentFeatureKey = featureKeys.find(
+        (key) =>
+          this.layer_rabimo_input.values_.source.featuresRtree_.items_[key]
+            .value.values_.code === featureCode,
+      );
+      return this.layer_rabimo_input.values_.source.featuresRtree_.items_[
+        equivalentFeatureKey
+      ].value.values_;
+    },
     measuresToRGB(measure1, measure2, measure3) {
       const red = Math.round((measure1 / 100) * 255),
         green = Math.round((measure2 / 100) * 255),
@@ -92,23 +127,25 @@ export default {
       return `rgb(${red},${green},${blue})`;
     },
     createStyle(properties) {
-      // This function transform importet geodata, in this case our ROW to a hard coded colour code.
+      // This function transform importet geodata, in this case our Evaporatio to a hard coded colour code.
 
       const rules = [
-          { min: 0, max: 1, color: [108, 245, 66, 1] },
-          { min: 1, max: 50, color: [115, 237, 66, 1] },
-          { min: 50, max: 100, color: [122, 230, 66, 1] },
-          { min: 100, max: 150, color: [129, 222, 66, 1] },
-          { min: 150, max: 200, color: [135, 215, 66, 1] },
-          { min: 200, max: 250, color: [142, 207, 66, 1] },
-          { min: 250, max: 300, color: [149, 199, 66, 1] },
-          { min: 300, max: 350, color: [156, 192, 66, 1] },
-          { min: 350, max: 400, color: [163, 184, 66, 1] },
-        ],
-        matchingRule = rules.find(
-          (rule) => properties.row >= rule.min && properties.row <= rule.max,
-        ),
-        fillColor = matchingRule ? matchingRule.color : [255, 14, 14, 1];
+        { min: 0, max: 70, color: [255, 0, 0, 1] },
+        { min: 71, max: 140, color: [226, 28, 0, 1] },
+        { min: 141, max: 210, color: [198, 56, 0, 1] },
+        { min: 211, max: 280, color: [170, 85, 0, 1] },
+        { min: 281, max: 350, color: [141, 113, 0, 1] },
+        { min: 351, max: 420, color: [113, 142, 0, 1] },
+        { min: 421, max: 490, color: [85, 170, 0, 1] },
+        { min: 491, max: 560, color: [56, 199, 0, 1] },
+        { min: 561, max: 630, color: [28, 227, 0, 1] },
+        { min: 631, max: 3000, color: [0, 255, 0, 1] },
+      ];
+
+      (matchingRule = rules.find(
+        (rule) => properties.row >= rule.min && properties.row <= rule.max,
+      )),
+        (fillColor = matchingRule ? matchingRule.color : [255, 14, 14, 1]);
 
       return new Style({
         stroke: new Stroke({
@@ -147,7 +184,7 @@ export default {
       });
     },
     addToLayer(features) {
-      this.layer.values_.source.addFeatures(features);
+      this.layer_abimo_altered.values_.source.addFeatures(features);
     },
     logFunctionsAndProperties(obj) {
       const methods = Object.getOwnPropertyNames(obj).filter(
