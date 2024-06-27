@@ -88,8 +88,9 @@ export default {
         event.selected.forEach((feature) => {
           const featureCode = feature.values_.code;
           const inputFeature = this.getInputFeature(featureCode);
+          this.adjustSliders(inputFeature);
           const mergedFeatures = {
-            ...abimoFeature,
+            ...feature,
             values_: { ...feature.values_, ...inputFeature },
           };
           this.features.push(mergedFeatures);
@@ -118,6 +119,11 @@ export default {
       return this.layer_rabimo_input.values_.source.featuresRtree_.items_[
         equivalentFeatureKey
       ].value.values_;
+    },
+    adjustSliders(feature) {
+      console.log(feature);
+      this.sliders[0].value = Number(feature.green_roof).toFixed(2) * 100;
+      this.sliders[3].value = Number((1 - feature.pvd).toFixed(2) * 100);
     },
     measuresToRGB(measure1, measure2, measure3) {
       const red = Math.round((measure1 / 100) * 255),
@@ -165,6 +171,10 @@ export default {
       const sliderValues = this.sliders.map((slider) => slider.value);
 
       return featuresArray.map((featureData) => {
+        const new_green_roof = sliderValues[0] / 100;
+        const new_pvd = 1 - sliderValues[2] / 100;
+        console.log("Greenroof", new_green_roof, "PVD", new_pvd);
+        console.log(featureData.values_);
         //copies the equivalent feature from the selection (data.features), creates a new Feature object from the OpenLayers class and adds further properties within the object
         const olFeature = new Feature({
           geometry: featureData.getGeometry(),
