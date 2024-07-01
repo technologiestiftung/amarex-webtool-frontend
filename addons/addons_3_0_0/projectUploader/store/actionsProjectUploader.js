@@ -573,9 +573,7 @@ export default {
 
     let { R, G, B } = getRandomRGB();
 
-
     if (datasrc.layer.values_.styleId === "default") {
-
       vectorLayer.setStyle((feature) => {
         const drawState = feature.getProperties().drawState;
         let style;
