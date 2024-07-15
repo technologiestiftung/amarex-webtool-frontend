@@ -15,14 +15,18 @@ export default {
   name: "ReportPrinter",
   data() {
     return {
-      projectTitle:
-        "Report zur Analyse und Maßnahmenplanung der Maßnahme Entsiegelung (Log-Nr YY)",
-      projectDescription: "test",
       projectData: [
         { name: "Projekt A", value: 100 },
         { name: "Projekt B", value: 200 },
         { name: "Projekt C", value: 300 },
       ],
+      report: {
+        title:
+          "Report zur Analyse und Maßnahmenplanung der Maßnahme Entsiegelung (Log-Nr YY)",
+        description: "description test",
+        editor: "Nachname, Vorname",
+        date: new Date().toDateString(),
+      },
       layerData: [],
       pdf: {
         fontSize: {
@@ -140,10 +144,10 @@ export default {
       doc.rect(x, y, this.pdf.max.width, 8, "F");
       doc.setFontSize(this.pdf.fontSize.m);
       y += this.pdf.margin.bottom + 8;
-      doc.text("AMAREX Webtool", 100, y);
+      doc.text("AMAREX Webtool", 150, y);
       doc.setFontSize(this.pdf.fontSize.s);
       y += this.pdf.margin.bottom;
-      doc.text("Report Nr. xxx, Bearbeiter: Blau Grüner", 100, y);
+      doc.text(`Report Nr. xxx, Bearbeiter: ${this.report.editor}`, 100, y);
       y += this.pdf.margin.bottom;
 
       return y; // Neue Y-Position nach dem Header
@@ -208,13 +212,13 @@ export default {
   >
     <div class="mb-3">
       <label
-        for="projectTitle"
+        for="reportTitle"
         class="form-label"
         >Reporttitel:</label
       >
       <textarea
-        v-model="projectTitle"
-        id="projectTitle"
+        v-model="report.title"
+        id="reportTitle"
         class="form-control"
         rows="2"
       ></textarea>
@@ -226,7 +230,7 @@ export default {
         >Projektbeschreibung:</label
       >
       <textarea
-        v-model="projectDescription"
+        v-model="report.description"
         id="projectDescription"
         class="form-control"
         rows="3"
