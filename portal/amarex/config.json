@@ -110,16 +110,10 @@
           }
         ]
       },
-      "sections": [
-        [
-          {
-            "type": "openConfig"
-          }
-        ]
-      ]
+      "sections": []
     },
     "secondaryMenu": {
-      "expanded": false,
+      "expanded": true,
       "sections": [
         [
           {
@@ -139,6 +133,9 @@
           },
           {
             "type": "projectUploader"
+          },
+          {
+            "type": "reportPrinter"
           }
         ]
       ]
@@ -147,8 +144,9 @@
   "layerConfig": {
     "baselayer": {
       "elements": [
+        { "id": "hintergrund_default_grau", "visibility": false },
         {
-          "id": "hintergrund_default_grau",
+          "id": "hintergrund_default_farbe",
           "visibility": true
         }
       ]

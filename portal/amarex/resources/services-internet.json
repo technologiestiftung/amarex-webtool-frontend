@@ -1,5 +1,29 @@
 [
   {
+    "id": "hintergrund_default_farbe",
+    "name": "basemap.de Web Raster Farbe",
+    "name_lang": "basemap.de Web Raster Farbe",
+    "capabilitiesUrl": "https://sgx.geodatenzentrum.de/wmts_basemapde/1.0.0/WMTSCapabilities.xml",
+    "url": "https://sgx.geodatenzentrum.de/wmts_basemapde/1.0.0/",
+    "typ": "WMTS",
+    "tileMatrixSet": "DE_EPSG_25833_ADV",
+    "layers": "de_basemapde_web_raster_farbe",
+    "optionsFromCapabilities": true,
+    "crs": "http://www.opengis.net/def/crs/EPSG/0/25833",
+    "legend": [
+      "https://sgx.geodatenzentrum.de/wms_basemapde?format=image%2Fpng&layer=de_basemapde_web_raster_farbe&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles="
+    ],
+    "layerAttribution": "© basemap.de / BKG (Monat) (Jahr)",
+    "datasets": [
+      {
+        "md_id": "FE1D2837-ABE0-46B5-9821-BB11BAF22531",
+        "rs_id": "https://registry.gdi-de.org/id/de.bund.bkg.csw/68f48957-a20f-3d93-bd62-e59ce6bd99fa",
+        "csw_url": "https://gdk.gdi-de.org/gdi-de/srv/ger/csw",
+        "show_doc_url": "https://gdz.bkg.bund.de/index.php/default/wmts-basemapde-webraster-wmts-basemapde-webraster.html#"
+      }
+    ]
+  },
+  {
     "id": "hintergrund_default_grau",
     "name": "Hintergrund Berlin",
     "name_lang": "basemap.de Web Raster Grau",
