@@ -573,149 +573,151 @@ export default {
 
     let { R, G, B } = getRandomRGB();
 
-    vectorLayer.setStyle((feature) => {
-      const drawState = feature.getProperties().drawState;
-      let style;
+    if (datasrc.layer.values_.styleId === "default") {
+      vectorLayer.setStyle((feature) => {
+        const drawState = feature.getProperties().drawState;
+        let style;
 
-      if (!drawState) {
-        const defaultColor = [R, G, B, 0.9],
-          defaultFillColor = [R + 2 > 255 ? 255 : R + 2, G, B, 0.5],
-          defaultPointSize = 16,
-          defaultStrokeWidth = 1,
-          defaultCircleRadius = 300,
-          geometryType = feature ? feature.getGeometry().getType() : "Cesium";
+        if (!drawState) {
+          const defaultColor = [R, G, B, 0.9],
+            defaultFillColor = [R + 2 > 255 ? 255 : R + 2, G, B, 0.5],
+            defaultPointSize = 16,
+            defaultStrokeWidth = 1,
+            defaultCircleRadius = 300,
+            geometryType = feature ? feature.getGeometry().getType() : "Cesium";
 
-        if (geometryType === "Point" || geometryType === "MultiPoint") {
-          style = createDrawStyle(
-            defaultColor,
-            defaultColor,
-            geometryType,
-            defaultPointSize,
-            1,
-            1,
-          );
+          if (geometryType === "Point" || geometryType === "MultiPoint") {
+            style = createDrawStyle(
+              defaultColor,
+              defaultColor,
+              geometryType,
+              defaultPointSize,
+              1,
+              1,
+            );
+          } else if (
+            geometryType === "LineString" ||
+            geometryType === "MultiLineString"
+          ) {
+            style = new Style({
+              stroke: new Stroke({
+                color: defaultColor,
+                width: defaultStrokeWidth,
+              }),
+            });
+          } else if (
+            geometryType === "Polygon" ||
+            geometryType === "MultiPolygon"
+          ) {
+            style = new Style({
+              stroke: new Stroke({
+                color: defaultColor,
+                width: defaultStrokeWidth,
+              }),
+              fill: new Fill({
+                color: defaultFillColor,
+              }),
+            });
+          } else if (geometryType === "Circle") {
+            style = new Style({
+              stroke: new Stroke({
+                color: defaultColor,
+                width: defaultStrokeWidth,
+              }),
+              fill: new Fill({
+                color: defaultFillColor,
+              }),
+              circleRadius: defaultCircleRadius,
+              colorContour: defaultColor,
+            });
+          } else {
+            console.warn("Geometry type not implemented: " + geometryType);
+            style = new Style();
+          }
+
+          return style.clone();
+        }
+
+        if (drawState.drawType.geometry === "Point") {
+          if (drawState.text) {
+            style = new Style({
+              image: new CircleStyle({}),
+              text: new Text({
+                text: drawState.text,
+                font: drawState.fontSize + "px Arial,sans-serif",
+                fill: new Fill({
+                  color: drawState.color,
+                }),
+              }),
+            });
+          } else if (drawState.symbol.value !== "simple_point") {
+            style = new Style({
+              image: new Icon({
+                crossOrigin: "anonymous",
+                src:
+                  drawState.symbol.value.indexOf("/") > 0
+                    ? drawState.symbol.value
+                    : drawState.imgPath + drawState.symbol.value,
+                scale: drawState.symbol.scale,
+              }),
+            });
+          } else {
+            style = createDrawStyle(
+              drawState.color,
+              drawState.color,
+              drawState.drawType.geometry,
+              drawState.pointSize,
+              1,
+              drawState.zIndex,
+            );
+          }
         } else if (
-          geometryType === "LineString" ||
-          geometryType === "MultiLineString"
+          drawState.drawType.geometry === "LineString" ||
+          drawState.drawType.geometry === "MultiLineString"
         ) {
           style = new Style({
             stroke: new Stroke({
-              color: defaultColor,
-              width: defaultStrokeWidth,
+              color: drawState.colorContour,
+              width: drawState.strokeWidth,
             }),
           });
         } else if (
-          geometryType === "Polygon" ||
-          geometryType === "MultiPolygon"
+          drawState.drawType.geometry === "Polygon" ||
+          drawState.drawType.geometry === "MultiPolygon"
         ) {
           style = new Style({
             stroke: new Stroke({
-              color: defaultColor,
-              width: defaultStrokeWidth,
+              color: drawState.colorContour,
+              width: drawState.strokeWidth,
             }),
             fill: new Fill({
-              color: defaultFillColor,
+              color: drawState.color,
             }),
           });
-        } else if (geometryType === "Circle") {
+        } else if (drawState.drawType.geometry === "Circle") {
           style = new Style({
             stroke: new Stroke({
-              color: defaultColor,
-              width: defaultStrokeWidth,
+              color: drawState.colorContour,
+              width: drawState.strokeWidth,
             }),
             fill: new Fill({
-              color: defaultFillColor,
+              color: drawState.color,
             }),
-            circleRadius: defaultCircleRadius,
-            colorContour: defaultColor,
+            circleRadius: drawState.circleRadius,
+            circleOuterRadius: drawState.circleOuterRadius,
+            colorContour: drawState.colorContour,
+            outerColorContour: drawState.outerColorContour,
           });
         } else {
-          console.warn("Geometry type not implemented: " + geometryType);
+          console.warn(
+            "Geometry type not implemented: " + drawState.drawType.geometry,
+          );
           style = new Style();
         }
 
         return style.clone();
-      }
-
-      if (drawState.drawType.geometry === "Point") {
-        if (drawState.text) {
-          style = new Style({
-            image: new CircleStyle({}),
-            text: new Text({
-              text: drawState.text,
-              font: drawState.fontSize + "px Arial,sans-serif",
-              fill: new Fill({
-                color: drawState.color,
-              }),
-            }),
-          });
-        } else if (drawState.symbol.value !== "simple_point") {
-          style = new Style({
-            image: new Icon({
-              crossOrigin: "anonymous",
-              src:
-                drawState.symbol.value.indexOf("/") > 0
-                  ? drawState.symbol.value
-                  : drawState.imgPath + drawState.symbol.value,
-              scale: drawState.symbol.scale,
-            }),
-          });
-        } else {
-          style = createDrawStyle(
-            drawState.color,
-            drawState.color,
-            drawState.drawType.geometry,
-            drawState.pointSize,
-            1,
-            drawState.zIndex,
-          );
-        }
-      } else if (
-        drawState.drawType.geometry === "LineString" ||
-        drawState.drawType.geometry === "MultiLineString"
-      ) {
-        style = new Style({
-          stroke: new Stroke({
-            color: drawState.colorContour,
-            width: drawState.strokeWidth,
-          }),
-        });
-      } else if (
-        drawState.drawType.geometry === "Polygon" ||
-        drawState.drawType.geometry === "MultiPolygon"
-      ) {
-        style = new Style({
-          stroke: new Stroke({
-            color: drawState.colorContour,
-            width: drawState.strokeWidth,
-          }),
-          fill: new Fill({
-            color: drawState.color,
-          }),
-        });
-      } else if (drawState.drawType.geometry === "Circle") {
-        style = new Style({
-          stroke: new Stroke({
-            color: drawState.colorContour,
-            width: drawState.strokeWidth,
-          }),
-          fill: new Fill({
-            color: drawState.color,
-          }),
-          circleRadius: drawState.circleRadius,
-          circleOuterRadius: drawState.circleOuterRadius,
-          colorContour: drawState.colorContour,
-          outerColorContour: drawState.outerColorContour,
-        });
-      } else {
-        console.warn(
-          "Geometry type not implemented: " + drawState.drawType.geometry,
-        );
-        style = new Style();
-      }
-
-      return style.clone();
-    });
+      });
+    }
 
     features = checkIsVisibleSetting(features);
 
