@@ -67,5 +67,42 @@
     "crs": "urn:ogc:def:crs:EPSG::25833",
     "typ": "GEOJSON",
     "gfiAttributes": "showAll"
+  },
+  {
+    "id": "klimamodell_berlin_wfs",
+    "name": "Klimamodell Berlin: Entwicklung der Anzahl klimatologischer Kenntage in der Zukunft 2015 (Umweltatlas)",
+    "url": "https://fbinter.stadt-berlin.de/fb/wfs/data/senstadt/s_0412_kenntage2015",
+    "typ": "WFS",
+    "featureType": "s_0412_kenntage2015",
+    "featureNS": "http://www.gdi-de.org",
+    "format": "application/json",
+    "version": "2.0.0",
+    "fitCapabilitiesExtent": true,
+    "capabilitiesUrl": "https://fbinter.stadt-berlin.de/fb/wfs/data/senstadt/s_0412_kenntage2015?REQUEST=GetCapabilities&SERVICE=WFS",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "Umweltatlas Berlin / Klimamodell Berlin: Entwicklung der Anzahl klimatologischer Kenntage in der Zukunft 2015 (Umweltatlas)",
+    "legend": true,
+    "datasets": [
+      {
+        "md_id": "22dd028c-d9cd-33ce-a30d-9109b9d1f7a1",
+        "rs_id": "de.be.csw/ff25b469-41e0-3f4a-aa3d-ffbf71b8c6a0",
+        "md_name": "Klimamodell Berlin: Entwicklung der Anzahl klimatologischer Kenntage in der Zukunft 2015 (Umweltatlas)",
+        "bbox": "13.079,52.3284,13.7701,52.6877",
+        "kategorie_opendata": [
+          "opendata"
+        ],
+        "kategorie_inspire": [
+          "nicht INSPIRE-identifiziert"
+        ],
+        "kategorie_organisation": "Senatsverwaltung für Stadtentwicklung, Bauen und Wohnen Berlin"
+      }
+    ],
+    "contact": {
+      "organization": "Senatsverwaltung für Stadtentwicklung, Bauen und Wohnen Berlin",
+      "phone": "+49-30-90139-5257",
+      "email": "fisbroker@senstadt.berlin.de"
+    },
+    "license": "Datenlizenz Deutschland - Namensnennung - Version 2.0",
+    "licenseUrl": "https://www.govdata.de/dl-de/by-2-0"
   }
 ]

@@ -15,6 +15,13 @@ export default {
   data() {
     return {
       features: [],
+      accumulatedAbimoStats: {
+        featuresSelected: 0,
+        totalArea: 0,
+        averageEvaporation: 0,
+        averageSwale: 0,
+        averageRinse: 0,
+      },
       sliders: [
         {
           id: "green_roof",
@@ -22,13 +29,8 @@ export default {
           value: 0,
         },
         {
-          id: "slider2",
+          id: "to_swale",
           label: "Versickerungsmulde",
-          value: 0,
-        },
-        {
-          id: "slider3",
-          label: "Rigolensystem",
           value: 0,
         },
         {
@@ -58,7 +60,13 @@ export default {
       .getArray()
       .find((layer) => layer.get("id") === "rabimo_input_2020");
 
-    console.log(this.layer_rabimo_input);
+    this.layer_abimo_results = mapCollection
+      .getMap("2D")
+      .getLayers()
+      .getArray()
+      .find((layer) => layer.get("id") === "abimo_2020_wfs");
+
+    console.log("PRECALC", this.layer_abimo_results);
   },
   methods: {
     ...mapActions("Maps", {
@@ -85,9 +93,11 @@ export default {
 
       // Checks for condition "is selected" loads data from abimo and rabimo_input and creates a merged feature out of them
       selectInteraction.on("select", (event) => {
+        console.log(event.selected);
         event.selected.forEach((feature) => {
           const featureCode = feature.values_.code;
           const inputFeature = this.getInputFeature(featureCode);
+          console.log("Abimo_Input", this.layer_rabimo_input.values_);
           this.adjustSliders(inputFeature);
           const mergedFeatures = {
             ...feature,
@@ -95,6 +105,26 @@ export default {
           };
           this.features.push(mergedFeatures);
         });
+
+        this.accumulatedAbimoStats = {
+          featuresSelected: this.features.length,
+          totalArea: this.features
+            .map((f) => Number(f.values_.area))
+            .reduce((a, b) => a + b, 0),
+          averageEvaporation:
+            this.features
+              .map((f) => Number(f.values_.evaporatio))
+              .reduce((a, b) => a + b, 0) / this.features.length,
+          averageSwale:
+            this.features
+              .map((f) => Number(f.values_.infiltrati))
+              .reduce((a, b) => a + b, 0) / this.features.length,
+          averageRinse:
+            this.features
+              .map((f) => Number(f.values_.surface_ru))
+              .reduce((a, b) => a + b, 0) / this.features.length,
+        };
+
         event.deselected.forEach((feature) => {
           this.features = this.features.filter(
             (f) => f.ol_uid !== feature.ol_uid,
@@ -123,7 +153,8 @@ export default {
     adjustSliders(feature) {
       console.log(feature);
       this.sliders[0].value = Number(feature.green_roof).toFixed(2) * 100;
-      this.sliders[3].value = Number((1 - feature.pvd).toFixed(2) * 100);
+      this.sliders[1].value = Number(feature.to_swale).toFixed(2) * 100;
+      this.sliders[2].value = Number((1 - feature.pvd).toFixed(2) * 100);
     },
     measuresToRGB(measure1, measure2, measure3) {
       const red = Math.round((measure1 / 100) * 255),
@@ -172,9 +203,17 @@ export default {
 
       return featuresArray.map((featureData) => {
         const new_green_roof = sliderValues[0] / 100;
+        const new_to_swale = sliderValues[1] / 100;
         const new_pvd = 1 - sliderValues[2] / 100;
-        console.log("Greenroof", new_green_roof, "PVD", new_pvd);
-        console.log(featureData.values_);
+        console.log(
+          "Greenroof",
+          new_green_roof,
+          "PVD",
+          new_pvd,
+          "Swale",
+          new_to_swale,
+        );
+        console.log(this.features[0]);
         //copies the equivalent feature from the selection (data.features), creates a new Feature object from the OpenLayers class and adds further properties within the object
         const olFeature = new Feature({
           geometry: featureData.getGeometry(),
@@ -290,6 +329,38 @@ export default {
     </button>
     <ul>
       <li
+        class="summary"
+        v-if="features.length"
+      >
+        <strong
+          >Ausgewählte Flächen:
+          {{ accumulatedAbimoStats.featuresSelected }}</strong
+        >
+        <br />
+        <strong
+          >Gesamtfläche:
+          {{
+            (accumulatedAbimoStats.totalArea / 1000000).toFixed(2)
+          }}
+          km2</strong
+        >
+        <br />
+        <strong
+          >Durchschnittliche Verdunstung:
+          {{ accumulatedAbimoStats.averageEvaporation.toFixed(2) }} mm</strong
+        >
+        <br />
+        <strong
+          >Durchschnittliche Versickerung:
+          {{ accumulatedAbimoStats.averageRinse.toFixed(2) }} mm</strong
+        >
+        <br />
+        <strong
+          >Durchschnittlicher Ablauf:
+          {{ accumulatedAbimoStats.averageSwale.toFixed(2) }} mm</strong
+        >
+      </li>
+      <li
         v-for="feature in features"
         :key="feature.code"
         class="feature-details"
@@ -300,7 +371,7 @@ export default {
           </li>
           <li>
             Fläche:
-            {{ Number(feature.values_.flaeche).toFixed(2) }}m2
+            {{ Number(feature.values_.area).toFixed(2) }} m2
           </li>
           <li style="display: flex">
             <div class="bar-1 label" />
@@ -364,7 +435,8 @@ ul {
 li {
   margin-bottom: 10px;
 }
-.feature-details {
+.feature-details,
+.summary {
   margin-top: 16px;
   border-top: 1px solid rgb(125, 210, 214);
   padding-top: 16px;
