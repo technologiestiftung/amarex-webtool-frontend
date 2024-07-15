@@ -81,7 +81,8 @@
     "vue-datepicker-next": "^1.0.3",
     "vue-multiselect": "3.0.0-beta.3",
     "vuedraggable": "^4.1.0",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "jszip": "^3.10.1"
   },
   "devDependencies": {
     "@geoblocks/print": "^0.7.4",

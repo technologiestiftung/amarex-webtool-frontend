@@ -19,7 +19,7 @@ export default {
     description: "common:modules.appFileImport.description",
     type: "fileImport",
     name: "common:modules.appFileImport.name",
-    icon: "bi-box-arrow-in-down",
+    icon: "bi-box-arrow-in-up",
     supportedDevices: ["Desktop", "Mobile", "Table"],
     supportedMapModes: ["2D", "3D"],
     enableZoomToExtend: false,

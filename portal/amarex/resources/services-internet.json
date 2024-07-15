@@ -46,7 +46,8 @@
     "featureType": "SmartWater:rabimo_input_2020",
     "featureNS": "http://geoserver.org",
     "datasets": false,
-    "gfiAttributes": "showAll"
+    "gfiAttributes": "showAll",
+    "maxScale": "25000"
   },
   {
     "id": "delta_w_wfs",
@@ -58,7 +59,8 @@
     "featureType": "SmartWater:deltaw_2020",
     "featureNS": "http://geoserver.org",
     "datasets": false,
-    "gfiAttributes": "showAll"
+    "gfiAttributes": "showAll",
+    "maxScale": "25000"
   },
   {
     "id": "planung_abimo",
@@ -88,12 +90,8 @@
         "rs_id": "de.be.csw/ff25b469-41e0-3f4a-aa3d-ffbf71b8c6a0",
         "md_name": "Klimamodell Berlin: Entwicklung der Anzahl klimatologischer Kenntage in der Zukunft 2015 (Umweltatlas)",
         "bbox": "13.079,52.3284,13.7701,52.6877",
-        "kategorie_opendata": [
-          "opendata"
-        ],
-        "kategorie_inspire": [
-          "nicht INSPIRE-identifiziert"
-        ],
+        "kategorie_opendata": ["opendata"],
+        "kategorie_inspire": ["nicht INSPIRE-identifiziert"],
         "kategorie_organisation": "Senatsverwaltung für Stadtentwicklung, Bauen und Wohnen Berlin"
       }
     ],
@@ -106,3 +104,4 @@
     "licenseUrl": "https://www.govdata.de/dl-de/by-2-0"
   }
 ]
+
