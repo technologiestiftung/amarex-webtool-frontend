@@ -6,7 +6,10 @@
   "projectDownloader": {
     "type": "tool",
     "vue": true
+  },
+  "reportPrinter": {
+    "type": "tool",
+    "vue": true
   }
 }
-
 

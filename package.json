@@ -73,7 +73,9 @@
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.2.2",
     "i18next-vue": "^3.0.0",
+    "jspdf": "^2.5.1",
     "jsts": "^2.11.0",
+    "jszip": "^3.10.1",
     "mqtt": "^4.3.7",
     "object-hash": "^3.0.0",
     "qrcode": "^1.5.3",
@@ -81,8 +83,7 @@
     "vue-datepicker-next": "^1.0.3",
     "vue-multiselect": "3.0.0-beta.3",
     "vuedraggable": "^4.1.0",
-    "vuex": "^4.1.0",
-    "jszip": "^3.10.1"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@geoblocks/print": "^0.7.4",
