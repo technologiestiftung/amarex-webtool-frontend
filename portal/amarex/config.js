@@ -30,5 +30,5 @@ const Config = {
     fallbackLanguage: "de",
     changeLanguageOnStartWhen: ["querystring", "localStorage", "htmlTag"],
   },
-  addons: ["projectDownloader", "projectUploader"],
+  addons: ["projectDownloader", "projectUploader", "reportPrinter"],
 };
