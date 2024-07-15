@@ -44,9 +44,26 @@ export default {
         portalConfig.map.mapView.startZoomLevel = mapView.getZoom();
         portalConfig.map.mapView.startCenter = mapView.getCenter();
 
+        // Filter layers with showInLayerTree: true
+        const filteredBaselayer = {
+          elements: layerConfig.baselayer.elements.filter(
+            (layer) => layer.showInLayerTree === true,
+          ),
+        };
+        const filteredSubjectlayer = {
+          elements: layerConfig.subjectlayer.elements.filter(
+            (layer) => layer.showInLayerTree === true,
+          ),
+        };
+
+        const filteredLayerConfig = {
+          baselayer: filteredBaselayer,
+          subjectlayer: filteredSubjectlayer,
+        };
+
         this.configToExport = {
           portalConfig,
-          layerConfig,
+          layerConfig: filteredLayerConfig,
         };
       } catch (error) {
         console.error(error);
@@ -64,6 +81,8 @@ export default {
 
       try {
         layerCollectionData.forEach((layer) => {
+          if (!layer.attributes.showInLayerTree) return;
+
           if (
             layer.layer instanceof VectorLayer &&
             (layer.attributes.typ !== "WFS" || "WMS")
