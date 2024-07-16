@@ -6,12 +6,17 @@ import Fill from "ol/style/Fill";
 import Stroke from "ol/style/Stroke";
 import { Select } from "ol/interaction";
 import { dblclick, never } from "ol/events/condition";
+import AbimoAccordion from "./AbimoAccordion.vue";
+
 /**
  * Abimo
  * @module modules/AbimoMeasure
  */
 export default {
   name: "AbimoMeasure",
+  components: {
+    AbimoAccordion,
+  },
   data() {
     return {
       features: [],
@@ -41,6 +46,97 @@ export default {
       ],
       selectInteraction: null,
       layer: null,
+      steps: [
+        {
+          id: 1,
+          label: "Vorberechnete Modelle",
+          description:
+            "Zur Status Quo Analyse können Sie mit den vorberechneten Karten aus dem Kartenkatalog starten",
+          isActive: false,
+          buttons: [
+            {
+              id: 1,
+              label: "Zum Katalog",
+              isDisabled: false,
+            },
+            {
+              id: 2,
+              label: "Überspringen",
+              isDisabled: false,
+            },
+          ],
+        },
+        {
+          id: 2,
+          label: "Untersuchungsgebiet Definieren",
+          description:
+            "Wählen Sie in der Karte die Blockteilflächen via Mausklick aus, die Sie untersuchen möchten.",
+          isActive: true,
+          buttons: [
+            {
+              id: 1,
+              label: "Bestätigen",
+              isDisabled: false,
+            },
+          ],
+        },
+        {
+          id: 3,
+          label: "Klimaszenario wählen",
+          description:
+            "Wählen Sie das Referenyszenario für die Berechnungen aus, weitere Informationen zu den Referenzszenarios finden Sie in unserer Dokumentation.",
+          isActive: false,
+          buttons: [
+            {
+              id: 1,
+              label: "Bestätigen",
+              isDisabled: true,
+            },
+          ],
+        },
+        {
+          id: 4,
+          label: "Maßnahmen auswählen",
+          description:
+            "Wählen Sie anteilsmäßig die Maßnahmen, die Sie in die Berechnung einfließen lassen wollen.",
+          isActive: true,
+          buttons: [
+            {
+              id: 1,
+              label: "Bestätigen",
+              isDisabled: true,
+            },
+          ],
+        },
+        {
+          id: 5,
+          label: "Berechnung",
+          description:
+            "Fügen Sie nun den berechneten DeltaW-Layer hinzu. Des Weiteren stehen ihnen weitere Ergebnislayer zur Verfügung.",
+          isActive: true,
+          buttons: [
+            {
+              id: 1,
+              label: "Layer Einfügen",
+              isDisabled: true,
+            },
+          ],
+        },
+        {
+          id: 6,
+          label: "Weitere Berechnung",
+          description:
+            "Wenn Sie weitere Berchnungen mit veränderten Parametern vornehmen möchten, klicken Sie hier auf Neu Berechnen.",
+          isActive: true,
+          buttons: [
+            {
+              id: 1,
+              label: "Neu Berechnen",
+              isDisabled: true,
+            },
+          ],
+        },
+      ],
     };
   },
   computed: {
@@ -93,12 +189,16 @@ export default {
 
       // Checks for condition "is selected" loads data from abimo and rabimo_input and creates a merged feature out of them
       selectInteraction.on("select", (event) => {
-        console.log(event.selected);
+        console.log("select, (event)", event.selected);
+
         event.selected.forEach((feature) => {
           const featureCode = feature.values_.code;
           const inputFeature = this.getInputFeature(featureCode);
-          console.log("Abimo_Input", this.layer_rabimo_input.values_);
+          console.log("[AbimoMeasure] inputFeature::", inputFeature);
+          // console.log("Abimo_Input", this.layer_rabimo_input.values_);
           this.adjustSliders(inputFeature);
+
+          // something is not working here, it doesn't create a Feature
           const mergedFeatures = {
             ...feature,
             values_: { ...feature.values_, ...inputFeature },
@@ -151,7 +251,7 @@ export default {
       ].value.values_;
     },
     adjustSliders(feature) {
-      console.log(feature);
+      console.log("adjustSliders(feature)", feature);
       this.sliders[0].value = Number(feature.green_roof).toFixed(2) * 100;
       this.sliders[1].value = Number(feature.to_swale).toFixed(2) * 100;
       this.sliders[2].value = Number((1 - feature.pvd).toFixed(2) * 100);
@@ -201,6 +301,8 @@ export default {
     mapToolFeatures(featuresArray) {
       const sliderValues = this.sliders.map((slider) => slider.value);
 
+      console.log("[AbimoMeasure] featuresArray::", featuresArray);
+
       return featuresArray.map((featureData) => {
         const new_green_roof = sliderValues[0] / 100;
         const new_to_swale = sliderValues[1] / 100;
@@ -213,7 +315,7 @@ export default {
           "Swale",
           new_to_swale,
         );
-        console.log(this.features[0]);
+        console.log("this.features[0]", this.features[0]);
         //copies the equivalent feature from the selection (data.features), creates a new Feature object from the OpenLayers class and adds further properties within the object
         const olFeature = new Feature({
           geometry: featureData.getGeometry(),
@@ -307,126 +409,163 @@ export default {
 
 <template lang="html">
   <div id="abimo">
-    <div
-      v-for="slider in sliders"
-      :key="slider.id"
-    >
-      <label :for="slider.id">{{ slider.label }}</label>
-      <input
-        :id="slider.id"
-        v-model="slider.value"
-        type="range"
-        min="0"
-        max="100"
-      />
-      <span>{{ slider.value }}</span>
-    </div>
-    <button
-      :disabled="!features.length"
-      @click="applyMeasures"
-    >
-      Maßnahmen anwenden
-    </button>
-    <ul>
-      <li
-        class="summary"
-        v-if="features.length"
-      >
-        <strong
-          >Ausgewählte Flächen:
-          {{ accumulatedAbimoStats.featuresSelected }}</strong
-        >
-        <br />
-        <strong
-          >Gesamtfläche:
-          {{
-            (accumulatedAbimoStats.totalArea / 1000000).toFixed(2)
-          }}
-          km2</strong
-        >
-        <br />
-        <strong
-          >Durchschnittliche Verdunstung:
-          {{ accumulatedAbimoStats.averageEvaporation.toFixed(2) }} mm</strong
-        >
-        <br />
-        <strong
-          >Durchschnittliche Versickerung:
-          {{ accumulatedAbimoStats.averageRinse.toFixed(2) }} mm</strong
-        >
-        <br />
-        <strong
-          >Durchschnittlicher Ablauf:
-          {{ accumulatedAbimoStats.averageSwale.toFixed(2) }} mm</strong
-        >
-      </li>
-      <li
-        v-for="feature in features"
-        :key="feature.code"
-        class="feature-details"
-      >
-        <ul>
-          <li>
-            <strong>CODE: {{ feature.values_.code }}</strong>
-          </li>
-          <li>
-            Fläche:
-            {{ Number(feature.values_.area).toFixed(2) }} m2
-          </li>
-          <li style="display: flex">
-            <div class="bar-1 label" />
-            Verdunstung:
-            {{ Number(feature.values_.verdunstun).toFixed(2) }}mm
-          </li>
-          <li style="display: flex">
-            <div class="bar-2 label" />
-            Versickerung:
-            {{ Number(feature.values_.ri).toFixed(2) }}mm
-          </li>
-          <li style="display: flex">
-            <div class="bar-3 label" />
-            Oberflächenabfluss:
-            {{ Number(feature.values_.row).toFixed(2) }}mm
-          </li>
-          <div class="bar-scale">
-            <div
-              class="bar bar-1"
-              :style="{
-                width: calculatePercentages(feature).verdunstunPercentage + '%',
-              }"
-            />
-            <div
-              class="bar bar-2"
-              :style="{
-                width: calculatePercentages(feature).riPercentage + '%',
-              }"
-            />
 
-            <div
-              class="bar bar-3"
-              :style="{
-                width: calculatePercentages(feature).rowPercentage + '%',
-              }"
-            />
+    <AbimoAccordion
+      :steps="steps"
+      @toggle-step="toggleStep"
+    >
+      <template v-slot:default="slotProps">
+        <div v-if="slotProps.step.id === 1">
+          <div
+            v-for="button in slotProps.step.buttons"
+            :key="button.id"
+          >
+            <button
+              class="btn btn-primary"
+              :disabled="button.isDisabled"
+            >
+              {{ button.label }}
+            </button>
           </div>
-        </ul>
-      </li>
-    </ul>
+        </div>
+
+        <div v-else-if="slotProps.step.id === 2">
+          <div
+            v-for="button in slotProps.step.buttons"
+            :key="button.id"
+          >
+            <button
+              class="btn btn-primary"
+              :disabled="button.isDisabled"
+            >
+              {{ button.label }}
+            </button>
+          </div>
+        </div>
+
+        <div v-else-if="slotProps.step.id === 4">
+          <!-- Dynamischer Inhalt für Maßnahmen -->
+
+          <div
+            v-for="slider in sliders"
+            :key="slider.id"
+          >
+            <label :for="slider.id">{{ slider.label }}</label>
+            <input
+              :id="slider.id"
+              v-model="slider.value"
+              type="range"
+              min="0"
+              max="100"
+            />
+            <span>{{ slider.value }}</span>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            :disabled="!features.length"
+            @click="applyMeasures"
+          >
+            Maßnahmen anwenden
+          </button>
+
+          <ul>
+            <li
+              class="summary"
+              v-if="features.length"
+            >
+              <strong
+                >Ausgewählte Flächen:
+                {{ accumulatedAbimoStats.featuresSelected }}</strong
+              >
+              <br />
+              <strong
+                >Gesamtfläche:
+                {{ (accumulatedAbimoStats.totalArea / 1000000).toFixed(2) }}
+                km2</strong
+              >
+              <br />
+              <strong
+                >Durchschnittliche Verdunstung:
+                {{ accumulatedAbimoStats.averageEvaporation.toFixed(2) }}
+                mm</strong
+              >
+              <br />
+              <strong
+                >Durchschnittliche Versickerung:
+                {{ accumulatedAbimoStats.averageRinse.toFixed(2) }} mm</strong
+              >
+              <br />
+              <strong
+                >Durchschnittlicher Ablauf:
+                {{ accumulatedAbimoStats.averageSwale.toFixed(2) }} mm</strong
+              >
+            </li>
+            <li
+              v-for="feature in features"
+              :key="feature.code"
+              class="feature-details"
+            >
+              <ul>
+                <li>
+                  <strong>CODE: {{ feature.values_.code }}</strong>
+                </li>
+                <li>
+                  Fläche:
+                  {{ Number(feature.values_.area).toFixed(2) }} m2
+                </li>
+                <li style="display: flex">
+                  <div class="bar-1 label" />
+                  Verdunstung:
+                  {{ Number(feature.values_.verdunstun).toFixed(2) }}mm
+                </li>
+                <li style="display: flex">
+                  <div class="bar-2 label" />
+                  Versickerung:
+                  {{ Number(feature.values_.ri).toFixed(2) }}mm
+                </li>
+                <li style="display: flex">
+                  <div class="bar-3 label" />
+                  Oberflächenabfluss:
+                  {{ Number(feature.values_.row).toFixed(2) }}mm
+                </li>
+                <div class="bar-scale">
+                  <div
+                    class="bar bar-1"
+                    :style="{
+                      width:
+                        calculatePercentages(feature).verdunstunPercentage +
+                        '%',
+                    }"
+                  />
+                  <div
+                    class="bar bar-2"
+                    :style="{
+                      width: calculatePercentages(feature).riPercentage + '%',
+                    }"
+                  />
+
+                  <div
+                    class="bar bar-3"
+                    :style="{
+                      width: calculatePercentages(feature).rowPercentage + '%',
+                    }"
+                  />
+                </div>
+              </ul>
+            </li>
+          </ul>
+          <!-- NOTE:END Step 4 -->
+        </div>
+
+        <!-- Weitere Steps -->
+      </template>
+    </AbimoAccordion>
   </div>
 </template>
 
 <style lang="scss" scoped>
 input[type="range"],
-button {
-  margin: 5px;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 ul {
   list-style: none;
   padding: 0;
@@ -438,7 +577,7 @@ li {
 .feature-details,
 .summary {
   margin-top: 16px;
-  border-top: 1px solid rgb(125, 210, 214);
+  border-top: 1px solid #54bba8;
   padding-top: 16px;
 }
 
