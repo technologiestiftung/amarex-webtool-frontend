@@ -38,8 +38,8 @@
   },
   {
     "id": "rabimo_input_2020",
-    "styleId": "paved",
-    "name": "Versiegelt",
+    "styleId": "abimo",
+    "name": "Rabimo Input 2020",
     "crs": "EPSG:25833",
     "url": "https://technologiestiftung-berlin.webgis1.com/geoserver/SmartWater/wfs",
     "typ": "WFS",
