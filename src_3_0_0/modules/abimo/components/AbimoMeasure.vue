@@ -170,12 +170,8 @@ export default {
      * @returns {void}
      */
     createInteractions: function () {
-      // FIXME: remove unselected layers
-
       // From open layers we imported the Select class. This adds the possibility to add "blocks" to our feature layer. For further info check OpenLayers Docs
       const selectInteraction = new Select({
-        condition: dblclick,
-        removeCondition: never,
         multi: true,
         layers: function (layer) {
           return layer.get("id") === "abimo_2020_wfs";
@@ -200,30 +196,13 @@ export default {
           this.selectedFeatures.push(mergedFeature);
         });
 
-        this.accumulatedAbimoStats = {
-          featuresSelected: this.selectedFeatures.length,
-          totalArea: this.selectedFeatures
-            .map((f) => Number(f.values_.area))
-            .reduce((a, b) => a + b, 0),
-          averageEvaporation:
-            this.selectedFeatures
-              .map((f) => Number(f.values_.evaporatio))
-              .reduce((a, b) => a + b, 0) / this.selectedFeatures.length,
-          averageSwale:
-            this.selectedFeatures
-              .map((f) => Number(f.values_.infiltrati))
-              .reduce((a, b) => a + b, 0) / this.selectedFeatures.length,
-          averageRinse:
-            this.selectedFeatures
-              .map((f) => Number(f.values_.surface_ru))
-              .reduce((a, b) => a + b, 0) / this.selectedFeatures.length,
-        };
-
         event.deselected.forEach((feature) => {
+          const featureCode = feature.values_.code;
           this.selectedFeatures = this.selectedFeatures.filter(
-            (f) => f.ol_uid !== feature.ol_uid,
+            (f) => f.values_.code !== featureCode,
           );
         });
+        this.updateAccumulatedStats();
       });
       // registers interaction in module - check masterportal docu
       this.addInteractionToMap(selectInteraction);
@@ -250,6 +229,33 @@ export default {
       this.sliders[0].value = Number(feature.green_roof).toFixed(2) * 100;
       this.sliders[1].value = Number(feature.to_swale).toFixed(2) * 100;
       this.sliders[2].value = Number((1 - feature.pvd).toFixed(2) * 100);
+    },
+    updateAccumulatedStats() {
+      const totalFeatures = this.selectedFeatures.length;
+      const totalArea = this.selectedFeatures.reduce(
+        (sum, f) => sum + Number(f.values_.area),
+        0,
+      );
+      const totalEvaporation = this.selectedFeatures.reduce(
+        (sum, f) => sum + Number(f.values_.evaporatio),
+        0,
+      );
+      const totalSwale = this.selectedFeatures.reduce(
+        (sum, f) => sum + Number(f.values_.infiltrati),
+        0,
+      );
+      const totalRinse = this.selectedFeatures.reduce(
+        (sum, f) => sum + Number(f.values_.surface_ru),
+        0,
+      );
+
+      this.accumulatedAbimoStats = {
+        featuresSelected: totalFeatures,
+        totalArea: totalArea,
+        averageEvaporation: totalEvaporation / totalFeatures,
+        averageSwale: totalSwale / totalFeatures,
+        averageRinse: totalRinse / totalFeatures,
+      };
     },
     createStyle(properties) {
       // This function transform importet geodata, in this case our Evaporatio to a hard coded colour code.
@@ -298,7 +304,6 @@ export default {
       const sliderValues = this.sliders.map((slider) => slider.value);
 
       return selectedFeatures.map((featureData) => {
-
         const new_green_roof = sliderValues[0] / 100;
         const new_to_swale = sliderValues[1] / 100;
         const new_pvd = 1 - sliderValues[2] / 100;
@@ -465,34 +470,43 @@ export default {
         </div>
 
         <div v-else-if="slotProps.step.id === 4">
-          <div
-            v-for="slider in sliders"
-            :key="slider.id"
-          >
-            <label :for="slider.id">{{ slider.label }}</label>
-            <input
-              :id="slider.id"
-              v-model="slider.value"
-              type="range"
-              min="0"
-              max="100"
-            />
-            <span>{{ slider.value }}</span>
+          <div class="mb-4">
+            <div
+              v-for="slider in sliders"
+              :key="slider.id"
+            >
+              <label
+                class="pr-5"
+                :for="slider.id"
+                >{{ slider.label }}</label
+              >
+              <input
+                :id="slider.id"
+                v-model="slider.value"
+                type="range"
+                min="0"
+                max="100"
+                class="bg-secondary"
+              />
+
+              <span>{{ slider.value }}</span>
+            </div>
           </div>
 
           <button
             class="btn btn-primary"
             @click="fetchCalculateMultiblock"
           >
-            Calculate Multiblock
+            Blockteilflächen berechnen
           </button>
 
-          <button
+          <!-- TODO: only display for testing API -->
+          <!-- <button
             class="btn btn-primary"
             @click="testRabimoAPI()"
           >
             test API
-          </button>
+          </button> -->
 
           <ul class="list-group">
             <li
