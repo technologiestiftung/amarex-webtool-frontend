@@ -3,6 +3,66 @@
     "styleId": "abimo",
     "rules": [
       {
+        "style": {
+          "polygonStrokeWidth": 2,
+          "polygonStrokeColor": [84, 187, 168, 1],
+          "polygonFillColor": [0, 0, 0, 0.3]
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "delta_w",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "delta_w": [0, 20]
+          }
+        },
+        "style": {
+          "polygonStrokeWidth": 3,
+          "polygonStrokeColor": [36, 65, 209, 1],
+          "polygonFillColor": [36, 65, 209, 0.1]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "delta_w": [20, 40]
+          }
+        },
+        "style": {
+          "polygonStrokeWidth": 3,
+          "polygonStrokeColor": [127, 148, 247, 1],
+          "polygonFillColor": [127, 148, 247, 0.1]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "delta_w": [40, 60]
+          }
+        },
+        "style": {
+          "polygonStrokeWidth": 3,
+          "polygonStrokeColor": [240, 151, 130, 1],
+          "polygonFillColor": [240, 151, 130, 0.1]
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "delta_w": [60, 80]
+          }
+        },
+        "style": {
+          "polygonStrokeWidth": 3,
+          "polygonStrokeColor": [203, 78, 90, 1],
+          "polygonFillColor": [203, 78, 90, 0.1]
+        }
+      },
+      {
         "conditions": {
           "properties": {
             "Row": [0, 1]
@@ -100,7 +160,7 @@
     ]
   },
   {
-    "styleId": "delta_w",
+    "styleId": "abimo_evap",
     "rules": [
       {
         "conditions": {
