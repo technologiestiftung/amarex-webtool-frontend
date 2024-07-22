@@ -7,62 +7,46 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    this.localSteps = this.steps.map((step) => ({
-      ...step,
-      isActive: step.defaultActive,
-    }));
-  },
-  methods: {
-    toggle(stepId) {
-      this.localSteps = this.localSteps.map((step) => ({
-        ...step,
-        isActive: step.id === stepId ? !step.isActive : step.isActive,
-      }));
-    },
-  },
 };
 </script>
+
 <template>
-  <div>
+  <div
+    class="accordion"
+    id="accordionExample"
+  >
     <div
       v-for="step in steps"
       :key="step.id"
-      class="accordion-item"
+      class="accordion-item accordion-flush"
     >
       <h5
         class="accordion-header"
-        @click="toggle(step.id)"
+        :id="`heading${step.id}`"
       >
-        {{ step.id }}. {{ step.label }}
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          :data-bs-target="`#collapse${step.id}`"
+          :aria-controls="`collapse${step.id}`"
+        >
+          {{ step.id }}. {{ step.label }}
+        </button>
       </h5>
 
       <div
-        v-show="step.isActive"
-        class="accordion-content"
+        :id="`collapse${step.id}`"
+        :class="['accordion-collapse collapse', { show: step.isActive }]"
+        :aria-labelledby="`heading${step.id}`"
+        data-bs-parent="#accordionExample"
       >
-        <p>{{ step.description }}</p>
-        <slot :step="step" />
+        <div class="accordion-body">
+          <p>{{ step.description }}</p>
+          <slot :step="step" />
+        </div>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.accordion-item {
-  margin-bottom: 1em;
-}
-
-.accordion-header {
-  cursor: pointer;
-  background: #54bba8;
-  color: white;
-  padding: 0.5em;
-}
-
-.accordion-content {
-  border: 1px solid #54bba8;
-  padding: 0.75em;
-}
-</style>
 
