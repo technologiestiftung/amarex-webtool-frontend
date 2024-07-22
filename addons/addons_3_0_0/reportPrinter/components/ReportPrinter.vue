@@ -54,6 +54,34 @@ export default {
     ]),
   },
   methods: {
+    splitTextToFit(doc, text, maxWidth, fontSize) {
+      doc.setFontSize(fontSize);
+      const words = text.split(" ");
+      let lines = [];
+      let currentLine = words[0];
+
+      for (let i = 1; i < words.length; i++) {
+        const word = words[i];
+        const width =
+          (doc.getStringUnitWidth(currentLine + " " + word) * fontSize) /
+          doc.internal.scaleFactor;
+        if (width < maxWidth) {
+          currentLine += " " + word;
+        } else {
+          lines.push(currentLine);
+          currentLine = word;
+        }
+      }
+      lines.push(currentLine);
+      return lines;
+    },
+    addTextWithWordWrap(doc, text, x, y, maxWidth, fontSize, lineHeight) {
+      const lines = this.splitTextToFit(doc, text, maxWidth, fontSize);
+      lines.forEach((line, index) => {
+        doc.text(line, x, y + index * lineHeight);
+      });
+      return y + lines.length * lineHeight;
+    },
     async takeScreenshot() {
       const mapElement = document.getElementById("map");
       if (!mapElement) {
@@ -72,69 +100,6 @@ export default {
         throw new Error("Konnte keinen Screenshot erstellen");
       }
     },
-    addTable(doc, data, startY) {
-      const cellPadding = 5;
-      const lineHeight = 10;
-      const columnWidths = [40, 60, 60];
-
-      doc.setFont("bold");
-      doc.text("Name", 10, startY);
-      doc.text("Typ", 50, startY);
-      doc.text("Wert", 110, startY);
-
-      doc.setFont("normal");
-      let y = startY + lineHeight;
-
-      data.forEach((row) => {
-        doc.text(row.name.toString(), 10, y);
-        doc.text(row.typ.toString(), 50, y);
-        doc.text(row.value.toString(), 110, y);
-        y += lineHeight;
-
-        if (y > 280) {
-          // 280 ist eine Beispiel-Y-Position, die du anpassen kannst
-          doc.addPage();
-          y = 10; // Zurücksetzen der Y-Position auf der neuen Seite
-        }
-      });
-
-      doc.rect(10, startY - 5, 170, y - startY + 5);
-    },
-
-    addSocioEconomicAnalysis(doc, startY) {
-      const criteria = [
-        "Niedrige Kosten",
-        "Stadtklima",
-        "Erholung",
-        "Lärmschutz",
-        "Habitatvielfalt",
-        "Luftreinhaltung",
-      ];
-
-      const values = [85, 75, 65, 55, 45, 35];
-      const averageValues = [60, 70, 80, 50, 40, 30];
-
-      console.log("[ReportPrinter] this.pdf.fontSize.s::", this.pdf.fontSize.s);
-      doc.setFontSize(this.pdf.fontSize.s);
-      doc.text("Sozioökonomische Analyse", 10, startY);
-
-      let y = startY + 10;
-      criteria.forEach((criterion, index) => {
-        if (y > 280) {
-          // Überprüfen, ob eine neue Seite benötigt wird
-          doc.addPage();
-          y = 10; // Zurücksetzen der Y-Position auf der neuen Seite
-        }
-        doc.text(
-          `${criterion}: Entsiegelung - ${values[index]}, Durchschnitt - ${averageValues[index]}`,
-          10,
-          y,
-        );
-        y += 10;
-      });
-
-      return y;
-    },
 
     addHeader(doc) {
       let y = 1;
@@ -150,17 +115,17 @@ export default {
       doc.text(`Report Nr. xxx, Bearbeiter: ${this.report.editor}`, 100, y);
       y += this.pdf.margin.bottom;
 
-      return y; // Neue Y-Position nach dem Header
+      return y; // return y position
     },
-    async getData() {
-      const mapView = await mapCollection.getMapView("2D");
-      console.log("[ReportPrinter] mapView::", mapView);
+    getData() {
+      const mapView = mapCollection.getMapView("2D");
       this.map.center = mapView.getCenter();
-      console.log("[ReportPrinter] this.map.center::", this.map.center);
     },
 
     async generatePDF() {
       const doc = new jsPDF();
+      this.getData();
+
       // start at x = 10, y = 10
       let x = 10;
       let y = 10;
@@ -176,7 +141,15 @@ export default {
       y = this.addHeader(doc);
 
       y += this.pdf.margin.top;
-      doc.setFontSize(this.pdf.fontSize.m).text(this.projectTitle, x, y);
+      y = this.addTextWithWordWrap(
+        doc,
+        this.report.title,
+        x,
+        y,
+        this.pdf.max.width - 2 * x,
+        this.pdf.fontSize.m,
+        this.lineHeight,
+      );
       y += this.pdf.margin.bottom;
 
       doc
@@ -185,6 +158,7 @@ export default {
       y += this.pdf.margin.bottom;
 
       y += this.pdf.margin.top;
+
       doc
         .setFontSize(this.pdf.fontSize.m)
         .text(`X-Koordinate: ${this.map.center[0].toFixed(2)}`, x, y);
@@ -241,13 +215,6 @@ export default {
       @click="generatePDF"
     >
       Download Report
-    </button>
-
-    <button
-      class="btn btn-primary"
-      @click="getData"
-    >
-      get Data for Report
     </button>
   </div>
 </template>
