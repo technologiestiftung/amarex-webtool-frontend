@@ -48,3 +48,6 @@ devtools/securedServices.js
 lintfixed.html
 npm-debug.log
 _extra-files
+
+.env
+.env.*
