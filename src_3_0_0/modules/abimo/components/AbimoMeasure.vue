@@ -9,6 +9,7 @@ import { dblclick, never } from "ol/events/condition";
 import AbimoAccordion from "./AbimoAccordion.vue";
 import getRabimo from "../api/getRabimo";
 import helper from "../utils/helper";
+import areaCalc from "../utils/areaCalculations";
 
 /**
  * Abimo
@@ -232,29 +233,26 @@ export default {
     },
     updateAccumulatedStats() {
       const totalFeatures = this.selectedFeatures.length;
-      const totalArea = this.selectedFeatures.reduce(
-        (sum, f) => sum + Number(f.values_.area),
-        0,
+      const totalArea = areaCalc.getTotalArea(this.selectedFeatures);
+      const averageEvaporation = areaCalc.calculateAttributeAverage(
+        this.selectedFeatures,
+        "evaporatio",
       );
-      const totalEvaporation = this.selectedFeatures.reduce(
-        (sum, f) => sum + Number(f.values_.evaporatio),
-        0,
+      const averageSwale = areaCalc.calculateAttributeAverage(
+        this.selectedFeatures,
+        "infiltrati",
       );
-      const totalSwale = this.selectedFeatures.reduce(
-        (sum, f) => sum + Number(f.values_.infiltrati),
-        0,
-      );
-      const totalRinse = this.selectedFeatures.reduce(
-        (sum, f) => sum + Number(f.values_.surface_ru),
-        0,
+      const averageRinse = areaCalc.calculateAttributeAverage(
+        this.selectedFeatures,
+        "surface_ru",
       );
 
       this.accumulatedAbimoStats = {
         featuresSelected: totalFeatures,
         totalArea: totalArea,
-        averageEvaporation: totalEvaporation / totalFeatures,
-        averageSwale: totalSwale / totalFeatures,
-        averageRinse: totalRinse / totalFeatures,
+        averageEvaporation: averageEvaporation,
+        averageSwale: averageSwale,
+        averageRinse: averageRinse,
       };
     },
     createStyle(properties) {
