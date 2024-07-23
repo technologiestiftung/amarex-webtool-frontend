@@ -110,13 +110,7 @@
           }
         ]
       },
-      "sections": [
-        [
-          {
-            "type": "openConfig"
-          }
-        ]
-      ]
+      "sections": [[]]
     },
     "secondaryMenu": {
       "expanded": false,
@@ -156,19 +150,22 @@
     "subjectlayer": {
       "elements": [
         {
+          "id": "delta_w_wfs",
+          "visibility": false
+        },
+        {
           "id": "planung_abimo",
           "visibility": true
         },
         {
-          "id": "abimo_2020_wfs",
-          "visibility": false
+          "id": "rabimo_input_2020",
+          "visibility": true
         },
         {
-          "id": "delta_w_wfs",
+          "id": "abimo_2020_wfs",
           "visibility": true
         }
       ]
     }
   }
 }
-
