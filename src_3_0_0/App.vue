@@ -71,6 +71,12 @@ export default {
       selector: "[data-bs-toggle='tooltip']",
     });
   },
+  mounted() {
+    window.addEventListener("beforeunload", this.handleBeforeUnload);
+  },
+  beforeUnmount() {
+    window.removeEventListener("beforeunload", this.handleBeforeUnload);
+  },
   unmounted() {
     window.removeEventListener("resize", this.onResize());
   },
@@ -86,6 +92,17 @@ export default {
       "loadServicesJson",
     ]),
 
+    /**
+     * Handles the beforeunload event.
+     * @param {Event} event - The dom event.
+     * @returns {void}
+     */
+    handleBeforeUnload(event) {
+      event.preventDefault();
+      // Included for legacy support, e.g. Chrome/Edge < 119
+      event.returnValue = true;
+    },
+    
     /**
      * Sets global variables.
      * Note: Should be as few as possible.
@@ -312,3 +329,4 @@ export default {
   }
 }
 </style>
+
