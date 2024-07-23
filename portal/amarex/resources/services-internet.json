@@ -1,7 +1,7 @@
 [
   {
     "id": "hintergrund_default_farbe",
-    "name": "basemap.de Web Raster Farbe",
+    "name": "Hintergrund Berlin Farbe",
     "name_lang": "basemap.de Web Raster Farbe",
     "capabilitiesUrl": "https://sgx.geodatenzentrum.de/wmts_basemapde/1.0.0/WMTSCapabilities.xml",
     "url": "https://sgx.geodatenzentrum.de/wmts_basemapde/1.0.0/",
@@ -128,4 +128,5 @@
     "licenseUrl": "https://www.govdata.de/dl-de/by-2-0"
   }
 ]
+
 
